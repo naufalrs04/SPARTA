@@ -34,7 +34,7 @@
                                 </div>
                                 <div>
                                     <p style="color: #F0B90B; font-size: 20px;"><strong>NIP :</strong></p>
-                                    <p class="mb-1">1980122042387</p>
+                                    <p class="mb-1">LALALALALA</p>
                                 </div>
                                 <div>
                                     <p style="color: #F0B90B; font-size: 20px;"><strong>Status :</strong></p>
