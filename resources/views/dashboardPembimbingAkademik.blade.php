@@ -116,6 +116,13 @@
                         </tr>
                     </tbody>
                 </table>
+                <div class="mt-7 flex justify-end items-center">
+                    <div class="items-center text-center w-[11rem] h-[3rem] bg-white rounded-lg">
+                        <div class="mx-auto my-auto">
+                            <h2 class="text-black text-bold">Selengkapnya</h2>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

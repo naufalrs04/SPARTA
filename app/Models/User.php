@@ -20,6 +20,12 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'status',
+        'question_kaprodi',
+        'question_dekan',
+        'question_pembimbing_akademik',
+        'question_bagian_akademik',
+        'question_mahasiswa',
     ];
 
     /**

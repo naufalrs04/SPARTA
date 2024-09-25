@@ -16,6 +16,11 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string("status");
+            $table->boolean('question_kaprodi');
+            $table->boolean('question_dekan');
+            $table->boolean('question_pembimbing_akademik');
+            $table->boolean('question_bagian_akademik');
+            $table->boolean('question_mahasiswa');
             $table->timestamps();
         });
     }

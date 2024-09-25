@@ -36,15 +36,18 @@ class AuthController extends Controller
             return redirect()->intended('/dashboardMahasiswa');
         } 
         elseif (str_contains($user->email, '@lecturer.sparta.ac.id')) {
-            if ($user->status == 'dekan') {
+            if ($user->question_dekan == true && $user->question_pembimbing_akademik == true) {
                 return redirect()->intended('/dashboarddekan');
             }
-            elseif ($user->status == 'kaprodi') {
+            elseif ($user->question_kaprodi == true && $user->question_pembimbing_akademik == true) {
                 return redirect()->intended('/dashboardkaprodi');
             }
             else {
                 return redirect()->intended('/dashboardDosen');
             }
+        }
+        else {
+            return redirect()->intended('/dashboardbagianakademik');
         }
     }
 }
