@@ -10,23 +10,30 @@ use App\Http\Controllers\DashboardBagianAkademikController;
 use App\Http\Controllers\DashboardKaprodiController;
 use App\Http\Controllers\RegistrasiController;
 
-Route::get('/', function () {
+Route::get('/login', function () {
     return view('login');
 })->name('login');
 
+
 Route::post('/login', [AuthController::class, 'authenticate'])->name('login');
 
-Route::get('/dashboardMahasiswa', [DashboardMahasiswaController::class, 'index'])->middleware('auth')->name('dashboardMahasiswa');
+Route::get('/dashboardMahasiswa', [DashboardMahasiswaController::class, 'index'])->middleware('auth') ->name('dashboardMahasiswa');
+
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::get('/dashboardPembimbingAkademik', [DashboardPembimbingAkademikController::class, 'index'])->middleware('auth')->name('dashboardPembimbingAkademik');
+
+Route::get('/dashboardKaprodi', [DashboardKaprodiController::class, 'index'])->middleware('auth')->name('dashboardKaprodi');
+
+Route::get('/dashboardBagianAkademik', [DashboardBagianAkademikController::class, 'index'])->middleware('auth')->name('dashboardBagianAkademik');
+
+
+
+
+
+
 
 Route::get('/dashboarddekan', [DashboardDekanController::class, 'index'])->middleware('auth')->name('dashboardDekan');
 
-Route::get('/dashboarddosenpengampu', [DashboardDosenPengampuController::class, 'index'])->middleware('auth')->name('dashboardDosenPengampu');
-
-Route::get('/dashboardpembimbingakademik', [DashboardPembimbingAkademikController::class, 'index'])->middleware('auth')->name('dashboardPembimbingAkademik');
-
-Route::get('/dashboardbagianakademik', [DashboardBagianAkademikController::class, 'index'])->middleware('auth')->name('dashboardBagianAkademik');
-
-Route::get('/dashboardkaprodi', [DashboardKaprodiController::class, 'index'])->middleware('auth')->name('dashboardKaprodi');
 
 
-Route::get('/registrasi', [RegistrasiController::class, 'index'])->middleware('auth')->name('registrasi');

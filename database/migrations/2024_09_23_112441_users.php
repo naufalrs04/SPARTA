@@ -15,7 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string('email')->unique();
             $table->string('password');
+            $table->string('nama');
+            $table->string('nim_nip');
             $table->string("status");
+            $table->boolean('kp');
+            $table->boolean('dk');
+            $table->boolean('pa');
+            $table->boolean('ba');
+            $table->boolean('ma');
             $table->timestamps();
         });
     }
