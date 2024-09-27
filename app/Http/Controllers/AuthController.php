@@ -9,7 +9,6 @@ use App\Models\User;
 
 class AuthController extends Controller
 {
-    // Fungsi untuk autentikasi user
     public function authenticate(Request $request)
     {
         $credentials = $request->validate([
