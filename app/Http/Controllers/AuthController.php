@@ -36,15 +36,27 @@ class AuthController extends Controller
             return redirect()->intended('/dashboardMahasiswa');
         } 
         elseif (str_contains($user->email, '@lecturer.sparta.ac.id')) {
-            if ($user->status == 'dekan') {
-                return redirect()->intended('/dashboarddekan');
+            if ($user->kp==1 && $user->pa==1){
+                return redirect()->intended('/dashboardKaprodi');
             }
-            elseif ($user->status == 'kaprodi') {
-                return redirect()->intended('/dashboardkaprodi');
+            else if ($user->dk==1 && $user->pa==1){
+                return redirect()->intended('/dashboardDekan');
+            }
+            else if ($user->pa==1) {
+                return redirect()->intended('/dashboardPembimbingAkademik');
             }
             else {
-                return redirect()->intended('/dashboardDosen');
+                return redirect()->intended('/dashboardBagianAkademik');
             }
         }
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login');
     }
 }
