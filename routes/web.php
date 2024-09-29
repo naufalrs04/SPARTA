@@ -1,14 +1,16 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PengisianIRS;
+use App\Http\Controllers\KHSController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RegistrasiController;
 use App\Http\Controllers\DashboardDekanController;
+use App\Http\Controllers\DashboardKaprodiController;
 use App\Http\Controllers\DashboardMahasiswaController;
 use App\Http\Controllers\DashboardDosenPengampuController;
-use App\Http\Controllers\DashboardPembimbingAkademikController;
 use App\Http\Controllers\DashboardBagianAkademikController;
-use App\Http\Controllers\DashboardKaprodiController;
-use App\Http\Controllers\RegistrasiController;
+use App\Http\Controllers\DashboardPembimbingAkademikController;
 
 Route::get('/login', function () {
     return view('login');
@@ -18,8 +20,11 @@ Route::post('/login', [AuthController::class, 'authenticate'])->name('login');
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/dashboardMahasiswa', [DashboardMahasiswaController::class, 'index'])->middleware('auth') ->name('dashboardMahasiswa');
+Route::get('/khs', [KHSController::class, 'index'])->middleware('auth')->name('khs');
 
+Route::get('/pengisianirs', [PengisianIRS::class, 'index'])->middleware('auth')->name('pengisianirs');
+
+Route::get('/dashboardMahasiswa', [DashboardMahasiswaController::class, 'index'])->middleware('auth') ->name('dashboardMahasiswa');
 
 Route::get('/dashboardPembimbingAkademik', [DashboardPembimbingAkademikController::class, 'index'])->middleware('auth')->name('dashboardPembimbingAkademik');
 
