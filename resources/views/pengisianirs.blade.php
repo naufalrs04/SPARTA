@@ -28,7 +28,7 @@
                     </div>
                 </div>
             </div>
-            <div id="contentPengisian IRS" class="content-section hidden">
+            <div id="contentPengisianIRS" class="content-section hidden">
                 <div class="px-8 pt-5">
                     <h2 class="text-center text-lg font-semibold mb-4">Ringkasan Mata Kuliah yang diambil</h2>
                     <table class="table-auto p-5 w-full text-center rounded-lg border-collapse">
@@ -173,7 +173,7 @@
                                 <p class="text-md sm:text-lg">Jumlah SKS 21</p>
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -189,13 +189,13 @@
                     const contentIRSMahasiswa = document.getElementById('contentIRSMahasiswa');
                     
                     // Check which tab is clicked and toggle classes
-                    if (selected === 'pengisianIRS') {
+                    if (selected == 'pengisianIRS') {
                         pengisianIRS.classList.add('bg-yellow-700', 'border-[#17181C]');
                         irsMahasiswa.classList.remove('bg-yellow-700', 'border-[#17181C]');
                         
                         contentPengisianIRS.classList.remove('hidden');
                         contentIRSMahasiswa.classList.add('hidden');
-                    } else if (selected === 'irsMahasiswa') {
+                    } else if (selected == 'irsMahasiswa') {
                         irsMahasiswa.classList.add('bg-yellow-700', 'border-[#17181C]');
                         pengisianIRS.classList.remove('bg-yellow-700', 'border-[#17181C]');
                         
