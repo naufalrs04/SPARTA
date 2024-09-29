@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class DashboardPembimbingAkademikController extends Controller
+class RegistrasiController extends Controller
 {
+    //
     public function index()
     {
         if (!Auth::check()) {
@@ -14,13 +15,7 @@ class DashboardPembimbingAkademikController extends Controller
         }
 
         $user = Auth::user();
-
-        $data = [
-            'nama' => $user->nama,
-            'nim_nip' => $user->nim_nip,
-        ];
-
-        return view('dashboardPembimbingAkademik', compact('data', 'user'));
+        
+        return view('/registrasi', compact('user'));
     }
-
 }
