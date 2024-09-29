@@ -12,10 +12,10 @@
             <li class="px-7 py-7">
                 <a href="registrasi" class="block text-white">Registrasi</a>
             <li class="px-7 py-7">
-                <a href="irs" class="block text-gray-300">IRS</a>
+                <a href="pengisianirs" class="block text-gray-300">IRS</a>
             </li>
             <li class="px-7 py-7">
-                <a href="irs" class="block text-gray-300">KHS</a>
+                <a href="khs" class="block text-gray-300">KHS</a>
             </li>
             @endif
 

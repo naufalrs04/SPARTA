@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class PengisianIRS extends Controller
+class RegistrasiController extends Controller
 {
+    //
     public function index()
     {
         if (!Auth::check()) {
@@ -15,6 +16,6 @@ class PengisianIRS extends Controller
 
         $user = Auth::user();
         
-        return view('/pengisianirs', compact( 'user'));
+        return view('/registrasi', compact('user'));
     }
 }

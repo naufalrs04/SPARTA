@@ -8,7 +8,6 @@ use App\Http\Controllers\RegistrasiController;
 use App\Http\Controllers\DashboardDekanController;
 use App\Http\Controllers\DashboardKaprodiController;
 use App\Http\Controllers\DashboardMahasiswaController;
-use App\Http\Controllers\DashboardDosenPengampuController;
 use App\Http\Controllers\DashboardBagianAkademikController;
 use App\Http\Controllers\DashboardPembimbingAkademikController;
 
@@ -19,6 +18,8 @@ Route::get('/login', function () {
 Route::post('/login', [AuthController::class, 'authenticate'])->name('login');
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::get('/registrasi', [RegistrasiController::class, 'index'])->middleware('auth') -> name('registrasi');
 
 Route::get('/khs', [KHSController::class, 'index'])->middleware('auth')->name('khs');
 
