@@ -10,6 +10,7 @@ use App\Http\Controllers\DashboardKaprodiController;
 use App\Http\Controllers\DashboardMahasiswaController;
 use App\Http\Controllers\DashboardBagianAkademikController;
 use App\Http\Controllers\DashboardPembimbingAkademikController;
+use App\Http\Controllers\penyusunanjadwal;
 
 Route::get('/login', function () {
     return view('login');
@@ -34,6 +35,8 @@ Route::get('/dashboardKaprodi', [DashboardKaprodiController::class, 'index'])->m
 Route::get('/dashboardBagianAkademik', [DashboardBagianAkademikController::class, 'index'])->middleware('auth')->name('dashboardBagianAkademik');
 
 Route::get('/dashboarddekan', [DashboardDekanController::class, 'index'])->middleware('auth')->name('dashboardDekan');
+
+Route::get('/jadwalpengisianIRS', [penyusunanjadwal::class, 'index'])->middleware('auth')->name('dashboardDekan');
 
 
 
