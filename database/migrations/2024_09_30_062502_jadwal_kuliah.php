@@ -21,7 +21,7 @@ return new class extends Migration
             $table->time('jam_mulai');
             $table->time('jam_selesai');
 
-            // Foreign key untuk mata kuliah dan ruangan
+            // Foreign key
             $table->foreign('mata_kuliah_id')->references('id')->on('mata_kuliahs')->onDelete('cascade');
             $table->foreign('ruangan_id')->references('id')->on('ruangans')->onDelete('cascade');
 

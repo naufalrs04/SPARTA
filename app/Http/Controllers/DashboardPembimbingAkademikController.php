@@ -19,7 +19,6 @@ class DashboardPembimbingAkademikController extends Controller
             'nama' => $user->nama,
             'nim_nip' => $user->nim_nip,
         ];
-
         return view('dashboardPembimbingAkademik', compact('data', 'user'));
     }
 

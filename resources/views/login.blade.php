@@ -68,13 +68,13 @@
                         </div>
                     </div>
                     <div class="my-6">
-                        <button type="submit" class="justify-center rounded-md py-3 px-10 text-sm font-semibold text-white focus:ring-2" style="background-color:#0A4867">Login</button>
+                        <button type="submit" class="bg-gradient-to-r from-orange-500 to-red-500  hover:from-orange-600 hover:to-red-600 focus:outline-none justify-center rounded-md py-3 px-10 text-sm font-semibold text-white focus:ring-2" >Login</button>
                     </div>
                 </form>
 
                 <p class="mt-10 text-center text-sm text-gray-400">
                     Forgot a password?
-                    <a href="#" class="font-semibold leading-6 text-indigo-400 hover:text-indigo-300">Reset Your Password</a>
+                    <a href="resetpassword" class="font-semibold leading-6 text-indigo-400 hover:text-indigo-300">Reset Your Password</a>
                 </p>
             </div>
         </div>
