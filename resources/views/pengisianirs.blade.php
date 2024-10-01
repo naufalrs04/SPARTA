@@ -19,16 +19,16 @@
 
             {{-- Main Content --}}
             <div class="px-8 pt-5 flex justify-center items-center">
-                <div class="w-full rounded-full border-yellow-700 border-2 flex justify-between items-center cursor-pointer" onclick="switchIRS('pengisianIRS')">
-                    <div id="pengisianIRS" class="w-1/2 rounded-full bg-yellow-700 border-[#17181C] border-2 flex justify-center items-center px-4">
+                <div class="w-full rounded-full border-yellow-700 border-2 flex justify-between items-center">
+                    <div id="pengisianIRS" class="w-1/2 rounded-full bg-yellow-700 border-[#17181C] cursor-pointer flex justify-center items-center px-4 transition ease-in-out duration-300" onclick="switchIRS('pengisianIRS')">
                         <h2 class="text-md font-bold">Pengisian IRS</h2>
                     </div>
-                    <div id="irsMahasiswa" class="w-1/2 rounded-full flex justify-center items-center px-4 cursor-pointer" onclick="switchIRS('pengisianIRS')"">
+                    <div id="irsMahasiswa" class="w-1/2 rounded-full flex justify-center items-center px-4 cursor-pointer transition ease-in-out duration-300" onclick="switchIRS('irsMahasiswa')">
                         <h2 class="text-md font-bold">IRS Mahasiswa</h2>
-                    </div>
+                    </div>                    
                 </div>
             </div>
-            <div id="contentPengisianIRS" class="content-section hidden">
+            <div id="contentPengisianIRS">
                 <div class="px-8 pt-5">
                     <h2 class="text-center text-lg font-semibold mb-4">Ringkasan Mata Kuliah yang diambil</h2>
                     <table class="table-auto p-5 w-full text-center rounded-lg border-collapse">
@@ -145,7 +145,7 @@
                     </table>
                 </div>
             </div>
-            <div id="contentIRSMahasiswa" class="content-section">
+            <div id="contentIRSMahasiswa" class="hidden">
                 <div class="px-4 sm:px-6 md:px-8 pt-5 pb-10">
                     <h2 class="text-center text-lg font-semibold mb-4">IRS Mahasiswa</h2>
                     <div class="w-full bg-[#1E1F24] opacity-65 rounded-lg border-[#49454F] border-opacity-50 border-2">
@@ -180,6 +180,9 @@
             
             <script>
                 function switchIRS(selected) {
+                    // Log which tab is selected
+                    console.log("Selected tab:", selected);
+
                     // Elements for tabs
                     const pengisianIRS = document.getElementById('pengisianIRS');
                     const irsMahasiswa = document.getElementById('irsMahasiswa');
@@ -188,21 +191,28 @@
                     const contentPengisianIRS = document.getElementById('contentPengisianIRS');
                     const contentIRSMahasiswa = document.getElementById('contentIRSMahasiswa');
                     
-                    // Check which tab is clicked and toggle classes
-                    if (selected == 'pengisianIRS') {
+                    // Switch active tab and color
+                    if (selected === 'pengisianIRS') {
+                        console.log("Switching to Pengisian IRS");
                         pengisianIRS.classList.add('bg-yellow-700', 'border-[#17181C]');
                         irsMahasiswa.classList.remove('bg-yellow-700', 'border-[#17181C]');
                         
+                        // Show Pengisian IRS content and hide IRS Mahasiswa content
                         contentPengisianIRS.classList.remove('hidden');
                         contentIRSMahasiswa.classList.add('hidden');
-                    } else if (selected == 'irsMahasiswa') {
+                    } 
+                    
+                    else if (selected === 'irsMahasiswa') {
+                        console.log("Switching to IRS Mahasiswa");
                         irsMahasiswa.classList.add('bg-yellow-700', 'border-[#17181C]');
                         pengisianIRS.classList.remove('bg-yellow-700', 'border-[#17181C]');
                         
+                        // Show IRS Mahasiswa content and hide Pengisian IRS content
                         contentIRSMahasiswa.classList.remove('hidden');
                         contentPengisianIRS.classList.add('hidden');
                     }
                 }
+
             </script>
         </div>
     </div>
