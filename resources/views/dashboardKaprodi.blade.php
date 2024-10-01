@@ -107,6 +107,7 @@
                                     <p class="mb-1">190</p>
                                 </div>
                             </div>
+                            
                             <div class="col-span-12 text-white flex items-center justify-center p-4 rounded-md mx-5 mb-5" style="background-color: #34803C">
                                 <p><strong>TERVERIFIKASI</strong></p>
                             </div>

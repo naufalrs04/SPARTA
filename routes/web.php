@@ -10,7 +10,9 @@ use App\Http\Controllers\DashboardKaprodiController;
 use App\Http\Controllers\DashboardMahasiswaController;
 use App\Http\Controllers\DashboardBagianAkademikController;
 use App\Http\Controllers\DashboardPembimbingAkademikController;
+use App\Http\Controllers\jadwalpengisianIRS;
 use App\Http\Controllers\penyusunanjadwal;
+use App\Http\Controllers\resetpassword;
 
 Route::get('/login', function () {
     return view('login');
@@ -21,6 +23,8 @@ Route::post('/login', [AuthController::class, 'authenticate'])->name('login');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/registrasi', [RegistrasiController::class, 'index'])->middleware('auth') -> name('registrasi');
+Route::post('/update-status', [RegistrasiController::class, 'updateStatus'])->name('update-status');
+
 
 Route::get('/khs', [KHSController::class, 'index'])->middleware('auth')->name('khs');
 
@@ -30,13 +34,17 @@ Route::get('/dashboardMahasiswa', [DashboardMahasiswaController::class, 'index']
 
 Route::get('/dashboardPembimbingAkademik', [DashboardPembimbingAkademikController::class, 'index'])->middleware('auth')->name('dashboardPembimbingAkademik');
 
-Route::get('/dashboardKaprodi', [DashboardKaprodiController::class, 'index'])->middleware('auth')->name('dashboardKaprodi');
-
 Route::get('/dashboardBagianAkademik', [DashboardBagianAkademikController::class, 'index'])->middleware('auth')->name('dashboardBagianAkademik');
 
 Route::get('/dashboarddekan', [DashboardDekanController::class, 'index'])->middleware('auth')->name('dashboardDekan');
 
-Route::get('/jadwalpengisianIRS', [penyusunanjadwal::class, 'index'])->middleware('auth')->name('dashboardDekan');
+//KAPRODI
+Route::get('/dashboardKaprodi', [DashboardKaprodiController::class, 'index'])->middleware('auth')->name('dashboardKaprodi');
 
+Route::get('/penyusunanjadwal', [penyusunanjadwal::class, 'index'])->middleware('auth')->name('Penyusunanjadwal');
 
+Route::get('/jadwalpengisianIRS', [jadwalpengisianIRS::class, 'index'])->middleware('auth')->name('jadwalpengisianIRS');
 
+Route::get('/resetpassword', function () {
+    return view('resetpassword');
+})->name('resetpassword');
