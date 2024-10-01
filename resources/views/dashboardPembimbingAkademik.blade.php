@@ -11,7 +11,7 @@
 <body class="bg-gray-900 text-gray-100">
     <div class="flex min-h-screen">
         <!-- Sidebar -->
-        @include('components.sidebar')
+        @include('components.sidebar_pa')
 
         <!-- Content -->
         <div class="flex-grow" style="background-color: #17181C;">
