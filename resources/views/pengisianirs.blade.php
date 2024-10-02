@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pengisian IRS</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    @vite(['resources/css/app.css','resources/js/app.js'])
+    <script src="https://cdn.tailwindcss.com">
+    </script>
 </head>
 
 <body class="bg-gray-900 text-gray-100">
@@ -74,10 +76,10 @@
                         <div class="w-3/5 flex justify-between">
                             <p class="text-xs">Notes : Jika mata kuliah ingin diproses oleh dosen wali, klik tombol di sebelah kanan</p>
                         </div>
-                        <div class="w-1/6 ml-5 text-white flex text-center items-center justify-center py-3 rounded-md" style="background-color: #34803C">
+                        <div class="w-1/6 ml-5 text-white flex text-center items-center justify-center py-3 rounded-md cursor-pointer bg-[#34803C] hover:bg-green-800">
                             <p><strong>Ajukan</strong></p>
                         </div>
-                        <div class="w-1/6 ml-5 text-white flex text-center items-center justify-center py-3 rounded-md" style="background-color: #880000">
+                        <div class="w-1/6 ml-5 text-white flex text-center items-center justify-center py-3 rounded-md cursor-pointer bg-[#880000] hover:bg-red-500" >
                             <p><strong>Batal Ajukan</strong></p>
                         </div>
                     </div>
@@ -85,23 +87,53 @@
     
                 <div class="px-8 pt-5">
                     <h2 class="text-center text-lg font-semibold mb-4">List Mata Kuliah</h2>
-                    <div class="flex justify-between">
-                        <div class="bg-[#23252A] flex w-4/6 rounded-lg">
-                            <div class="w-1/2 h-10 items-center flex justify-between">
-                                <h2 class="text-[#94959A] ml-5 text-left font-semibold">Mata Kuliah</h2>
-                            </div>
-                            <div class="w-1/2 flex items-center justify-end mr-5">
-                                <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                    <div class="flex justify-between items-center"> 
+                        <!-- Dropdown Section -->
+                        <div class="flex w-full rounded-lg relative">
+                            <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" 
+                                class="text-white bg-gray-800 hover:bg-gray-800 hover:opacity-70 focus:ring-4 focus:outline-none focus:ring-blue-500 font-medium rounded-lg text-sm px-5 py-2.5 w-full h-[3.40rem] flex justify-between items-center" 
+                                type="button">
+                                Mata Kuliah
+                                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
                                 </svg>
+                            </button>
+                            <!-- Dropdown menu -->
+                            <div id="dropdown" class="hidden bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200 divide-y divide-gray-100 dark:divide-gray-600 rounded-lg shadow w-full absolute z-10 mt-2">
+                                <ul class="py-2 text-sm" aria-labelledby="dropdownDefaultButton">
+                                    <li>
+                                        <a href="#" class="block px-4 py-2 hover:bg-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</a>
+                                    </li>
+                                    <li> 
+                                        <a href="#" class="block px-4 py-2 hover:bg-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="block px-4 py-2 hover:bg-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">Earnings</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="block px-4 py-2 hover:bg-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">Sign out</a>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
-                        <div class="bg-[#23252A] ml-5 flex w-2/6 rounded-lg">
-                            <div class="w-full h-10 items-center flex justify-between">
-                                <h2 class="text-[#94959A] ml-5 text-left font-semibold">Cari Mata Kuliah</h2>
+                
+                        <!-- Search Section -->
+                        <form class="w-full ml-4">   
+                            <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                                    </svg>
+                                </div>
+                                <input type="search" id="default-search" class="block w-full p-4 pl-10 text-sm text-white border border-gray-800 rounded-lg bg-gray-800 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Cari mata kuliah"/>
                             </div>
-                        </div>
+                        </form>                        
                     </div>
                 </div>
+                
+                
+                
     
                 <div class="px-8 pt-5 pb-10">
                     <table class="table-auto p-5 w-full text-center rounded-lg border-collapse">
