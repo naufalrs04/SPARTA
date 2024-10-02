@@ -13,6 +13,7 @@ use App\Http\Controllers\DashboardPembimbingAkademikController;
 use App\Http\Controllers\jadwalpengisianIRS;
 use App\Http\Controllers\penyusunanjadwal;
 use App\Http\Controllers\resetpassword;
+use App\Http\Controllers\pembagiankelas;
 
 Route::get('/login', function () {
     return view('login');
@@ -48,3 +49,5 @@ Route::get('/jadwalpengisianIRS', [jadwalpengisianIRS::class, 'index'])->middlew
 Route::get('/resetpassword', function () {
     return view('resetpassword');
 })->name('resetpassword');
+
+Route::get('/pembagiankelas', [pembagiankelas::class, 'index'])->middleware('auth')->name('pembagiankelas');
