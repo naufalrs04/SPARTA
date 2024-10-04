@@ -25,7 +25,6 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/registrasi', [RegistrasiController::class, 'index'])->middleware('auth') -> name('registrasi');
 Route::post('/update-status', [RegistrasiController::class, 'updateStatus'])->name('update-status');
 
-
 Route::get('/khs', [KHSController::class, 'index'])->middleware('auth')->name('khs');
 
 Route::get('/pengisianirs', [PengisianIRS::class, 'index'])->middleware('auth')->name('pengisianirs');
