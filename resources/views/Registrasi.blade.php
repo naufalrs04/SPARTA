@@ -159,7 +159,6 @@
                 })
                 .then(response => response.text())
                 .then(data => {
-                    // Menambahkan logika untuk mengubah opacity
                     if (status === 1) {
                         document.getElementById('cutiStatus').style.opacity = '0.4';
                         document.getElementById('activeStatus').style.opacity = '1';
@@ -185,9 +184,5 @@
         }
     });
 </script>
-
-
-
-
 
 </html>
