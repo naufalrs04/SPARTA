@@ -39,7 +39,7 @@
                                     </div>
                                 </td>                                
                                 <td class="px-5 py-2 text-center">
-                                    <button class="w-16 text-white rounded-md px-3 py-2 bg-gray-400 hover:bg-gray-500">
+                                    <button onclick="window.location.href='pembagiankelasInfo'" class="w-16 text-white rounded-md px-3 py-2 bg-gray-400 hover:bg-gray-500">
                                         Info
                                     </button>
                                 </td>

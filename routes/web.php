@@ -14,6 +14,7 @@ use App\Http\Controllers\jadwalpengisianIRS;
 use App\Http\Controllers\penyusunanjadwal;
 use App\Http\Controllers\resetpassword;
 use App\Http\Controllers\pembagiankelas;
+use App\Http\Controllers\pembagiankelasInfo;
 
 Route::get('/login', function () {
     return view('login');
@@ -51,3 +52,5 @@ Route::get('/resetpassword', function () {
 })->name('resetpassword');
 
 Route::get('/pembagiankelas', [pembagiankelas::class, 'index'])->middleware('auth')->name('pembagiankelas');
+
+Route::get('/pembagiankelasInfo', [pembagiankelasInfo::class, 'index'])->middleware('auth')->name('pembagiankelasInfo');
