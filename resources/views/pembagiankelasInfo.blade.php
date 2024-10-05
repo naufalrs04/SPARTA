@@ -34,24 +34,25 @@
                 <div class="flex justify-center my-3 mb-3 ">
                     <a class="text-white text-center text-lg font-semibold">Departemen XX</a>
                 </div>
-                
                 <div class="flex justify-center my-3 mb-3">
                     <a class="text-white mb-5 mt-5 text-sm">Status Pengajuan : Not Set / Belum Diajukan</a>
                 </div>                
-                
                 <!-- dropdown gedung -->
                 <div class="flex justify-center mt-3 mb-3">
-                    <div class="max-w-xl">
-                        <select id="gedungSelect" class="w-[280px] text-gray-400 p-4 pl-4 focus:ring-2 focus:ring-gray-800 rounded-lg bg-[#2A2C33] cursor-pointer border border-transparent hover:border-gray-600 focus:border-gray-600 transition duration-100 ease-in-out" onchange="showCheckboxes()">
+                    <div class="max-w-xl relative">
+                        <select id="gedungSelect" class="w-[280px] text-gray-400 p-4 pr-10 pl-4 focus:ring-2 focus:ring-gray-800 rounded-lg bg-[#2A2C33] cursor-pointer border border-transparent hover:border-gray-600 focus:border-gray-600 transition duration-100 ease-in-out appearance-none" onchange="showCheckboxes()">
                             <option value="" class="text-white">Pilih Gedung</option>
                             <option value="gedung1" class="text-white">Gedung A</option>
                             <option value="gedung2" class="text-white">Gedung B</option>
                             <option value="gedung3" class="text-white">Gedung C</option>
-                            <option value="gedung3" class="text-white">Gedung D</option>
-                            <option value="gedung3" class="text-white">Gedung E</option>
+                            <option value="gedung4" class="text-white">Gedung D</option>
+                            <option value="gedung5" class="text-white">Gedung E</option>
                         </select>
+                        <svg class="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
+                        </svg>
                     </div>
-                </div>                               
+                </div>                                                                        
                 
                 <!-- Checkbox kelas -->
                 <table id="checkboxContainer" class="hidden mt-5 mb-5 ml-5 flex justify-center">
