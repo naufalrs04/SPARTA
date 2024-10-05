@@ -13,6 +13,11 @@ use App\Http\Controllers\DashboardPembimbingAkademikController;
 use App\Http\Controllers\jadwalpengisianIRS;
 use App\Http\Controllers\penyusunanjadwal;
 use App\Http\Controllers\resetpassword;
+use App\Http\Controllers\pembagiankelas;
+use App\Http\Controllers\pembagiankelasInfo;
+use App\Http\Controllers\perwalian;
+use App\Http\Controllers\inputnilai;
+use App\Http\Controllers\inputnilaiInfo;
 
 Route::get('/login', function () {
     return view('login');
@@ -47,3 +52,13 @@ Route::get('/jadwalpengisianIRS', [jadwalpengisianIRS::class, 'index'])->middlew
 Route::get('/resetpassword', function () {
     return view('resetpassword');
 })->name('resetpassword');
+
+Route::get('/pembagiankelas', [pembagiankelas::class, 'index'])->middleware('auth')->name('pembagiankelas');
+
+Route::get('/pembagiankelasInfo', [pembagiankelasInfo::class, 'index'])->middleware('auth')->name('pembagiankelasInfo');
+
+Route::get('/perwalian', [perwalian::class, 'index'])->middleware('auth')->name('perwalian');
+
+Route::get('/inputnilai', [inputnilai::class, 'index'])->middleware('auth')->name('inputnilai');
+
+Route::get('/inputnilaiInfo', [inputnilaiInfo::class, 'index'])->middleware('auth')->name('inputnilaiInfo');
