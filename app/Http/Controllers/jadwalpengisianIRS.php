@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class DashboardPembimbingAkademikController extends Controller
+class jadwalpengisianIRS extends Controller
 {
     public function index()
     {
@@ -14,12 +14,7 @@ class DashboardPembimbingAkademikController extends Controller
         }
 
         $user = Auth::user();
-
-        $data = [
-            'nama' => $user->nama,
-            'nim_nip' => $user->nim_nip,
-        ];
-        return view('dashboardPembimbingAkademik', compact('data', 'user'));
+        
+        return view('/jadwalpengisianIRS', compact('user'));
     }
-
 }
