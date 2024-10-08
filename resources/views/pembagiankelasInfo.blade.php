@@ -158,18 +158,17 @@
                 </div>
         </div>
     </div>
-
     <script>
-        function showCheckboxes() {
-            const selectElement = document.getElementById("gedungSelect");
-            const checkboxContainer = document.getElementById("checkboxContainer");
-            
-            if (selectElement.value) {
-                checkboxContainer.classList.remove("hidden");
-            } else {
-                checkboxContainer.classList.add("hidden");
-            }
+    function showCheckboxes() {
+        const selectElement = document.getElementById("gedungSelect");
+        const checkboxContainer = document.getElementById("checkboxContainer");
+        
+        if (selectElement.value) {
+            checkboxContainer.classList.remove("hidden");
+        } else {
+            checkboxContainer.classList.add("hidden");
         }
+    }
     </script>
 </body>
 
