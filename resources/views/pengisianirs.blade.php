@@ -181,7 +181,7 @@
             <script>
                 function switchIRS(selected) {
                     // Log which tab is selected
-                    console.log("Selected tab:", selected);
+                    // console.log("Selected tab:", selected);
 
                     // Elements for tabs
                     const pengisianIRS = document.getElementById('pengisianIRS');
@@ -193,7 +193,7 @@
                     
                     // Switch active tab and color
                     if (selected === 'pengisianIRS') {
-                        console.log("Switching to Pengisian IRS");
+                        // console.log("Switching to Pengisian IRS");
                         pengisianIRS.classList.add('bg-yellow-700', 'border-[#17181C]');
                         irsMahasiswa.classList.remove('bg-yellow-700', 'border-[#17181C]');
                         
@@ -203,7 +203,7 @@
                     } 
                     
                     else if (selected === 'irsMahasiswa') {
-                        console.log("Switching to IRS Mahasiswa");
+                        // console.log("Switching to IRS Mahasiswa");
                         irsMahasiswa.classList.add('bg-yellow-700', 'border-[#17181C]');
                         pengisianIRS.classList.remove('bg-yellow-700', 'border-[#17181C]');
                         
