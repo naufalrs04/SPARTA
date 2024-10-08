@@ -10,6 +10,7 @@
             transform: translateX(0.5rem);
             text-decoration: underline;
             text-underline-offset: 0.3em;
+            background-color: #1E1F24;
 
             a {
                 color: #F0B90B;
@@ -24,7 +25,7 @@
         <div class="p-10">
             <img class="w-auto" src="{{ asset('assets/Logo.png') }}" alt="Logo">
         </div>
-        <nav class="mt-10 text-center">
+        <nav class="mt-14 text-center">
             <ul>
                 <li class="px-7 py-7 transition-transform duration-200 hover:translate-x-2 hover:bg-zinc-800  rounded-md">
                     <a href="/dashboardPembimbingAkademik" class="block text-white hover:text-yellow-400 font-semibold">

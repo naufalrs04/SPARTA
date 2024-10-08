@@ -1,6 +1,6 @@
 <div class="flex-grow" style="background-color: #17181C;">
     <!-- Navbar Atas-->
-    <nav class="pr-8 pt-5 pb-5 flex justify-end items-center box-border border-b-2 border-black"
+    <nav class="pr-8 flex justify-end items-center box-border border-b-2 border-black"
         style="background-color: #1E1F24;">
         <!-- Foto Profil -->
     

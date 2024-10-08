@@ -14,17 +14,19 @@
 
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
-                eyeIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-white">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19.5c-4.418 0-8.168-2.728-10.063-6.75C3.832 8.728 7.582 6 12 6c.818 0 1.61.099 2.367.288M15 12h3m-3 0a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zm0 0V9.75m0 2.25h2.25M15 12H9.75M15 12V9.75" />
-                </svg>`;
+                eyeIcon.innerHTML = `
+                <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z" fill="white"/>
+                <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0" fill="white"/>`;
             } else {
                 passwordInput.type = 'password';
-                eyeIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-white">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.807a10.062 10.062 0 00-.774 1.246C3.083 11.34 6.78 14.25 12 14.25s8.917-2.91 8.794-4.197c-.255-.471-.661-.965-1.197-1.47m-2.172 2.83a4.5 4.5 0 01-6.364-6.364m.33-.5c-.31-.311-.728-.619-1.206-.808a10.105 10.105 0 00-2.64-.465C6.02 3 3.26 5.25 3 8.25m12.867-1.302a4.5 4.5 0 01-6.364 6.364m.33-.5c-.31-.31-.728-.618-1.206-.807a10.105 10.105 0 00-2.64-.465c-2.138 0-4.213 1.017-5.685 2.485" />
-                </svg>`;
+                eyeIcon.innerHTML = `
+                <path d="M13.359 11.238C15.06 9.72 16 8 16 8s-3-5.5-8-5.5a7 7 0 0 0-2.79.588l.77.771A6 6 0 0 1 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755q-.247.248-.517.486z" fill="white"/>
+                <path d="M11.297 9.176a3.5 3.5 0 0 0-4.474-4.474l.823.823a2.5 2.5 0 0 1 2.829 2.829zm-2.943 1.299.822.822a3.5 3.5 0 0 1-4.474-4.474l.823.823a2.5 2.5 0 0 0 2.829 2.829" fill="white"/>
+                <path d="M3.35 5.47q-.27.24-.518.487A13 13 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7 7 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12z" fill="white"/>`;
             }
         }
     </script>
+
 </head>
 
 <body class="h-full">
@@ -47,6 +49,7 @@
                     </ul>
                 </div>
                 @endif
+
                 <form action="{{ route('resetpassword') }}" method="POST">
                     @csrf
                     <div class="my-6 relative">
@@ -60,6 +63,25 @@
                         <button type="submit" class="justify-center rounded-md py-3 px-10 text-sm font-semibold text-white focus:ring-2" style="background-color:#0A4867">Reset</button>
                     </div>
                 </form>
+
+                <form action="{{ route('login') }}" method="POST">
+                    @csrf
+                    <div class="my-6">
+                        <div>
+                            <input placeholder="Masukkan Email" id="email" name="email" type="email" autocomplete="email" required class="block w-full rounded-md bg-gray-700 border border-gray-600 py-2 px-3 text-gray-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                        </div>
+                    </div>
+                    <div class="my-6">
+                        <div class="flex justify-start">
+                            <p class="text-white text-left">Kami akan mengirimkan email konfirmasi reset password ke alamat alternatif terdaftar anda.</p>
+                        </div>
+                    </div>
+                    <div class="my-6 mb-1">
+                        <button type="submit" class="bg-gradient-to-r from-orange-500 to-red-500  hover:from-orange-600 hover:to-red-600 focus:outline-none justify-center rounded-md py-3 px-10 text-sm font-semibold text-white focus:ring-2 mt-6" >Reset</button>
+                    </div>
+                </form>
+
+
             </div>
         </div>
     </div>

@@ -15,13 +15,13 @@ return new class extends Migration
         Schema::create ('mahasiswas', function (Blueprint $table) {
             $table-> id();
             $table-> unsignedBigInteger('user_id');
-            $table-> foreign('user_id')-> references('id')-> on('users');
-            $table-> string('nim');
-            $table-> string('nama');
-            $table-> string('prodi');
-            $table-> string('angkatan');
-            $table-> string('dosen_wali');
+
+            $table-> foreign('user_id')-> references('id')-> on('users')-> onDelete('cascade');
+            $table-> boolean('status')->nullable();
             $table-> integer('semester');
+            $table-> string('prodi');
+            $table->float('IPK', 3, 2)->nullable();
+
             $table-> timestamps();
         });
     }
