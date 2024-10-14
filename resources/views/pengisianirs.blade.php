@@ -131,47 +131,96 @@
                         </form>                        
                     </div>
                 </div>
+
+                <div id="PopUpIRS" class="hidden">
+                    <div class="px-8 pt-5 pb-10">
+                        <div class="w-full h-full bg-[#878A91] rounded-lg">
+                            <div class="container flex justify-between">
+                                <div class="h-8 w-8 rounded-xl bg-white flex justify-center items-center ml-5 my-4">
+                                    <button class="h-full w-full flex justify-center text-3xl text-black font-bold leading-none focus:outline-none">
+                                        &lt;
+                                    </button>
+                                </div>
+                                <div class="w-full h-full bg-white mx-5 my-4 rounded-xl">
+                                    <div class="w-full space-y-4 px-6 md:px-8 text-center">
+                                        <h1 class="mt-2 relative text-2xl font-bold inline-block underline-orange text-black">Mata Kuliah</h1>
+                                        <div class="hidden h-0.5 w-full bg-black self-stretch md:block"></div>
+                                        <div class="flex flex-wrap justify-center items-center text-center md:text-justify">
+                                            <div class="w-full md:w-[49%] md:pr-4 lg:pr-8 text-black">
+                                                <div class="mb-2">
+                                                    <h2 class="font-bold mb-1">Kode MK :</h2>
+                                                    <div class="w-full h-10 bg-slate-300 rounded-xl flex items-center">
+                                                        <h2 class="ml-5 text-black font-bold">PAIK 1012</h2>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-2">
+                                                    <h2 class="font-bold mb-1">Kode MK :</h2>
+                                                    <div class="w-full h-10 bg-slate-300 rounded-xl flex items-center">
+                                                        <h2 class="ml-5 text-black font-bold">PAIK 1012</h2>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-2">
+                                                    <h2 class="font-bold mb-1">Kode MK :</h2>
+                                                    <div class="w-full h-10 bg-slate-300 rounded-xl flex items-center">
+                                                        <h2 class="ml-5 text-black font-bold">PAIK 1012</h2>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-2 md:mb-5">
+                                                    <h2 class="font-bold mb-1">Kode MK :</h2>
+                                                    <div class="w-full h-10 bg-slate-300 rounded-xl flex items-center">
+                                                        <h2 class="ml-5 text-black font-bold">PAIK 1012</h2>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="hidden w-0.5 bg-black self-stretch md:block"></div> 
+                                            <div class="w-full md:w-[45%] md:ml-5 text-black">
+                                                <div class="mb-2">
+                                                    <h2 class="font-bold mb-1">Kode MK :</h2>
+                                                    <div class="w-full h-10 bg-slate-300 rounded-xl flex items-center">
+                                                        <h2 class="ml-5 text-black font-bold">PAIK 1012</h2>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-2">
+                                                    <h2 class="font-bold mb-1">Kode MK :</h2>
+                                                    <div class="w-full h-10 bg-slate-300 rounded-xl flex items-center">
+                                                        <h2 class="ml-5 text-black font-bold">PAIK 1012</h2>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>  
+                                    </div>
+                                </div>                             
+                            </div>
+                            <div class="flex justify-center pb-5">
+                                <div class="w-32 ml-5 text-white flex text-center items-center justify-center py-3 rounded-md cursor-pointer bg-[#34803C] hover:bg-green-800">
+                                    <p><strong>Ajukan</strong></p>
+                                </div>
+                                <div class="w-32 ml-5 text-white flex text-center items-center justify-center py-3 rounded-md cursor-pointer bg-[#880000] hover:bg-red-500" >
+                                    <p><strong>Batal Ajukan</strong></p>
+                                </div>
+                            </div>   
+                        </div>
+                    </div>
+                </div>
                 
-                
-                
-    
                 <div class="px-8 pt-5 pb-10">
-                    <table class="table-auto p-5 w-full text-center rounded-lg border-collapse">
+                    <table class="w-full text-center rounded-lg border-collapse" name="tabel_jadwal">
                         <thead>
                             <tr style="background-color: rgba(135, 138, 145, 0.37);">
-                                <th class="px-4 py-2 w-1/5 border-r border-white rounded-tl-lg">No</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">Kode MK</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">Mata Kuliah</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">Waktu</th>
-                                <th class="px-4 py-2 w-1/5 rounded-tr-lg">Info</th>
+                                <th class="px-4 py-2 w-1/4 border-r border-white rounded-tl-lg">Waktu</th>
+                                <th class="px-4 py-2 w-1/2 border-r border-white">Mata Kuliah</th>
+                                <th class="px-4 py-2 w-1/4 border-white rounded-tr-lg">Ruangan</th>
                             </tr>
-                            <tr style="background-color: #23252A">
-                                <th class="px-4 py-2 w-1/5 border-r border-white">1</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">PAIK101</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">PBO - A</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">07.30 - 09.30</th>
-                                <th class="px-4 py-2 w-1/5 ">Info</th>
-                            </tr>
-                            <tr style="background-color: #23252A">
-                                <th class="px-4 py-2 w-1/5 border-r border-white">2</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">PAIK102</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">PBP - A</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">09.30 - 12.00</th>
-                                <th class="px-4 py-2 w-1/5 ">Info</th>
-                            </tr>
-                            <tr style="background-color: #23252A">
-                                <th class="px-4 py-2 w-1/5 border-r border-white">3</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">PAIK103</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">PPL - A</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">13.00 - 15.00</th>
-                                <th class="px-4 py-2 w-1/5 ">Info</th>
-                            </tr>
-                            <tr style="background-color: #23252A">
-                                <th class="px-4 py-2 w-1/5 border-r border-white">4</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">PAIK104</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">SI - A</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">17.30 - 20.00</th>
-                                <th class="px-4 py-2 w-1/5 ">Info</th>
+                            <tr style="background-color: #23252A;">
+                                <th class="px-4 py-2 w-1/4 border-r border-white">Waktu</th>
+                                <th class="px-4 py-2 w-1/2 border-r border-white">Mata Kuliah</th>
+                                <th class="px-4 py-2 w-1/4 border-white">
+                                    <div class="h-8 w-8 mx-auto rounded-lg bg-white flex justify-center items-center">
+                                        <button class="h-full w-full flex justify-center text-3xl text-black font-bold leading-none focus:outline-none">
+                                            &gt;
+                                        </button>
+                                    </div>
+                                </th>                                
                             </tr>
                         </thead>
                     </table>
@@ -245,6 +294,21 @@
                     }
                 }
 
+                const popup = document.getElementById('PopUpIRS');
+                const showButton = document.querySelector('th button'); // Button to show popup (&gt;)
+                const hideButton = document.querySelector('#PopUpIRS button'); // Button to hide popup (&lt;)
+
+                // Show the popup when the '>' button is clicked
+                showButton.addEventListener('click', () => {
+                    popup.classList.remove('hidden');
+                    popup.classList.add('block');
+                });
+
+                // Hide the popup when the '<' button is clicked
+                hideButton.addEventListener('click', () => {
+                    popup.classList.remove('block');
+                    popup.classList.add('hidden');
+                });
             </script>
         </div>
     </div>
