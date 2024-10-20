@@ -19,6 +19,9 @@ return new class extends Migration
             $table-> integer('sks');
             $table-> integer('semester');
             $table-> string('prodi');
+            $table->string('hari');
+            $table->time('jam_mulai');
+            $table->time('jam_selesai');
             $table-> timestamps();
         });
     }

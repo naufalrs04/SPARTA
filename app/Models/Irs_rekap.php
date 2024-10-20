@@ -5,22 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Mata_Kuliah extends Model
+class Irs_rekap extends Model
 {
     use HasFactory;
 
-    protected $table = 'mata_kuliahs';
+    protected $table = 'irs_rekap';
 
     protected $fillable = [
-        'kode',
-        'nama',
-        'sks',
+        'mahasiswa_id',
+        'irs_id',
         'semester',
-        'prodi',
-        'hari',
-        'jam_mulai',
-        'jam_selesai',
+        'status',
+        'total_sks',
+        'ip_semester',
     ];
-
-
 }
