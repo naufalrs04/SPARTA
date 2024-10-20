@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pengisian IRS</title>
+    <title>KHS Mahasiswa</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
@@ -77,7 +77,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="m-5 w-full bg-[#1E1F24] opacity-65 rounded-lg border-[#49454F] border-opacity-50 border-2">
+                    <div class="mt-5 w-full bg-[#1E1F24] opacity-65 rounded-lg border-[#49454F] border-opacity-50 border-2">
                         <div class="w-full lg:w-[95%] md:w-[90%] sm:w-[85%] m-4 md:m-6 bg-[#757575] rounded-lg">
                             <div class="w-full md:w-3/4 px-4 py-3">
                                 <h2 class="font-bold text-md sm:text-lg">Semester 1 | Tahun Ajaran 2022/2023 Ganjil</h2>
