@@ -50,7 +50,9 @@
                         <p><span class="font-bold">Tempat Lahir:</span> Tangerang</p>
                         <p><span class="font-bold">Tanggal Lahir:</span> 31 Januari 2005</p>
                         <p><span class="font-bold">NIK:</span> 3671093101050002</p>
+                        <p><span class="font-bold">Nama Ibu:</span> ********</p>
                     </div>
+                    <div class=" p-4 rounded-lg"  style="background-color: rgba(59, 62, 71, 0.4);">
                         <p><span class="font-bold">Nomor Hp:</span> 085959913761</p>
                         <p><span class="font-bold">Email SSO:</span> igunawan24@students.undip.ac.id</p>
                         <p><span class="font-bold">Email Pribadi:</span> igunawan24@gmail.com</p>
@@ -65,8 +67,4 @@
         </div>
     </div>
 </body>
-
-
 </html>
-
-
