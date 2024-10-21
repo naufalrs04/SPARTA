@@ -40,7 +40,7 @@ Route::get('/dashboardPembimbingAkademik', [DashboardPembimbingAkademikControlle
 
 Route::get('/dashboardBagianAkademik', [DashboardBagianAkademikController::class, 'index'])->middleware('auth')->name('dashboardBagianAkademik');
 
-Route::get('/dashboarddekan', [DashboardDekanController::class, 'index'])->middleware('auth')->name('dashboardDekan');
+Route::get('/dashboardDekan', [DashboardDekanController::class, 'index'])->middleware('auth')->name('dashboardDekan');
 
 //KAPRODI
 Route::get('/dashboardKaprodi', [DashboardKaprodiController::class, 'index'])->middleware('auth')->name('dashboardKaprodi');
