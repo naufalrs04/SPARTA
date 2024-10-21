@@ -22,6 +22,7 @@ use App\Http\Controllers\jadwalmengajar;
 use App\Http\Controllers\verifikasiIRS;
 use App\Http\Controllers\verifikasijadwal;
 use App\Http\Controllers\verifikasiRuangKuliah;
+use App\Http\Controllers\profile;
 
 
 Route::get('/login', function () {
@@ -75,3 +76,7 @@ Route::get('/verifikasiIRS', [verifikasiIRS::class, 'index'])->middleware('auth'
 Route::get('/verifikasijadwal', [verifikasijadwal::class, 'index'])->middleware('auth')->name('verifikasijadwal');
 
 Route::get('/verifikasiRuangKuliah', [verifikasiRuangKuliah::class, 'index'])->middleware('auth')->name('verifikasiRuangKuliah');
+
+Route::get('/profile', function () {
+    return view('profile');
+})->name('profile');
