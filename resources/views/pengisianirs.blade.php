@@ -8,6 +8,47 @@
     @vite(['resources/css/app.css','resources/js/app.js'])
     <script src="https://cdn.tailwindcss.com">
     </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+      
+    <style>
+        body {
+              font-family: 'Roboto', sans-serif;
+          }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 50;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 800px;
+            border-radius: 10px;
+            
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body class="bg-gray-900 text-gray-100">
@@ -229,9 +270,9 @@
             <div id="contentIRSMahasiswa" class="hidden">
                 <div class="px-4 sm:px-6 md:px-8 pt-5 pb-10">
                     <h2 class="text-center text-lg font-semibold mb-4">IRS Mahasiswa</h2>
-                    <div class="w-full bg-[#1E1F24] opacity-65 rounded-lg border-[#49454F] border-opacity-50 border-2">
-                        <div class="w-full lg:w-[95%] md:w-[90%] sm:w-[85%] m-4 md:m-6 bg-[#757575] rounded-lg">
-                            <div class="w-full md:w-3/4 px-4 py-3">
+                    <div class="w-full bg-[#1E1F24] opacity-65 rounded-lg border-[#49454F] border-opacity-50 border-2"  >
+                        <div class="w-full lg:w-[95%] md:w-[90%] sm:w-[85%] m-4 md:m-6 bg-[#757575] rounded-lg cursor-pointer" id="semester-block">
+                            <div class="w-full md:w-3/4 px-4 py-3 cursor-pointer" id="semester-block">
                                 <h2 class="font-bold text-md sm:text-lg">Semester 1 | Tahun Ajaran 2022/2023 Ganjil</h2>
                                 <p class="text-md sm:text-lg">Jumlah SKS 21</p>
                             </div>
@@ -258,6 +299,77 @@
                     </div>
                 </div>
             </div>
+            
+            <div id="details-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2 class="text-center text-xl font-bold mb-4">IRS Mahasiswa (Sudah Disetujui Wali)</h2>
+                    <table class="min-w-full bg-white border border-gray-300 rounded-lg">
+                        <thead>
+                            <tr>
+                                <th class="px-4 py-2 border border-gray-300 bg-yellow-500 text-white rounded-tl-lg">NO</th>
+                                <th class="px-4 py-2 border border-gray-300 bg-yellow-500 text-white">KODE</th>
+                                <th class="px-4 py-2 border border-gray-300 bg-yellow-500 text-white">MATAKULIAH</th>
+                                <th class="px-4 py-2 border border-gray-300 bg-yellow-500 text-white">KELAS</th>
+                                <th class="px-4 py-2 border border-gray-300 bg-yellow-500 text-white">SKS</th>
+                                <th class="px-4 py-2 border border-gray-300 bg-yellow-500 text-white">RUANG</th>
+                                <th class="px-4 py-2 border border-gray-300 bg-yellow-500 text-white">STATUS</th>
+                                <th class="px-4 py-2 border border-gray-300 bg-yellow-500 text-white rounded-tr-lg">NAMA DOSEN</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="px-4 py-2 border border-gray-300 text-center align-top">1</td>
+                                <td class="px-4 py-2 border border-gray-300 align-top">PAIK6505</td>
+                                <td class="px-4 py-2 border border-gray-300 align-top">Machine Learning<br><br>Selasa, 07.00 - 09.30</td>
+                                <td class="px-4 py-2 border border-gray-300 text-center align-top">C</td>
+                                <td class="px-4 py-2 border border-gray-300 text-center align-top">3</td>
+                                <td class="px-4 py-2 border border-gray-300 text-center align-top">E102</td>
+                                <td class="px-4 py-2 border border-gray-300 text-center align-top">Baru</td>
+                                <td class="px-4 py-2 border border-gray-300 align-top">Dr. Retno Kusumaningrum, S. Si., M.Kom.<br>Rismiyati, B.Eng, M.Cs</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2 border border-gray-300 text-center align-top">2</td>
+                                <td class="px-4 py-2 border border-gray-300 align-top">PAIK6702</td>
+                                <td class="px-4 py-2 border border-gray-300 align-top">Teori Bahasa Otomata<br><br>Selasa, 13.00 - 15.30</td>
+                                <td class="px-4 py-2 border border-gray-300 text-center align-top">C</td>
+                                <td class="px-4 py-2 border border-gray-300 text-center align-top">3</td>
+                                <td class="px-4 py-2 border border-gray-300 text-center align-top">E101</td>
+                                <td class="px-4 py-2 border border-gray-300 text-center align-top">Baru</td>
+                                <td class="px-4 py-2 border border-gray-300 align-top">Dr. Yeva Fadhilah Ashari, S.Si., M.Si.<br>Priyo Sidik Sasongko, S.Si., M.Kom.<br>Etna Vianita, S.Mat., M.Mat.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2 border border-gray-300 text-center align-top">3</td>
+                                <td class="px-4 py-2 border border-gray-300 align-top">PAIK6501</td>
+                                <td class="px-4 py-2 border border-gray-300 align-top">Pemrograman Berbasis Platform<br><br>Rabu, 07.00 - 10.20</td>
+                                <td class="px-4 py-2 border border-gray-300 text-center align-top">D</td>
+                                <td class="px-4 py-2 border border-gray-300 text-center align-top">4</td>
+                                <td class="px-4 py-2 border border-gray-300 text-center align-top">E101</td>
+                                <td class="px-4 py-2 border border-gray-300 text-center align-top">Baru</td>
+                                <td class="px-4 py-2 border border-gray-300 align-top">Sandy Kurniawan, S.Kom., M.Kom.<br>Adhe Setya Pramayoga, M.T.<br>Henry Tantyoko, S.Kom., M.Kom.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2 border border-gray-300 text-center align-top">4</td>
+                                <td class="px-4 py-2 border border-gray-300 align-top">PAIK6503</td>
+                                <td class="px-4 py-2 border border-gray-300 align-top">Sistem Informasi<br><br>Rabu, 15.40 - 18.10</td>
+                                <td class="px-4 py-2 border border-gray-300 text-center align-top">D</td>
+                                <td class="px-4 py-2 border border-gray-300 text-center align-top">3</td>
+                                <td class="px-4 py-2 border border-gray-300 text-center align-top">E102</td>
+                                <td class="px-4 py-2 border border-gray-300 text-center align-top">Baru</td>
+                                <td class="px-4 py-2 border border-gray-300 align-top">Beta Noranita, S.Si., M.Kom.<br>Dr. Indra Waspada, S.T., M.T.I</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2 border border-gray-300 text-center align-top">5</td>
+                                <td class="px-4 py-2 border border-gray-300 align-top">PAIK6502</td>
+                                <td class="px-4 py-2 border border-gray-300 align-top">Komputasi Tersebar Paralel<br><br>Kamis, 13.00 - 15.30</td>
+                                <td class="px-4 py-2 border border-gray-300 text-center align-top">C</td>
+                                <td class="px-4 py-2 border border-gray-300 text-center align-top">3</td>
+                                <td class="px-4 py-2 border border-gray-300 text-center align-top">A303</td>
+                                <td class="px-4 py-2 border border-gray-300 text-center align-top">Baru</td>
+                                <td class="px-4 py-2 border border-gray-300 align-top">Guruh Aryotejo, S.Kom., M.Sc.<br>Adhe Setya Pramayoga, M.T.<br>Dr. Eng. Adi Wibowo, S.Si., M.Kom.</td>
+                            </tr>
+                        </tbody>
+                    </table>
             
             <script>
                 function switchIRS(selected) {
@@ -309,6 +421,23 @@
                     popup.classList.remove('block');
                     popup.classList.add('hidden');
                 });
+
+                document.getElementById('semester-block').addEventListener('click', function() {
+                    var modal = document.getElementById('details-modal');
+                    modal.style.display = "block";
+                });
+
+                document.querySelector('.close').addEventListener('click', function() {
+                    var modal = document.getElementById('details-modal');
+                    modal.style.display = "none";
+                });
+
+                window.onclick = function(event) {
+                    var modal = document.getElementById('details-modal');
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }
             </script>
         </div>
     </div>
