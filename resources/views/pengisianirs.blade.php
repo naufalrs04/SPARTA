@@ -43,36 +43,12 @@
                                 <th class="px-4 py-2 w-1/5 border-r border-white">Waktu</th>
                                 <th class="px-4 py-2 w-1/5 rounded-tr-lg">Info</th>
                             </tr>
-                            <tr style="background-color: #23252A">
-                                <th class="px-4 py-2 w-1/5 border-r border-white">1</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">PAIK101</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">PBO - A</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">07.30 - 09.30</th>
-                                <th class="px-4 py-2 w-1/5 ">Info</th>
-                            </tr>
-                            <tr style="background-color: #23252A">
-                                <th class="px-4 py-2 w-1/5 border-r border-white">2</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">PAIK102</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">PBP - A</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">09.30 - 12.00</th>
-                                <th class="px-4 py-2 w-1/5 ">Info</th>
-                            </tr>
-                            <tr style="background-color: #23252A">
-                                <th class="px-4 py-2 w-1/5 border-r border-white">3</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">PAIK103</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">PPL - A</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">13.00 - 15.00</th>
-                                <th class="px-4 py-2 w-1/5 ">Info</th>
-                            </tr>
-                            <tr style="background-color: #23252A">
-                                <th class="px-4 py-2 w-1/5 border-r border-white">4</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">PAIK104</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">SI - A</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">17.30 - 20.00</th>
-                                <th class="px-4 py-2 w-1/5 ">Info</th>
-                            </tr>
                         </thead>
+                        <tbody>
+                            <!-- Data akan ditambahkan di sini -->
+                        </tbody>
                     </table>
+
                     <div class="py-5 flex">
                         <div class="w-3/5 flex justify-between">
                             <p class="pl-1 text-sm italic">Notes : Jika mata kuliah ingin diproses oleh dosen wali, klik tombol di sebelah kanan</p>
@@ -127,7 +103,13 @@
                                 </td>
                                 <td class="px-4 py-2 border-r border-white">
                                     <div class="text-white text-center items-center justify-center mx-2 my-1 rounded-md cursor-pointer bg-[#34803C] hover:bg-green-800 font-bold">
-                                        <button>Ambil</button>
+                                        <button class="ambil-mata-kuliah"
+                                            data-kode="{{ $mata_kuliah->kode }}"
+                                            data-nama="{{ $mata_kuliah->nama }}"
+                                            data-hari="{{ $mata_kuliah->hari }}"
+                                            data-jam="{{ \Carbon\Carbon::parse($mata_kuliah->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($mata_kuliah->jam_selesai)->format('H:i') }}">
+                                            Ambil
+                                        </button>
                                     </div>
                                 </td>
                                 <td class="px-4 py-2 border-white">
@@ -139,6 +121,8 @@
                                         </button>
                                     </div>
                                 </td>
+
+
                             </tr>
                             @endforeach
 
@@ -220,63 +204,103 @@
                         button.addEventListener('click', () => {
                             const index = button.getAttribute('data-index'); // Ambil index dari data-index
 
-                            // Ambil detail mata kuliah berdasarkan index
                             const details = courseDetails[index];
 
                             Swal.fire({
                                 title: `<strong>Detail Mata Kuliah</strong>`,
                                 html: `
-                    <div class="text-left space-y-4">
-                        <div>
-                            <h2 class="font-bold mb-1">Nama Mata Kuliah :</h2>
-                            <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
-                                <h2 class="ml-5 text-black font-bold">${details.nama}</h2>
-                            </div>
-                        </div>
-                        <div>
-                            <h2 class="font-bold mb-1">Kode Mata Kuliah :</h2>
-                            <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
-                                <h2 class="ml-5 text-black font-bold">${details.kode}</h2>
-                            </div>
-                        </div>
-                        <div>
-                            <h2 class="font-bold mb-1">SkS :</h2>
-                            <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
-                                <h2 class="ml-5 text-black font-bold">${details.sks}</h2>
-                            </div>
-                        </div>
-                        <div>
-                            <h2 class="font-bold mb-1">Jadwal :</h2>
-                            <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
-                                <h2 class="ml-5 text-black font-bold">${details.jadwal}</h2>
-                            </div>
-                        </div>
-                        <div>
-                            <h2 class="font-bold mb-1">Ruangan :</h2>
-                            <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
-                                <h2 class="ml-5 text-black font-bold">${details.nama_ruangan}</h2>
-                            </div>
-                        </div>
-                        <div>
-                            <h2 class="font-bold mb-1">Kapasitas:</h2>
-                            <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
-                                <h2 class="ml-5 text-black font-bold">${details.kapasitas_ruangan}</h2>
-                            </div>
-                        </div>
-                        <div>
-                            <h2 class="font-bold mb-1">Dosen Pengampu :</h2>
-                            <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
-                                <h2 class="ml-5 text-black font-bold">"Belum database"</h2>
-                            </div>
-                        </div>
-                    </div>
-                `,
+                                    <div class="text-left space-y-4">
+                                        <div>
+                                            <h2 class="font-bold mb-1">Nama Mata Kuliah :</h2>
+                                            <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                                <h2 class="ml-5 text-black font-bold">${details.nama}</h2>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h2 class="font-bold mb-1">Kode Mata Kuliah :</h2>
+                                            <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                                <h2 class="ml-5 text-black font-bold">${details.kode}</h2>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h2 class="font-bold mb-1">SKS :</h2>
+                                            <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                                <h2 class="ml-5 text-black font-bold">${details.sks}</h2>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h2 class="font-bold mb-1">Jadwal :</h2>
+                                            <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                                <h2 class="ml-5 text-black font-bold">${details.jadwal}</h2>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h2 class="font-bold mb-1">Ruangan :</h2>
+                                            <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                                <h2 class="ml-5 text-black font-bold">${details.nama_ruangan}</h2>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h2 class="font-bold mb-1">Kapasitas:</h2>
+                                            <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                                <h2 class="ml-5 text-black font-bold">${details.kapasitas_ruangan}</h2>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h2 class="font-bold mb-1">Dosen Pengampu :</h2>
+                                            <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                                <h2 class="ml-5 text-black font-bold">"Belum database"</h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `,
                                 confirmButtonText: 'Tutup',
                                 focusConfirm: false,
                                 customClass: {
                                     popup: 'swal-popup-custom'
                                 }
                             });
+                        });
+                    });
+
+                    document.querySelectorAll('.ambil-mata-kuliah').forEach(button => {
+                        button.addEventListener('click', (event) => {
+                            const kode = event.target.dataset.kode;
+                            const nama = event.target.dataset.nama;
+                            const hari = event.target.dataset.hari;
+                            const jam = event.target.dataset.jam;
+
+                            // Memeriksa apakah mata kuliah sudah ada
+                            const tableBody = document.querySelector('#contentPengisianIRS table tbody');
+                            const rows = tableBody.querySelectorAll('tr');
+                            let alreadyExists = false;
+
+                            rows.forEach(row => {
+                                const rowKode = row.cells[1].innerText;
+                                if (rowKode === kode) {
+                                    alreadyExists = true;
+                                }
+                            });
+
+                            if (alreadyExists) {
+                                Swal.fire({
+                                    title: 'Mata Kuliah Sudah Ditambahkan',
+                                    text: 'Mata kuliah ini sudah ada dalam ringkasan.',
+                                    icon: 'warning',
+                                    confirmButtonText: 'Tutup'
+                                });
+                            } else {
+                                // Menambahkan baris ke tabel ringkasan
+                                const newRow = document.createElement('tr');
+                                newRow.innerHTML = `
+                    <td class="px-4 py-2 border-r border-white">${tableBody.children.length + 1}</td>
+                    <td class="px-4 py-2 border-r border-white">${kode}</td>
+                    <td class="px-4 py-2 border-r border-white">${nama}</td>
+                    <td class="px-4 py-2 border-r border-white">${jam}</td>
+                    <td class="px-4 py-2 border-white">Info</td>
+                `;
+                                tableBody.appendChild(newRow);
+                            }
                         });
                     });
                 </script>
