@@ -25,7 +25,7 @@
                         x-transition:leave-start="transform opacity-100 scale-100"
                         x-transition:leave-end="transform opacity-0 scale-95"
                         @click.away="open = false"
-                        class="absolute right-0 w-60 px-5 py-3 dark:bg-zinc-800 bg-white rounded-lg shadow border dark:border-transparent mt-5">
+                        class="absolute right-0 w-60 z-50 px-5 py-3 dark:bg-zinc-800 bg-white rounded-lg shadow border dark:border-transparent mt-5">
                         <ul class="space-y-3 dark:text-white">
                             <li class="font-medium">
                                 <a href="#"

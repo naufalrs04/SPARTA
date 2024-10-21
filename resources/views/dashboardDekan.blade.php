@@ -86,8 +86,6 @@
                             </div>
                         </div>
                     </div>
-
-                    
                 </div>
             </div>
             <div class="bg-gray-800 px-8 pt-5 flex justify-center items-center" style="background-color: #17181C;">
@@ -126,9 +124,6 @@
                     <!-- Box Capaian Akademik -->
                     <div class="col-span-6 bg-gray-700 rounded-lg shadow-lg flex flex-col" style="background-color: #17181C">
                         <h2 class="text-center text-lg font-semibold mb-4">Pengajuan Jadwal Kuliah</h2>
-
-                        <!-- Box Utama Capaian Akademik -->
-
                         <!-- Box Utama Capaian Akademik -->
                         <div class="p-6 rounded-tl-lg rounded-tr-lg text-lg space-y-4 flex-grow flex flex-col items-center justify-center" style="background-color: #2A2C33">
                             <div class="text-center w-full mb-3">
