@@ -50,12 +50,16 @@
                             </div>
                         </div>
                     </div>
-                    <div class="relative">
-                        <input type="text" placeholder="Cari mata kuliah" class="w-full text-white p-3 pl-10 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" style="background-color: #2A2C33;">
-                        <svg class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                            <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                        </svg>
-                    </div>
+                    <!--Cari Mata Luliah -->
+                    <div class="bg-[#23252A] flex flex-grow rounded-lg hover:bg-[#3A3B40] cursor-pointer relative">
+                        <div class="w-full h-10 flex items-center relative">
+                            <svg class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                                <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                            <!-- Input Pencarian -->
+                            <input type="text" class="bg-transparent text-[#94959A] ml-6 pl-5 w-full h-full border-none outline-none font-semibold" placeholder="Cari Mata Kuliah">
+                        </div>
+                    </div>  
                 </div>
             </div>
             <div id="contentpaketjadwal" class="hidden">
@@ -77,7 +81,7 @@
                 </div>
 
                 <div class="px-8 mt-5 flex justify-center">
-                    <div class="rounded-lg py-2 px-28" style="background-color:#34803C">
+                    <div class="rounded-lg py-2 px-5 bg-[#34803C] hover:bg-[#2b6e32] min-w-[120px]">
                         <a href="#" class="text-center block text-white"><strong>Ajukan</strong></a>
                     </div>
                 </div>

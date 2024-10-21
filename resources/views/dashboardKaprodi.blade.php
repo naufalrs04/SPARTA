@@ -60,6 +60,7 @@
                 <span class="welcome-message" id="typewriter"></span>
                 <span class="text-2xl" aria-label="Waving Hand" role="img">👋</span>
             </div>
+
             <div class="bg-gray-800 px-8 pt-5 flex justify-center items-center" style="background-color: #17181C;">
                 <div class="grid grid-cols-12 w-full gap-14">
                     <!-- Box Status Akademik -->
@@ -158,6 +159,7 @@
             </div>
         </div>
     </div>
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const messages = ["{{ $user['nama'] }} !" ]; // Pesan yang ingin ditampilkan

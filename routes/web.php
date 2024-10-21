@@ -18,6 +18,8 @@ use App\Http\Controllers\pembagiankelasInfo;
 use App\Http\Controllers\perwalian;
 use App\Http\Controllers\inputnilai;
 use App\Http\Controllers\inputnilaiInfo;
+use App\Http\Controllers\jadwalmengajar;
+use App\Http\Controllers\verifikasiIRS;
 
 Route::get('/login', function () {
     return view('login');
@@ -54,6 +56,11 @@ Route::get('/resetpassword', function () {
 
 })->name('resetpassword');
 
+Route::get('/profile', function () {
+    return view('profile');
+
+})->name('profile');
+
 Route::get('/pembagiankelas', [pembagiankelas::class, 'index'])->middleware('auth')->name('pembagiankelas');
 
 Route::get('/pembagiankelasInfo', [pembagiankelasInfo::class, 'index'])->middleware('auth')->name('pembagiankelasInfo');
@@ -64,3 +71,6 @@ Route::get('/inputnilai', [inputnilai::class, 'index'])->middleware('auth')->nam
 
 Route::get('/inputnilaiInfo', [inputnilaiInfo::class, 'index'])->middleware('auth')->name('inputnilaiInfo');
 
+Route::get('/jadwalmengajar', [jadwalmengajar::class, 'index'])->middleware('auth')->name('jadwalmengajar');
+
+Route::get('/verifikasiIRS', [verifikasiIRS::class, 'index'])->middleware('auth')->name('verifikasiIRS');

@@ -36,7 +36,7 @@
                 </table>
             </div>
             <div class="px-8 mt-5 flex justify-end">
-                <div class="rounded-lg py-2 px-5" style="background-color:#34803C">
+                <div class="rounded-lg py-2 px-5 bg-[#34803C] hover:bg-[#2b6e32] min-w-[120px]">
                 <a href="#" class="text-center block text-white"><strong>Set Jadwal</strong></a>
                 </div>
             </div>
