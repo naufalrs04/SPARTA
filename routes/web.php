@@ -20,6 +20,10 @@ use App\Http\Controllers\inputnilai;
 use App\Http\Controllers\inputnilaiInfo;
 use App\Http\Controllers\jadwalmengajar;
 use App\Http\Controllers\verifikasiIRS;
+use App\Http\Controllers\verifikasijadwal;
+use App\Http\Controllers\verifikasiRuangKuliah;
+use App\Http\Controllers\profile;
+
 
 Route::get('/login', function () {
     return view('login');
@@ -74,3 +78,13 @@ Route::get('/inputnilaiInfo', [inputnilaiInfo::class, 'index'])->middleware('aut
 Route::get('/jadwalmengajar', [jadwalmengajar::class, 'index'])->middleware('auth')->name('jadwalmengajar');
 
 Route::get('/verifikasiIRS', [verifikasiIRS::class, 'index'])->middleware('auth')->name('verifikasiIRS');
+
+
+Route::get('/verifikasijadwal', [verifikasijadwal::class, 'index'])->middleware('auth')->name('verifikasijadwal');
+
+Route::get('/verifikasiRuangKuliah', [verifikasiRuangKuliah::class, 'index'])->middleware('auth')->name('verifikasiRuangKuliah');
+
+Route::get('/profile', function () {
+    return view('profile');
+})->name('profile');
+
