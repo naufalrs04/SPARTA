@@ -10,7 +10,6 @@
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-      
     <style>
         body {
               font-family: 'Roboto', sans-serif;
@@ -299,7 +298,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div id="details-modal" class="modal">
                 <div class="modal-content">
                     <span class="close">&times;</span>
@@ -317,7 +316,7 @@
                                 <th class="px-4 py-2 border border-gray-300 bg-yellow-500 text-white rounded-tr-lg">NAMA DOSEN</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="text-black">
                             <tr>
                                 <td class="px-4 py-2 border border-gray-300 text-center align-top">1</td>
                                 <td class="px-4 py-2 border border-gray-300 align-top">PAIK6505</td>
