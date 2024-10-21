@@ -31,7 +31,7 @@ class UsersTableSeeder extends Seeder
                 'nim_nip' => '212345678910', 
                 'kp' => 0,
                 'dk' => 1, 
-                'pa' => 0, 
+                'pa' => 1, 
                 'ba' => 0, 
                 'ma' => 0
             ],

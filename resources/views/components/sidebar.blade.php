@@ -88,7 +88,7 @@
                     <a href="/verifikasijadwal" class="block text-white hover:text-yellow-400 font-semibold">Verifikasi Jadwal Departemen</a>
                 </li>
                 <li class="px-7 py-7 transition-transform duration-200 hover:translate-x-2 hover:bg-zinc-800 rounded-md">
-                    <a href="/penyusunanruang" class="block text-white hover:text-yellow-400 font-semibold">Verifikasi Ruang Kuliah</a>
+                    <a href="/verifikasiRuangKuliah" class="block text-white hover:text-yellow-400 font-semibold">Verifikasi Ruang Kuliah</a>
                 </li>
                 @endif
 

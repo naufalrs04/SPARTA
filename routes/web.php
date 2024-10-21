@@ -18,6 +18,12 @@ use App\Http\Controllers\pembagiankelasInfo;
 use App\Http\Controllers\perwalian;
 use App\Http\Controllers\inputnilai;
 use App\Http\Controllers\inputnilaiInfo;
+use App\Http\Controllers\jadwalmengajar;
+use App\Http\Controllers\verifikasiIRS;
+use App\Http\Controllers\verifikasijadwal;
+use App\Http\Controllers\verifikasiRuangKuliah;
+use App\Http\Controllers\profile;
+
 
 Route::get('/login', function () {
     return view('login');
@@ -40,7 +46,7 @@ Route::get('/dashboardPembimbingAkademik', [DashboardPembimbingAkademikControlle
 
 Route::get('/dashboardBagianAkademik', [DashboardBagianAkademikController::class, 'index'])->middleware('auth')->name('dashboardBagianAkademik');
 
-Route::get('/dashboarddekan', [DashboardDekanController::class, 'index'])->middleware('auth')->name('dashboardDekan');
+Route::get('/dashboardDekan', [DashboardDekanController::class, 'index'])->middleware('auth')->name('dashboardDekan');
 
 //KAPRODI
 Route::get('/dashboardKaprodi', [DashboardKaprodiController::class, 'index'])->middleware('auth')->name('dashboardKaprodi');
@@ -62,3 +68,15 @@ Route::get('/perwalian', [perwalian::class, 'index'])->middleware('auth')->name(
 Route::get('/inputnilai', [inputnilai::class, 'index'])->middleware('auth')->name('inputnilai');
 
 Route::get('/inputnilaiInfo', [inputnilaiInfo::class, 'index'])->middleware('auth')->name('inputnilaiInfo');
+
+Route::get('/jadwalmengajar', [jadwalmengajar::class, 'index'])->middleware('auth')->name('jadwalmengajar');
+
+Route::get('/verifikasiIRS', [verifikasiIRS::class, 'index'])->middleware('auth')->name('verifikasiIRS');
+
+Route::get('/verifikasijadwal', [verifikasijadwal::class, 'index'])->middleware('auth')->name('verifikasijadwal');
+
+Route::get('/verifikasiRuangKuliah', [verifikasiRuangKuliah::class, 'index'])->middleware('auth')->name('verifikasiRuangKuliah');
+
+Route::get('/profile', function () {
+    return view('profile');
+})->name('profile');

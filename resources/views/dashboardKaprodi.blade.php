@@ -6,6 +6,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMJTVF1a1wMA2gO/YHbx+fyfJhN/0Q5ntv7zYY" crossorigin="anonymous">
+    <style>
+        @keyframes slideIn {
+            0% {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .welcome-message {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-left: 0.5rem;
+            color: white;
+            border-right: 2px solid white;
+            white-space: nowrap;
+            overflow: hidden;
+            display: inline-block;
+            width: fit-content;
+        }
+
+        .welcome-message-static {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            white-space: nowrap;
+            overflow: hidden;
+            display: inline-block;
+            width: fit-content;
+        }
+    </style>
 </head>
 
 <body class="bg-gray-900 text-gray-100">
@@ -19,6 +55,12 @@
             @include('components.navbar')
 
             <!-- Main Content -->
+            <div class="pl-8 pt-5 flex justify-left items-center">
+                <p class="welcome-message-static">Welcome Back, </p>
+                <span class="welcome-message" id="typewriter"></span>
+                <span class="text-2xl" aria-label="Waving Hand" role="img">👋</span>
+            </div>
+
             <div class="bg-gray-800 px-8 pt-5 flex justify-center items-center" style="background-color: #17181C;">
                 <div class="grid grid-cols-12 w-full gap-14">
                     <!-- Box Status Akademik -->
@@ -117,6 +159,42 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const messages = ["{{ $user['nama'] }} !" ]; // Pesan yang ingin ditampilkan
+            let messageIndex = 0;
+            let charIndex = 0;
+            const typingSpeed = 100; 
+            const erasingSpeed = 50; 
+            const delayBetweenMessages = 2000; 
+            const typewriterElement = document.getElementById("typewriter");
+
+            function typeMessage() {
+                if (charIndex < messages[messageIndex].length) {
+                    typewriterElement.textContent += messages[messageIndex].charAt(charIndex);
+                    charIndex++;
+                    setTimeout(typeMessage, typingSpeed);
+                } else {
+                    setTimeout(eraseMessage, delayBetweenMessages);
+                }
+            }
+
+            function eraseMessage() {
+                if (charIndex > 0) {
+                    typewriterElement.textContent = messages[messageIndex].substring(0, charIndex - 1);
+                    charIndex--;
+                    setTimeout(eraseMessage, erasingSpeed);
+                } else {
+                    messageIndex = (messageIndex + 1) % messages.length; // Loop pesan
+                    setTimeout(typeMessage, typingSpeed);
+                }
+            }
+
+            // Mulai mengetik pesan
+            setTimeout(typeMessage, typingSpeed);
+        });
+    </script>
 </body>
 
 </html>
