@@ -18,69 +18,83 @@
             <!-- Navbar -->
             @include('components.navbar')
             <!-- Main Content -->
-                <div class="px-8 pt-5">
-                    <h2 class="text-center text-lg font-semibold mb-4">Jadwal Mengajar</h2>
-                    <!-- Dropdown Hari dengan ukuran full -->
-                    <div class="flex justify-center mt-3 mb-3">
-                        <div class="w-full relative">
-                            <select id="hariSelect" class="w-full text-gray-400 p-4 pr-10 pl-4 focus:ring-2 focus:ring-gray-800 rounded-lg bg-[#2A2C33] cursor-pointer border border-transparent hover:bg-[#3A3B40] transition-colors duration-200 ease-in-out appearance-none">
-                                <option value="" class="text-white">Pilih Hari</option>
-                                <option value="senin" class="text-white">Senin</option>
-                                <option value="selasa" class="text-white">Selasa</option>
-                                <option value="rabu" class="text-white">Rabu</option>
-                                <option value="kamis" class="text-white">Kamis</option>
-                                <option value="jumat" class="text-white">Jumat</option>
-                                <option value="sabtu" class="text-white">Sabtu</option>
-                            </select>
-                            <svg class="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
-                            </svg>
-                        </div>
+            <div class="px-8 pt-5">
+                <h2 class="text-center text-lg font-semibold mb-4">Jadwal Mengajar</h2>
+                <!-- Dropdown Hari -->
+                <div class="bg-[#23252A] w-full rounded-lg hover:bg-[#3A3B40] transition-colors duration-200 ease-in-out cursor-pointer relative mt-3">
+                    <button id="dropdownHariButton" class="w-full h-10 flex justify-between items-center px-5 text-[#94959A] font-semibold">
+                        <span>Pilih Hari</span>
+                        <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
+                        </svg>
+                    </button>
+                    <!-- Dropdown menu -->
+                    <div id="dropdownHari" class="hidden bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200 divide-y divide-gray-100 dark:divide-gray-600 rounded-lg shadow w-full absolute z-10 mt-2">
+                        <ul class="py-2 text-sm">
+                            <li><a href="#" class="block px-4 py-2 hover:bg-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">Senin</a></li>
+                            <li><a href="#" class="block px-4 py-2 hover:bg-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">Selasa</a></li>
+                            <li><a href="#" class="block px-4 py-2 hover:bg-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">Rabu</a></li>
+                            <li><a href="#" class="block px-4 py-2 hover:bg-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">Kamis</a></li>
+                            <li><a href="#" class="block px-4 py-2 hover:bg-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">Jumat</a></li>
+                        </ul>
                     </div>
                 </div>
+            </div>
+            <!-- Table mahasiswa -->
+            <div class="px-8 pt-2 mt-5 mb-5 rounded-tl-lg">
+                <table class="table-auto p-5 w-full text-center rounded-lg border-collapse">
+                    <thead>
+                        <tr style="background-color: rgba(135, 138, 145, 0.37);">
+                            <th class="px-4 py-2 w-1/4 border-r border-white rounded-tl-lg">Waktu</th>
+                            <th class="px-4 py-2 w-1/3 border-r border-white">Mata Kuliah</th>
+                            <th class="px-4 py-2 w-1/4">Ruangan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="background-color: #23252A;">
+                            <td class="px-4 py-2 border-r border-white">Senin, 07.00-08.30</td>
+                            <td class="px-3 py-3 border-r border-white">
+                                <p>Proyek Perangkat Lunak</p>
+                            </td>
+                            <td class="px-4 py-2">E101</td>
+                        </tr>
+                        <tr style="background-color: #23252A;">
+                            <td class="px-4 py-2 border-r border-white">Senin, 07.00-08.30</td>
+                            <td class="px-3 py-3 border-r border-white">
+                                <p>Proyek Perangkat Lunak</p>
+                            </td>
+                            <td class="px-4 py-2">E101</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Script untuk menampilkan dropdown Hari dan menutup ketika klik di luar dropdown
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropdownHariButton = document.getElementById('dropdownHariButton');
+            const dropdownHari = document.getElementById('dropdownHari');
 
-                <!-- Table mahasiswa -->
-                <div class="px-8 pt-2 mt-5 mb-5 rounded-tl-lg">
-                    <table class="table-auto p-5 w-full text-center rounded-lg border-collapse">
-                        <thead>
-                            <tr style="background-color: rgba(135, 138, 145, 0.37);">
-                                <th class="px-4 py-2 w-1/4 border-r border-white rounded-tl-lg">Waktu</th>
-                                <th class="px-4 py-2 w-1/3 border-r border-white">Mata Kuliah</th>
-                                <th class="px-4 py-2 w-1/4">Ruangan</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr style="background-color: #23252A;">
-                                <td class="px-4 py-2 border-r border-white">Senin, 07.00-08.30</td>
-                                <td class="px-3 py-3 border-r border-white">
-                                    <p>Proyek Perangkat Lunak</p>
-                                </td>
-                                <td class="px-4 py-2">E101</td>
-                            </tr>
-                            <tr style="background-color: #23252A;">
-                                <td class="px-4 py-2 border-r border-white">Senin, 07.00-08.30</td>
-                                <td class="px-3 py-3 border-r border-white">
-                                    <p>Proyek Perangkat Lunak</p>
-                                </td>
-                                <td class="px-4 py-2">E101</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            // Fungsi untuk toggle dropdown Hari
+            function toggleDropdownHari() {
+                dropdownHari.classList.toggle('hidden');
+            }
 
-        <script>
-                    const jadwalBtn = document.getElementById('jadwalBtn');
-                    const jadwalDropdown = document.getElementById('jadwalDropdown');
+            // Event listener untuk tombol dropdown Hari
+            dropdownHariButton.addEventListener('click', function(event) {
+                event.stopPropagation(); // Mencegah event dari bubble ke document
+                toggleDropdownHari();
+            });
 
-                    jadwalBtn.addEventListener('click', () => {
-                        // Toggle visibility of dropdown
-                        if (jadwalDropdown.classList.contains('hidden')) {
-                            jadwalDropdown.classList.remove('hidden');
-                        } else {
-                            jadwalDropdown.classList.add('hidden');
-                        }
-                    });
-        </script>
+            // Menutup dropdown ketika klik di luar dropdown
+            document.addEventListener('click', function(event) {
+                if (!dropdownHari.contains(event.target) && !dropdownHariButton.contains(event.target)) {
+                    dropdownHari.classList.add('hidden');
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

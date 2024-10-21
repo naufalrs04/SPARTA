@@ -36,58 +36,111 @@
                 </div>
                 <div class="flex justify-center my-3 mb-3">
                     <a class="text-white mb-5 mt-5 text-sm">Status Pengajuan : Not Set / Belum Diajukan</a>
-                </div>                
-                <!-- dropdown gedung -->
+                </div>    
+                
+                <!-- Dropdown Gedung -->
                 <div class="flex justify-center mt-3 mb-3">
                     <div class="max-w-xl relative">
-                        <select id="gedungSelect" class="w-[280px] text-gray-400 p-4 pr-10 pl-4 focus:ring-2 focus:ring-gray-800 rounded-lg bg-[#2A2C33] cursor-pointer border border-transparent hover:border-gray-600 focus:border-gray-600 transition duration-100 ease-in-out appearance-none" onchange="showCheckboxes()">
-                            <option value="" class="text-white">Pilih Gedung</option>
-                            <option value="gedung1" class="text-white">Gedung A</option>
-                            <option value="gedung2" class="text-white">Gedung B</option>
-                            <option value="gedung3" class="text-white">Gedung C</option>
-                            <option value="gedung4" class="text-white">Gedung D</option>
-                            <option value="gedung5" class="text-white">Gedung E</option>
-                        </select>
-                        <svg class="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
-                        </svg>
+                        <button id="dropdownGedungButton" class="w-[280px] text-gray-400 p-4 pr-10 pl-4 focus:ring-2 focus:ring-gray-800 rounded-lg bg-[#2A2C33] cursor-pointer border border-transparent hover:border-gray-600 focus:border-gray-600 transition duration-100 ease-in-out flex justify-between items-center">
+                            <span id="selectedGedung">Pilih Gedung</span>
+                            <svg class="w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                            </svg>
+                        </button>
+
+                        <!-- Dropdown list -->
+                        <div id="dropdownGedung" class="hidden bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200 divide-y divide-gray-100 dark:divide-gray-600 rounded-lg shadow w-full absolute z-10 mt-2">
+                            <ul class="py-2 text-sm" aria-labelledby="dropdownGedungButton">
+                                <li><a href="#" data-gedung="Gedung A" class="block px-4 py-2 hover:bg-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">Gedung A</a></li>
+                                <li><a href="#" data-gedung="Gedung B" class="block px-4 py-2 hover:bg-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">Gedung B</a></li>
+                                <li><a href="#" data-gedung="Gedung C" class="block px-4 py-2 hover:bg-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">Gedung C</a></li>
+                                <li><a href="#" data-gedung="Gedung D" class="block px-4 py-2 hover:bg-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">Gedung D</a></li>
+                                <li><a href="#" data-gedung="Gedung E" class="block px-4 py-2 hover:bg-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">Gedung E</a></li>
+                            </ul>
+                        </div>
                     </div>
-                </div>                                                                        
-                
-                <!-- Checkbox kelas -->
-                <table id="checkboxContainer" class="hidden mt-5 mb-5 ml-5 flex justify-center">
+                </div>
+
+                <!-- Checkbox Gedung A -->
+                <table id="checkboxContainerA" class="hidden mt-5 mb-5 ml-5 flex justify-center">
                     <tr>
                         <td class="pr-6">
                             <div class="flex items-center">
                                 <input id="checkbox-1" type="checkbox" class="h-5 w-5 border-gray-300 rounded bg-black cursor-pointer" />
-                                <label for="checkbox-1" class="ml-2 text-xl text-white font-bold">E101</label>
+                                <label for="checkbox-1" class="ml-2 text-xl text-white font-bold">A101</label>
                             </div>
                         </td>
                         <td class="pr-6">
                             <div class="flex items-center">
                                 <input id="checkbox-2" type="checkbox" class="h-5 w-5 border-gray-300 rounded bg-black cursor-pointer" />
-                                <label for="checkbox-2" class="ml-2 text-xl text-white font-bold">E102</label>
+                                <label for="checkbox-2" class="ml-2 text-xl text-white font-bold">A102</label>
                             </div>
                         </td>
                         <td class="pr-6">
                             <div class="flex items-center">
                                 <input id="checkbox-3" type="checkbox" class="h-5 w-5 border-gray-300 rounded bg-black cursor-pointer" />
-                                <label for="checkbox-3" class="ml-2 text-xl text-white font-bold">E103</label>
+                                <label for="checkbox-3" class="ml-2 text-xl text-white font-bold">A103</label>
                             </div>
                         </td>
                     </tr>
                     <tr>
-                        <td class="pr-6 pt-5">
+                        <td class="pr-6">
+                            <div class="flex items-center">
+                                <input id="checkbox-1" type="checkbox" class="h-5 w-5 border-gray-300 rounded bg-black cursor-pointer" />
+                                <label for="checkbox-1" class="ml-2 text-xl text-white font-bold">A201</label>
+                            </div>
+                        </td>
+                        <td class="pr-6">
+                            <div class="flex items-center">
+                                <input id="checkbox-2" type="checkbox" class="h-5 w-5 border-gray-300 rounded bg-black cursor-pointer" />
+                                <label for="checkbox-2" class="ml-2 text-xl text-white font-bold">A202</label>
+                            </div>
+                        </td>
+                        <td class="pr-6">
+                            <div class="flex items-center">
+                                <input id="checkbox-3" type="checkbox" class="h-5 w-5 border-gray-300 rounded bg-black cursor-pointer" />
+                                <label for="checkbox-3" class="ml-2 text-xl text-white font-bold">A203</label>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- Checkbox Gedung B -->
+                <table id="checkboxContainerB" class="hidden mt-5 mb-5 ml-5 flex justify-center">
+                    <tr>
+                        <td class="pr-6">
                             <div class="flex items-center">
                                 <input id="checkbox-4" type="checkbox" class="h-5 w-5 border-gray-300 rounded bg-black cursor-pointer" />
-                                <label for="checkbox-4" class="ml-2 text-xl text-white font-bold">E104</label>
+                                <label for="checkbox-4" class="ml-2 text-xl text-white font-bold">B101</label>
+                            </div>
+                        </td>
+                        <td class="pr-6">
+                            <div class="flex items-center">
+                                <input id="checkbox-5" type="checkbox" class="h-5 w-5 border-gray-300 rounded bg-black cursor-pointer" />
+                                <label for="checkbox-5" class="ml-2 text-xl text-white font-bold">B102</label>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- Checkbox Gedung C -->
+                <table id="checkboxContainerC" class="hidden mt-5 mb-5 ml-5 flex justify-center">
+                    <tr>
+                        <td class="pr-6">
+                            <div class="flex items-center">
+                                <input id="checkbox-6" type="checkbox" class="h-5 w-5 border-gray-300 rounded bg-black cursor-pointer" />
+                                <label for="checkbox-6" class="ml-2 text-xl text-white font-bold">C101</label>
+                            </div>
+                        </td>
+                        <td class="pr-6">
+                            <div class="flex items-center">
+                                <input id="checkbox-7" type="checkbox" class="h-5 w-5 border-gray-300 rounded bg-black cursor-pointer" />
+                                <label for="checkbox-7" class="ml-2 text-xl text-white font-bold">C102</label>
                             </div>
                         </td>
                     </tr>
                 </table>
                 
-                
-
                 <!-- Ringkasan table departemen -->
                 <div class="px-8 pt-2 mt-10 mb-5 rounded-tl-lg">
                     <h2 class="text-center text-lg font-semibold mb-5">Ringkasan Departemen XX</h2>
@@ -159,16 +212,50 @@
         </div>
     </div>
     <script>
-    function showCheckboxes() {
-        const selectElement = document.getElementById("gedungSelect");
-        const checkboxContainer = document.getElementById("checkboxContainer");
-        
-        if (selectElement.value) {
-            checkboxContainer.classList.remove("hidden");
-        } else {
-            checkboxContainer.classList.add("hidden");
-        }
-    }
+        const dropdownGedungButton = document.getElementById('dropdownGedungButton');
+        const dropdownGedung = document.getElementById('dropdownGedung');
+        const selectedGedungText = document.getElementById('selectedGedung');
+    
+        const checkboxContainerA = document.getElementById('checkboxContainerA');
+        const checkboxContainerB = document.getElementById('checkboxContainerB');
+        const checkboxContainerC = document.getElementById('checkboxContainerC');
+    
+        // Toggle dropdown visibility
+        dropdownGedungButton.addEventListener('click', function(event) {
+            event.stopPropagation();  
+            dropdownGedung.classList.toggle('hidden');
+        });
+    
+        // Menangani klik pada pilihan gedung
+        dropdownGedung.querySelectorAll('a').forEach(function(item) {
+            item.addEventListener('click', function(event) {
+                event.preventDefault();
+                const selectedGedung = this.getAttribute('data-gedung');
+                selectedGedungText.textContent = selectedGedung;
+                dropdownGedung.classList.add('hidden');  
+    
+                // Sembunyikan semua checkbox terlebih dahulu
+                checkboxContainerA.classList.add('hidden');
+                checkboxContainerB.classList.add('hidden');
+                checkboxContainerC.classList.add('hidden');
+    
+                // Tampilkan checkbox sesuai pilihan gedung
+                if (selectedGedung === "Gedung A") {
+                    checkboxContainerA.classList.remove('hidden');
+                } else if (selectedGedung === "Gedung B") {
+                    checkboxContainerB.classList.remove('hidden');
+                } else if (selectedGedung === "Gedung C") {
+                    checkboxContainerC.classList.remove('hidden');
+                }
+            });
+        });
+    
+        // Tutup dropdown jika klik di luar
+        window.addEventListener('click', function(event) {
+            if (!dropdownGedungButton.contains(event.target) && !dropdownGedung.contains(event.target)) {
+                dropdownGedung.classList.add('hidden');
+            }
+        });
     </script>
 </body>
 
