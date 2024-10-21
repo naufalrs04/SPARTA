@@ -21,6 +21,9 @@ class mata_kuliah extends Seeder
                 'sks' => 3,
                 'semester' => 3,
                 'prodi' => 'Informatika',
+                'hari' => 'Senin',
+                'jam_mulai' => '08:00:00',
+                'jam_selesai' => '10:00:00',
             ],
             [
                 'kode' => 'IF1235',
@@ -28,6 +31,9 @@ class mata_kuliah extends Seeder
                 'sks' => 3,
                 'semester' => 3,
                 'prodi' => 'Informatika',
+                'hari' => 'Selasa',
+                'jam_mulai' => '07:30:00',
+                'jam_selesai' => '09:30:00',
             ],
             [
                 'kode' => 'IF1236',
@@ -35,6 +41,9 @@ class mata_kuliah extends Seeder
                 'sks' => 3,
                 'semester' => 3,
                 'prodi' => 'Informatika',
+                'hari' => 'Rabu',
+                'jam_mulai' => '10:30:00',
+                'jam_selesai' => '12:30:00',
             ],
             [
                 'kode' => 'IF1237',
@@ -42,6 +51,9 @@ class mata_kuliah extends Seeder
                 'sks' => 3,
                 'semester' => 3,
                 'prodi' => 'Informatika',
+                'hari' => 'Rabu',
+                'jam_mulai' => '15:30:00',
+                'jam_selesai' => '17:30:00',
             ],
             [
                 'kode' => 'IF1238',
@@ -49,6 +61,9 @@ class mata_kuliah extends Seeder
                 'sks' => 3,
                 'semester' => 3,
                 'prodi' => 'Informatika',
+                'hari' => 'Kamis',
+                'jam_mulai' => '15:30:00',
+                'jam_selesai' => '17:30:00',
             ],
             [
                 'kode' => 'IF1239',
@@ -56,13 +71,9 @@ class mata_kuliah extends Seeder
                 'sks' => 3,
                 'semester' => 3,
                 'prodi' => 'Informatika',
-            ],
-            [
-                'kode' => 'IF1240',
-                'nama' => 'Pemrograman Database',
-                'sks' => 3,
-                'semester' => 3,
-                'prodi' => 'Informatika',
+                'hari' => 'Jumat',
+                'jam_mulai' => '07:30:00',
+                'jam_selesai' => '09:30:00',
             ]
         ];
 

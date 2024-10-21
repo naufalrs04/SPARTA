@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pengisian IRS</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    @vite(['resources/css/app.css','resources/js/app.js'])
+    <script src="https://cdn.tailwindcss.com">
+    </script>
 </head>
 
 <body class="bg-gray-900 text-gray-100">
@@ -74,10 +76,10 @@
                         <div class="w-3/5 flex justify-between">
                             <p class="text-xs">Notes : Jika mata kuliah ingin diproses oleh dosen wali, klik tombol di sebelah kanan</p>
                         </div>
-                        <div class="w-1/6 ml-5 text-white flex text-center items-center justify-center py-3 rounded-md" style="background-color: #34803C">
+                        <div class="w-1/6 ml-5 text-white flex text-center items-center justify-center py-3 rounded-md cursor-pointer bg-[#34803C] hover:bg-green-800">
                             <p><strong>Ajukan</strong></p>
                         </div>
-                        <div class="w-1/6 ml-5 text-white flex text-center items-center justify-center py-3 rounded-md" style="background-color: #880000">
+                        <div class="w-1/6 ml-5 text-white flex text-center items-center justify-center py-3 rounded-md cursor-pointer bg-[#880000] hover:bg-red-500" >
                             <p><strong>Batal Ajukan</strong></p>
                         </div>
                     </div>
@@ -85,61 +87,140 @@
     
                 <div class="px-8 pt-5">
                     <h2 class="text-center text-lg font-semibold mb-4">List Mata Kuliah</h2>
-                    <div class="flex justify-between">
-                        <div class="bg-[#23252A] flex w-4/6 rounded-lg">
-                            <div class="w-1/2 h-10 items-center flex justify-between">
-                                <h2 class="text-[#94959A] ml-5 text-left font-semibold">Mata Kuliah</h2>
-                            </div>
-                            <div class="w-1/2 flex items-center justify-end mr-5">
-                                <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                    <div class="flex justify-between items-center"> 
+                        <!-- Dropdown Section -->
+                        <div class="flex w-full rounded-lg relative">
+                            <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" 
+                                class="text-white bg-gray-800 hover:bg-gray-800 hover:opacity-70 focus:ring-4 focus:outline-none focus:ring-blue-500 font-medium rounded-lg text-sm px-5 py-2.5 w-full h-[3.40rem] flex justify-between items-center" 
+                                type="button">
+                                Mata Kuliah
+                                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
                                 </svg>
+                            </button>
+                            <!-- Dropdown menu -->
+                            <div id="dropdown" class="hidden bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200 divide-y divide-gray-100 dark:divide-gray-600 rounded-lg shadow w-full absolute z-10 mt-2">
+                                <ul class="py-2 text-sm" aria-labelledby="dropdownDefaultButton">
+                                    <li>
+                                        <a href="#" class="block px-4 py-2 hover:bg-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</a>
+                                    </li>
+                                    <li> 
+                                        <a href="#" class="block px-4 py-2 hover:bg-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="block px-4 py-2 hover:bg-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">Earnings</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="block px-4 py-2 hover:bg-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">Sign out</a>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
-                        <div class="bg-[#23252A] ml-5 flex w-2/6 rounded-lg">
-                            <div class="w-full h-10 items-center flex justify-between">
-                                <h2 class="text-[#94959A] ml-5 text-left font-semibold">Cari Mata Kuliah</h2>
+                
+                        <!-- Search Section -->
+                        <form class="w-full ml-4">   
+                            <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                                    </svg>
+                                </div>
+                                <input type="search" id="default-search" class="block w-full p-4 pl-10 text-sm text-white border border-gray-800 rounded-lg bg-gray-800 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Cari mata kuliah"/>
                             </div>
+                        </form>                        
+                    </div>
+                </div>
+
+                <div id="PopUpIRS" class="hidden">
+                    <div class="px-8 pt-5 pb-10">
+                        <div class="w-full h-full bg-[#878A91] rounded-lg">
+                            <div class="container flex justify-between">
+                                <div class="h-8 w-8 rounded-xl bg-white flex justify-center items-center ml-5 my-4">
+                                    <button class="h-full w-full flex justify-center text-3xl text-black font-bold leading-none focus:outline-none">
+                                        &lt;
+                                    </button>
+                                </div>
+                                <div class="w-full h-full bg-white mx-5 my-4 rounded-xl">
+                                    <div class="w-full space-y-4 px-6 md:px-8 text-center">
+                                        <h1 class="mt-2 relative text-2xl font-bold inline-block underline-orange text-black">Mata Kuliah</h1>
+                                        <div class="hidden h-0.5 w-full bg-black self-stretch md:block"></div>
+                                        <div class="flex flex-wrap justify-center items-center text-center md:text-justify">
+                                            <div class="w-full md:w-[49%] md:pr-4 lg:pr-8 text-black">
+                                                <div class="mb-2">
+                                                    <h2 class="font-bold mb-1">Kode MK :</h2>
+                                                    <div class="w-full h-10 bg-slate-300 rounded-xl flex items-center">
+                                                        <h2 class="ml-5 text-black font-bold">PAIK 1012</h2>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-2">
+                                                    <h2 class="font-bold mb-1">Kode MK :</h2>
+                                                    <div class="w-full h-10 bg-slate-300 rounded-xl flex items-center">
+                                                        <h2 class="ml-5 text-black font-bold">PAIK 1012</h2>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-2">
+                                                    <h2 class="font-bold mb-1">Kode MK :</h2>
+                                                    <div class="w-full h-10 bg-slate-300 rounded-xl flex items-center">
+                                                        <h2 class="ml-5 text-black font-bold">PAIK 1012</h2>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-2 md:mb-5">
+                                                    <h2 class="font-bold mb-1">Kode MK :</h2>
+                                                    <div class="w-full h-10 bg-slate-300 rounded-xl flex items-center">
+                                                        <h2 class="ml-5 text-black font-bold">PAIK 1012</h2>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="hidden w-0.5 bg-black self-stretch md:block"></div> 
+                                            <div class="w-full md:w-[45%] md:ml-5 text-black">
+                                                <div class="mb-2">
+                                                    <h2 class="font-bold mb-1">Kode MK :</h2>
+                                                    <div class="w-full h-10 bg-slate-300 rounded-xl flex items-center">
+                                                        <h2 class="ml-5 text-black font-bold">PAIK 1012</h2>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-2">
+                                                    <h2 class="font-bold mb-1">Kode MK :</h2>
+                                                    <div class="w-full h-10 bg-slate-300 rounded-xl flex items-center">
+                                                        <h2 class="ml-5 text-black font-bold">PAIK 1012</h2>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>  
+                                    </div>
+                                </div>                             
+                            </div>
+                            <div class="flex justify-center pb-5">
+                                <div class="w-32 ml-5 text-white flex text-center items-center justify-center py-3 rounded-md cursor-pointer bg-[#34803C] hover:bg-green-800">
+                                    <p><strong>Ajukan</strong></p>
+                                </div>
+                                <div class="w-32 ml-5 text-white flex text-center items-center justify-center py-3 rounded-md cursor-pointer bg-[#880000] hover:bg-red-500" >
+                                    <p><strong>Batal Ajukan</strong></p>
+                                </div>
+                            </div>   
                         </div>
                     </div>
                 </div>
-    
+                
                 <div class="px-8 pt-5 pb-10">
-                    <table class="table-auto p-5 w-full text-center rounded-lg border-collapse">
+                    <table class="w-full text-center rounded-lg border-collapse" name="tabel_jadwal">
                         <thead>
                             <tr style="background-color: rgba(135, 138, 145, 0.37);">
-                                <th class="px-4 py-2 w-1/5 border-r border-white rounded-tl-lg">No</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">Kode MK</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">Mata Kuliah</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">Waktu</th>
-                                <th class="px-4 py-2 w-1/5 rounded-tr-lg">Info</th>
+                                <th class="px-4 py-2 w-1/4 border-r border-white rounded-tl-lg">Waktu</th>
+                                <th class="px-4 py-2 w-1/2 border-r border-white">Mata Kuliah</th>
+                                <th class="px-4 py-2 w-1/4 border-white rounded-tr-lg">Ruangan</th>
                             </tr>
-                            <tr style="background-color: #23252A">
-                                <th class="px-4 py-2 w-1/5 border-r border-white">1</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">PAIK101</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">PBO - A</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">07.30 - 09.30</th>
-                                <th class="px-4 py-2 w-1/5 ">Info</th>
-                            </tr>
-                            <tr style="background-color: #23252A">
-                                <th class="px-4 py-2 w-1/5 border-r border-white">2</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">PAIK102</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">PBP - A</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">09.30 - 12.00</th>
-                                <th class="px-4 py-2 w-1/5 ">Info</th>
-                            </tr>
-                            <tr style="background-color: #23252A">
-                                <th class="px-4 py-2 w-1/5 border-r border-white">3</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">PAIK103</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">PPL - A</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">13.00 - 15.00</th>
-                                <th class="px-4 py-2 w-1/5 ">Info</th>
-                            </tr>
-                            <tr style="background-color: #23252A">
-                                <th class="px-4 py-2 w-1/5 border-r border-white">4</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">PAIK104</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">SI - A</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">17.30 - 20.00</th>
-                                <th class="px-4 py-2 w-1/5 ">Info</th>
+                            <tr style="background-color: #23252A;">
+                                <th class="px-4 py-2 w-1/4 border-r border-white">Waktu</th>
+                                <th class="px-4 py-2 w-1/2 border-r border-white">Mata Kuliah</th>
+                                <th class="px-4 py-2 w-1/4 border-white">
+                                    <div class="h-8 w-8 mx-auto rounded-lg bg-white flex justify-center items-center">
+                                        <button class="h-full w-full flex justify-center text-3xl text-black font-bold leading-none focus:outline-none">
+                                            &gt;
+                                        </button>
+                                    </div>
+                                </th>                                
                             </tr>
                         </thead>
                     </table>
@@ -213,6 +294,21 @@
                     }
                 }
 
+                const popup = document.getElementById('PopUpIRS');
+                const showButton = document.querySelector('th button'); // Button to show popup (&gt;)
+                const hideButton = document.querySelector('#PopUpIRS button'); // Button to hide popup (&lt;)
+
+                // Show the popup when the '>' button is clicked
+                showButton.addEventListener('click', () => {
+                    popup.classList.remove('hidden');
+                    popup.classList.add('block');
+                });
+
+                // Hide the popup when the '<' button is clicked
+                hideButton.addEventListener('click', () => {
+                    popup.classList.remove('block');
+                    popup.classList.add('hidden');
+                });
             </script>
         </div>
     </div>

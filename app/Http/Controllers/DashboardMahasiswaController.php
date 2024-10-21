@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Jadwal_Kuliah;
+use App\Models\irs;
 use App\Models\Mata_Kuliah;
 use App\Models\Ruangan;
 use Illuminate\Http\Request;
@@ -25,9 +25,12 @@ class DashboardMahasiswaController extends Controller
             'nim_nip' => $user->nim_nip,
         ];
 
-        $jadwal_kuliah = Jadwal_Kuliah::all();
+        $jadwal_kuliah = irs::all();
 
         foreach ($jadwal_kuliah as $jadwal ){
+            $jadwal -> hari = Mata_Kuliah::where('id', $jadwal->mata_kuliah_id)->first()->hari;
+            $jadwal -> jam_mulai = Mata_Kuliah::where('id', $jadwal->mata_kuliah_id)->first()->jam_mulai;
+            $jadwal -> jam_selesai = Mata_Kuliah::where('id', $jadwal->mata_kuliah_id)->first()->jam_selesai;
             $jadwal -> nama_matakuliah = Mata_Kuliah::where('id', $jadwal->mata_kuliah_id)->first()->nama;
             $jadwal -> nama_ruangan = Ruangan::where('id', $jadwal->ruangan_id)->first()->nama;
         }
