@@ -8,19 +8,20 @@
 </head>
 <body class=" text-white font-sans" style="background-color: #17181C;">
     <!-- Navbar -->
-    <div class="bg-gray-800 p-4">
-        <div class="container mx-auto flex justify-between items-center">
+    <div class="p-4" style="background-color: #1E1F24;">
+        <div class="container mx-auto flex justify-end items-center">
             <div class="flex items-center">
-                <img alt="SPARTA logo" class="w-10 h-10 mr-2" height="40" src="{{ asset('assets/Logo.png') }}" width="40"/>
+                <img alt="SPARTA logo" class="w-10 h-10 mr-2 object-contain" src="{{ asset('assets/Logo.png') }}" />
             </div>
         </div>
     </div>
+
 
     <!-- Main Content -->
     <div class="flex items-center justify-center min-h-screen">
         <div class="w-full max-w-2xl">
             <div class="flex items-center mb-4">
-                <a class="text-gray-400 hover:text-gray-200 flex items-center" href="#">
+                <a class="text-gray-400 hover:text-gray-200 flex items-center" href="#" onclick="window.history.back(); return false;">
                     <i class="fas fa-chevron-left mr-2"></i> <span class="underline">Dashboard</span>
                 </a>
             </div>
