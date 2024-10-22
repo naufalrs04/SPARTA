@@ -202,8 +202,8 @@
                             const details = courseDetails[index];
 
                             Swal.fire({
-                                title: `<strong>Detail Mata Kuliah</strong>`,
-                                html: `
+                                title: <strong>Detail Mata Kuliah</strong>,
+                                html: 
                                     <div class="text-left space-y-4">
                                         <div>
                                             <h2 class="font-bold mb-1">Nama Mata Kuliah :</h2>
@@ -248,7 +248,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                `,
+                                ,
                                 confirmButtonText: 'Tutup',
                                 focusConfirm: false,
                                 customClass: {
@@ -287,14 +287,51 @@
                             } else {
                                 // Menambahkan baris ke tabel ringkasan
                                 const newRow = document.createElement('tr');
-                                newRow.innerHTML = `
-                    <td class="px-4 py-2 border-r border-white">${tableBody.children.length + 1}</td>
-                    <td class="px-4 py-2 border-r border-white">${kode}</td>
-                    <td class="px-4 py-2 border-r border-white">${nama}</td>
-                    <td class="px-4 py-2 border-r border-white">${jam}</td>
-                    <td class="px-4 py-2 border-white">Info</td>
-                `;
+                                newRow.innerHTML = 
+                                    <td class="px-4 py-2 border-r border-white">${tableBody.children.length + 1}</td>
+                                    <td class="px-4 py-2 border-r border-white">${kode}</td>
+                                    <td class="px-4 py-2 border-r border-white">${nama}</td>
+                                    <td class="px-4 py-2 border-r border-white">${jam}</td>
+                                    <td class="px-4 py-2 border-white">Info</td>
+                                ;
                                 tableBody.appendChild(newRow);
+                            }
+                        });
+                    });
+                </script>
+                <script>
+                    document.getElementById('default-search').addEventListener('input', function () {
+                        const searchTerm = this.value.toLowerCase();
+                        const rows = document.querySelectorAll('table[name="tabel_jadwal"] tbody tr');
+                        
+                        rows.forEach(row => {
+                            const courseName = row.querySelector('td:nth-child(3)').innerText.toLowerCase(); // Assuming 3rd column has course name
+                            const courseCode = row.querySelector('td:nth-child(2)').innerText.toLowerCase(); // Assuming 2nd column has course code
+                            
+                            if (courseName.includes(searchTerm) || courseCode.includes(searchTerm)) {
+                                row.style.display = ''; // Show the row if it matches
+                            } else {
+                                row.style.display = 'none'; // Hide the row if it doesn't match
+                            }
+                        });
+                    });
+                </script>
+                <script>
+                    // Prevent form submission and handle search on Enter key press
+                    document.querySelector('form').addEventListener('submit', function (event) {
+                        event.preventDefault(); // Prevent default form submission
+                        
+                        const searchTerm = document.getElementById('default-search').value.toLowerCase();
+                        const rows = document.querySelectorAll('table[name="tabel_jadwal"] tbody tr');
+                
+                        rows.forEach(row => {
+                            const courseName = row.querySelector('td:nth-child(3)').innerText.toLowerCase(); // Assuming 3rd column has course name
+                            const courseCode = row.querySelector('td:nth-child(2)').innerText.toLowerCase(); // Assuming 2nd column has course code
+                            
+                            if (courseName.includes(searchTerm) || courseCode.includes(searchTerm)) {
+                                row.style.display = ''; // Show the row if it matches
+                            } else {
+                                row.style.display = 'none'; // Hide the row if it doesn't match
                             }
                         });
                     });
