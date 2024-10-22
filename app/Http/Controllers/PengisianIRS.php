@@ -40,4 +40,16 @@ class PengisianIRS extends Controller
         return view('pengisianirs', compact( 'user', 'list_mata_kuliah'));
     }
 
+    public function searchMataKuliah(Request $request)
+    {
+        $query = $request->input('query');
+
+        // Search for mata kuliah based on nama or kode
+        $results = Mata_Kuliah::where('nama', 'LIKE', "%{$query}%")
+                    ->orWhere('kode', 'LIKE', "%{$query}%")
+                    ->get();
+
+        return response()->json($results);
+    }
+
 }
