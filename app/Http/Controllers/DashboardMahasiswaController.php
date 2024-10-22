@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\irs;
 use App\Models\Mata_Kuliah;
 use App\Models\Ruangan;
+use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,9 +21,22 @@ class DashboardMahasiswaController extends Controller
 
         $user = Auth::user();
 
+        // Ambil data status dari tabel mahasiswas berdasarkan user_id
+        $mahasiswa = Mahasiswa::where('user_id', $user->id)->first();
+        $status = $mahasiswa ? $mahasiswa->status : null;
+        $nim = $mahasiswa ? $mahasiswa->nim_nip : null; 
+        $ipk = $mahasiswa ? $mahasiswa->IPK : null;     
+        $prodi = $mahasiswa ? $mahasiswa->prodi : null; 
+        $semester = $mahasiswa ? $mahasiswa->semester : null; 
+        
+
         $data = [
             'nama' => $user->nama,
             'nim_nip' => $user->nim_nip,
+            'status' => $status,
+            'IPK' => $ipk,
+            'prodi' => $prodi,
+            'semester' => $semester
         ];
 
         $jadwal_kuliah = irs::all();

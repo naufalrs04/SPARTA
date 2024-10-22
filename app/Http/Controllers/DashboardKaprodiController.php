@@ -14,7 +14,7 @@ class DashboardKaprodiController extends Controller
         }
 
         $user = Auth::user();
-
+        
         $data = [
             'nama' => $user->nama,
             'nim_nip' => $user->nim_nip,

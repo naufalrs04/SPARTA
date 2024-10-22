@@ -28,7 +28,7 @@
                         class="absolute right-0 w-60 z-50 px-5 py-3 dark:bg-zinc-800 bg-white rounded-lg shadow border dark:border-transparent mt-5">
                         <ul class="space-y-3 dark:text-white">
                             <li class="font-medium">
-                                <a href="#"
+                                <a href="profile"
                                     class="flex items-center transform transition-colors duration-200 border-r-4 border-transparent hover:border-yellow-400">
                                     <div class="mr-3">
                                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"

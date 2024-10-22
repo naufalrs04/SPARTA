@@ -57,7 +57,13 @@ Route::get('/jadwalpengisianIRS', [jadwalpengisianIRS::class, 'index'])->middlew
 
 Route::get('/resetpassword', function () {
     return view('resetpassword');
+
 })->name('resetpassword');
+
+Route::get('/profile', function () {
+    return view('profile');
+
+})->name('profile');
 
 Route::get('/pembagiankelas', [pembagiankelas::class, 'index'])->middleware('auth')->name('pembagiankelas');
 
@@ -73,6 +79,7 @@ Route::get('/jadwalmengajar', [jadwalmengajar::class, 'index'])->middleware('aut
 
 Route::get('/verifikasiIRS', [verifikasiIRS::class, 'index'])->middleware('auth')->name('verifikasiIRS');
 
+
 Route::get('/verifikasijadwal', [verifikasijadwal::class, 'index'])->middleware('auth')->name('verifikasijadwal');
 
 Route::get('/verifikasiRuangKuliah', [verifikasiRuangKuliah::class, 'index'])->middleware('auth')->name('verifikasiRuangKuliah');
@@ -82,3 +89,4 @@ Route::get('/search-mata-kuliah', [PengisianIRS::class, 'searchMataKuliah'])->na
 Route::get('/profile', function () {
     return view('profile');
 })->name('profile');
+

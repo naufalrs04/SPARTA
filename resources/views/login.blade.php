@@ -74,7 +74,7 @@
 
                 <p class="mt-10 text-center text-sm text-gray-400">
                     Forgot a password?
-                    <a href="/resetpassword" class="font-semibold leading-6 text-indigo-400 hover:text-indigo-300">Reset Your Password</a>
+                    <a href="resetpassword" class="font-semibold leading-6 text-indigo-400 hover:text-indigo-300">Reset Your Password</a>
                 </p>
             </div>
         </div>

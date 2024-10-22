@@ -9,8 +9,6 @@
         .active-state {
             transform: translateX(0.5rem);
             text-decoration: underline;
-            text-underline-offset: 0.3em;
-            background-color: #1E1F24;
 
             a {
                 color: #F0B90B;

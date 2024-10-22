@@ -33,10 +33,8 @@
     <div class="bg-cover bg-center p-12 text-center w-full h-full flex flex-col items-center justify-center" style="background-image: url('{{ asset('assets/background_login_page.jpg') }}');">
         <img class="mb-10" src="{{ asset('assets/Logo.png') }}" alt="Logo" style="height: 15%; width: auto;">
 
-        <div class="rounded-lg shadow-lg p-10 w-full max-w-lg" style="background-color: #23252A">
-            <div class="flex justify-start my-1 mb-6">
-                <a href="/login" class="text-white text-left underline underline-offset-2 hover:text-gray-300 cursor-pointer">< Kembali</a>
-            </div>
+        <div class="rounded-lg shadow-lg p-10 w-full max-w-sm " style="background-color: #23252A">
+            <a href="login" class="underline underline-offset-4 justify-start text-white items-start text-start">< Kembali</a>
             <div class="sm:mx-auto sm:w-full sm:max-w-sm">
                 <h2 class="mb-10 text-center text-2xl font-bold leading-9 tracking-tight text-white">Reset Password</h2>
             </div>
@@ -67,7 +65,6 @@
                         <button type="submit" class="bg-gradient-to-r from-orange-500 to-red-500  hover:from-orange-600 hover:to-red-600 focus:outline-none justify-center rounded-md py-3 px-10 text-sm font-semibold text-white focus:ring-2 mt-6" >Reset</button>
                     </div>
                 </form>
-
             </div>
         </div>
     </div>
