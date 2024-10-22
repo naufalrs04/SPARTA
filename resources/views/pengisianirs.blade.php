@@ -22,11 +22,11 @@
 
             {{-- Main Content --}}
             <div class="px-8 pt-5 flex justify-center items-center">
-                <div class="w-full rounded-full border-yellow-700 border-2 flex justify-between items-center">
-                    <div id="pengisianIRS" class="w-1/2 rounded-full bg-yellow-700 border-[#17181C] cursor-pointer flex justify-center items-center px-4 transition ease-in-out duration-300" onclick="switchIRS('pengisianIRS')">
+                <div class="w-full rounded-full border-yellow-500 border-2 px-4 py-2 flex justify-between items-center">
+                    <div id="pengisianIRS" class="w-1/2 rounded-full bg-yellow-500 px-4 py-1 border-[#17181C] cursor-pointer flex justify-center items-center transition ease-in-out duration-300" onclick="switchIRS('pengisianIRS')">
                         <h2 class="text-md font-bold">Pengisian IRS</h2>
                     </div>
-                    <div id="irsMahasiswa" class="w-1/2 rounded-full flex justify-center items-center px-4 cursor-pointer transition ease-in-out duration-300" onclick="switchIRS('irsMahasiswa')">
+                    <div id="irsMahasiswa" class="w-1/2 rounded-full flex justify-center items-center px-4 py-1 cursor-pointer transition ease-in-out duration-300" onclick="switchIRS('irsMahasiswa')">
                         <h2 class="text-md font-bold">IRS Mahasiswa</h2>
                     </div>
                 </div>
@@ -179,16 +179,16 @@
                         // Switch active tab and color
                         if (selected === 'pengisianIRS') {
                             // console.log("Switching to Pengisian IRS");
-                            pengisianIRS.classList.add('bg-yellow-700', 'border-[#17181C]');
-                            irsMahasiswa.classList.remove('bg-yellow-700', 'border-[#17181C]');
+                            pengisianIRS.classList.add('bg-yellow-500', 'border-[#17181C]');
+                            irsMahasiswa.classList.remove('bg-yellow-500', 'border-[#17181C]');
 
                             // Show Pengisian IRS content and hide IRS Mahasiswa content
                             contentPengisianIRS.classList.remove('hidden');
                             contentIRSMahasiswa.classList.add('hidden');
                         } else if (selected === 'irsMahasiswa') {
                             // console.log("Switching to IRS Mahasiswa");
-                            irsMahasiswa.classList.add('bg-yellow-700', 'border-[#17181C]');
-                            pengisianIRS.classList.remove('bg-yellow-700', 'border-[#17181C]');
+                            irsMahasiswa.classList.add('bg-yellow-500', 'border-[#17181C]');
+                            pengisianIRS.classList.remove('bg-yellow-500', 'border-[#17181C]');
 
                             // Show IRS Mahasiswa content and hide Pengisian IRS content
                             contentIRSMahasiswa.classList.remove('hidden');
@@ -293,12 +293,12 @@
                                 // Menambahkan baris ke tabel ringkasan
                                 const newRow = document.createElement('tr');
                                 newRow.innerHTML = `
-                                        <td class="px-4 py-2 border-r border-white">${tableBody.children.length + 1}</td>
-                                        <td class="px-4 py-2 border-r border-white">${kode}</td>
-                                        <td class="px-4 py-2 border-r border-white">${nama}</td>
-                                        <td class="px-4 py-2 border-r border-white">${jam}</td>
-                                        <td class="px-4 py-2 border-white">Info</td>
-                                    `;
+                                    <td class="px-4 py-2 border-r border-white">${tableBody.children.length + 1}</td>
+                                    <td class="px-4 py-2 border-r border-white">${kode}</td>
+                                    <td class="px-4 py-2 border-r border-white">${nama}</td>
+                                    <td class="px-4 py-2 border-r border-white">${jam}</td>
+                                    <td class="px-4 py-2 border-white">Info</td>
+                                `;
                                 tableBody.appendChild(newRow);
                             }
                         });
