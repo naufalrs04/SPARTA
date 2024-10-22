@@ -68,14 +68,28 @@
                     <table class="table-auto p-5 w-full text-center rounded-lg border-collapse">
                         <thead>
                             <tr class="bg-[#878A91]">
-                                <th class="px-4 py-2 w-1/4 border-r border-white rounded-tl-lg">Waktu</th>
-                                <th class="px-4 py-2 w-1/2 border-r border-white">Mata Kuliah</th>
-                                <th class="px-4 py-2 w-1/2 border-r border-white">Ruangan</th>
+                                <th class="px-4 py-2 w-1/6 border-r border-white rounded-tl-lg">Waktu</th>
+                                <th class="px-4 py-2 w-1/3 border-r border-white">Mata Kuliah</th>
+                                <th class="px-4 py-2 w-1/6 border-r border-white">Ruangan</th>
                                 <th class="px-4 py-2 w-1/4 rounded-tr-lg">Info</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Jadwal data goes here -->
+                            <tr style="background-color: #23252A;">
+                                <td class="px-4 py-2 border-r border-white">Senin, 07.00-09.30</td>
+                                <td class="px-4 py-2 border-r border-white">Proyek Perangkat Lunak</td>
+                                <td class="px-4 py-2 border-r border-white">E101</td>                              
+                                <td class="px-5 py-2 text-center">
+                                    <div class="inline-flex space-x-3">
+                                        <button onclick="window.location.href='#'" class="w-16 text-white rounded-md px-3 py-2 bg-gray-400 hover:bg-gray-500">
+                                            <strong>Info</strong>
+                                        </button>
+                                        <button onclick="window.location.href='#'" class="w-16 text-white rounded-md px-1 py-2 bg-[#A00000] hover:bg-[#880000]">
+                                            <strong>Hapus</strong>
+                                        </button>
+                                    </div>
+                                </td>                                                            
+                            </tr>   
                         </tbody>
                     </table>
                 </div>
@@ -96,7 +110,16 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Jadwal data goes here -->
+                            <tr style="background-color: #23252A;">
+                                <td class="px-4 py-2 border-r border-white">Proyek Perangkat Lunak - A</td>                            
+                                <td class="px-5 py-2 text-center">
+                                    <button onclick="window.location.href='#'" class="transition-colors duration-200">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" class="fill-green-300 hover:fill-green-700 transition-colors duration-200 ease-in-out" viewBox="0 0 16 16">
+                                            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0"/>
+                                        </svg>
+                                    </button>                                                                                                                                         
+                                </td>                                
+                            </tr>
                         </tbody>
                     </table>
                 </div>
