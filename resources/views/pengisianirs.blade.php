@@ -37,11 +37,11 @@
                     <table class="table-auto p-5 w-full text-center rounded-lg border-collapse">
                         <thead>
                             <tr style="background-color: rgba(135, 138, 145, 0.37);">
-                                <th class="px-4 py-2 w-1/5 border-r border-white rounded-tl-lg">No</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">Kode MK</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">Mata Kuliah</th>
-                                <th class="px-4 py-2 w-1/5 border-r border-white">Waktu</th>
-                                <th class="px-4 py-2 w-1/5 rounded-tr-lg">Info</th>
+                                <th class="px-4 py-2 border-r border-white rounded-tl-lg">No</th>
+                                <th class="px-4 py-2 w-1/3 border-r border-white">Kode MK</th>
+                                <th class="px-4 py-2 w-1/3 border-r border-white">Mata Kuliah</th>
+                                <th class="px-4 py-2 w-1/3 border-r border-white">Waktu</th>
+                                <th class="px-4 py-2 w-1/3 rounded-tr-lg">SKS</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -106,8 +106,8 @@
                                         <button class="ambil-mata-kuliah"
                                             data-kode="{{ $mata_kuliah->kode }}"
                                             data-nama="{{ $mata_kuliah->nama }}"
-                                            data-hari="{{ $mata_kuliah->hari }}"
-                                            data-jam="{{ \Carbon\Carbon::parse($mata_kuliah->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($mata_kuliah->jam_selesai)->format('H:i') }}">
+                                            data-hari-jam="{{ $mata_kuliah->hari }}, {{ \Carbon\Carbon::parse($mata_kuliah->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($mata_kuliah->jam_selesai)->format('H:i') }}"
+                                            data-sks="{{ $mata_kuliah->sks }}">
                                             Ambil
                                         </button>
                                     </div>
@@ -121,12 +121,10 @@
                                         </button>
                                     </div>
                                 </td>
-
-
                             </tr>
                             @endforeach
-
                         </tbody>
+
 
                     </table>
                 </div>
@@ -164,10 +162,8 @@
                 </div>
 
                 <script>
+                    // switch pengisian irs - irs mahasiswa
                     function switchIRS(selected) {
-                        // Log which tab is selected
-                        // console.log("Selected tab:", selected);
-
                         // Elements for tabs
                         const pengisianIRS = document.getElementById('pengisianIRS');
                         const irsMahasiswa = document.getElementById('irsMahasiswa');
@@ -196,9 +192,7 @@
                         }
                     }
 
-                    // Pastikan variabel courseDetails sudah ada
                     const courseDetails = @json($list_mata_kuliah);
-
                     const detailButtons = document.querySelectorAll('.show-details');
                     detailButtons.forEach((button) => {
                         button.addEventListener('click', () => {
@@ -263,76 +257,170 @@
                         });
                     });
 
+                    // insert ke tabel ringkasan mata kuliah
                     document.querySelectorAll('.ambil-mata-kuliah').forEach(button => {
                         button.addEventListener('click', (event) => {
                             const kode = event.target.dataset.kode;
                             const nama = event.target.dataset.nama;
-                            const hari = event.target.dataset.hari;
-                            const jam = event.target.dataset.jam;
+                            const waktu = event.target.dataset.hariJam; // Format: "Hari, HH:mm - HH:mm"
+                            const sks = event.target.dataset.sks;
+                            const buttonElement = event.target;
+
+                            // Memisahkan hari dan jam dari data waktu
+                            const [hari, jam] = waktu.split(', ');
+                            const [jamMulai, jamSelesai] = jam.split(' - ');
 
                             // Memeriksa apakah mata kuliah sudah ada
                             const tableBody = document.querySelector('#contentPengisianIRS table tbody');
                             const rows = tableBody.querySelectorAll('tr');
                             let alreadyExists = false;
+                            let tabrakan = false;
+                            let rowIndex;
 
-                            rows.forEach(row => {
+                            // Mengecek apakah mata kuliah sudah ada atau jadwal bertabrakan
+                            rows.forEach((row, index) => {
                                 const rowKode = row.cells[1].innerText;
+                                const rowWaktu = row.cells[3].innerText; // Format: "Hari, HH:mm - HH:mm"
+
+                                // Memisahkan hari dan jam dari data row waktu
+                                const [rowHari, rowJam] = rowWaktu.split(', ');
+                                const [rowJamMulai, rowJamSelesai] = rowJam.split(' - ');
+
+                                // Mengecek apakah kode sudah ada di tabel
                                 if (rowKode === kode) {
                                     alreadyExists = true;
+                                    rowIndex = index;
+                                }
+
+                                // Mengecek apakah hari sama dan ada irisan waktu (tabrakan)
+                                if (hari === rowHari && isTimeOverlap(jamMulai, jamSelesai, rowJamMulai, rowJamSelesai)) {
+                                    tabrakan = true;
                                 }
                             });
 
                             if (alreadyExists) {
+                                // Mata kuliah sudah ada dalam ringkasan, hanya bisa "Batal Ambil"
+                                if (buttonElement.innerText === 'Batalkan') {
+                                    Swal.fire({
+                                        title: 'Batalkan Mata Kuliah?',
+                                        text: 'Mata kuliah ini akan dihapus dari ringkasan.',
+                                        icon: 'warning',
+                                        showCancelButton: true,
+                                        confirmButtonText: 'Ya, hapus',
+                                        cancelButtonText: 'Batal'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            rows[rowIndex].remove();
+
+                                            // Ubah tombol kembali menjadi "Ambil"
+                                            buttonElement.innerText = 'Ambil';
+                                            buttonElement.disabled = false; // Aktifkan tombol kembali
+                                            buttonElement.parentElement.classList.remove('bg-red-500', 'hover:bg-red-700');
+                                            buttonElement.parentElement.classList.add('bg-[#34803C]', 'hover:bg-green-800');
+
+                                            // Periksa dan perbarui tombol terkait yang bertabrakan
+                                            updateTabrakanButtons(waktu);
+
+                                            // Atur ulang nomor urut
+                                            resetTableNumbering();
+                                        }
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        title: 'Mata Kuliah Sudah Ditambahkan',
+                                        text: 'Mata kuliah ini sudah ada dalam ringkasan.',
+                                        icon: 'warning',
+                                        confirmButtonText: 'Tutup'
+                                    });
+                                }
+                            } else if (tabrakan) {
+                                // Jadwal bentrok (tabrakan)
                                 Swal.fire({
-                                    title: 'Mata Kuliah Sudah Ditambahkan',
-                                    text: 'Mata kuliah ini sudah ada dalam ringkasan.',
-                                    icon: 'warning',
+                                    title: 'Jadwal Tabrakan',
+                                    text: 'Mata kuliah ini memiliki jadwal yang bertabrakan dengan mata kuliah lain.',
+                                    icon: 'error',
                                     confirmButtonText: 'Tutup'
                                 });
+
+                                // Menambahkan keterangan "Tabrakan" pada tombol
+                                buttonElement.innerText = 'Tabrakan';
+                                buttonElement.disabled = true; // Nonaktifkan tombol agar tidak bisa diambil
+                                buttonElement.parentElement.classList.remove('bg-[#34803C]', 'hover:bg-green-800');
+                                buttonElement.parentElement.classList.add('bg-red-500');
                             } else {
-                                // Menambahkan baris ke tabel ringkasan
+                                // Menambahkan baris ke tabel ringkasan jika tidak ada bentrok atau mata kuliah belum diambil
                                 const newRow = document.createElement('tr');
                                 newRow.innerHTML = `
                                     <td class="px-4 py-2 border-r border-white">${tableBody.children.length + 1}</td>
                                     <td class="px-4 py-2 border-r border-white">${kode}</td>
                                     <td class="px-4 py-2 border-r border-white">${nama}</td>
-                                    <td class="px-4 py-2 border-r border-white">${jam}</td>
-                                    <td class="px-4 py-2 border-white">Info</td>
+                                    <td class="px-4 py-2 border-r border-white">${waktu}</td>
+                                    <td class="px-4 py-2 border-white">${sks}</td>
                                 `;
+
                                 tableBody.appendChild(newRow);
+
+                                // Ubah tombol menjadi "Batal Ambil"
+                                buttonElement.innerText = 'Batalkan';
+                                buttonElement.parentElement.classList.remove('bg-[#34803C]', 'hover:bg-green-800');
+                                buttonElement.parentElement.classList.add('bg-red-500', 'hover:bg-red-700');
+
+                                // Atur ulang nomor urut
+                                resetTableNumbering();
                             }
                         });
                     });
+
+                    // Fungsi untuk mengatur ulang nomor urut di tabel
+                    function resetTableNumbering() {
+                        const tableBody = document.querySelector('#contentPengisianIRS table tbody');
+                        const rows = tableBody.querySelectorAll('tr');
+
+                        rows.forEach((row, index) => {
+                            row.cells[0].innerText = index + 1; // Kolom pertama adalah kolom nomor
+                        });
+                    }
+
+                    // Fungsi untuk mengecek apakah waktu bertabrakan (overlap)
+                    function isTimeOverlap(start1, end1, start2, end2) {
+                        return (start1 < end2 && end1 > start2);
+                    }
+
+                    // Fungsi untuk mengupdate status tombol yang bertabrakan
+                    function updateTabrakanButtons(removedWaktu) {
+                        // Memisahkan hari dan jam dari data waktu yang dihapus
+                        const [removedHari, removedJam] = removedWaktu.split(', ');
+                        const [removedJamMulai, removedJamSelesai] = removedJam.split(' - ');
+
+                        // Memeriksa kembali jadwal bertabrakan yang tidak lagi bertabrakan setelah penghapusan
+                        document.querySelectorAll('.ambil-mata-kuliah').forEach(button => {
+                            const waktu = button.dataset.hariJam;
+                            const [hari, jam] = waktu.split(', ');
+                            const [jamMulai, jamSelesai] = jam.split(' - ');
+
+                            // Jika tidak ada lagi irisan waktu, ubah status tombol kembali ke "Ambil"
+                            if (hari === removedHari && !isTimeOverlap(removedJamMulai, removedJamSelesai, jamMulai, jamSelesai)) {
+                                if (button.innerText === 'Tabrakan') {
+                                    button.innerText = 'Ambil';
+                                    button.disabled = false;
+                                    button.parentElement.classList.remove('bg-red-500');
+                                    button.parentElement.classList.add('bg-[#34803C]', 'hover:bg-green-800');
+                                }
+                            }
+                        });
+                    }
                 </script>
-                 <script>
-                    document.getElementById('default-search').addEventListener('input', function () {
+
+                <!-- search bar -->
+                <script>
+                    document.getElementById('default-search').addEventListener('input', function() {
                         const searchTerm = this.value.toLowerCase();
                         const rows = document.querySelectorAll('table[name="tabel_jadwal"] tbody tr');
-                        
+
                         rows.forEach(row => {
                             const courseName = row.querySelector('td:nth-child(3)').innerText.toLowerCase(); // Assuming 3rd column has course name
                             const courseCode = row.querySelector('td:nth-child(2)').innerText.toLowerCase(); // Assuming 2nd column has course code
-                            
-                            if (courseName.includes(searchTerm) || courseCode.includes(searchTerm)) {
-                                row.style.display = ''; // Show the row if it matches
-                            } else {
-                                row.style.display = 'none'; // Hide the row if it doesn't match
-                            }
-                        });
-                    });
-                </script>
-                <script>
-                    // Prevent form submission and handle search on Enter key press
-                    document.querySelector('form').addEventListener('submit', function (event) {
-                        event.preventDefault(); // Prevent default form submission
-                        
-                        const searchTerm = document.getElementById('default-search').value.toLowerCase();
-                        const rows = document.querySelectorAll('table[name="tabel_jadwal"] tbody tr');
-                
-                        rows.forEach(row => {
-                            const courseName = row.querySelector('td:nth-child(3)').innerText.toLowerCase(); // Assuming 3rd column has course name
-                            const courseCode = row.querySelector('td:nth-child(2)').innerText.toLowerCase(); // Assuming 2nd column has course code
-                            
+
                             if (courseName.includes(searchTerm) || courseCode.includes(searchTerm)) {
                                 row.style.display = ''; // Show the row if it matches
                             } else {
