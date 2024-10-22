@@ -31,7 +31,6 @@
                     </div>
                 </div>
             </div>
-            
             <div id="contentPengisianIRS">
                 <div class="px-8 pt-5">
                     <h2 class="text-center text-lg font-semibold mt-2 mb-4">Ringkasan Mata Kuliah yang diambil</h2>
@@ -57,7 +56,7 @@
                         <div class="w-1/6 ml-auto text-white flex text-center items-center justify-center py-3 rounded-md cursor-pointer bg-[#34803C] hover:bg-green-800 font-bold">
                             <button>Ajukan</button>
                         </div>
-                        <div class="w-1/6 ml-auto text-white flex text-center items-center justify-center py-3 rounded-md cursor-pointer bg-[#880000] hover:bg-red-900 font-bold">
+                        <div class="w-1/6 ml-auto text-white flex text-center items-center justify-center py-3 rounded-md cursor-pointer bg-[#880000] hover:bg-red-500 font-bold">
                             <button>Batal Ajukan</button>
                         </div>
                     </div>
@@ -70,12 +69,12 @@
                         <form class="w-full">
                             <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
                             <div class="relative">
-                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                    <svg class="w-4 h-4 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                                     </svg>
                                 </div>
-                                <input type="search" id="default-search" class="block w-full p-4 pl-10 text-sm text-[#94959A] border border-gray-800 rounded-lg bg-[#23252A] hover:bg-[#3A3B40] focus:ring-blue-500 focus:border-blue-500" placeholder="Cari Mata Kuliah" />
+                                <input type="search" id="default-search" class="block w-full p-4 pl-10 text-sm text-white border border-gray-800 rounded-lg bg-gray-800 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Cari mata kuliah" />
                             </div>
                         </form>
                     </div>
@@ -114,19 +113,21 @@
                                     </div>
                                 </td>
                                 <td class="px-4 py-2 border-white">
-                                    <div class="h-7 w-7 mx-auto rounded-lg bg-gray-300 hover:bg-gray-500 flex justify-center items-center transition-colors duration-300">
+                                    <div class="h-7 w-7 mx-auto rounded-lg bg-white flex justify-center items-center">
                                         <button class="show-details justify-center text-center text-3xl text-black font-bold focus:outline-none" data-index="{{ $index }}">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
                                                 <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
                                             </svg>
                                         </button>
                                     </div>
-                                </td>                                
+                                </td>
 
 
                             </tr>
                             @endforeach
+
                         </tbody>
+
                     </table>
                 </div>
 
@@ -163,8 +164,10 @@
                 </div>
 
                 <script>
-                    // Function to switch between tabs
                     function switchIRS(selected) {
+                        // Log which tab is selected
+                        // console.log("Selected tab:", selected);
+
                         // Elements for tabs
                         const pengisianIRS = document.getElementById('pengisianIRS');
                         const irsMahasiswa = document.getElementById('irsMahasiswa');
@@ -175,6 +178,7 @@
 
                         // Switch active tab and color
                         if (selected === 'pengisianIRS') {
+                            // console.log("Switching to Pengisian IRS");
                             pengisianIRS.classList.add('bg-yellow-500', 'border-[#17181C]');
                             irsMahasiswa.classList.remove('bg-yellow-500', 'border-[#17181C]');
 
@@ -182,6 +186,7 @@
                             contentPengisianIRS.classList.remove('hidden');
                             contentIRSMahasiswa.classList.add('hidden');
                         } else if (selected === 'irsMahasiswa') {
+                            // console.log("Switching to IRS Mahasiswa");
                             irsMahasiswa.classList.add('bg-yellow-500', 'border-[#17181C]');
                             pengisianIRS.classList.remove('bg-yellow-500', 'border-[#17181C]');
 
@@ -202,8 +207,8 @@
                             const details = courseDetails[index];
 
                             Swal.fire({
-                                title: <strong>Detail Mata Kuliah</strong>,
-                                html: 
+                                title: `<strong>Detail Mata Kuliah</strong>`,
+                                html: `
                                     <div class="text-left space-y-4">
                                         <div>
                                             <h2 class="font-bold mb-1">Nama Mata Kuliah :</h2>
@@ -248,7 +253,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                ,
+                                `,
                                 confirmButtonText: 'Tutup',
                                 focusConfirm: false,
                                 customClass: {
@@ -287,19 +292,19 @@
                             } else {
                                 // Menambahkan baris ke tabel ringkasan
                                 const newRow = document.createElement('tr');
-                                newRow.innerHTML = 
+                                newRow.innerHTML = `
                                     <td class="px-4 py-2 border-r border-white">${tableBody.children.length + 1}</td>
                                     <td class="px-4 py-2 border-r border-white">${kode}</td>
                                     <td class="px-4 py-2 border-r border-white">${nama}</td>
                                     <td class="px-4 py-2 border-r border-white">${jam}</td>
                                     <td class="px-4 py-2 border-white">Info</td>
-                                ;
+                                `;
                                 tableBody.appendChild(newRow);
                             }
                         });
                     });
                 </script>
-                <script>
+                 <script>
                     document.getElementById('default-search').addEventListener('input', function () {
                         const searchTerm = this.value.toLowerCase();
                         const rows = document.querySelectorAll('table[name="tabel_jadwal"] tbody tr');
