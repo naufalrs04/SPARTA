@@ -84,6 +84,8 @@ Route::get('/verifikasijadwal', [verifikasijadwal::class, 'index'])->middleware(
 
 Route::get('/verifikasiRuangKuliah', [verifikasiRuangKuliah::class, 'index'])->middleware('auth')->name('verifikasiRuangKuliah');
 
+Route::get('/search-mata-kuliah', [PengisianIRS::class, 'searchMataKuliah'])->name('search.mata_kuliah');
+
 Route::get('/profile', function () {
     return view('profile');
 })->name('profile');

@@ -19,15 +19,16 @@
 
             {{-- Main Content --}}
             <div class="px-8 pt-5 flex justify-center items-center">
-                <div class="w-full rounded-full border-yellow-700 border-2 flex justify-between items-center">
-                    <div id="khsMahasiswa" class="w-1/2 rounded-full bg-yellow-700 border-[#17181C] cursor-pointer flex justify-center items-center px-4 transition ease-in-out duration-300" onclick="switchKHS('khsMahasiswa')">
+                <div class="w-full rounded-full border-yellow-500 border-2 px-4 py-2 flex justify-between items-center">
+                    <div id="khsMahasiswa" class="w-1/2 rounded-full bg-yellow-500 px-4 py-1 border-[#17181C] cursor-pointer flex justify-center items-center transition ease-in-out duration-300" onclick="switchKHS('khsMahasiswa')">
                         <h2 class="text-md font-bold">KHS Mahasiswa</h2>
                     </div>
-                    <div id="transkripMahasiswa" class="w-1/2 rounded-full flex justify-center items-center px-4 cursor-pointer transition ease-in-out duration-300" onclick="switchKHS('transkripMahasiswa')">
+                    <div id="transkripMahasiswa" class="w-1/2 rounded-full flex justify-center items-center px-4 py-1 cursor-pointer transition ease-in-out duration-300" onclick="switchKHS('transkripMahasiswa')">
                         <h2 class="text-md font-bold">Transkrip Mahasiswa</h2>
                     </div>
                 </div>
             </div>
+
             <div id="contentkhsMahasiswa">
                 <div class="px-4 sm:px-6 md:px-8 pt-5 pb-10">
                     <h2 class="text-center text-lg font-semibold mb-4">KHS Mahasiswa</h2>
@@ -107,32 +108,34 @@
             </div>
             
             <script>
+                // Function to switch between tabs
                 function switchKHS(selected) {
                     // Elements for tabs
                     const khsMahasiswa = document.getElementById('khsMahasiswa');
                     const transkripMahasiswa = document.getElementById('transkripMahasiswa');
-
+            
                     // Elements for content
-                    const contentkhsMahasiswa = document.getElementById('contentkhsMahasiswa');
-                    const contenttranskripMahasiswa = document.getElementById('contenttranskripMahasiswa');
-
-                    // Check which tab is clicked and toggle classes
+                    const contentKHS = document.getElementById('contentkhsMahasiswa'); // Pastikan elemen ini ada di HTML
+                    const contentTranskrip = document.getElementById('contenttranskripMahasiswa'); // Pastikan elemen ini ada di HTML
+            
+                    // Switch active tab and color
                     if (selected === 'khsMahasiswa') {
-                        khsMahasiswa.classList.add('bg-yellow-700', 'border-[#17181C]');
-                        transkripMahasiswa.classList.remove('bg-yellow-700', 'border-[#17181C]');
-                        
-                        contentkhsMahasiswa.classList.remove('hidden');
-                        contenttranskripMahasiswa.classList.add('hidden');
+                        khsMahasiswa.classList.add('bg-yellow-500', 'border-[#17181C]');
+                        transkripMahasiswa.classList.remove('bg-yellow-500', 'border-[#17181C]');
+            
+                        // Show KHS content and hide Transkrip content
+                        contentKHS.classList.remove('hidden');
+                        contentTranskrip.classList.add('hidden');
                     } else if (selected === 'transkripMahasiswa') {
-                        transkripMahasiswa.classList.add('bg-yellow-700', 'border-[#17181C]');
-                        khsMahasiswa.classList.remove('bg-yellow-700', 'border-[#17181C]');
-                        
-                        contenttranskripMahasiswa.classList.remove('hidden');
-                        contentkhsMahasiswa.classList.add('hidden');
+                        transkripMahasiswa.classList.add('bg-yellow-500', 'border-[#17181C]');
+                        khsMahasiswa.classList.remove('bg-yellow-500', 'border-[#17181C]');
+            
+                        // Show Transkrip content and hide KHS content
+                        contentTranskrip.classList.remove('hidden');
+                        contentKHS.classList.add('hidden');
                     }
                 }
-
-            </script>
+            </script>            
         </div>
     </div>
 </body>
