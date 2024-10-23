@@ -103,15 +103,19 @@
                     </div>
 
                     <!-- Sidebar Melayang -->
-                    <div id="sksSidebar" class="fixed right-[-300px] bg-yellow-600 h-auto w-64 text-white transition-all duration-300 p-4 shadow-lg rounded-lg">
+                    <div id="sksSidebar"
+                        class="fixed right-[-300px] bg-yellow-600 h-auto w-64 text-white transition-all duration-300 p-4 shadow-lg rounded-lg">
                         <h2 class="text-xl font-bold mb-4">Total SKS Diambil</h2>
                         <div id="totalSks" class="text-4xl font-semibold">0</div>
                     </div>
 
                     <!-- Tombol untuk memperlihatkan sidebar -->
-                    <button id="toggleSidebar" class="fixed right-0 bg-yellow-500 text-white p-3 rounded-l-lg shadow-lg focus:outline-none">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L6.707 7l4.647 4.646a.5.5 0 0 1-.708.708l-5-5a.5.5 0 0 1 0-.708l5-5a.5.5 0 0 1 .708 0z" />
+                    <button id="toggleSidebar"
+                        class="fixed right-0 bg-yellow-500 text-white p-3 rounded-l-lg shadow-lg focus:outline-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor"
+                            class="bi bi-chevron-left" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M11.354 1.646a.5.5 0 0 1 0 .708L6.707 7l4.647 4.646a.5.5 0 0 1-.708.708l-5-5a.5.5 0 0 1 0-.708l5-5a.5.5 0 0 1 .708 0z" />
                         </svg>
                     </button>
 
@@ -151,42 +155,42 @@
                             </thead>
                             <tbody>
                                 @foreach ($list_mata_kuliah as $index => $mata_kuliah)
-                                <tr style="background-color: #23252A;">
-                                    <td class="px-4 py-2 border-r border-white">{{ $loop->iteration }}</td>
-                                    <td class="px-4 py-2 w-1/3 border-r border-white">{{ $mata_kuliah->kode }}</td>
-                                    <td class="px-4 py-2 w-1/3 border-r border-white">{{ $mata_kuliah->nama }}</td>
-                                    <td class="px-4 py-2 w-1/3 border-r border-white">
-                                        {{ $mata_kuliah->hari }},
-                                        {{ \Carbon\Carbon::parse($mata_kuliah->jam_mulai)->format('H:i') }} -
-                                        {{ \Carbon\Carbon::parse($mata_kuliah->jam_selesai)->format('H:i') }}
-                                    </td>
-                                    <td class="px-4 py-2 border-r border-white">
-                                        <div
-                                            class="text-white text-center items-center justify-center mx-2 my-1 rounded-md cursor-pointer bg-[#34803C] hover:bg-green-800 font-bold">
-                                            <button class="ambil-mata-kuliah" data-kode="{{ $mata_kuliah->kode }}"
-                                                data-nama="{{ $mata_kuliah->nama }}"
-                                                data-hari-jam="{{ $mata_kuliah->hari }}, {{ \Carbon\Carbon::parse($mata_kuliah->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($mata_kuliah->jam_selesai)->format('H:i') }}"
-                                                data-sks="{{ $mata_kuliah->sks }}">
-                                                Ambil
-                                            </button>
-                                        </div>
-                                    </td>
-                                    <td class="px-4 py-2 border-white">
-                                        <div
-                                            class="h-7 w-7 mx-auto rounded-lg bg-white flex justify-center items-center">
-                                            <button
-                                                class="show-details justify-center text-center text-3xl text-black font-bold focus:outline-none"
-                                                data-index="{{ $index }}">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                    fill="currentColor" class="bi bi-caret-right-fill"
-                                                    viewBox="0 0 16 16">
-                                                    <path
-                                                        d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
+                                    <tr style="background-color: #23252A;">
+                                        <td class="px-4 py-2 border-r border-white">{{ $loop->iteration }}</td>
+                                        <td class="px-4 py-2 w-1/3 border-r border-white">{{ $mata_kuliah->kode }}</td>
+                                        <td class="px-4 py-2 w-1/3 border-r border-white">{{ $mata_kuliah->nama }}</td>
+                                        <td class="px-4 py-2 w-1/3 border-r border-white">
+                                            {{ $mata_kuliah->hari }},
+                                            {{ \Carbon\Carbon::parse($mata_kuliah->jam_mulai)->format('H:i') }} -
+                                            {{ \Carbon\Carbon::parse($mata_kuliah->jam_selesai)->format('H:i') }}
+                                        </td>
+                                        <td class="px-4 py-2 border-r border-white">
+                                            <div
+                                                class="text-white text-center items-center justify-center mx-2 my-1 rounded-md cursor-pointer bg-[#34803C] hover:bg-green-800 font-bold">
+                                                <button class="ambil-mata-kuliah" data-kode="{{ $mata_kuliah->kode }}"
+                                                    data-nama="{{ $mata_kuliah->nama }}"
+                                                    data-hari-jam="{{ $mata_kuliah->hari }}, {{ \Carbon\Carbon::parse($mata_kuliah->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($mata_kuliah->jam_selesai)->format('H:i') }}"
+                                                    data-sks="{{ $mata_kuliah->sks }}">
+                                                    Ambil
+                                                </button>
+                                            </div>
+                                        </td>
+                                        <td class="px-4 py-2 border-white">
+                                            <div
+                                                class="h-7 w-7 mx-auto rounded-lg bg-white flex justify-center items-center">
+                                                <button
+                                                    class="show-details justify-center text-center text-3xl text-black font-bold focus:outline-none"
+                                                    data-index="{{ $index }}">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                        height="16" fill="currentColor"
+                                                        class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+                                                        <path
+                                                            d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -197,8 +201,7 @@
             <div id="contentIRSMahasiswa" class="hidden">
                 <div class="px-4 sm:px-6 md:px-8 pt-5 pb-10">
                     <h2 class="text-center text-lg font-semibold mb-4">IRS Mahasiswa</h2>
-                    <div
-                        class="w-full bg-[#1E1F24] opacity-65 rounded-lg border-[#49454F] border-opacity-50 border-2">
+                    <div class="w-full bg-[#1E1F24] opacity-65 rounded-lg border-[#49454F] border-opacity-50 border-2">
                         <div class="w-full lg:w-[95%] md:w-[90%] sm:w-[85%] m-4 md:m-6 bg-[#757575] rounded-lg">
                             <div class="w-full md:w-3/4 px-4 py-3">
                                 <h2 class="font-bold text-md sm:text-lg">Semester 1 | Tahun Ajaran 2022/2023 Ganjil
@@ -337,6 +340,60 @@
                         const sks = event.target.dataset.sks;
                         const buttonElement = event.target;
 
+                        // If button is in "Tabrakan" state, show conflict details
+                        if (buttonElement.innerText === 'Tabrakan') {
+                            const [hari, jam] = waktu.split(', ');
+                            const [jamMulai, jamSelesai] = jam.split(' - ');
+
+                            // Find all conflicting courses from the table
+                            const tableBody = document.querySelector('#contentPengisianIRS table tbody');
+                            const rows = tableBody.querySelectorAll('tr');
+                            const conflictingCourses = [];
+
+                            rows.forEach(row => {
+                                const rowKode = row.cells[1].innerText;
+                                const rowNama = row.cells[2].innerText;
+                                const rowWaktu = row.cells[3].innerText;
+                                const [rowHari, rowJam] = rowWaktu.split(', ');
+                                const [rowJamMulai, rowJamSelesai] = rowJam.split(' - ');
+
+                                if (hari === rowHari && isTimeOverlap(jamMulai, jamSelesai, rowJamMulai,
+                                        rowJamSelesai)) {
+                                    conflictingCourses.push({
+                                        kode: rowKode,
+                                        nama: rowNama,
+                                        waktu: rowWaktu
+                                    });
+                                }
+                            });
+
+                            // Create HTML content for the popup
+                            const conflictHTML = conflictingCourses.map(course => `
+                <div class="text-left mb-2 p-2 bg-gray-100 rounded">
+                    <div><strong>${course.kode}</strong> - ${course.nama}</div>
+                    <div class="text-sm text-gray-600">${course.waktu}</div>
+                </div>
+            `).join('');
+
+                            Swal.fire({
+                                title: 'Detail Tabrakan Jadwal',
+                                html: `
+                    <div class="mb-4">
+                        <div class="font-bold text-lg mb-2">Mata Kuliah Yang Ingin Diambil:</div>
+                        <div class="p-2 bg-red-100 rounded mb-4">
+                            <div><strong>${kode}</strong> - ${nama}</div>
+                            <div class="text-sm text-gray-600">${waktu}</div>
+                        </div>
+                        <div class="font-bold text-lg mb-2">Bertabrakan Dengan:</div>
+                        ${conflictHTML}
+                    </div>
+                `,
+                                icon: 'warning',
+                                confirmButtonText: 'Tutup'
+                            });
+                            return; // Stop further execution
+                        }
+
                         // Memisahkan hari dan jam dari data waktu
                         const [hari, jam] = waktu.split(', ');
                         const [jamMulai, jamSelesai] = jam.split(' - ');
@@ -364,7 +421,8 @@
                             }
 
                             // Mengecek apakah hari sama dan ada irisan waktu (tabrakan)
-                            if (hari === rowHari && isTimeOverlap(jamMulai, jamSelesai, rowJamMulai, rowJamSelesai)) {
+                            if (hari === rowHari && isTimeOverlap(jamMulai, jamSelesai, rowJamMulai,
+                                    rowJamSelesai)) {
                                 tabrakan = true;
                             }
                         });
@@ -385,7 +443,8 @@
                                         const canceledRow = rows[rowIndex];
                                         const canceledWaktu = canceledRow.cells[3].innerText;
                                         const [canceledHari, canceledJam] = canceledWaktu.split(', ');
-                                        const [canceledJamMulai, canceledJamSelesai] = canceledJam.split(' - ');
+                                        const [canceledJamMulai, canceledJamSelesai] = canceledJam.split(
+                                            ' - ');
 
                                         // Hapus baris dari tabel
                                         canceledRow.remove();
@@ -394,40 +453,54 @@
                                         // Ubah tombol kembali menjadi "Ambil"
                                         buttonElement.innerText = 'Ambil';
                                         buttonElement.disabled = false;
-                                        buttonElement.parentElement.classList.remove('bg-red-500', 'hover:bg-red-700');
-                                        buttonElement.parentElement.classList.add('bg-[#34803C]', 'hover:bg-green-800');
+                                        buttonElement.parentElement.classList.remove('bg-red-500',
+                                            'hover:bg-red-700');
+                                        buttonElement.parentElement.classList.add('bg-[#34803C]',
+                                            'hover:bg-green-800');
 
                                         // Periksa setiap tombol mata kuliah untuk konflik
-                                        document.querySelectorAll('.ambil-mata-kuliah').forEach(otherButton => {
-                                            if (otherButton.innerText === 'Tabrakan') {
-                                                const otherWaktu = otherButton.dataset.hariJam;
-                                                const [otherHari, otherJam] = otherWaktu.split(', ');
-                                                const [otherJamMulai, otherJamSelesai] = otherJam.split(' - ');
+                                        document.querySelectorAll('.ambil-mata-kuliah').forEach(
+                                            otherButton => {
+                                                if (otherButton.innerText === 'Tabrakan') {
+                                                    const otherWaktu = otherButton.dataset.hariJam;
+                                                    const [otherHari, otherJam] = otherWaktu.split(
+                                                    ', ');
+                                                    const [otherJamMulai, otherJamSelesai] = otherJam
+                                                        .split(' - ');
 
-                                                // Periksa apakah masih ada konflik dengan mata kuliah lain yang tersisa
-                                                let stillHasConflict = false;
-                                                rows.forEach(remainingRow => {
-                                                    // Skip the row we just removed
-                                                    if (remainingRow !== canceledRow) {
-                                                        const rowWaktu = remainingRow.cells[3].innerText;
-                                                        const [rowHari, rowJam] = rowWaktu.split(', ');
-                                                        const [rowJamMulai, rowJamSelesai] = rowJam.split(' - ');
+                                                    // Periksa apakah masih ada konflik dengan mata kuliah lain yang tersisa
+                                                    let stillHasConflict = false;
+                                                    rows.forEach(remainingRow => {
+                                                        // Skip the row we just removed
+                                                        if (remainingRow !== canceledRow) {
+                                                            const rowWaktu = remainingRow.cells[
+                                                                3].innerText;
+                                                            const [rowHari, rowJam] = rowWaktu
+                                                                .split(', ');
+                                                            const [rowJamMulai, rowJamSelesai] =
+                                                            rowJam.split(' - ');
 
-                                                        if (otherHari === rowHari && isTimeOverlap(otherJamMulai, otherJamSelesai, rowJamMulai, rowJamSelesai)) {
-                                                            stillHasConflict = true;
+                                                            if (otherHari === rowHari &&
+                                                                isTimeOverlap(otherJamMulai,
+                                                                    otherJamSelesai,
+                                                                    rowJamMulai, rowJamSelesai)
+                                                                ) {
+                                                                stillHasConflict = true;
+                                                            }
                                                         }
-                                                    }
-                                                });
+                                                    });
 
-                                                // Jika tidak ada konflik lagi, kembalikan tombol ke status "Ambil"
-                                                if (!stillHasConflict) {
-                                                    otherButton.innerText = 'Ambil';
-                                                    otherButton.disabled = false;
-                                                    otherButton.parentElement.classList.remove('bg-red-500');
-                                                    otherButton.parentElement.classList.add('bg-[#34803C]', 'hover:bg-green-800');
+                                                    // Jika tidak ada konflik lagi, kembalikan tombol ke status "Ambil"
+                                                    if (!stillHasConflict) {
+                                                        otherButton.innerText = 'Ambil';
+                                                        otherButton.disabled = false;
+                                                        otherButton.parentElement.classList.remove(
+                                                            'bg-red-500');
+                                                        otherButton.parentElement.classList.add(
+                                                            'bg-[#34803C]', 'hover:bg-green-800');
+                                                    }
                                                 }
-                                            }
-                                        });
+                                            });
 
                                         // Atur ulang nomor urut
                                         resetTableNumbering();
@@ -435,29 +508,66 @@
                                 });
                             }
                         } else if (tabrakan) {
-                            // Jadwal bentrok (tabrakan)
+                            // Find conflicting courses for initial tabrakan message
+                            const conflictingCourses = [];
+                            rows.forEach(row => {
+                                const rowKode = row.cells[1].innerText;
+                                const rowNama = row.cells[2].innerText;
+                                const rowWaktu = row.cells[3].innerText;
+                                const [rowHari, rowJam] = rowWaktu.split(', ');
+                                const [rowJamMulai, rowJamSelesai] = rowJam.split(' - ');
+
+                                if (hari === rowHari && isTimeOverlap(jamMulai, jamSelesai, rowJamMulai,
+                                        rowJamSelesai)) {
+                                    conflictingCourses.push({
+                                        kode: rowKode,
+                                        nama: rowNama,
+                                        waktu: rowWaktu
+                                    });
+                                }
+                            });
+
+                            // Create HTML content for the popup
+                            const conflictHTML = conflictingCourses.map(course => `
+                <div class="text-left mb-2 p-2 bg-gray-100 rounded">
+                    <div><strong>${course.kode}</strong> - ${course.nama}</div>
+                    <div class="text-sm text-gray-600">${course.waktu}</div>
+                </div>
+            `).join('');
+
+                            // Show initial conflict popup with details
                             Swal.fire({
                                 title: 'Jadwal Tabrakan',
-                                text: 'Mata kuliah ini memiliki jadwal yang bertabrakan dengan mata kuliah lain.',
+                                html: `
+                    <div class="mb-4">
+                        <div class="font-bold text-lg mb-2">Mata Kuliah Yang Ingin Diambil:</div>
+                        <div class="p-2 bg-red-100 rounded mb-4">
+                            <div><strong>${kode}</strong> - ${nama}</div>
+                            <div class="text-sm text-gray-600">${waktu}</div>
+                        </div>
+                        <div class="font-bold text-lg mb-2">Bertabrakan Dengan:</div>
+                        ${conflictHTML}
+                    </div>
+                `,
                                 icon: 'error',
                                 confirmButtonText: 'Tutup'
                             });
 
                             // Menambahkan keterangan "Tabrakan" pada tombol
                             buttonElement.innerText = 'Tabrakan';
-                            buttonElement.disabled = true;
+                            buttonElement.disabled = false; // Enable button so it can be clicked to show details
                             buttonElement.parentElement.classList.remove('bg-[#34803C]', 'hover:bg-green-800');
                             buttonElement.parentElement.classList.add('bg-red-500');
                         } else {
                             // Menambahkan baris ke tabel ringkasan jika tidak ada bentrok atau mata kuliah belum diambil
                             const newRow = document.createElement('tr');
                             newRow.innerHTML = `
-                                <td class="px-4 py-2 border-r border-white">${tableBody.children.length + 1}</td>
-                                <td class="px-4 py-2 border-r border-white">${kode}</td>
-                                <td class="px-4 py-2 border-r border-white">${nama}</td>
-                                <td class="px-4 py-2 border-r border-white">${waktu}</td>
-                                <td class="px-4 py-2 border-white">${sks}</td>
-                            `;
+                <td class="px-4 py-2 border-r border-white">${tableBody.children.length + 1}</td>
+                <td class="px-4 py-2 border-r border-white">${kode}</td>
+                <td class="px-4 py-2 border-r border-white">${nama}</td>
+                <td class="px-4 py-2 border-r border-white">${waktu}</td>
+                <td class="px-4 py-2 border-white">${sks}</td>
+            `;
 
                             tableBody.appendChild(newRow);
                             updateTotalSks();
@@ -474,10 +584,13 @@
                                 const [otherHari, otherJam] = otherWaktu.split(', ');
                                 const [otherJamMulai, otherJamSelesai] = otherJam.split(' - ');
 
-                                if (otherKode !== kode && otherHari === hari && isTimeOverlap(jamMulai, jamSelesai, otherJamMulai, otherJamSelesai)) {
+                                if (otherKode !== kode && otherHari === hari && isTimeOverlap(jamMulai,
+                                        jamSelesai, otherJamMulai, otherJamSelesai)) {
                                     otherButton.innerText = 'Tabrakan';
-                                    otherButton.disabled = true;
-                                    otherButton.parentElement.classList.remove('bg-[#34803C]', 'hover:bg-green-800');
+                                    otherButton.disabled =
+                                    false; // Enable button so it can be clicked to show details
+                                    otherButton.parentElement.classList.remove('bg-[#34803C]',
+                                        'hover:bg-green-800');
                                     otherButton.parentElement.classList.add('bg-red-500');
                                 }
                             });
@@ -486,7 +599,7 @@
                             resetTableNumbering();
                         }
                     });
-                    });
+                });
                 document.getElementById('toggleSidebar').addEventListener('click', () => {
                     const sidebar = document.getElementById('sksSidebar');
                     const toggleButton = document.getElementById('toggleSidebar');
