@@ -379,12 +379,12 @@
                                 // Menambahkan baris ke tabel ringkasan jika tidak ada bentrok atau mata kuliah belum diambil
                                 const newRow = document.createElement('tr');
                                 newRow.innerHTML = `
-                <td class="px-4 py-2 border-r border-white">${tableBody.children.length + 1}</td>
-                <td class="px-4 py-2 border-r border-white">${kode}</td>
-                <td class="px-4 py-2 border-r border-white">${nama}</td>
-                <td class="px-4 py-2 border-r border-white">${waktu}</td>
-                <td class="px-4 py-2 border-white">${sks}</td>
-            `;
+                                    <td class="px-4 py-2 border-r border-white">${tableBody.children.length + 1}</td>
+                                    <td class="px-4 py-2 border-r border-white">${kode}</td>
+                                    <td class="px-4 py-2 border-r border-white">${nama}</td>
+                                    <td class="px-4 py-2 border-r border-white">${waktu}</td>
+                                    <td class="px-4 py-2 border-white">${sks}</td>
+                                `;
 
                                 tableBody.appendChild(newRow);
 
