@@ -11,4 +11,8 @@ class Gedung extends Model
     protected $fillable = [
         'nama_gedung'
     ];
+    public function ruangans()
+    {
+        return $this->hasMany(Ruangan::class, 'gedung_id');
+    }
 }

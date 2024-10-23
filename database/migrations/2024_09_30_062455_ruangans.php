@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,10 +16,11 @@ return new class extends Migration
             $table->string('kode');
             $table->string('nama');
             $table->string('kapasitas');
+            // $table->unsignedBigInteger('gedung_id'); // Foreign key column
             $table->timestamps();
 
-            // Foreign key 'gedung_id' references 'id' on 'gedungs'
-            $table->foreign('gedung_id')->references('id')->on('gedungs')->onDelete('cascade');
+            // Foreign key constraint
+            // $table->foreign('gedung_id')->references('id')->on('gedungs')->onDelete('cascade');
         });
     }
 

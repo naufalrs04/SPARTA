@@ -11,7 +11,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('gedungs', function (Blueprint $table) {
-            $table->id(); // Primary key 'id', tidak perlu 'gedung_id'
+            $table->id(); // Primary key 'id'
             $table->string('nama_gedung');
             $table->timestamps();
         });

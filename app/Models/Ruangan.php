@@ -15,4 +15,9 @@ class Ruangan extends Model
         'kapasitas',
         'gedung_id',
     ];
+
+    public function gedung()
+    {
+        return $this->belongsTo(Gedung::class, 'gedung_id');
+    }
 }
