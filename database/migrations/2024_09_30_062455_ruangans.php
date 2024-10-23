@@ -16,11 +16,11 @@ return new class extends Migration
             $table->string('kode');
             $table->string('nama');
             $table->string('kapasitas');
-            // $table->unsignedBigInteger('gedung_id'); // Foreign key column
+            $table->unsignedBigInteger('gedung_id')->nullable(); // Foreign key column
             $table->timestamps();
 
             // Foreign key constraint
-            // $table->foreign('gedung_id')->references('id')->on('gedungs')->onDelete('cascade');
+            $table->foreign('gedung_id')->references('id')->on('gedungs')->onDelete('cascade');
         });
     }
 
