@@ -19,61 +19,51 @@ class ruangan extends Seeder
                 'kode' => 'R001',
                 'nama' => 'E101',
                 'kapasitas' => '50',
-                'gedung' =>'E'
             ],
             [
                 'kode' => 'R002',
                 'nama' => 'A103',
-                'kapasitas' => '50',
-                'gedung' =>'A'
+                'kapasitas' => '30',
             ],
             [
                 'kode' => 'R003',
                 'nama' => 'A104',
-                'kapasitas' => '50',
-                'gedung' =>'A'
+                'kapasitas' => '40',
             ],
             [
                 'kode' => 'R004',
                 'nama' => 'E104',
-                'kapasitas' => '50',
-                'gedung' =>'E'
+                'kapasitas' => '40',
             ],
             [
                 'kode' => 'R005',
                 'nama' => 'E105',
                 'kapasitas' => '50',
-                'gedung' =>'E'
             ],
             [
                 'kode' => 'R006',
                 'nama' => 'E302',
-                'kapasitas' => '50',
-                'gedung' =>'E'
+                'kapasitas' => '20',
             ],
             [
                 'kode' => 'R007',
                 'nama' => 'E307',
-                'kapasitas' => '50',
-                'gedung' =>'E'
+                'kapasitas' => '45',
             ],
             [
                 'kode' => 'R008',
                 'nama' => 'K102',
-                'kapasitas' => '50',
-                'gedung' =>'K'
+                'kapasitas' => '55',
             ],
             [
                 'kode' => 'R009',
                 'nama' => 'K104',
-                'kapasitas' => '50',
-                'gedung' =>'K'
+                'kapasitas' => '15',
             ],
             [
                 'kode' => 'R010',
                 'nama' => 'B103',
-                'kapasitas' => '50',
-                'gedung' =>'B'
+                'kapasitas' => '30',
             ],
         ];
 
