@@ -12,15 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         //
-        Schema::create('irs_rekap', function (Blueprint $table) {
-            $table->unsignedBigInteger('mahasiswa_id');
-            $table->unsignedBigInteger('mata_kuliah_id');
-            $table->unsignedBigInteger('ruangan_id');
+        Schema::create('irs_lempar', function (Blueprint $table) {
+            $table->unsignedBigInteger('user_id'); //Buat ambil NIM
+            $table->unsignedBigInteger('mahasiswa_id'); //Buat ambil nama mahasiswa
 
-            // Foreign key
+            $table->float('IPS_sebelumnya');
+            $table->integer('total_SKS');
+            $table->boolean('status')->nullable(); //1 disetujui, 0 ditolak
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('mahasiswa_id')->references('id')->on('mahasiswas')->onDelete('cascade');
-            $table->foreign('mata_kuliah_id')->references('id')->on('mata_kuliahs')->onDelete('cascade');
-            $table->foreign('ruangan_id')->references('id')->on('ruangans')->onDelete('cascade');
 
             $table->timestamps();
         });

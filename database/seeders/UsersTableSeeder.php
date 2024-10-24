@@ -37,9 +37,9 @@ class UsersTableSeeder extends Seeder
             ],
             [
                 'id' => 3, 
-                'email' => 'buyahamka@lecturer.sparta.ac.id', 
-                'password' => MD5('buya123'), 
-                'nama' => 'Buya Hamka',
+                'email' => 'fufufafa@lecturer.sparta.ac.id', 
+                'password' => MD5('fufufafa123'), 
+                'nama' => 'Fufu Fafa, S.Kom., M.T.',
                 'nim_nip' => '212345678910', 
                 'kp' => 0,
                 'dk' => 0, 
