@@ -19,6 +19,7 @@ class ruangan extends Seeder
                 'kode' => 'R001',
                 'nama' => 'E101',
                 'kapasitas' => '50',
+            
             ],
             [
                 'kode' => 'R002',
