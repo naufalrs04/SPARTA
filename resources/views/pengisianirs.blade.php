@@ -20,7 +20,7 @@
             z-index: 1000;
             animation: slide 3s infinite;
         }
-
+        
         #sksSidebar.show {
             right: 0px;
             opacity: 1;
@@ -197,7 +197,6 @@
                     </div>
                 </div>
             </div>
-
             <div id="contentIRSMahasiswa" class="hidden">
                 <div class="px-4 sm:px-6 md:px-8 pt-5 pb-10">
                     <h2 class="text-center text-lg font-semibold mb-4">IRS Mahasiswa</h2>
