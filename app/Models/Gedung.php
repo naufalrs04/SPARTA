@@ -5,19 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Ruangan extends Model
+class Gedung extends Model
 {
     use HasFactory;
-
     protected $fillable = [
-        'kode',
-        'nama',
-        'kapasitas',
-        'gedung_id',
+        'nama_gedung'
     ];
-
-    public function gedung()
+    public function ruangans()
     {
-        return $this->belongsTo(Gedung::class, 'gedung_id');
+        return $this->hasMany(Ruangan::class, 'gedung_id');
     }
 }

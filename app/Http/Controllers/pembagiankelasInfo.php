@@ -13,6 +13,7 @@ class pembagiankelasInfo extends Controller
             return redirect()->route('login');
         }
 
+        
         $user = Auth::user();
         
         return view('/pembagiankelasInfo', compact( 'user'));

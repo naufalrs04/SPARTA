@@ -11,6 +11,7 @@ class penyusunanjadwal extends Controller
         if (!Auth::check()) {
             return redirect()->route('login');
         }
+        
 
         $user = Auth::user();
         

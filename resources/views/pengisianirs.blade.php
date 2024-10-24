@@ -41,7 +41,8 @@
         #toggleSidebar.rotated {
             transform: rotate(180deg);
         }
-    </style>          
+    </style>
+
 </head>
 
 <body class="bg-gray-900 text-gray-100">
@@ -103,14 +104,14 @@
 
                     <!-- Sidebar Melayang -->
                     <div id="sksSidebar"
-                        class="fixed right-[-300px] bg-opacity-90 bg-yellow-600 h-auto w-64 text-white transition-all duration-300 p-4 shadow-lg rounded-lg">
+                        class="fixed right-[-300px] bg-yellow-600 h-auto w-64 text-white transition-all duration-300 p-4 shadow-lg rounded-lg">
                         <h2 class="text-xl font-bold mb-4">Total SKS Diambil</h2>
                         <div id="totalSks" class="text-4xl font-semibold">0</div>
                     </div>
 
                     <!-- Tombol untuk memperlihatkan sidebar -->
                     <button id="toggleSidebar"
-                        class="fixed right-0 bg-opacity-90 bg bg-yellow-500 text-white p-3 rounded-l-lg shadow-lg focus:outline-none">
+                        class="fixed right-0 bg-yellow-500 text-white p-3 rounded-l-lg shadow-lg focus:outline-none">
                         <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor"
                             class="bi bi-chevron-left" viewBox="0 0 16 16">
                             <path fill-rule="evenodd"
@@ -136,7 +137,7 @@
                                     </div>
                                     <input type="search" id="default-search"
                                         class="block w-full p-4 pl-10 text-sm text-white border border-gray-800 rounded-lg bg-gray-800 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        placeholder="Cari Mata Kuliah" />
+                                        placeholder="Cari mata kuliah" />
                                 </div>
                             </form>
                         </div>
@@ -175,15 +176,19 @@
                                             </div>
                                         </td>
                                         <td class="px-4 py-2 border-white">
-                                            <div class="h-7 w-7 mx-auto rounded-lg bg-white flex justify-center items-center bg-gray-200 hover:bg-gray-400">
+                                            <div
+                                                class="h-7 w-7 mx-auto rounded-lg bg-white flex justify-center items-center">
                                                 <button
-                                                    class="show-details justify-center text-center text-3xl text-black font-bold focus:outline-none rounded-lg"
+                                                    class="show-details justify-center text-center text-3xl text-black font-bold focus:outline-none"
                                                     data-index="{{ $index }}">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-                                                        <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                        height="16" fill="currentColor"
+                                                        class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+                                                        <path
+                                                            d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
                                                     </svg>
                                                 </button>
-                                            </div>                                            
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -364,29 +369,29 @@
 
                             // Create HTML content for the popup
                             const conflictHTML = conflictingCourses.map(course => `
-                                <div class="text-center mb-2 p-2 bg-gray-100 rounded">
-                                    <div><strong>${course.kode}</strong> - ${course.nama}</div>
-                                    <div class="text-sm text-gray-600">${course.waktu}</div>
-                                </div>
-                            `).join('');
+                <div class="text-left mb-2 p-2 bg-gray-100 rounded">
+                    <div><strong>${course.kode}</strong> - ${course.nama}</div>
+                    <div class="text-sm text-gray-600">${course.waktu}</div>
+                </div>
+            `).join('');
 
                             Swal.fire({
                                 title: 'Detail Tabrakan Jadwal',
                                 html: `
-                                    <div class="mb-4">
-                                        <div class="font-bold text-lg mb-2">Mata Kuliah Yang Ingin Diambil:</div>
-                                        <div class="p-2 bg-red-100 rounded mb-4">
-                                            <div><strong>${kode}</strong> - ${nama}</div>
-                                            <div class="text-sm text-gray-600">${waktu}</div>
-                                        </div>
-                                        <div class="font-bold text-lg mb-2">Bertabrakan Dengan:</div>
-                                        ${conflictHTML}
-                                    </div>
-                                `,
+                    <div class="mb-4">
+                        <div class="font-bold text-lg mb-2">Mata Kuliah Yang Ingin Diambil:</div>
+                        <div class="p-2 bg-red-100 rounded mb-4">
+                            <div><strong>${kode}</strong> - ${nama}</div>
+                            <div class="text-sm text-gray-600">${waktu}</div>
+                        </div>
+                        <div class="font-bold text-lg mb-2">Bertabrakan Dengan:</div>
+                        ${conflictHTML}
+                    </div>
+                `,
                                 icon: 'warning',
                                 confirmButtonText: 'Tutup'
                             });
-                            return; 
+                            return; // Stop further execution
                         }
 
                         // Memisahkan hari dan jam dari data waktu
@@ -524,26 +529,26 @@
 
                             // Create HTML content for the popup
                             const conflictHTML = conflictingCourses.map(course => `
-                                <div class="text-left mb-2 p-2 bg-gray-100 rounded">
-                                    <div><strong>${course.kode}</strong> - ${course.nama}</div>
-                                    <div class="text-sm text-gray-600">${course.waktu}</div>
-                                </div>
-                            `).join('');
+                <div class="text-left mb-2 p-2 bg-gray-100 rounded">
+                    <div><strong>${course.kode}</strong> - ${course.nama}</div>
+                    <div class="text-sm text-gray-600">${course.waktu}</div>
+                </div>
+            `).join('');
 
                             // Show initial conflict popup with details
                             Swal.fire({
                                 title: 'Jadwal Tabrakan',
                                 html: `
-                                    <div class="mb-4">
-                                        <div class="font-bold text-lg mb-2">Mata Kuliah Yang Ingin Diambil:</div>
-                                        <div class="p-2 bg-red-100 rounded mb-4">
-                                            <div><strong>${kode}</strong> - ${nama}</div>
-                                            <div class="text-sm text-gray-600">${waktu}</div>
-                                        </div>
-                                        <div class="font-bold text-lg mb-2">Bertabrakan Dengan:</div>
-                                        ${conflictHTML}
-                                    </div>
-                                `,
+                    <div class="mb-4">
+                        <div class="font-bold text-lg mb-2">Mata Kuliah Yang Ingin Diambil:</div>
+                        <div class="p-2 bg-red-100 rounded mb-4">
+                            <div><strong>${kode}</strong> - ${nama}</div>
+                            <div class="text-sm text-gray-600">${waktu}</div>
+                        </div>
+                        <div class="font-bold text-lg mb-2">Bertabrakan Dengan:</div>
+                        ${conflictHTML}
+                    </div>
+                `,
                                 icon: 'error',
                                 confirmButtonText: 'Tutup'
                             });
