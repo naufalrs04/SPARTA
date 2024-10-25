@@ -39,6 +39,8 @@ Route::post('/update-status', [RegistrasiController::class, 'updateStatus'])->na
 Route::get('/khs', [KHSController::class, 'index'])->middleware('auth')->name('khs');
 
 Route::get('/pengisianirs', [PengisianIRS::class, 'index'])->middleware('auth')->name('pengisianirs');
+Route::post('/irs-rekap/store', [PengisianIRS::class, 'store'])->name('irs-rekap.store');
+Route::post('/irs-rekap/delete', [PengisianIRS::class, 'delete'])->name('irs-rekap.delete');
 
 Route::get('/dashboardMahasiswa', [DashboardMahasiswaController::class, 'index'])->middleware('auth') ->name('dashboardMahasiswa');
 
@@ -89,4 +91,3 @@ Route::get('/search-mata-kuliah', [PengisianIRS::class, 'searchMataKuliah'])->na
 Route::get('/profile', function () {
     return view('profile');
 })->name('profile');
-
