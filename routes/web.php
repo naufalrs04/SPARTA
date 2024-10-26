@@ -38,7 +38,10 @@ Route::post('/update-status', [RegistrasiController::class, 'updateStatus'])->na
 
 Route::get('/khs', [KHSController::class, 'index'])->middleware('auth')->name('khs');
 
+// Route untuk index
 Route::get('/pengisianirs', [PengisianIRS::class, 'index'])->middleware('auth')->name('pengisianirs');
+
+
 Route::post('/irs-rekap/store', [PengisianIRS::class, 'store'])->name('irs-rekap.store');
 Route::post('/irs-rekap/delete', [PengisianIRS::class, 'delete'])->name('irs-rekap.delete');
 

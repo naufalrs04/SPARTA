@@ -84,7 +84,20 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Data akan ditambahkan di sini -->
+                            
+                            @foreach ($irs_rekap as $rekap)
+                            <tr style="background-color: #23252A;">
+                                <td class="px-4 py-2 border-r border-white">{{ $loop->iteration }}</td>
+                                <td class="px-4 py-2 w-1/3 border-r border-white">{{ $rekap->kode }}</td>
+                                <td class="px-4 py-2 w-1/3 border-r border-white">{{ $rekap->nama }}</td>
+                                <td class="px-4 py-2 w-1/3 border-r border-white">
+                                    {{ $rekap->hari }},
+                                    {{ \Carbon\Carbon::parse($rekap->jam_mulai)->format('H:i') }} -
+                                    {{ \Carbon\Carbon::parse($rekap->jam_selesai)->format('H:i') }}
+                                </td>
+                                <td class="px-4 py-2 border-white">{{ $rekap->sks }}</td>
+                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
 
@@ -171,12 +184,15 @@
                                             <input type="hidden" name="mata_kuliah_id" value="{{ $mata_kuliah->id }}">
                                             <input type="hidden" name="ruangan_id" value="1"> <!-- Ganti dengan ID ruangan sesuai kebutuhan -->
                                             <div class="text-white text-center items-center justify-center mx-2 my-1 rounded-md cursor-pointer bg-[#34803C] hover:bg-green-800 font-bold">
-                                                <button class="ambil-mata-kuliah" data-kode="{{ $mata_kuliah->kode }}"
+                                                <button class="ambil-mata-kuliah"
+                                                    data-kode="{{ $mata_kuliah->kode }}"
                                                     data-nama="{{ $mata_kuliah->nama }}"
                                                     data-hari-jam="{{ $mata_kuliah->hari }}, {{ \Carbon\Carbon::parse($mata_kuliah->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($mata_kuliah->jam_selesai)->format('H:i') }}"
-                                                    data-sks="{{ $mata_kuliah->sks }}" type="submit">
+                                                    data-sks="{{ $mata_kuliah->sks }}"
+                                                    type="submit">
                                                     Ambil
                                                 </button>
+                                               
                                             </div>
                                         </form>
 
@@ -240,34 +256,148 @@
                 </div>
             </div>
 
-            <script> 
+            <script>
+                // Update the event listener for form submission
                 document.querySelectorAll('form').forEach(form => {
                     form.addEventListener('submit', function(event) {
-                        event.preventDefault(); // Prevent the default form submission
+                        event.preventDefault();
 
-                        const formData = new FormData(this); // Create a FormData object from the form
+                        // Get the button that was clicked
+                        const button = event.submitter;
+                        const kode = button.getAttribute('data-kode');
+                        const nama = button.getAttribute('data-nama');
+                        const hariJam = button.getAttribute('data-hari-jam');
+                        const sks = button.getAttribute('data-sks');
 
-                        // Send the form data using fetch API
-                        fetch(this.action, {
-                            method: 'POST',
-                            body: formData,
-                            headers: {
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}', // Include CSRF token for Laravel
-                            },
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            // Handle success response
-                            console.log('Success:', data);
-                            // Optionally update the UI or show a success message
-                            updateTotalSks(); // Update total SKS if necessary
-                        })
-                        .catch((error) => {
-                            console.error('Error:', error);
-                            // Optionally show an error message
+                        // Show confirmation dialog
+                        Swal.fire({
+                            title: 'Konfirmasi Pengambilan Mata Kuliah',
+                            html: `
+                <div class="text-left">
+                    <p class="mb-2"><strong>Kode:</strong> ${kode}</p>
+                    <p class="mb-2"><strong>Mata Kuliah:</strong> ${nama}</p>
+                    <p class="mb-2"><strong>Jadwal:</strong> ${hariJam}</p>
+                    <p class="mb-2"><strong>SKS:</strong> ${sks}</p>
+                </div>
+                <p class="mt-4">Apakah Anda yakin ingin mengambil mata kuliah ini?</p>
+            `,
+                            icon: 'question',
+                            showCancelButton: true,
+                            confirmButtonColor: '#34803C',
+                            cancelButtonColor: '#880000',
+                            confirmButtonText: 'Ya, Ambil',
+                            cancelButtonText: 'Batal',
+                            reverseButtons: true
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                const formData = new FormData(form);
+
+                                // Send the form data using fetch API
+                                fetch(form.action, {
+                                        method: 'POST',
+                                        body: formData,
+                                        headers: {
+                                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                                            'Accept': 'application/json',
+                                            'X-Requested-With': 'XMLHttpRequest'
+                                        },
+                                    })
+                                    .then(response => {
+                                        if (!response.ok) {
+                                            return response.json().then(err => Promise.reject(err));
+                                        }
+                                        return response.json();
+                                    })
+                                    .then(data => {
+                                        if (data.success) {
+                                            Swal.fire({
+                                                title: 'Berhasil!',
+                                                text: 'Mata kuliah berhasil ditambahkan',
+                                                icon: 'success',
+                                                timer: 1500,
+                                                showConfirmButton: false
+                                            }).then(() => {
+                                                // Reload halaman setelah sukses
+                                                window.location.reload();
+                                            });
+                                        } else {
+                                            throw new Error(data.message || 'Terjadi kesalahan');
+                                        }
+                                    })
+                                    .catch((error) => {
+                                        console.error('Error:', error);
+
+                                        let errorMessage = 'Terjadi kesalahan saat menambahkan mata kuliah';
+
+                                        // Handle different types of errors
+                                        if (error.errors) {
+                                            // Validation errors
+                                            errorMessage = Object.values(error.errors).flat().join('\n');
+                                        } else if (error.message) {
+                                            errorMessage = error.message;
+                                        }
+
+                                        // Check if the error indicates a duplicate entry
+                                        if (errorMessage.toLowerCase().includes('duplicate') ||
+                                            errorMessage.toLowerCase().includes('already exists')) {
+                                            errorMessage = 'Mata kuliah ini sudah diambil sebelumnya';
+                                        }
+
+                                        Swal.fire({
+                                            title: 'Peringatan',
+                                            text: errorMessage,
+                                            icon: 'warning'
+                                        }).then(() => {
+                                            // Reload anyway if it might have been successful
+                                            if (errorMessage.includes('sudah diambil')) {
+                                                window.location.reload();
+                                            }
+                                        });
+                                    });
+                            }
                         });
                     });
                 });
+
+
+
+                // Function to update the summary table
+                function updateSummaryTable(course) {
+                    const summaryTable = document.querySelector('table:first-of-type tbody');
+                    const rowCount = summaryTable.rows.length + 1;
+
+                    const newRow = summaryTable.insertRow();
+                    newRow.style.backgroundColor = '#23252A';
+
+                    // Insert cells
+                    const cellNo = newRow.insertCell();
+                    const cellKode = newRow.insertCell();
+                    const cellNama = newRow.insertCell();
+                    const cellWaktu = newRow.insertCell();
+                    const cellSks = newRow.insertCell();
+
+                    // Add classes and content
+                    [cellNo, cellKode, cellNama, cellWaktu, cellSks].forEach(cell => {
+                        cell.className = 'px-4 py-2 border-r border-white';
+                    });
+
+                    cellNo.textContent = rowCount;
+                    cellKode.textContent = course.kode;
+                    cellNama.textContent = course.nama;
+                    cellWaktu.textContent = course.waktu;
+                    cellSks.textContent = course.sks;
+                }
+
+                // Function to update total SKS
+                function updateTotalSks(newSks) {
+                    const totalSksElement = document.getElementById('totalSks');
+                    const currentTotal = parseInt(totalSksElement.textContent);
+                    totalSksElement.textContent = (currentTotal + newSks).toString();
+
+                    // Show the SKS sidebar if it's not already visible
+                    const sksSidebar = document.getElementById('sksSidebar');
+                    sksSidebar.classList.add('show');
+                }
 
                 // switch pengisian irs - irs mahasiswa
                 function switchIRS(selected) {
@@ -302,16 +432,16 @@
 
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
-                const courseDetails = @json($list_mata_kuliah);
-                
-                document.querySelectorAll('.show-details').forEach((button) => {
-                    button.addEventListener('click', () => {
-                        const index = button.getAttribute('data-index');
-                        const details = courseDetails[index];
+                    const courseDetails = @json($list_mata_kuliah);
 
-            Swal.fire({
-                title: `<strong>Detail Mata Kuliah</strong>`,
-                html: `
+                    document.querySelectorAll('.show-details').forEach((button) => {
+                        button.addEventListener('click', () => {
+                            const index = button.getAttribute('data-index');
+                            const details = courseDetails[index];
+
+                            Swal.fire({
+                                title: `<strong>Detail Mata Kuliah</strong>`,
+                                html: `
                     <div class="text-left space-y-4">
                         <div>
                             <h2 class="font-bold mb-1">Nama Mata Kuliah :</h2>
@@ -357,15 +487,15 @@
                         </div>
                     </div>
                 `,
-                confirmButtonText: 'Tutup',
-                focusConfirm: false,
-                customClass: {
-                    popup: 'swal-popup-custom'
-                }
-            });
-        });
-    });
-}); 
+                                confirmButtonText: 'Tutup',
+                                focusConfirm: false,
+                                customClass: {
+                                    popup: 'swal-popup-custom'
+                                }
+                            });
+                        });
+                    });
+                });
             </script>
 
             <!-- search bar -->
@@ -388,6 +518,9 @@
                     });
                 });
             </script>
+
+           
+
 </body>
 
 </html>
