@@ -104,14 +104,14 @@
 
                     <!-- Sidebar Melayang -->
                     <div id="sksSidebar"
-                        class="fixed right-[-300px] bg-yellow-600 h-auto w-64 text-white transition-all duration-300 p-4 shadow-lg rounded-lg">
+                        class="fixed right-[-300px] bg-opacity-90 bg-yellow-600 h-auto w-64 text-white transition-all duration-300 p-4 shadow-lg rounded-lg">
                         <h2 class="text-xl font-bold mb-4">Total SKS Diambil</h2>
                         <div id="totalSks" class="text-4xl font-semibold">0</div>
                     </div>
 
                     <!-- Tombol untuk memperlihatkan sidebar -->
                     <button id="toggleSidebar"
-                        class="fixed right-0 bg-yellow-500 text-white p-3 rounded-l-lg shadow-lg focus:outline-none">
+                        class="fixed right-0  bg-opacity-90 bg-yellow-500 text-white p-3 rounded-l-lg shadow-lg focus:outline-none">
                         <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor"
                             class="bi bi-chevron-left" viewBox="0 0 16 16">
                             <path fill-rule="evenodd"
@@ -369,25 +369,25 @@
 
                             // Create HTML content for the popup
                             const conflictHTML = conflictingCourses.map(course => `
-                <div class="text-left mb-2 p-2 bg-gray-100 rounded">
-                    <div><strong>${course.kode}</strong> - ${course.nama}</div>
-                    <div class="text-sm text-gray-600">${course.waktu}</div>
-                </div>
-            `).join('');
+                                <div class="text-centerS mb-2 p-2 bg-gray-100 rounded">
+                                    <div><strong>${course.kode}</strong> - ${course.nama}</div>
+                                    <div class="text-sm text-gray-600">${course.waktu}</div>
+                                </div>
+                            `).join('');
 
                             Swal.fire({
                                 title: 'Detail Tabrakan Jadwal',
                                 html: `
-                    <div class="mb-4">
-                        <div class="font-bold text-lg mb-2">Mata Kuliah Yang Ingin Diambil:</div>
-                        <div class="p-2 bg-red-100 rounded mb-4">
-                            <div><strong>${kode}</strong> - ${nama}</div>
-                            <div class="text-sm text-gray-600">${waktu}</div>
-                        </div>
-                        <div class="font-bold text-lg mb-2">Bertabrakan Dengan:</div>
-                        ${conflictHTML}
-                    </div>
-                `,
+                                    <div class="mb-4">
+                                        <div class="font-bold text-lg mb-2">Mata Kuliah Yang Ingin Diambil:</div>
+                                        <div class="p-2 bg-red-100 rounded mb-4">
+                                            <div><strong>${kode}</strong> - ${nama}</div>
+                                            <div class="text-sm text-gray-600">${waktu}</div>
+                                        </div>
+                                        <div class="font-bold text-lg mb-2">Bertabrakan Dengan:</div>
+                                        ${conflictHTML}
+                                    </div>
+                                `,
                                 icon: 'warning',
                                 confirmButtonText: 'Tutup'
                             });
@@ -529,26 +529,26 @@
 
                             // Create HTML content for the popup
                             const conflictHTML = conflictingCourses.map(course => `
-                <div class="text-left mb-2 p-2 bg-gray-100 rounded">
-                    <div><strong>${course.kode}</strong> - ${course.nama}</div>
-                    <div class="text-sm text-gray-600">${course.waktu}</div>
-                </div>
-            `).join('');
+                                <div class="text-center mb-2 p-2 bg-gray-100 rounded">
+                                    <div><strong>${course.kode}</strong> - ${course.nama}</div>
+                                    <div class="text-sm text-gray-600">${course.waktu}</div>
+                                </div>
+                            `).join('');
 
                             // Show initial conflict popup with details
                             Swal.fire({
                                 title: 'Jadwal Tabrakan',
                                 html: `
-                    <div class="mb-4">
-                        <div class="font-bold text-lg mb-2">Mata Kuliah Yang Ingin Diambil:</div>
-                        <div class="p-2 bg-red-100 rounded mb-4">
-                            <div><strong>${kode}</strong> - ${nama}</div>
-                            <div class="text-sm text-gray-600">${waktu}</div>
-                        </div>
-                        <div class="font-bold text-lg mb-2">Bertabrakan Dengan:</div>
-                        ${conflictHTML}
-                    </div>
-                `,
+                                    <div class="mb-4">
+                                        <div class="font-bold text-lg mb-2">Mata Kuliah Yang Ingin Diambil:</div>
+                                        <div class="p-2 bg-red-100 rounded mb-4">
+                                            <div><strong>${kode}</strong> - ${nama}</div>
+                                            <div class="text-sm text-gray-600">${waktu}</div>
+                                        </div>
+                                        <div class="font-bold text-lg mb-2">Bertabrakan Dengan:</div>
+                                        ${conflictHTML}
+                                    </div>
+                                `,
                                 icon: 'error',
                                 confirmButtonText: 'Tutup'
                             });
