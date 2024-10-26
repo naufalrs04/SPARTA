@@ -386,8 +386,8 @@
                             row.style.display = 'none'; // Hide the row if it doesn't match
                         }
                     });
-                });
-            </script>
+                }); 
+    </script>
 </body>
 
 </html>
