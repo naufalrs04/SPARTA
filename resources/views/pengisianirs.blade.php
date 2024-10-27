@@ -8,6 +8,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
         #sksSidebar {
             opacity: 0;
@@ -81,6 +82,7 @@
                                 <th class="px-4 py-2 w-1/3 border-r border-white">Mata Kuliah</th>
                                 <th class="px-4 py-2 w-1/3 border-r border-white">Waktu</th>
                                 <th class="px-4 py-2 w-1/3 rounded-tr-lg">SKS</th>
+                                <th class="px-4 py-2 w-1/3 rounded-tr-lg">Batalkan</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -96,6 +98,13 @@
                                         {{ \Carbon\Carbon::parse($rekap->jam_selesai)->format('H:i') }}
                                     </td>
                                     <td class="px-4 py-2 border-white">{{ $rekap->sks }}</td>
+                                    <td class="px-4 py-2 border-white">
+                                        <button class="cancel-course bg-red-500 text-white px-2 py-1 rounded" 
+                                                data-id="{{ $rekap->mata_kuliah_id }}" 
+                                                data-sks="{{ $rekap->sks }}">
+                                            Batalkan
+                                        </button>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -344,7 +353,7 @@
 
                                         if (error.errors) {
                                             errorMessage = Object.values(error.errors).flat().join(
-                                                '\n');
+                                            '\n');
                                         } else if (error.message) {
                                             errorMessage = error.message;
                                         }
@@ -381,6 +390,9 @@
         <td class="px-4 py-2 w-1/3 border-r border-white">${course.nama}</td>
         <td class="px-4 py-2 w-1/3 border-r border-white">${course.waktu}</td>
         <td class="px-4 py-2 border-white">${course.sks}</td>
+        <td class="px-4 py-2 border-white">
+            <button class="cancel-course bg-red-500 text-white px-2 py-1 rounded">Batalkan</button>
+        </td>
     `;
 
                     summaryTable.appendChild(newRow);
@@ -574,8 +586,114 @@
                     });
                 });
             </script>
-
             
+            <script>
+               document.addEventListener('DOMContentLoaded', function() {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+    // Initialize listeners for cancel buttons
+    initializeCancelButtons();
+    // Initialize the SKS sidebar
+    calculateInitialTotalSKS();
+    initializeSKSSidebar();
+
+    function initializeCancelButtons() {
+        document.querySelectorAll('.cancel-course').forEach(button => {
+            button.addEventListener('click', handleCancelClick);
+        });
+    }
+
+    function handleCancelClick(event) {
+        const button = event.currentTarget;
+        const row = button.closest('tr');
+        const courseId = button.getAttribute('data-id');
+        const sks = parseInt(button.getAttribute('data-sks'));
+
+        Swal.fire({
+            title: 'Konfirmasi Pembatalan',
+            text: 'Apakah Anda yakin ingin membatalkan mata kuliah ini?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Ya, Batalkan!',
+            cancelButtonText: 'Tidak'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                cancelCourse(courseId, row, sks);
+            }
+        });
+    }
+
+    function cancelCourse(courseId, row, sks) {
+    fetch('/irs-rekap/destroy', {
+        method: 'DELETE',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({ 
+            id: courseId  // Pastikan ini sesuai dengan mata_kuliah_id yang ingin dihapus
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            row.remove();
+            updateTotalSKSAfterCancel(sks);
+            reorderTableRows();
+            
+            Swal.fire({
+                title: 'Berhasil!',
+                text: 'Mata kuliah berhasil dibatalkan',
+                icon: 'success',
+                timer: 1500,
+                showConfirmButton: false
+            });
+        } else {
+            throw new Error(data.message || 'Gagal membatalkan mata kuliah');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        Swal.fire({
+            title: 'Error!',
+            text: error.message || 'Gagal membatalkan mata kuliah. Silakan coba lagi.',
+            icon: 'error'
+        });
+    });
+}
+
+    function updateTotalSKSAfterCancel(canceledSKS) {
+        const totalSksElement = document.getElementById('totalSks');
+        const currentTotal = parseInt(totalSksElement.textContent || '0');
+        const newTotal = Math.max(0, currentTotal - canceledSKS);
+        totalSksElement.textContent = newTotal;
+
+        if (newTotal === 0) {
+            document.getElementById('sksSidebar').classList.remove('show');
+        }
+    }
+
+    function reorderTableRows() {
+        const tbody = document.querySelector('table:first-of-type tbody');
+        Array.from(tbody.rows).forEach((row, index) => {
+            row.cells[0].textContent = index + 1;
+        });
+    }
+
+    function initializeSKSSidebar() {
+        const toggleButton = document.getElementById('toggleSidebar');
+        const sidebar = document.getElementById('sksSidebar');
+        
+        toggleButton.addEventListener('click', () => {
+            sidebar.classList.toggle('show');
+            toggleButton.classList.toggle('rotated');
+        });
+    }
+});
+            </script>
 </body>
 
 </html>
