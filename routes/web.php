@@ -43,8 +43,6 @@ Route::get('/pengisianirs', [PengisianIRS::class, 'index'])->middleware('auth')-
 
 
 Route::post('/irs-rekap/store', [PengisianIRS::class, 'store'])->name('irs-rekap.store');
-
-// In web.php or api.php
 Route::delete('/irs-rekap/destroy', [PengisianIRS::class, 'destroy'])->name('irs-rekap.destroy');
 
 Route::get('/dashboardMahasiswa', [DashboardMahasiswaController::class, 'index'])->middleware('auth') ->name('dashboardMahasiswa');

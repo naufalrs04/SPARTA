@@ -81,31 +81,30 @@
                                 <th class="px-4 py-2 w-1/3 border-r border-white">Kode MK</th>
                                 <th class="px-4 py-2 w-1/3 border-r border-white">Mata Kuliah</th>
                                 <th class="px-4 py-2 w-1/3 border-r border-white">Waktu</th>
-                                <th class="px-4 py-2 w-1/3 rounded-tr-lg">SKS</th>
-                                <th class="px-4 py-2 w-1/3 rounded-tr-lg">Batalkan</th>
+                                <th class="px-4 py-2 w-1/3 border-r border-white">SKS</th>
+                                <th class="px-4 py-2 rounded-tr-lg">Batalkan</th>
                             </tr>
                         </thead>
                         <tbody>
-
                             @foreach ($irs_rekap as $rekap)
-                                <tr style="background-color: #23252A;">
-                                    <td class="px-4 py-2 border-r border-white">{{ $loop->iteration }}</td>
-                                    <td class="px-4 py-2 w-1/3 border-r border-white">{{ $rekap->kode }}</td>
-                                    <td class="px-4 py-2 w-1/3 border-r border-white">{{ $rekap->nama }}</td>
-                                    <td class="px-4 py-2 w-1/3 border-r border-white">
-                                        {{ $rekap->hari }},
-                                        {{ \Carbon\Carbon::parse($rekap->jam_mulai)->format('H:i') }} -
-                                        {{ \Carbon\Carbon::parse($rekap->jam_selesai)->format('H:i') }}
-                                    </td>
-                                    <td class="px-4 py-2 border-white">{{ $rekap->sks }}</td>
-                                    <td class="px-4 py-2 border-white">
-                                        <button class="cancel-course bg-red-500 text-white px-2 py-1 rounded" 
-                                                data-id="{{ $rekap->mata_kuliah_id }}" 
-                                                data-sks="{{ $rekap->sks }}">
-                                            Batalkan
-                                        </button>
-                                    </td>
-                                </tr>
+                            <tr style="background-color: #23252A;">
+                                <td class="px-4 py-2 border-r border-white">{{ $loop->iteration }}</td>
+                                <td class="px-4 py-2 w-1/3 border-r border-white">{{ $rekap->kode }}</td>
+                                <td class="px-4 py-2 w-1/3 border-r border-white">{{ $rekap->nama }}</td>
+                                <td class="px-4 py-2 w-1/3 border-r border-white">
+                                    {{ $rekap->hari }},
+                                    {{ \Carbon\Carbon::parse($rekap->jam_mulai)->format('H:i') }} -
+                                    {{ \Carbon\Carbon::parse($rekap->jam_selesai)->format('H:i') }}
+                                </td>
+                                <td class="px-4 py-2 w-1/3 border-r border-white">{{ $rekap->sks }}</td>
+                                <td class="px-4 py-2 border-white">
+                                    <button class="cancel-course bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded"
+                                        data-id="{{ $rekap->mata_kuliah_id }}"
+                                        data-sks="{{ $rekap->sks }}">
+                                        Batalkan
+                                    </button>
+                                </td>
+                            </tr>
                             @endforeach
                         </tbody>
                     </table>
@@ -142,7 +141,6 @@
                         </svg>
                     </button>
 
-
                     <div class="py-7">
                         <h2 class="text-center text-lg font-semibold my-5">List Mata Kuliah</h2>
                         <div class="flex justify-between items-center pb-7">
@@ -178,52 +176,50 @@
                             </thead>
                             <tbody>
                                 @foreach ($list_mata_kuliah as $index => $mata_kuliah)
-                                    <tr style="background-color: #23252A;">
-                                        <td class="px-4 py-2 border-r border-white">{{ $loop->iteration }}</td>
-                                        <td class="px-4 py-2 w-1/3 border-r border-white">{{ $mata_kuliah->kode }}</td>
-                                        <td class="px-4 py-2 w-1/3 border-r border-white">{{ $mata_kuliah->nama }}</td>
-                                        <td class="px-4 py-2 w-1/3 border-r border-white">
-                                            {{ $mata_kuliah->hari }},
-                                            {{ \Carbon\Carbon::parse($mata_kuliah->jam_mulai)->format('H:i') }} -
-                                            {{ \Carbon\Carbon::parse($mata_kuliah->jam_selesai)->format('H:i') }}
-                                        </td>
-                                        <td class="px-4 py-2 border-r border-white">
-                                            <form action="{{ route('irs-rekap.store') }}" method="POST">
-                                                @csrf
-                                                <input type="hidden" name="mata_kuliah_id"
-                                                    value="{{ $mata_kuliah->id }}">
-                                                <input type="hidden" name="ruangan_id" value="1">
-                                                <!-- Ganti dengan ID ruangan sesuai kebutuhan -->
-                                                <div
-                                                    class="text-white text-center items-center justify-center mx-2 my-1 rounded-md cursor-pointer bg-[#34803C] hover:bg-green-800 font-bold">
-                                                    <button class="ambil-mata-kuliah"
-                                                        data-kode="{{ $mata_kuliah->kode }}"
-                                                        data-nama="{{ $mata_kuliah->nama }}"
-                                                        data-hari-jam="{{ $mata_kuliah->hari }}, {{ \Carbon\Carbon::parse($mata_kuliah->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($mata_kuliah->jam_selesai)->format('H:i') }}"
-                                                        data-sks="{{ $mata_kuliah->sks }}" type="submit">
-                                                        Ambil
-                                                    </button>
-
-                                                </div>
-                                            </form>
-
-                                        </td>
-                                        <td class="px-4 py-2 border-white">
+                                <tr style="background-color: #23252A;">
+                                    <td class="px-4 py-2 border-r border-white">{{ $loop->iteration }}</td>
+                                    <td class="px-4 py-2 w-1/3 border-r border-white">{{ $mata_kuliah->kode }}</td>
+                                    <td class="px-4 py-2 w-1/3 border-r border-white">{{ $mata_kuliah->nama }}</td>
+                                    <td class="px-4 py-2 w-1/3 border-r border-white">
+                                        {{ $mata_kuliah->hari }},
+                                        {{ \Carbon\Carbon::parse($mata_kuliah->jam_mulai)->format('H:i') }} -
+                                        {{ \Carbon\Carbon::parse($mata_kuliah->jam_selesai)->format('H:i') }}
+                                    </td>
+                                    <td class="px-4 py-2 border-r border-white">
+                                        <form action="{{ route('irs-rekap.store') }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="mata_kuliah_id"
+                                                value="{{ $mata_kuliah->id }}">
+                                            <input type="hidden" name="ruangan_id" value="1">
                                             <div
-                                                class="h-7 w-7 mx-auto rounded-lg bg-white flex justify-center items-center">
-                                                <button
-                                                    class="show-details justify-center text-center text-3xl text-black font-bold focus:outline-none"
-                                                    data-index="{{ $index }}">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16"
-                                                        height="16" fill="currentColor"
-                                                        class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-                                                        <path
-                                                            d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
-                                                    </svg>
+                                                class="text-white text-center items-center justify-center mx-2 my-1 rounded-md cursor-pointer bg-[#34803C] hover:bg-green-800 font-bold">
+                                                <button class="ambil-mata-kuliah"
+                                                    data-kode="{{ $mata_kuliah->kode }}"
+                                                    data-nama="{{ $mata_kuliah->nama }}"
+                                                    data-hari-jam="{{ $mata_kuliah->hari }}, {{ \Carbon\Carbon::parse($mata_kuliah->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($mata_kuliah->jam_selesai)->format('H:i') }}"
+                                                    data-sks="{{ $mata_kuliah->sks }}" type="submit">
+                                                    Ambil
                                                 </button>
                                             </div>
-                                        </td>
-                                    </tr>
+                                        </form>
+
+                                    </td>
+                                    <td class="px-4 py-2 border-white">
+                                        <div
+                                            class="h-7 w-7 mx-auto rounded-lg bg-white flex justify-center items-center">
+                                            <button
+                                                class="show-details justify-center text-center text-3xl text-black font-bold focus:outline-none"
+                                                data-index="{{ $index }}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                    height="16" fill="currentColor"
+                                                    class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -267,6 +263,130 @@
                 </div>
             </div>
 
+            <!-- search bar -->
+            <script>
+                document.getElementById('default-search').addEventListener('input', function() {
+                    const searchTerm = this.value.toLowerCase();
+                    const rows = document.querySelectorAll('table[name="tabel_jadwal"] tbody tr');
+
+                    rows.forEach(row => {
+                        const courseName = row.querySelector('td:nth-child(3)').innerText
+                            .toLowerCase(); // Assuming 3rd column has course name
+                        const courseCode = row.querySelector('td:nth-child(2)').innerText
+                            .toLowerCase(); // Assuming 2nd column has course code
+
+                        if (courseName.includes(searchTerm) || courseCode.includes(searchTerm)) {
+                            row.style.display = ''; // Show the row if it matches
+                        } else {
+                            row.style.display = 'none'; // Hide the row if it doesn't match
+                        }
+                    });
+                });
+            </script>
+
+            <!-- change content irs mahasiswa -->
+            <script>
+                // switch pengisian irs - irs mahasiswa
+                function switchIRS(selected) {
+                    // Elements for tabs
+                    const pengisianIRS = document.getElementById('pengisianIRS');
+                    const irsMahasiswa = document.getElementById('irsMahasiswa');
+
+                    // Elements for content
+                    const contentPengisianIRS = document.getElementById('contentPengisianIRS');
+                    const contentIRSMahasiswa = document.getElementById('contentIRSMahasiswa');
+
+                    // Switch active tab and color
+                    if (selected === 'pengisianIRS') {
+                        // console.log("Switching to Pengisian IRS");
+                        pengisianIRS.classList.add('bg-yellow-500', 'border-[#17181C]');
+                        irsMahasiswa.classList.remove('bg-yellow-500', 'border-[#17181C]');
+
+                        // Show Pengisian IRS content and hide IRS Mahasiswa content
+                        contentPengisianIRS.classList.remove('hidden');
+                        contentIRSMahasiswa.classList.add('hidden');
+                    } else if (selected === 'irsMahasiswa') {
+                        // console.log("Switching to IRS Mahasiswa");
+                        irsMahasiswa.classList.add('bg-yellow-500', 'border-[#17181C]');
+                        pengisianIRS.classList.remove('bg-yellow-500', 'border-[#17181C]');
+
+                        // Show IRS Mahasiswa content and hide Pengisian IRS content
+                        contentIRSMahasiswa.classList.remove('hidden');
+                        contentPengisianIRS.classList.add('hidden');
+                    }
+                }
+            </script>
+
+            <!-- show details info matkul -->
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const courseDetails = @json($list_mata_kuliah);
+
+                    document.querySelectorAll('.show-details').forEach((button) => {
+                        button.addEventListener('click', () => {
+                            const index = button.getAttribute('data-index');
+                            const details = courseDetails[index];
+
+                            Swal.fire({
+                                title: `<strong>Detail Mata Kuliah</strong>`,
+                                html: `
+                                        <div class="text-left space-y-4">
+                                            <div>
+                                                <h2 class="font-bold mb-1">Nama Mata Kuliah :</h2>
+                                                <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                                    <h2 class="ml-5 text-black font-bold">${details.nama}</h2>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h2 class="font-bold mb-1">Kode Mata Kuliah :</h2>
+                                                <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                                    <h2 class="ml-5 text-black font-bold">${details.kode}</h2>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h2 class="font-bold mb-1">SKS :</h2>
+                                                <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                                    <h2 class="ml-5 text-black font-bold">${details.sks}</h2>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h2 class="font-bold mb-1">Jadwal :</h2>
+                                                <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                                    <h2 class="ml-5 text-black font-bold">${details.jadwal}</h2>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h2 class="font-bold mb-1">Ruangan :</h2>
+                                                <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                                    <h2 class="ml-5 text-black font-bold">${details.nama_ruangan}</h2>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h2 class="font-bold mb-1">Kapasitas:</h2>
+                                                <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                                    <h2 class="ml-5 text-black font-bold">${details.kapasitas_ruangan}</h2>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h2 class="font-bold mb-1">Dosen Pengampu :</h2>
+                                                <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                                    <h2 class="ml-5 text-black font-bold">"Belum database"</h2>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `,
+                                confirmButtonText: 'Tutup',
+                                focusConfirm: false,
+                                customClass: {
+                                    popup: 'swal-popup-custom'
+                                }
+                            });
+                        });
+                    });
+                });
+            </script>
+
+
             <script>
                 // Update the event listener for form submission
                 document.querySelectorAll('form').forEach(form => {
@@ -284,14 +404,14 @@
                         Swal.fire({
                             title: 'Konfirmasi Pengambilan Mata Kuliah',
                             html: `
-                <div class="text-left">
-                    <p class="mb-2"><strong>Kode:</strong> ${kode}</p>
-                    <p class="mb-2"><strong>Mata Kuliah:</strong> ${nama}</p>
-                    <p class="mb-2"><strong>Jadwal:</strong> ${hariJam}</p>
-                    <p class="mb-2"><strong>SKS:</strong> ${sks}</p>
-                </div>
-                <p class="mt-4">Apakah Anda yakin ingin mengambil mata kuliah ini?</p>
-            `,
+                            <div class="text-left">
+                                <p class="mb-2"><strong>Kode:</strong> ${kode}</p>
+                                <p class="mb-2"><strong>Mata Kuliah:</strong> ${nama}</p>
+                                <p class="mb-2"><strong>Jadwal:</strong> ${hariJam}</p>
+                                <p class="mb-2"><strong>SKS:</strong> ${sks}</p>
+                            </div>
+                            <p class="mt-4">Apakah Anda yakin ingin mengambil mata kuliah ini?</p>
+                        `,
                             icon: 'question',
                             showCancelButton: true,
                             confirmButtonColor: '#34803C',
@@ -353,7 +473,7 @@
 
                                         if (error.errors) {
                                             errorMessage = Object.values(error.errors).flat().join(
-                                            '\n');
+                                                '\n');
                                         } else if (error.message) {
                                             errorMessage = error.message;
                                         }
@@ -385,15 +505,15 @@
 
                     // Create the row content
                     newRow.innerHTML = `
-        <td class="px-4 py-2 border-r border-white">${rowNumber}</td>
-        <td class="px-4 py-2 w-1/3 border-r border-white">${course.kode}</td>
-        <td class="px-4 py-2 w-1/3 border-r border-white">${course.nama}</td>
-        <td class="px-4 py-2 w-1/3 border-r border-white">${course.waktu}</td>
-        <td class="px-4 py-2 border-white">${course.sks}</td>
-        <td class="px-4 py-2 border-white">
-            <button class="cancel-course bg-red-500 text-white px-2 py-1 rounded">Batalkan</button>
-        </td>
-    `;
+                        <td class="px-4 py-2 border-r border-white">${rowNumber}</td>
+                        <td class="px-4 py-2 w-1/3 border-r border-white">${course.kode}</td>
+                        <td class="px-4 py-2 w-1/3 border-r border-white">${course.nama}</td>
+                        <td class="px-4 py-2 w-1/3 border-r border-white">${course.waktu}</td>
+                        <td class="px-4 py-2 w-1/3 border-r border-white">${course.sks}</td>
+                        <td class="px-4 py-2 border-white">
+                            <button class="cancel-course bg-red-500 text-white px-2 py-1 rounded">Batalkan</button>
+                        </td>
+                    `;
 
                     summaryTable.appendChild(newRow);
                 }
@@ -466,233 +586,107 @@
                     const sksSidebar = document.getElementById('sksSidebar');
                     sksSidebar.classList.add('show');
                 }
-
-                // switch pengisian irs - irs mahasiswa
-                function switchIRS(selected) {
-                    // Elements for tabs
-                    const pengisianIRS = document.getElementById('pengisianIRS');
-                    const irsMahasiswa = document.getElementById('irsMahasiswa');
-
-                    // Elements for content
-                    const contentPengisianIRS = document.getElementById('contentPengisianIRS');
-                    const contentIRSMahasiswa = document.getElementById('contentIRSMahasiswa');
-
-                    // Switch active tab and color
-                    if (selected === 'pengisianIRS') {
-                        // console.log("Switching to Pengisian IRS");
-                        pengisianIRS.classList.add('bg-yellow-500', 'border-[#17181C]');
-                        irsMahasiswa.classList.remove('bg-yellow-500', 'border-[#17181C]');
-
-                        // Show Pengisian IRS content and hide IRS Mahasiswa content
-                        contentPengisianIRS.classList.remove('hidden');
-                        contentIRSMahasiswa.classList.add('hidden');
-                    } else if (selected === 'irsMahasiswa') {
-                        // console.log("Switching to IRS Mahasiswa");
-                        irsMahasiswa.classList.add('bg-yellow-500', 'border-[#17181C]');
-                        pengisianIRS.classList.remove('bg-yellow-500', 'border-[#17181C]');
-
-                        // Show IRS Mahasiswa content and hide Pengisian IRS content
-                        contentIRSMahasiswa.classList.remove('hidden');
-                        contentPengisianIRS.classList.add('hidden');
-                    }
-                }
             </script>
+
 
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
-                    const courseDetails = @json($list_mata_kuliah);
+                    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
 
-                    document.querySelectorAll('.show-details').forEach((button) => {
-                        button.addEventListener('click', () => {
-                            const index = button.getAttribute('data-index');
-                            const details = courseDetails[index];
+                    // Initialize listeners for cancel buttons
+                    initializeCancelButtons();
+                    // Initialize the SKS sidebar
+                    calculateInitialTotalSKS();
+                    initializeSKSSidebar();
 
-                            Swal.fire({
-                                title: `<strong>Detail Mata Kuliah</strong>`,
-                                html: `
-                    <div class="text-left space-y-4">
-                        <div>
-                            <h2 class="font-bold mb-1">Nama Mata Kuliah :</h2>
-                            <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
-                                <h2 class="ml-5 text-black font-bold">${details.nama}</h2>
-                            </div>
-                        </div>
-                        <div>
-                            <h2 class="font-bold mb-1">Kode Mata Kuliah :</h2>
-                            <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
-                                <h2 class="ml-5 text-black font-bold">${details.kode}</h2>
-                            </div>
-                        </div>
-                        <div>
-                            <h2 class="font-bold mb-1">SKS :</h2>
-                            <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
-                                <h2 class="ml-5 text-black font-bold">${details.sks}</h2>
-                            </div>
-                        </div>
-                        <div>
-                            <h2 class="font-bold mb-1">Jadwal :</h2>
-                            <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
-                                <h2 class="ml-5 text-black font-bold">${details.jadwal}</h2>
-                            </div>
-                        </div>
-                        <div>
-                            <h2 class="font-bold mb-1">Ruangan :</h2>
-                            <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
-                                <h2 class="ml-5 text-black font-bold">${details.nama_ruangan}</h2>
-                            </div>
-                        </div>
-                        <div>
-                            <h2 class="font-bold mb-1">Kapasitas:</h2>
-                            <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
-                                <h2 class="ml-5 text-black font-bold">${details.kapasitas_ruangan}</h2>
-                            </div>
-                        </div>
-                        <div>
-                            <h2 class="font-bold mb-1">Dosen Pengampu :</h2>
-                            <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
-                                <h2 class="ml-5 text-black font-bold">"Belum database"</h2>
-                            </div>
-                        </div>
-                    </div>
-                `,
-                                confirmButtonText: 'Tutup',
-                                focusConfirm: false,
-                                customClass: {
-                                    popup: 'swal-popup-custom'
-                                }
-                            });
+                    function initializeCancelButtons() {
+                        document.querySelectorAll('.cancel-course').forEach(button => {
+                            button.addEventListener('click', handleCancelClick);
                         });
-                    });
-                });
-            </script>
+                    }
 
-            <!-- search bar -->
-            <script>
-                document.getElementById('default-search').addEventListener('input', function() {
-                    const searchTerm = this.value.toLowerCase();
-                    const rows = document.querySelectorAll('table[name="tabel_jadwal"] tbody tr');
+                    function handleCancelClick(event) {
+                        const button = event.currentTarget;
+                        const row = button.closest('tr');
+                        const courseId = button.getAttribute('data-id');
+                        const sks = parseInt(button.getAttribute('data-sks'));
 
-                    rows.forEach(row => {
-                        const courseName = row.querySelector('td:nth-child(3)').innerText
-                            .toLowerCase(); // Assuming 3rd column has course name
-                        const courseCode = row.querySelector('td:nth-child(2)').innerText
-                            .toLowerCase(); // Assuming 2nd column has course code
+                        Swal.fire({
+                            title: 'Konfirmasi Pembatalan',
+                            text: 'Apakah Anda yakin ingin membatalkan mata kuliah ini?',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#d33',
+                            cancelButtonColor: '#3085d6',
+                            confirmButtonText: 'Ya, Batalkan!',
+                            cancelButtonText: 'Tidak'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                cancelCourse(courseId, row, sks);
+                            }
+                        });
+                    }
 
-                        if (courseName.includes(searchTerm) || courseCode.includes(searchTerm)) {
-                            row.style.display = ''; // Show the row if it matches
-                        } else {
-                            row.style.display = 'none'; // Hide the row if it doesn't match
+                    function cancelCourse(courseId, row, sks) {
+                        fetch('/irs-rekap/destroy', {
+                                method: 'DELETE',
+                                headers: {
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                                    'Content-Type': 'application/json',
+                                    'Accept': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    id: courseId // Pastikan ini sesuai dengan mata_kuliah_id yang ingin dihapus
+                                })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    row.remove();
+                                    updateTotalSKSAfterCancel(sks);
+                                    reorderTableRows();
+
+                                    Swal.fire({
+                                        title: 'Berhasil!',
+                                        text: 'Mata kuliah berhasil dibatalkan',
+                                        icon: 'success',
+                                        timer: 1500,
+                                        showConfirmButton: false
+                                    });
+                                } else {
+                                    throw new Error(data.message || 'Gagal membatalkan mata kuliah');
+                                }
+                            })
+                    }
+
+                    function updateTotalSKSAfterCancel(canceledSKS) {
+                        const totalSksElement = document.getElementById('totalSks');
+                        const currentTotal = parseInt(totalSksElement.textContent || '0');
+                        const newTotal = Math.max(0, currentTotal - canceledSKS);
+                        totalSksElement.textContent = newTotal;
+
+                        if (newTotal === 0) {
+                            document.getElementById('sksSidebar').classList.remove('show');
                         }
-                    });
+                    }
+
+                    function reorderTableRows() {
+                        const tbody = document.querySelector('table:first-of-type tbody');
+                        Array.from(tbody.rows).forEach((row, index) => {
+                            row.cells[0].textContent = index + 1;
+                        });
+                    }
+
+                    function initializeSKSSidebar() {
+                        const toggleButton = document.getElementById('toggleSidebar');
+                        const sidebar = document.getElementById('sksSidebar');
+
+                        toggleButton.addEventListener('click', () => {
+                            sidebar.classList.toggle('show');
+                            toggleButton.classList.toggle('rotated');
+                        });
+                    }
                 });
-            </script>
-            
-            <script>
-               document.addEventListener('DOMContentLoaded', function() {
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
-
-    // Initialize listeners for cancel buttons
-    initializeCancelButtons();
-    // Initialize the SKS sidebar
-    calculateInitialTotalSKS();
-    initializeSKSSidebar();
-
-    function initializeCancelButtons() {
-        document.querySelectorAll('.cancel-course').forEach(button => {
-            button.addEventListener('click', handleCancelClick);
-        });
-    }
-
-    function handleCancelClick(event) {
-        const button = event.currentTarget;
-        const row = button.closest('tr');
-        const courseId = button.getAttribute('data-id');
-        const sks = parseInt(button.getAttribute('data-sks'));
-
-        Swal.fire({
-            title: 'Konfirmasi Pembatalan',
-            text: 'Apakah Anda yakin ingin membatalkan mata kuliah ini?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Ya, Batalkan!',
-            cancelButtonText: 'Tidak'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                cancelCourse(courseId, row, sks);
-            }
-        });
-    }
-
-    function cancelCourse(courseId, row, sks) {
-    fetch('/irs-rekap/destroy', {
-        method: 'DELETE',
-        headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify({ 
-            id: courseId  // Pastikan ini sesuai dengan mata_kuliah_id yang ingin dihapus
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            row.remove();
-            updateTotalSKSAfterCancel(sks);
-            reorderTableRows();
-            
-            Swal.fire({
-                title: 'Berhasil!',
-                text: 'Mata kuliah berhasil dibatalkan',
-                icon: 'success',
-                timer: 1500,
-                showConfirmButton: false
-            });
-        } else {
-            throw new Error(data.message || 'Gagal membatalkan mata kuliah');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        Swal.fire({
-            title: 'Error!',
-            text: error.message || 'Gagal membatalkan mata kuliah. Silakan coba lagi.',
-            icon: 'error'
-        });
-    });
-}
-
-    function updateTotalSKSAfterCancel(canceledSKS) {
-        const totalSksElement = document.getElementById('totalSks');
-        const currentTotal = parseInt(totalSksElement.textContent || '0');
-        const newTotal = Math.max(0, currentTotal - canceledSKS);
-        totalSksElement.textContent = newTotal;
-
-        if (newTotal === 0) {
-            document.getElementById('sksSidebar').classList.remove('show');
-        }
-    }
-
-    function reorderTableRows() {
-        const tbody = document.querySelector('table:first-of-type tbody');
-        Array.from(tbody.rows).forEach((row, index) => {
-            row.cells[0].textContent = index + 1;
-        });
-    }
-
-    function initializeSKSSidebar() {
-        const toggleButton = document.getElementById('toggleSidebar');
-        const sidebar = document.getElementById('sksSidebar');
-        
-        toggleButton.addEventListener('click', () => {
-            sidebar.classList.toggle('show');
-            toggleButton.classList.toggle('rotated');
-        });
-    }
-});
             </script>
 </body>
 
