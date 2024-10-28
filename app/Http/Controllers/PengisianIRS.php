@@ -62,15 +62,47 @@ class PengisianIRS extends Controller
 
 
 
-    public function store(Request $request){
-        $validated = $request->validate([
-            'mata_kuliah_id' => 'required|integer|exists:mata_kuliahs,id',
-            'ruangan_id' => 'required|integer|exists:ruangans,id',
-        ]);
+    public function store(Request $request)
+{
+    $validated = $request->validate([
+        'mata_kuliah_id' => 'required|integer|exists:mata_kuliahs,id',
+        'ruangan_id' => 'required|integer|exists:ruangans,id',
+    ]);
 
-        $mahasiswa_id = Auth::id();
+    $mahasiswa_id = Auth::id();
+    $mataKuliah = Mata_Kuliah::find($validated['mata_kuliah_id']);
 
-        // Masukkan data ke tabel irs_rekap
+    if (!$mataKuliah) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Mata kuliah tidak ditemukan.'
+        ], 404);
+    }
+
+    // Check for existing IRS entries for the current student
+    $existingIrs = irs_rekap::where('mahasiswa_id', $mahasiswa_id)->get();
+
+    // Check for duplicate course
+    if ($existingIrs->contains('mata_kuliah_id', $validated['mata_kuliah_id'])) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Mata kuliah ini sudah diambil sebelumnya.'
+        ], 422);
+    }
+
+    // Check for time conflict
+    foreach ($existingIrs as $irs) {
+        $existingMataKuliah = $irs->mataKuliah;
+        if ($existingMataKuliah && $this->isTimeConflict($mataKuliah, $existingMataKuliah)) {
+            return response()->json([
+                'success' => false,
+'message' => 'Jadwal mata kuliah ini bertabrakan dengan mata kuliah yang sudah diambil.'
+            ], 422);
+        }
+    }
+
+    // If no conflicts, proceed with saving or updating the IRS
+    try {
         $irsRekap = irs_rekap::updateOrCreate(
             [
                 'mahasiswa_id' => $mahasiswa_id,
@@ -86,8 +118,28 @@ class PengisianIRS extends Controller
             'message' => 'Mata kuliah berhasil diambil',
             'data' => $irsRekap
         ]);
+    } catch (\Exception $e) {
+        Log::error('Error in storing IRS: ' . $e->getMessage());
+        return response()->json([
+            'success' => false,
+            'message' => 'Terjadi kesalahan saat menyimpan data.'
+        ], 500);
+    }
+}
+
+private function isTimeConflict($mataKuliah1, $mataKuliah2)
+{
+    // Check if both mata kuliah have the necessary schedule information
+    if (!isset($mataKuliah1->hari, $mataKuliah1->jam_mulai, $mataKuliah1->jam_selesai) ||
+        !isset($mataKuliah2->hari, $mataKuliah2->jam_mulai, $mataKuliah2->jam_selesai)) {
+        Log::warning('Incomplete schedule information for mata kuliah comparison');
+        return false; // or handle this case as appropriate for your application
     }
 
+    return $mataKuliah1->hari == $mataKuliah2->hari &&
+           $mataKuliah1->jam_mulai < $mataKuliah2->jam_selesai &&
+           $mataKuliah2->jam_mulai < $mataKuliah1->jam_selesai;
+}
     public function destroy(Request $request){
         $request->validate([
             'id' => 'required|integer'  // Hapus validasi exists karena sudah tidak diperlukan

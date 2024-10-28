@@ -42,6 +42,24 @@
         #toggleSidebar.rotated {
             transform: rotate(180deg);
         }
+
+        .collision-overlay {
+            position: absolute;
+            left: 0;
+            right: 65px;
+            top: 0;
+            bottom: 0;
+            background-color: rgba(255, 0, 0, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .course-row {
+            position: relative;
+        }
     </style>
 
 </head>
@@ -87,24 +105,24 @@
                         </thead>
                         <tbody>
                             @foreach ($irs_rekap as $rekap)
-                            <tr style="background-color: #23252A;">
-                                <td class="px-4 py-2 border-r border-white">{{ $loop->iteration }}</td>
-                                <td class="px-4 py-2 w-1/3 border-r border-white">{{ $rekap->kode }}</td>
-                                <td class="px-4 py-2 w-1/3 border-r border-white">{{ $rekap->nama }}</td>
-                                <td class="px-4 py-2 w-1/3 border-r border-white">
-                                    {{ $rekap->hari }},
-                                    {{ \Carbon\Carbon::parse($rekap->jam_mulai)->format('H:i') }} -
-                                    {{ \Carbon\Carbon::parse($rekap->jam_selesai)->format('H:i') }}
-                                </td>
-                                <td class="px-4 py-2 w-1/3 border-r border-white">{{ $rekap->sks }}</td>
-                                <td class="px-4 py-2 border-white">
-                                    <button class="cancel-course bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded"
-                                        data-id="{{ $rekap->mata_kuliah_id }}"
-                                        data-sks="{{ $rekap->sks }}">
-                                        Batalkan
-                                    </button>
-                                </td>
-                            </tr>
+                                <tr style="background-color: #23252A;">
+                                    <td class="px-4 py-2 border-r border-white">{{ $loop->iteration }}</td>
+                                    <td class="px-4 py-2 w-1/3 border-r border-white">{{ $rekap->kode }}</td>
+                                    <td class="px-4 py-2 w-1/3 border-r border-white">{{ $rekap->nama }}</td>
+                                    <td class="px-4 py-2 w-1/3 border-r border-white">
+                                        {{ $rekap->hari }},
+                                        {{ \Carbon\Carbon::parse($rekap->jam_mulai)->format('H:i') }} -
+                                        {{ \Carbon\Carbon::parse($rekap->jam_selesai)->format('H:i') }}
+                                    </td>
+                                    <td class="px-4 py-2 w-1/3 border-r border-white">{{ $rekap->sks }}</td>
+                                    <td class="px-4 py-2 border-white">
+                                        <button
+                                            class="cancel-course bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded"
+                                            data-id="{{ $rekap->mata_kuliah_id }}" data-sks="{{ $rekap->sks }}">
+                                            Batalkan
+                                        </button>
+                                    </td>
+                                </tr>
                             @endforeach
                         </tbody>
                     </table>
@@ -176,50 +194,52 @@
                             </thead>
                             <tbody>
                                 @foreach ($list_mata_kuliah as $index => $mata_kuliah)
-                                <tr style="background-color: #23252A;">
-                                    <td class="px-4 py-2 border-r border-white">{{ $loop->iteration }}</td>
-                                    <td class="px-4 py-2 w-1/3 border-r border-white">{{ $mata_kuliah->kode }}</td>
-                                    <td class="px-4 py-2 w-1/3 border-r border-white">{{ $mata_kuliah->nama }}</td>
-                                    <td class="px-4 py-2 w-1/3 border-r border-white">
-                                        {{ $mata_kuliah->hari }},
-                                        {{ \Carbon\Carbon::parse($mata_kuliah->jam_mulai)->format('H:i') }} -
-                                        {{ \Carbon\Carbon::parse($mata_kuliah->jam_selesai)->format('H:i') }}
-                                    </td>
-                                    <td class="px-4 py-2 border-r border-white">
-                                        <form action="{{ route('irs-rekap.store') }}" method="POST">
-                                            @csrf
-                                            <input type="hidden" name="mata_kuliah_id"
-                                                value="{{ $mata_kuliah->id }}">
-                                            <input type="hidden" name="ruangan_id" value="1">
+                                    <tr class="course-row" style="background-color: #23252A;"
+                                        data-course-id="{{ $mata_kuliah->id }}"
+                                        data-course-time="{{ $mata_kuliah->hari }}, {{ \Carbon\Carbon::parse($mata_kuliah->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($mata_kuliah->jam_selesai)->format('H:i') }}">
+                                        <td class="px-4 py-2 border-r border-white">{{ $loop->iteration }}</td>
+                                        <td class="px-4 py-2 w-1/3 border-r border-white">{{ $mata_kuliah->kode }}</td>
+                                        <td class="px-4 py-2 w-1/3 border-r border-white">{{ $mata_kuliah->nama }}</td>
+                                        <td class="px-4 py-2 w-1/3 border-r border-white">
+                                            {{ $mata_kuliah->hari }},
+                                            {{ \Carbon\Carbon::parse($mata_kuliah->jam_mulai)->format('H:i') }} -
+                                            {{ \Carbon\Carbon::parse($mata_kuliah->jam_selesai)->format('H:i') }}
+                                        </td>
+                                        <td class="px-4 py-2 border-r border-white">
+                                            <form action="{{ route('irs-rekap.store') }}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="mata_kuliah_id"
+                                                    value="{{ $mata_kuliah->id }}">
+                                                <input type="hidden" name="ruangan_id" value="1">
+                                                <div
+                                                    class="text-white text-center items-center justify-center mx-2 my-1 rounded-md cursor-pointer bg-[#34803C] hover:bg-green-800 font-bold">
+                                                    <button class="ambil-mata-kuliah"
+                                                        data-kode="{{ $mata_kuliah->kode }}"
+                                                        data-nama="{{ $mata_kuliah->nama }}"
+                                                        data-hari-jam="{{ $mata_kuliah->hari }}, {{ \Carbon\Carbon::parse($mata_kuliah->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($mata_kuliah->jam_selesai)->format('H:i') }}"
+                                                        data-sks="{{ $mata_kuliah->sks }}" type="submit">
+                                                        Ambil
+                                                    </button>
+                                                </div>
+                                            </form>
+
+                                        </td>
+                                        <td class="px-4 py-2 border-white">
                                             <div
-                                                class="text-white text-center items-center justify-center mx-2 my-1 rounded-md cursor-pointer bg-[#34803C] hover:bg-green-800 font-bold">
-                                                <button class="ambil-mata-kuliah"
-                                                    data-kode="{{ $mata_kuliah->kode }}"
-                                                    data-nama="{{ $mata_kuliah->nama }}"
-                                                    data-hari-jam="{{ $mata_kuliah->hari }}, {{ \Carbon\Carbon::parse($mata_kuliah->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($mata_kuliah->jam_selesai)->format('H:i') }}"
-                                                    data-sks="{{ $mata_kuliah->sks }}" type="submit">
-                                                    Ambil
+                                                class="h-7 w-7 mx-auto rounded-lg bg-white flex justify-center items-center">
+                                                <button
+                                                    class="show-details justify-center text-center text-3xl text-black font-bold focus:outline-none"
+                                                    data-index="{{ $index }}">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                        height="16" fill="currentColor"
+                                                        class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+                                                        <path
+                                                            d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+                                                    </svg>
                                                 </button>
                                             </div>
-                                        </form>
-
-                                    </td>
-                                    <td class="px-4 py-2 border-white">
-                                        <div
-                                            class="h-7 w-7 mx-auto rounded-lg bg-white flex justify-center items-center">
-                                            <button
-                                                class="show-details justify-center text-center text-3xl text-black font-bold focus:outline-none"
-                                                data-index="{{ $index }}">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16"
-                                                    height="16" fill="currentColor"
-                                                    class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-                                                    <path
-                                                        d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
+                                        </td>
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -401,6 +421,14 @@
                         const sks = parseInt(button.getAttribute('data-sks'));
 
                         // Show confirmation dialog
+                        if (hasConflict(kode, hariJam)) {
+                            Swal.fire({
+                                title: 'Peringatan',
+                                text: 'Mata kuliah ini bertabrakan dengan mata kuliah yang sudah diambil atau sudah ada dalam daftar.',
+                                icon: 'warning'
+                            });
+                            return;
+                        }
                         Swal.fire({
                             title: 'Konfirmasi Pengambilan Mata Kuliah',
                             html: `
@@ -518,6 +546,55 @@
                     summaryTable.appendChild(newRow);
                 }
 
+                function hasConflict(newKode, newHariJam) {
+                    const summaryTable = document.querySelector('table:first-of-type tbody');
+                    for (let row of summaryTable.rows) {
+                        const existingKode = row.cells[1].textContent;
+                        const existingHariJam = row.cells[3].textContent;
+
+                        if (existingKode === newKode) {
+                            return true; // Duplicate course
+                        }
+
+                        if (isTimeConflict(existingHariJam, newHariJam)) {
+                            return true; // Time conflict
+                        }
+                    }
+                    return false;
+                }
+
+                function isTimeConflict(time1, time2) {
+                    // Remove any leading/trailing whitespace
+                    time1 = time1.trim();
+                    time2 = time2.trim();
+
+                    // Parse the day and time range
+                    const [day1, timeRange1] = time1.split(',').map(s => s.trim());
+                    const [day2, timeRange2] = time2.split(',').map(s => s.trim());
+
+                    // If days are different, there's no conflict
+                    if (day1 !== day2) {
+                        return false;
+                    }
+
+                    // Parse time ranges
+                    const [start1, end1] = timeRange1.split('-').map(t => t.trim());
+                    const [start2, end2] = timeRange2.split('-').map(t => t.trim());
+
+                    // Convert times to minutes for easier comparison
+                    const toMinutes = (timeStr) => {
+                        const [hours, minutes] = timeStr.split(':').map(Number);
+                        return hours * 60 + minutes;
+                    };
+
+                    const start1Min = toMinutes(start1);
+                    const end1Min = toMinutes(end1);
+                    const start2Min = toMinutes(start2);
+                    const end2Min = toMinutes(end2);
+
+                    // Check for overlap
+                    return (start1Min < end2Min && start2Min < end1Min);
+                }
                 // Function to update total SKS display
                 function updateTotalSKS(newSks) {
                     const totalSksElement = document.getElementById('totalSks');
@@ -688,6 +765,116 @@
                     }
                 });
             </script>
+
+            
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    // Function to check time conflicts
+                    function checkTimeConflicts() {
+                        const takenCourses = Array.from(document.querySelector('table:first-of-type tbody').rows)
+                            .map(row => ({
+                                name: row.cells[2].textContent,
+                                code: row.cells[1].textContent,
+                                time: row.cells[3].textContent
+                            }));
+
+                        const availableCourses = document.querySelectorAll('.course-row');
+
+                        availableCourses.forEach(courseRow => {
+                            const existingOverlay = courseRow.querySelector('.collision-overlay');
+                            if (existingOverlay) {
+                                existingOverlay.remove();
+                            }
+
+                            const courseTime = courseRow.dataset.courseTime;
+                            const courseName = courseRow.querySelector('td:nth-child(3)').textContent;
+                            const courseCode = courseRow.querySelector('td:nth-child(2)').textContent;
+                            const conflicts = [];
+
+                            takenCourses.forEach(takenCourse => {
+                                if (isTimeConflict(takenCourse.time, courseTime)) {
+                                    conflicts.push({
+                                        conflictingCourse: {
+                                            name: courseName,
+                                            code: courseCode,
+                                            time: courseTime
+                                        },
+                                        takenCourse: takenCourse
+                                    });
+                                }
+                            });
+
+                            if (conflicts.length > 0) {
+                                const overlay = createCollisionOverlay(conflicts);
+                                courseRow.appendChild(overlay);
+                            }
+                        });
+                    }
+                    // Create collision overlay element
+                    function createCollisionOverlay(conflicts, currentCourse) {
+                        const overlay = document.createElement('div');
+                        overlay.className = 'collision-overlay';
+
+                        const text = document.createElement('span');
+                        text.className = 'collision-text';
+
+
+                        overlay.appendChild(text);
+
+                        overlay.addEventListener('click', () => {
+                            showConflictDetails(conflicts, currentCourse);
+                        });
+
+                        return overlay;
+                    }
+
+                    // Show conflict details in a popup
+                    function showConflictDetails(conflicts) {
+                        const conflictsList = conflicts.map(conflict =>
+                            `<li class="mb-4">
+                <strong>${conflict.conflictingCourse.name}</strong> (${conflict.conflictingCourse.code})<br>
+                <span class="text-sm">${conflict.conflictingCourse.time}</span>
+                <br>bertabrakan dengan<br>
+                <strong>${conflict.takenCourse.name}</strong> (${conflict.takenCourse.code})<br>
+                <span class="text-sm">${conflict.takenCourse.time}</span>
+            </li>`
+                        ).join('');
+
+                        Swal.fire({
+                            title: 'Detail Tabrakan Jadwal',
+                            html: `
+                <div class="text-left">
+                    <p class="mb-4">Terjadi tabrakan jadwal:</p>
+                    <ul class="list-disc pl-5">
+                        ${conflictsList}
+                    </ul>
+                </div>
+            `,
+                            icon: 'warning',
+                            confirmButtonText: 'Tutup'
+                        });
+                    }
+
+                    // Check for conflicts whenever the course list changes
+                    function initializeConflictDetection() {
+                        // Initial check
+                        checkTimeConflicts();
+
+                        // Create a MutationObserver to watch for changes in the taken courses table
+                        const observer = new MutationObserver(checkTimeConflicts);
+
+                        const takenCoursesTable = document.querySelector('table:first-of-type tbody');
+                        observer.observe(takenCoursesTable, {
+                            childList: true,
+                            subtree: true
+                        });
+                    }
+
+                    // Initialize conflict detection
+                    initializeConflictDetection();
+                });
+            </script>
+
 </body>
 
 </html>
