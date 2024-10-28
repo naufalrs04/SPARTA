@@ -42,6 +42,24 @@
         #toggleSidebar.rotated {
             transform: rotate(180deg);
         }
+
+        .collision-overlay {
+            position: absolute;
+            left: 0;
+            right: 65px;
+            top: 0;
+            bottom: 0;
+            background-color: rgba(255, 0, 0, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .course-row {
+            position: relative;
+        }
     </style>
 
 </head>
@@ -111,18 +129,19 @@
 
                     <div class="pt-5 pb-3 flex">
                         <div class="w-3/5 flex justify-between">
-                            <p class="pl-1 text-sm italic">Notes : Jika mata kuliah ingin diproses oleh dosen wali, klik
-                                tombol di sebelah kanan</p>
+                            <p class="pl-1 text-sm italic">Notes : Jika mata kuliah ingin diproses oleh dosen wali, klik tombol di sebelah kanan</p>
                         </div>
-                        <div
-                            class="w-1/6 ml-auto text-white flex text-center items-center justify-center py-3 rounded-md cursor-pointer bg-[#34803C] hover:bg-green-800 font-bold">
-                            <button>Ajukan</button>
+                        <div class="w-1/6 ml-auto text-white flex text-center items-center justify-center py-3 rounded-md cursor-pointer bg-[#34803C] hover:bg-green-800 font-bold">
+                            <form action="{{ route('irs.ajukan') }}" method="POST">
+                                @csrf
+                                <button type="submit">Ajukan</button>
+                            </form>
                         </div>
-                        <div
-                            class="w-1/6 ml-auto text-white flex text-center items-center justify-center py-3 rounded-md cursor-pointer bg-[#880000] hover:bg-red-500 font-bold">
+                        <div class="w-1/6 ml-auto text-white flex text-center items-center justify-center py-3 rounded-md cursor-pointer bg-[#880000] hover:bg-red-500 font-bold">
                             <button>Batal Ajukan</button>
                         </div>
                     </div>
+
 
                     <!-- Sidebar Melayang -->
                     <div id="sksSidebar"
@@ -176,7 +195,9 @@
                             </thead>
                             <tbody>
                                 @foreach ($list_mata_kuliah as $index => $mata_kuliah)
-                                <tr style="background-color: #23252A;">
+                                <tr class="course-row" style="background-color: #23252A;"
+                                    data-course-id="{{ $mata_kuliah->id }}"
+                                    data-course-time="{{ $mata_kuliah->hari }}, {{ \Carbon\Carbon::parse($mata_kuliah->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($mata_kuliah->jam_selesai)->format('H:i') }}">
                                     <td class="px-4 py-2 border-r border-white">{{ $loop->iteration }}</td>
                                     <td class="px-4 py-2 w-1/3 border-r border-white">{{ $mata_kuliah->kode }}</td>
                                     <td class="px-4 py-2 w-1/3 border-r border-white">{{ $mata_kuliah->nama }}</td>
@@ -231,32 +252,53 @@
                 <div class="px-4 sm:px-6 md:px-8 pt-5 pb-10">
                     <h2 class="text-center text-lg font-semibold mb-4">IRS Mahasiswa</h2>
                     <div class="w-full bg-[#1E1F24] opacity-65 rounded-lg border-[#49454F] border-opacity-50 border-2">
-                        <div class="w-full lg:w-[95%] md:w-[90%] sm:w-[85%] m-4 md:m-6 bg-[#757575] rounded-lg">
-                            <div class="w-full md:w-3/4 px-4 py-3">
-                                <h2 class="font-bold text-md sm:text-lg">Semester 1 | Tahun Ajaran 2022/2023 Ganjil
-                                </h2>
-                                <p class="text-md sm:text-lg">Jumlah SKS 21</p>
-                            </div>
-                        </div>
-                        <div class="w-full lg:w-[95%] md:w-[90%] sm:w-[85%] m-4 md:m-6 bg-[#757575] rounded-lg">
-                            <div class="w-full md:w-3/4 px-4 py-3">
-                                <h2 class="font-bold text-md sm:text-lg">Semester 1 | Tahun Ajaran 2022/2023 Ganjil
-                                </h2>
-                                <p class="text-md sm:text-lg">Jumlah SKS 21</p>
-                            </div>
-                        </div>
-                        <div class="w-full lg:w-[95%] md:w-[90%] sm:w-[85%] m-4 md:m-6 bg-[#757575] rounded-lg">
-                            <div class="w-full md:w-3/4 px-4 py-3">
-                                <h2 class="font-bold text-md sm:text-lg">Semester 1 | Tahun Ajaran 2022/2023 Ganjil
-                                </h2>
-                                <p class="text-md sm:text-lg">Jumlah SKS 21</p>
-                            </div>
-                        </div>
-                        <div class="w-full lg:w-[95%] md:w-[90%] sm:w-[85%] m-4 md:m-6 bg-[#757575] rounded-lg">
-                            <div class="w-full md:w-3/4 px-4 py-3">
-                                <h2 class="font-bold text-md sm:text-lg">Semester 1 | Tahun Ajaran 2022/2023 Ganjil
-                                </h2>
-                                <p class="text-md sm:text-lg">Jumlah SKS 21</p>
+                        <div class="m-2">
+                            <div class="w-full bg-[#757575] rounded-lg">
+                                <div class="w-full flex justify-between items-center px-4 py-3">
+                                    <div>
+                                        <h2 class="font-bold text-md sm:text-lg">IRS Semester 1</h2>
+                                        <p class="text-md sm:text-lg">Jumlah SKS 21</p>
+                                    </div>
+                                    <button type="button"
+                                        class="toggle-semester p-2 hover:bg-[#666666] rounded-full transition-colors">
+                                        <svg class="plus-icon w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                        </svg>
+                                        <svg class="minus-icon w-6 h-6 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                <div class="semester-content hidden px-4 pb-4 overflow-x-auto" id="semester">
+                                    <h2 class="text-center text-lg font-semibold mb-4">IRS Mahasiswa (Belum / Sudah Disetujui Wali)</h2>
+                                    <table class="w-full bg-white rounded-lg">
+                                        <thead class="bg-gray-100">
+                                            <tr>
+                                                <th class="px-4 py-2 text-left text-black rounded-tl-lg">NO</th>
+                                                <th class="px-4 py-2 text-left text-black">KODE</th>
+                                                <th class="px-4 py-2 text-left text-black">MATAKULIAH</th>
+                                                <th class="px-4 py-2 text-left text-black">KELAS</th>
+                                                <th class="px-4 py-2 text-left text-black">SKS</th>
+                                                <th class="px-4 py-2 text-left text-black">RUANG</th>
+                                                <th class="px-4 py-2 text-left text-black">STATUS</th>
+                                                <th class="px-4 py-2 text-left text-black rounded-tr-lg">NAMA DOSEN</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="border-t">
+                                                <td class="px-4 py-2 text-black">1</td>
+                                                <td class="px-4 py-2 text-black">wkwkwkw</td>
+                                                <td class="px-4 py-2 text-black">wkwkwk</td>
+                                                <td class="px-4 py-2 text-black">wwww</td>
+                                                <td class="px-4 py-2 text-black">w</td>
+                                                <td class="px-4 py-2 text-black">w</td>
+                                                <td class="px-4 py-2 text-black">w</td>
+                                                <td class="px-4 py-2 text-black">w</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -401,6 +443,14 @@
                         const sks = parseInt(button.getAttribute('data-sks'));
 
                         // Show confirmation dialog
+                        if (hasConflict(kode, hariJam)) {
+                            Swal.fire({
+                                title: 'Peringatan',
+                                text: 'Anda sudah mengambil mata kuliah ini dalam kelas lain !',
+                                icon: 'warning'
+                            });
+                            return;
+                        }
                         Swal.fire({
                             title: 'Konfirmasi Pengambilan Mata Kuliah',
                             html: `
@@ -518,6 +568,55 @@
                     summaryTable.appendChild(newRow);
                 }
 
+                function hasConflict(newKode, newHariJam) {
+                    const summaryTable = document.querySelector('table:first-of-type tbody');
+                    for (let row of summaryTable.rows) {
+                        const existingKode = row.cells[1].textContent;
+                        const existingHariJam = row.cells[3].textContent;
+
+                        if (existingKode === newKode) {
+                            return true; // Duplicate course
+                        }
+
+                        if (isTimeConflict(existingHariJam, newHariJam)) {
+                            return true; // Time conflict
+                        }
+                    }
+                    return false;
+                }
+
+                function isTimeConflict(time1, time2) {
+                    // Remove any leading/trailing whitespace
+                    time1 = time1.trim();
+                    time2 = time2.trim();
+
+                    // Parse the day and time range
+                    const [day1, timeRange1] = time1.split(',').map(s => s.trim());
+                    const [day2, timeRange2] = time2.split(',').map(s => s.trim());
+
+                    // If days are different, there's no conflict
+                    if (day1 !== day2) {
+                        return false;
+                    }
+
+                    // Parse time ranges
+                    const [start1, end1] = timeRange1.split('-').map(t => t.trim());
+                    const [start2, end2] = timeRange2.split('-').map(t => t.trim());
+
+                    // Convert times to minutes for easier comparison
+                    const toMinutes = (timeStr) => {
+                        const [hours, minutes] = timeStr.split(':').map(Number);
+                        return hours * 60 + minutes;
+                    };
+
+                    const start1Min = toMinutes(start1);
+                    const end1Min = toMinutes(end1);
+                    const start2Min = toMinutes(start2);
+                    const end2Min = toMinutes(end2);
+
+                    // Check for overlap
+                    return (start1Min < end2Min && start2Min < end1Min);
+                }
                 // Function to update total SKS display
                 function updateTotalSKS(newSks) {
                     const totalSksElement = document.getElementById('totalSks');
@@ -588,7 +687,6 @@
                 }
             </script>
 
-
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
                     const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
@@ -653,8 +751,6 @@
                                         timer: 1500,
                                         showConfirmButton: false
                                     });
-                                } else {
-                                    throw new Error(data.message || 'Gagal membatalkan mata kuliah');
                                 }
                             })
                     }
@@ -686,6 +782,136 @@
                             toggleButton.classList.toggle('rotated');
                         });
                     }
+                });
+            </script>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    // Function to check time conflicts
+                    function checkTimeConflicts() {
+                        const takenCourses = Array.from(document.querySelector('table:first-of-type tbody').rows)
+                            .map(row => ({
+                                name: row.cells[2].textContent,
+                                code: row.cells[1].textContent,
+                                time: row.cells[3].textContent
+                            }));
+
+                        const availableCourses = document.querySelectorAll('.course-row');
+
+                        availableCourses.forEach(courseRow => {
+                            const existingOverlay = courseRow.querySelector('.collision-overlay');
+                            if (existingOverlay) {
+                                existingOverlay.remove();
+                            }
+
+                            const courseTime = courseRow.dataset.courseTime;
+                            const courseName = courseRow.querySelector('td:nth-child(3)').textContent;
+                            const courseCode = courseRow.querySelector('td:nth-child(2)').textContent;
+                            const conflicts = [];
+
+                            takenCourses.forEach(takenCourse => {
+                                if (isTimeConflict(takenCourse.time, courseTime)) {
+                                    conflicts.push({
+                                        conflictingCourse: {
+                                            name: courseName,
+                                            code: courseCode,
+                                            time: courseTime
+                                        },
+                                        takenCourse: takenCourse
+                                    });
+                                }
+                            });
+
+                            if (conflicts.length > 0) {
+                                const overlay = createCollisionOverlay(conflicts);
+                                courseRow.appendChild(overlay);
+                            }
+                        });
+                    }
+                    // Create collision overlay element
+                    function createCollisionOverlay(conflicts, currentCourse) {
+                        const overlay = document.createElement('div');
+                        overlay.className = 'collision-overlay';
+
+                        const text = document.createElement('span');
+                        text.className = 'collision-text';
+
+
+                        overlay.appendChild(text);
+
+                        overlay.addEventListener('click', () => {
+                            showConflictDetails(conflicts, currentCourse);
+                        });
+
+                        return overlay;
+                    }
+
+                    // Show conflict details in a popup
+                    function showConflictDetails(conflicts) {
+                        const conflictsList = conflicts.map(conflict =>
+                            `<li class="mb-4">
+                                <strong>${conflict.conflictingCourse.name}</strong> (${conflict.conflictingCourse.code})<br>
+                                <span class="text-sm">${conflict.conflictingCourse.time}</span>
+                                <br>bertabrakan dengan<br>
+                                <strong>${conflict.takenCourse.name}</strong> (${conflict.takenCourse.code})<br>
+                                <span class="text-sm">${conflict.takenCourse.time}</span>
+                            </li>`
+                        ).join('');
+
+                        Swal.fire({
+                            title: 'Detail Tabrakan Jadwal',
+                            html: `
+                                <div class="text-left">
+                                    <p class="mb-4">Terjadi tabrakan jadwal:</p>
+                                    <ul class="list-disc pl-5">
+                                        ${conflictsList}
+                                    </ul>
+                                </div>
+                            `,
+                            icon: 'warning',
+                            confirmButtonText: 'Tutup'
+                        });
+                    }
+
+                    // Check for conflicts whenever the course list changes
+                    function initializeConflictDetection() {
+                        // Initial check
+                        checkTimeConflicts();
+
+                        // Create a MutationObserver to watch for changes in the taken courses table
+                        const observer = new MutationObserver(checkTimeConflicts);
+
+                        const takenCoursesTable = document.querySelector('table:first-of-type tbody');
+                        observer.observe(takenCoursesTable, {
+                            childList: true,
+                            subtree: true
+                        });
+                    }
+
+                    // Initialize conflict detection
+                    initializeConflictDetection();
+                });
+            </script>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const toggleButtons = document.querySelectorAll('.toggle-semester');
+
+                    toggleButtons.forEach(button => {
+                        button.addEventListener('click', function() {
+                            const semesterId = this.dataset.semester;
+                            const content = document.getElementById('semester');
+                            const plusIcon = this.querySelector('.plus-icon');
+                            const minusIcon = this.querySelector('.minus-icon');
+
+                            // Toggle content visibility
+                            content.classList.toggle('hidden');
+
+                            // Toggle icons
+                            plusIcon.classList.toggle('hidden');
+                            minusIcon.classList.toggle('hidden');
+                        });
+                    });
                 });
             </script>
 </body>

@@ -9,11 +9,13 @@ class irs_lempar extends Model
 {
     use HasFactory;
 
+    protected $table = 'irs_lempar';
+
     protected $fillable = [
-        'user_id',
         'mahasiswa_id',
-        'IPS_sebelumnya',
-        'total_SKS',
-        'status',
+        'mata_kuliah_id',
+        'ruangan_id',
+        'status_mata_kuliah',
+        'status_persetujuan',
     ];
 }

@@ -44,6 +44,8 @@ Route::get('/pengisianirs', [PengisianIRS::class, 'index'])->middleware('auth')-
 
 Route::post('/irs-rekap/store', [PengisianIRS::class, 'store'])->name('irs-rekap.store');
 Route::delete('/irs-rekap/destroy', [PengisianIRS::class, 'destroy'])->name('irs-rekap.destroy');
+Route::post('/irs-rekap/ajukan', [PengisianIRS::class, 'storeToIrsLempar'])->name('irs.ajukan');
+// Route::post('/irs-rekap/batal', [PengisianIRS::class, 'batalIRS']);
 
 Route::get('/dashboardMahasiswa', [DashboardMahasiswaController::class, 'index'])->middleware('auth') ->name('dashboardMahasiswa');
 
