@@ -11,38 +11,46 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
         #sksSidebar {
-            opacity: 0;
-            transition: right 0.3s ease-in-out, opacity 0.3s ease-in-out;
-            top: 30%;
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            animation: slide 3s infinite;
+        opacity: 0;
+        transition: left 0.3s ease-in-out, opacity 0.3s ease-in-out; /* Ubah right menjadi left */
+        top: 30%;
+        left: -300px; /* Ubah right menjadi left dan nilai positif menjadi negatif */
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        animation: slide 3s infinite;
+        }
+
+        .hidden {
+            display: none;
         }
 
         #sksSidebar.show {
-            right: 0px;
-            opacity: 1;
+        left: 0px; /* Ubah right menjadi left */
+        opacity: 1;
         }
 
         #toggleSidebar {
-            top: 30%;
-            right: 0;
-            color: white;
-            padding: 10px;
-            border-radius: 10px 0 0 10px;
-            cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            z-index: 1001;
-            transition: transform 0.3s ease-in-out;
+        top: 30%;
+        left: 0; /* Ubah right menjadi left */
+        color: white;
+        padding: 10px;
+        border-radius: 0 10px 10px 0; /* Ubah border-radius untuk sisi kanan */
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        z-index: 1001;
+        transition: transform 0.3s ease-in-out;
         }
 
         #toggleSidebar.rotated {
             transform: rotate(180deg);
         }
 
+       
+
+        /* Update collision-overlay jika diperlukan */
         .collision-overlay {
             position: absolute;
             left: 0;
@@ -59,6 +67,12 @@
 
         .course-row {
             position: relative;
+        }
+
+        /* Tambahkan di bagian style yang sudah ada */
+        .cancel-course:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
         }
     </style>
 
@@ -92,7 +106,7 @@
             <div id="contentPengisianIRS">
                 <div class="px-10 pt-5">
                     <h2 class="text-center text-lg font-semibold mt-2 mb-4">Daftar Mata Kuliah yang diambil</h2>
-                    <table class="table-auto p-5 w-full text-center rounded-lg border-collapse">
+                    <table class="table-auto p-5 w-full text-center rounded-lg border-collapse" id="summaryTable">
                         <thead>
                             <tr style="background-color: rgba(135, 138, 145, 0.37);">
                                 <th class="px-4 py-2 border-r border-white rounded-tl-lg">No</th>
@@ -116,11 +130,11 @@
                                     </td>
                                     <td class="px-4 py-2 w-1/3 border-r border-white">{{ $rekap->sks }}</td>
                                     <td class="px-4 py-2 border-white">
-                                        <button
-                                            class="cancel-course bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded"
-                                            data-id="{{ $rekap->mata_kuliah_id }}" data-sks="{{ $rekap->sks }}">
-                                            Batalkan
-                                        </button>
+                                        <button class="cancel-course bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded"
+                                        data-id="{{ $rekap->mata_kuliah_id }}"
+                                        data-sks="{{ $rekap->sks }}">
+                                        Batalkan
+                                    </button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -130,36 +144,35 @@
                     <div class="pt-5 pb-3 flex">
                         <div class="w-3/5 flex justify-between">
                             <p class="pl-1 text-sm italic">Notes : Jika mata kuliah ingin diproses oleh dosen wali, klik
-                                tombol di sebelah kanan</p>
+                                tombol di sebelah kiri</p>
                         </div>
                         <div
                             class="w-1/6 ml-auto text-white flex text-center items-center justify-center py-3 rounded-md cursor-pointer bg-[#34803C] hover:bg-green-800 font-bold">
-                            <button>Ajukan</button>
+                            <button id="ajukanButton" onclick="ajukanIRS()">Ajukan</button>
                         </div>
                         <div
-                            class="w-1/6 ml-auto text-white flex text-center items-center justify-center py-3 rounded-md cursor-pointer bg-[#880000] hover:bg-red-500 font-bold">
-                            <button>Batal Ajukan</button>
+                            class="w-1/6 ml-auto text-white flex text-center items-center justify-center py-3 rounded-md cursor-pointer bg-[#880000] hover:bg-red-500 font-bold hidden">
+                            <button id="batalAjukanButton" onclick="batalAjukanIRS()">Batal Ajukan</button>
                         </div>
                     </div>
 
+
+                    
                     <!-- Sidebar Melayang -->
-                    <div id="sksSidebar"
-                        class="fixed right-[-300px] bg-yellow-600 h-auto w-64 text-white transition-all duration-300 p-4 shadow-lg rounded-lg">
+                    <div id="sksSidebar" class="fixed left-[-300px] bg-yellow-600 h-auto w-64 text-white transition-all duration-300 p-4 shadow-lg rounded-lg">
                         <h2 class="text-xl font-bold mb-4">Total SKS Diambil</h2>
                         <div id="totalSks" class="text-4xl font-semibold">0</div>
                     </div>
 
+                    
                     <!-- Tombol untuk memperlihatkan sidebar -->
-                    <button id="toggleSidebar"
-                        class="fixed right-0 bg-yellow-500 text-white p-3 rounded-l-lg shadow-lg focus:outline-none">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor"
-                            class="bi bi-chevron-left" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd"
-                                d="M11.354 1.646a.5.5 0 0 1 0 .708L6.707 7l4.647 4.646a.5.5 0 0 1-.708.708l-5-5a.5.5 0 0 1 0-.708l5-5a.5.5 0 0 1 .708 0z" />
+                    <button id="toggleSidebar" class="fixed left-0 bg-yellow-500 text-white p-3 rounded-r-lg shadow-lg focus:outline-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
                         </svg>
                     </button>
 
-                    <div class="py-7">
+                    <div id="listMataKuliah" class="py-7">
                         <h2 class="text-center text-lg font-semibold my-5">List Mata Kuliah</h2>
                         <div class="flex justify-between items-center pb-7">
                             <!-- Search Section -->
@@ -198,8 +211,10 @@
                                         data-course-id="{{ $mata_kuliah->id }}"
                                         data-course-time="{{ $mata_kuliah->hari }}, {{ \Carbon\Carbon::parse($mata_kuliah->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($mata_kuliah->jam_selesai)->format('H:i') }}">
                                         <td class="px-4 py-2 border-r border-white">{{ $loop->iteration }}</td>
-                                        <td class="px-4 py-2 w-1/3 border-r border-white">{{ $mata_kuliah->kode }}</td>
-                                        <td class="px-4 py-2 w-1/3 border-r border-white">{{ $mata_kuliah->nama }}</td>
+                                        <td class="px-4 py-2 w-1/3 border-r border-white">{{ $mata_kuliah->kode }}
+                                        </td>
+                                        <td class="px-4 py-2 w-1/3 border-r border-white">{{ $mata_kuliah->nama }}
+                                        </td>
                                         <td class="px-4 py-2 w-1/3 border-r border-white">
                                             {{ $mata_kuliah->hari }},
                                             {{ \Carbon\Carbon::parse($mata_kuliah->jam_mulai)->format('H:i') }} -
@@ -251,32 +266,59 @@
                 <div class="px-4 sm:px-6 md:px-8 pt-5 pb-10">
                     <h2 class="text-center text-lg font-semibold mb-4">IRS Mahasiswa</h2>
                     <div class="w-full bg-[#1E1F24] opacity-65 rounded-lg border-[#49454F] border-opacity-50 border-2">
-                        <div class="w-full lg:w-[95%] md:w-[90%] sm:w-[85%] m-4 md:m-6 bg-[#757575] rounded-lg">
-                            <div class="w-full md:w-3/4 px-4 py-3">
-                                <h2 class="font-bold text-md sm:text-lg">Semester 1 | Tahun Ajaran 2022/2023 Ganjil
-                                </h2>
-                                <p class="text-md sm:text-lg">Jumlah SKS 21</p>
-                            </div>
-                        </div>
-                        <div class="w-full lg:w-[95%] md:w-[90%] sm:w-[85%] m-4 md:m-6 bg-[#757575] rounded-lg">
-                            <div class="w-full md:w-3/4 px-4 py-3">
-                                <h2 class="font-bold text-md sm:text-lg">Semester 1 | Tahun Ajaran 2022/2023 Ganjil
-                                </h2>
-                                <p class="text-md sm:text-lg">Jumlah SKS 21</p>
-                            </div>
-                        </div>
-                        <div class="w-full lg:w-[95%] md:w-[90%] sm:w-[85%] m-4 md:m-6 bg-[#757575] rounded-lg">
-                            <div class="w-full md:w-3/4 px-4 py-3">
-                                <h2 class="font-bold text-md sm:text-lg">Semester 1 | Tahun Ajaran 2022/2023 Ganjil
-                                </h2>
-                                <p class="text-md sm:text-lg">Jumlah SKS 21</p>
-                            </div>
-                        </div>
-                        <div class="w-full lg:w-[95%] md:w-[90%] sm:w-[85%] m-4 md:m-6 bg-[#757575] rounded-lg">
-                            <div class="w-full md:w-3/4 px-4 py-3">
-                                <h2 class="font-bold text-md sm:text-lg">Semester 1 | Tahun Ajaran 2022/2023 Ganjil
-                                </h2>
-                                <p class="text-md sm:text-lg">Jumlah SKS 21</p>
+                        <div class="m-2">
+                            <div class="w-full bg-[#757575] rounded-lg">
+                                <div class="w-full flex justify-between items-center px-4 py-3">
+                                    <div>
+                                        <h2 class="font-bold text-md sm:text-lg">IRS Semester 1</h2>
+                                        <p class="text-md sm:text-lg">Jumlah SKS 21</p>
+                                    </div>
+                                    <button type="button"
+                                        class="toggle-semester p-2 hover:bg-[#666666] rounded-full transition-colors">
+                                        <svg class="plus-icon w-6 h-6" xmlns="http://www.w3.org/2000/svg"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                        </svg>
+                                        <svg class="minus-icon w-6 h-6 hidden" xmlns="http://www.w3.org/2000/svg"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M20 12H4" />
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                <div class="semester-content hidden px-4 pb-4 overflow-x-auto" id="semester">
+                                    <h2 class="text-center text-lg font-semibold mb-4">IRS Mahasiswa (Belum / Sudah
+                                        Disetujui Wali)</h2>
+                                    <table class="w-full bg-white rounded-lg">
+                                        <thead class="bg-gray-100">
+                                            <tr>
+                                                <th class="px-4 py-2 text-left text-black rounded-tl-lg">NO</th>
+                                                <th class="px-4 py-2 text-left text-black">KODE</th>
+                                                <th class="px-4 py-2 text-left text-black">MATAKULIAH</th>
+                                                <th class="px-4 py-2 text-left text-black">KELAS</th>
+                                                <th class="px-4 py-2 text-left text-black">SKS</th>
+                                                <th class="px-4 py-2 text-left text-black">RUANG</th>
+                                                <th class="px-4 py-2 text-left text-black">STATUS</th>
+                                                <th class="px-4 py-2 text-left text-black rounded-tr-lg">NAMA DOSEN
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="border-t">
+                                                <td class="px-4 py-2 text-black">1</td>
+                                                <td class="px-4 py-2 text-black">wkwkwkw</td>
+                                                <td class="px-4 py-2 text-black">wkwkwk</td>
+                                                <td class="px-4 py-2 text-black">wwww</td>
+                                                <td class="px-4 py-2 text-black">w</td>
+                                                <td class="px-4 py-2 text-black">w</td>
+                                                <td class="px-4 py-2 text-black">w</td>
+                                                <td class="px-4 py-2 text-black">w</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -424,7 +466,7 @@
                         if (hasConflict(kode, hariJam)) {
                             Swal.fire({
                                 title: 'Peringatan',
-                                text: 'Mata kuliah ini bertabrakan dengan mata kuliah yang sudah diambil atau sudah ada dalam daftar.',
+                                text: 'Anda sudah mengambil mata kuliah ini dalam kelas lain !',
                                 icon: 'warning'
                             });
                             return;
@@ -432,11 +474,12 @@
                         Swal.fire({
                             title: 'Konfirmasi Pengambilan Mata Kuliah',
                             html: `
-                            <div class="text-left">
-                                <p class="mb-2"><strong>Kode:</strong> ${kode}</p>
-                                <p class="mb-2"><strong>Mata Kuliah:</strong> ${nama}</p>
-                                <p class="mb-2"><strong>Jadwal:</strong> ${hariJam}</p>
-                                <p class="mb-2"><strong>SKS:</strong> ${sks}</p>
+                            <div class="bg-white rounded-lg shadow p-4 mb-4">
+                                <h2 class="text-xl font-bold mb-4">Detail Mata Kuliah</h2>
+                                <p class="mb-2"><strong class="text-gray-700">Kode:</strong> <span class="text-gray-900">${kode}</span></p>
+                                <p class="mb-2"><strong class="text-gray-700">Mata Kuliah:</strong> <span class="text-gray-900">${nama}</span></p>
+                                <p class="mb-2"><strong class="text-gray-700">Jadwal:</strong> <span class="text-gray-900">${hariJam}</span></p>
+                                <p class="mb-2"><strong class="text-gray-700">SKS:</strong> <span class="text-gray-900">${sks}</span></p>
                             </div>
                             <p class="mt-4">Apakah Anda yakin ingin mengambil mata kuliah ini?</p>
                         `,
@@ -665,7 +708,6 @@
                 }
             </script>
 
-
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
                     const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
@@ -730,8 +772,6 @@
                                         timer: 1500,
                                         showConfirmButton: false
                                     });
-                                } else {
-                                    throw new Error(data.message || 'Gagal membatalkan mata kuliah');
                                 }
                             })
                     }
@@ -766,7 +806,6 @@
                 });
             </script>
 
-            
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
                     // Function to check time conflicts
@@ -831,25 +870,37 @@
                     // Show conflict details in a popup
                     function showConflictDetails(conflicts) {
                         const conflictsList = conflicts.map(conflict =>
-                            `<li class="mb-4">
-                <strong>${conflict.conflictingCourse.name}</strong> (${conflict.conflictingCourse.code})<br>
-                <span class="text-sm">${conflict.conflictingCourse.time}</span>
-                <br>bertabrakan dengan<br>
-                <strong>${conflict.takenCourse.name}</strong> (${conflict.takenCourse.code})<br>
-                <span class="text-sm">${conflict.takenCourse.time}</span>
-            </li>`
+                            `<ul class="list-none p-0">
+                                <li class="mb-4 bg-gray-100 rounded-lg p-4 shadow flex flex-col items-center text-center">
+                                    <div class="mb-2">
+                                        <strong class="text-gray-800">${conflict.conflictingCourse.name}</strong> 
+                                        <span class="text-gray-600">(${conflict.conflictingCourse.code})</span>
+                                        <br>
+                                        <span class="text-sm text-gray-600">${conflict.conflictingCourse.time}</span>
+                                    </div>
+                                    <div class="mb-2">
+                                        <span class="font-bold text-red-600 bg-red-200 px-2 py-1 rounded">bertabrakan dengan</span>
+                                    </div>
+                                    <div>
+                                        <strong class="text-gray-800">${conflict.takenCourse.name}</strong> 
+                                        <span class="text-gray-600">(${conflict.takenCourse.code})</span>
+                                        <br>
+                                        <span class="text-sm text-gray-600">${conflict.takenCourse.time}</span>
+                                    </div>
+                                </li>
+                            </ul>`
                         ).join('');
 
                         Swal.fire({
                             title: 'Detail Tabrakan Jadwal',
                             html: `
-                <div class="text-left">
-                    <p class="mb-4">Terjadi tabrakan jadwal:</p>
-                    <ul class="list-disc pl-5">
-                        ${conflictsList}
-                    </ul>
-                </div>
-            `,
+                                <div class="text-left">
+                                    <p class="mb-4 text-center">Terjadi tabrakan jadwal:</p>
+                                    <ul class="list-disc pl-5">
+                                        ${conflictsList}
+                                    </ul>
+                                </div>
+                            `,
                             icon: 'warning',
                             confirmButtonText: 'Tutup'
                         });
@@ -875,6 +926,124 @@
                 });
             </script>
 
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const toggleButtons = document.querySelectorAll('.toggle-semester');
+
+                    toggleButtons.forEach(button => {
+                        button.addEventListener('click', function() {
+                            const semesterId = this.dataset.semester;
+                            const content = document.getElementById('semester');
+                            const plusIcon = this.querySelector('.plus-icon');
+                            const minusIcon = this.querySelector('.minus-icon');
+
+                            // Toggle content visibility
+                            content.classList.toggle('hidden');
+
+                            // Toggle icons
+                            plusIcon.classList.toggle('hidden');
+                            minusIcon.classList.toggle('hidden');
+                        });
+                    });
+                });
+            </script>
+
+            <script>
+                function ajukanIRS() {
+                    // Tampilkan popup konfirmasi
+                    Swal.fire({
+                        title: 'Konfirmasi Pengajuan',
+                        text: 'Apakah Anda yakin ingin mengajukan IRS?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#34803C',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ya, Ajukan!',
+                        cancelButtonText: 'Batal',
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Sembunyikan tabel list mata kuliah
+                            document.getElementById('listMataKuliah').classList.add('hidden');
+
+                            // Disable semua tombol batalkan dan ubah tampilannya
+                            const cancelButtons = document.querySelectorAll('.cancel-course');
+                            cancelButtons.forEach(button => {
+                                button.disabled = true;
+                                button.classList.remove('bg-red-600', 'hover:bg-red-700');
+                                button.classList.add('bg-gray-400', 'cursor-not-allowed');
+                            });
+
+                            // Sembunyikan tombol "Ajukan" dan tampilkan tombol "Batal Ajukan"
+                            document.getElementById('ajukanButton').parentElement.classList.add('hidden');
+                            document.getElementById('batalAjukanButton').parentElement.classList.remove('hidden');
+
+                            // Kirim form jika diperlukan
+                            // document.querySelector('form[action="{{ route('irs.ajukan') }}"]').submit();
+
+                            // Tampilkan notifikasi sukses
+                            Swal.fire({
+                                title: 'Berhasil!',
+                                text: 'IRS berhasil diajukan',
+                                icon: 'success',
+                                timer: 1500,
+                                showConfirmButton: false
+                            });
+                        }
+                    });
+                }
+
+                function batalAjukanIRS() {
+                    // Tampilkan popup konfirmasi
+                    Swal.fire({
+                        title: 'Konfirmasi Pembatalan',
+                        text: 'Apakah Anda yakin ingin membatalkan pengajuan IRS?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Ya, Batalkan!',
+                        cancelButtonText: 'Tidak',
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Tampilkan kembali tabel list mata kuliah
+                            document.getElementById('listMataKuliah').classList.remove('hidden');
+
+                            // Enable kembali semua tombol batalkan dan kembalikan tampilannya
+                            const cancelButtons = document.querySelectorAll('.cancel-course');
+                            cancelButtons.forEach(button => {
+                                button.disabled = false;
+                                button.classList.remove('bg-gray-400', 'cursor-not-allowed');
+                                button.classList.add('bg-red-600', 'hover:bg-red-700');
+                            });
+
+                            // Tampilkan kembali tombol "Ajukan" dan sembunyikan tombol "Batal Ajukan"
+                            document.getElementById('ajukanButton').parentElement.classList.remove('hidden');
+                            document.getElementById('batalAjukanButton').parentElement.classList.add('hidden');
+
+                            // Tampilkan notifikasi sukses
+                            Swal.fire({
+                                title: 'IRS dibatalkan',
+                                text: 'IRS telah dibatalkan dan dapat diedit kembali',
+                                icon: 'success',
+                                timer: 1500,
+                                showConfirmButton: false
+                            });
+
+                            // Tambahkan kode untuk mengirim request ke server jika diperlukan
+                            // Misalnya:
+                            // fetch('/batal-ajukan-irs', {
+                            //     method: 'POST',
+                            //     headers: {
+                            //         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                            //         'Content-Type': 'application/json'
+                            //     }
+                            // });
+                        }
+                    });
+                }
+            </script>
 </body>
 
 </html>
