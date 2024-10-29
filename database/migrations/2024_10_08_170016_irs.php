@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('ruangan_id');
 
             // Foreign key
-            $table->foreign('mahasiswa_id')->references('user_id')->on('mahasiswas')->onDelete('cascade');
+            $table->foreign('mahasiswa_id')->references('id')->on('mahasiswas')->onDelete('cascade');
             $table->foreign('mata_kuliah_id')->references('id')->on('mata_kuliahs')->onDelete('cascade');
             $table->foreign('ruangan_id')->references('id')->on('ruangans')->onDelete('cascade');
 

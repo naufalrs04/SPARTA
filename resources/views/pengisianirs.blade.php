@@ -269,138 +269,146 @@ use Illuminate\Support\Str;
             </div>
 
             <div id="contentIRSMahasiswa" class="hidden">
-                <div class="px-4 sm:px-6 md:px-8 pt-5 pb-10">
+                @foreach($groupedData as $mahasiswaId => $semesterGroups)
+                <div class="mahasiswa-container px-4 sm:px-6 md:px-8 pt-5 pb-10">
                     <h2 class="text-center text-lg font-semibold mb-4">IRS Mahasiswa</h2>
                     <div class="w-full bg-[#1E1F24] opacity-65 rounded-lg border-[#49454F] border-opacity-50 border-2">
                         <div class="m-2">
-                            <div class="w-full bg-[#757575] rounded-lg">
-                                <!-- Looping per mahasiswa_id dan semester -->
-                                <div class="w-full flex justify-between items-center px-4 py-3">
-                                    <div>
-                                        <h2 class="font-bold text-md sm:text-lg">IRS Semester XX</h2>
-                                        <p class="text-md sm:text-lg">Jumlah SKS : {{ $irs_rekap->sum('sks') }}</p>
+                            @for($semester = 1; $semester <= $semesterMahasiswa; $semester++)
+                                @if(isset($semesterGroups[$semester]))
+                                <div class="w-full bg-[#757575] rounded-lg mb-4">
+                                    <div class="w-full flex justify-between items-center px-4 py-3">
+                                        <div>
+                                            <h3 class="font-bold text-md sm:text-lg">IRS Semester {{ $semester }}</h3>
+                                            <p class="text-md sm:text-lg">Jumlah SKS: {{ $semesterGroups[$semester]->sum('sks') }}</p>
+                                        </div>
+                                        <button type="button"
+                                            class="toggle-semester p-2 hover:bg-[#666666] rounded-full transition-colors">
+                                            <svg class="plus-icon w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                            </svg>
+                                            <svg class="minus-icon w-6 h-6 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+                                            </svg>
+                                        </button>
                                     </div>
-                                    <button type="button"
-                                        class="toggle-semester p-2 hover:bg-[#666666] rounded-full transition-colors">
-                                        <svg class="plus-icon w-6 h-6" xmlns="http://www.w3.org/2000/svg"
-                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                        </svg>
-                                        <svg class="minus-icon w-6 h-6 hidden" xmlns="http://www.w3.org/2000/svg"
-                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M20 12H4" />
-                                        </svg>
-                                    </button>
+                                
+                                    <div class="semester-content hidden px-4 pb-4 overflow-x-auto" id="semester">
+                                        <h4 class="text-center text-lg font-semibold mb-4">IRS Mahasiswa (Belum / Sudah Disetujui Wali)</h4>
+                                        <table class="w-full bg-white rounded-lg">
+                                            <thead class="bg-gray-100">
+                                                <tr>
+                                                    <th class="px-4 py-2 text-left text-black rounded-tl-lg">NO</th>
+                                                    <th class="px-4 py-2 text-left text-black">KODE</th>
+                                                    <th class="px-4 py-2 text-left text-black">MATA KULIAH</th>
+                                                    <th class="px-4 py-2 text-left text-black">KELAS</th>
+                                                    <th class="px-4 py-2 text-left text-black">SKS</th>
+                                                    <th class="px-4 py-2 text-left text-black">RUANG</th>
+                                                    <th class="px-4 py-2 text-left text-black">STATUS</th>
+                                                    <th class="px-4 py-2 text-left text-black rounded-tr-lg">NAMA DOSEN</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($semesterGroups[$semester] as $rekap)
+                                                @if($rekap->semester == $semester)
+                                                <tr class="border-t">
+                                                    <td class="px-4 py-2 text-black">{{ $loop->iteration }}</td>
+                                                    <td class="px-4 py-2 text-black">{{ $rekap->kode }}</td>
+                                                    <td class="px-4 py-2 text-black">{{ Str::before($rekap->nama, '-') }}</td>
+                                                    <td class="px-4 py-2 text-black">{{ substr($rekap->nama, -1) }}</td>
+                                                    <td class="px-4 py-2 text-black">{{ $rekap->sks }}</td>
+                                                    <td class="px-4 py-2 text-black">{{ $rekap->nama_ruangan }}</td>
+                                                    <td class="px-4 py-2 text-black">Baru</td>
+                                                    <td class="px-4 py-2 text-black">XX</td>
+                                                </tr>
+                                                @endif
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-
-                                <div class="semester-content hidden px-4 pb-4 overflow-x-auto" id="semester">
-                                    <h2 class="text-center text-lg font-semibold mb-4">IRS Mahasiswa (Belum / Sudah
-                                        Disetujui Wali)</h2>
-                                    <table class="w-full bg-white rounded-lg">
-                                        <thead class="bg-gray-100">
-                                            <tr>
-                                                <th class="px-4 py-2 text-left text-black rounded-tl-lg">NO</th>
-                                                <th class="px-4 py-2 text-left text-black">KODE</th>
-                                                <th class="px-4 py-2 text-left text-black">MATA KULIAH</th>
-                                                <th class="px-4 py-2 text-left text-black">KELAS</th>
-                                                <th class="px-4 py-2 text-left text-black">SKS</th>
-                                                <th class="px-4 py-2 text-left text-black">RUANG</th>
-                                                <th class="px-4 py-2 text-left text-black">STATUS</th>
-                                                <th class="px-4 py-2 text-left text-black rounded-tr-lg">NAMA DOSEN
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach($irs_rekap as $rekap)
-                                            <tr class="border-t">
-                                                <td class="px-4 py-2 text-black">{{ $loop->iteration }}</td>
-                                                <td class="px-4 py-2 text-black">{{ $rekap->kode}}</td>
-                                                <td class="px-4 py-2 text-black">{{ Str::before($rekap->nama, '-') }}</td>
-                                                <td class="px-4 py-2 text-black">{{ substr($rekap->nama, -1) }}</td>
-                                                <td class="px-4 py-2 text-black">{{$rekap->sks}}</td>
-                                                <td class="px-4 py-2 text-black">{{$rekap->nama_ruangan}}</td>
-                                                <td class="px-4 py-2 text-black">Baru</td>
-                                                <td class="px-4 py-2 text-black">XX</td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                                @else
+                                <div class="w-full bg-[#757575] rounded-lg mb-4 px-4 py-3">
+                                    <h3 class="font-bold text-md sm:text-lg">IRS Semester {{ $semester }}: Tidak ada data</h3>
                                 </div>
-                            </div>
+                                @endif
+                            @endfor
                         </div>
                     </div>
                 </div>
+                @endforeach
             </div>
 
-            <!-- search bar -->
-            <script>
-                document.getElementById('default-search').addEventListener('input', function() {
-                    const searchTerm = this.value.toLowerCase();
-                    const rows = document.querySelectorAll('table[name="tabel_jadwal"] tbody tr');
 
-                    rows.forEach(row => {
-                        const courseName = row.querySelector('td:nth-child(3)').innerText
-                            .toLowerCase(); // Assuming 3rd column has course name
-                        const courseCode = row.querySelector('td:nth-child(2)').innerText
-                            .toLowerCase(); // Assuming 2nd column has course code
+        </div>
 
-                        if (courseName.includes(searchTerm) || courseCode.includes(searchTerm)) {
-                            row.style.display = ''; // Show the row if it matches
-                        } else {
-                            row.style.display = 'none'; // Hide the row if it doesn't match
-                        }
-                    });
-                });
-            </script>
+        <!-- search bar -->
+        <script>
+            document.getElementById('default-search').addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const rows = document.querySelectorAll('table[name="tabel_jadwal"] tbody tr');
 
-            <!-- change content irs mahasiswa -->
-            <script>
-                // switch pengisian irs - irs mahasiswa
-                function switchIRS(selected) {
-                    // Elements for tabs
-                    const pengisianIRS = document.getElementById('pengisianIRS');
-                    const irsMahasiswa = document.getElementById('irsMahasiswa');
+                rows.forEach(row => {
+                    const courseName = row.querySelector('td:nth-child(3)').innerText
+                        .toLowerCase(); // Assuming 3rd column has course name
+                    const courseCode = row.querySelector('td:nth-child(2)').innerText
+                        .toLowerCase(); // Assuming 2nd column has course code
 
-                    // Elements for content
-                    const contentPengisianIRS = document.getElementById('contentPengisianIRS');
-                    const contentIRSMahasiswa = document.getElementById('contentIRSMahasiswa');
-
-                    // Switch active tab and color
-                    if (selected === 'pengisianIRS') {
-                        // console.log("Switching to Pengisian IRS");
-                        pengisianIRS.classList.add('bg-yellow-500', 'border-[#17181C]');
-                        irsMahasiswa.classList.remove('bg-yellow-500', 'border-[#17181C]');
-
-                        // Show Pengisian IRS content and hide IRS Mahasiswa content
-                        contentPengisianIRS.classList.remove('hidden');
-                        contentIRSMahasiswa.classList.add('hidden');
-                    } else if (selected === 'irsMahasiswa') {
-                        // console.log("Switching to IRS Mahasiswa");
-                        irsMahasiswa.classList.add('bg-yellow-500', 'border-[#17181C]');
-                        pengisianIRS.classList.remove('bg-yellow-500', 'border-[#17181C]');
-
-                        // Show IRS Mahasiswa content and hide Pengisian IRS content
-                        contentIRSMahasiswa.classList.remove('hidden');
-                        contentPengisianIRS.classList.add('hidden');
+                    if (courseName.includes(searchTerm) || courseCode.includes(searchTerm)) {
+                        row.style.display = ''; // Show the row if it matches
+                    } else {
+                        row.style.display = 'none'; // Hide the row if it doesn't match
                     }
+                });
+            });
+        </script>
+
+        <!-- change content irs mahasiswa -->
+        <script>
+            // switch pengisian irs - irs mahasiswa
+            function switchIRS(selected) {
+                // Elements for tabs
+                const pengisianIRS = document.getElementById('pengisianIRS');
+                const irsMahasiswa = document.getElementById('irsMahasiswa');
+
+                // Elements for content
+                const contentPengisianIRS = document.getElementById('contentPengisianIRS');
+                const contentIRSMahasiswa = document.getElementById('contentIRSMahasiswa');
+
+                // Switch active tab and color
+                if (selected === 'pengisianIRS') {
+                    // console.log("Switching to Pengisian IRS");
+                    pengisianIRS.classList.add('bg-yellow-500', 'border-[#17181C]');
+                    irsMahasiswa.classList.remove('bg-yellow-500', 'border-[#17181C]');
+
+                    // Show Pengisian IRS content and hide IRS Mahasiswa content
+                    contentPengisianIRS.classList.remove('hidden');
+                    contentIRSMahasiswa.classList.add('hidden');
+                } else if (selected === 'irsMahasiswa') {
+                    // console.log("Switching to IRS Mahasiswa");
+                    irsMahasiswa.classList.add('bg-yellow-500', 'border-[#17181C]');
+                    pengisianIRS.classList.remove('bg-yellow-500', 'border-[#17181C]');
+
+                    // Show IRS Mahasiswa content and hide Pengisian IRS content
+                    contentIRSMahasiswa.classList.remove('hidden');
+                    contentPengisianIRS.classList.add('hidden');
                 }
-            </script>
+            }
+        </script>
 
-            <!-- show details info matkul -->
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    const courseDetails = @json($list_mata_kuliah);
+        <!-- show details info matkul -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const courseDetails = @json($list_mata_kuliah);
 
-                    document.querySelectorAll('.show-details').forEach((button) => {
-                        button.addEventListener('click', () => {
-                            const index = button.getAttribute('data-index');
-                            const details = courseDetails[index];
+                document.querySelectorAll('.show-details').forEach((button) => {
+                    button.addEventListener('click', () => {
+                        const index = button.getAttribute('data-index');
+                        const details = courseDetails[index];
 
-                            Swal.fire({
-                                title: `<strong>Detail Mata Kuliah</strong>`,
-                                html: `
+                        Swal.fire({
+                            title: `<strong>Detail Mata Kuliah</strong>`,
+                            html: `
                                         <div class="text-left space-y-4">
                                             <div>
                                                 <h2 class="font-bold mb-1">Nama Mata Kuliah :</h2>
@@ -446,43 +454,43 @@ use Illuminate\Support\Str;
                                             </div>
                                         </div>
                                     `,
-                                confirmButtonText: 'Tutup',
-                                focusConfirm: false,
-                                customClass: {
-                                    popup: 'swal-popup-custom'
-                                }
-                            });
+                            confirmButtonText: 'Tutup',
+                            focusConfirm: false,
+                            customClass: {
+                                popup: 'swal-popup-custom'
+                            }
                         });
                     });
                 });
-            </script>
+            });
+        </script>
 
 
-            <script>
-                // Update the event listener for form submission
-                document.querySelectorAll('form').forEach(form => {
-                    form.addEventListener('submit', function(event) {
-                        event.preventDefault();
+        <script>
+            // Update the event listener for form submission
+            document.querySelectorAll('form').forEach(form => {
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault();
 
-                        // Get the button that was clicked
-                        const button = event.submitter;
-                        const kode = button.getAttribute('data-kode');
-                        const nama = button.getAttribute('data-nama');
-                        const hariJam = button.getAttribute('data-hari-jam');
-                        const sks = parseInt(button.getAttribute('data-sks'));
+                    // Get the button that was clicked
+                    const button = event.submitter;
+                    const kode = button.getAttribute('data-kode');
+                    const nama = button.getAttribute('data-nama');
+                    const hariJam = button.getAttribute('data-hari-jam');
+                    const sks = parseInt(button.getAttribute('data-sks'));
 
-                        // Show confirmation dialog
-                        if (hasConflict(kode, hariJam)) {
-                            Swal.fire({
-                                title: 'Peringatan',
-                                text: 'Anda sudah mengambil mata kuliah ini dalam kelas lain !',
-                                icon: 'warning'
-                            });
-                            return;
-                        }
+                    // Show confirmation dialog
+                    if (hasConflict(kode, hariJam)) {
                         Swal.fire({
-                            title: 'Konfirmasi Pengambilan Mata Kuliah',
-                            html: `
+                            title: 'Peringatan',
+                            text: 'Anda sudah mengambil mata kuliah ini dalam kelas lain !',
+                            icon: 'warning'
+                        });
+                        return;
+                    }
+                    Swal.fire({
+                        title: 'Konfirmasi Pengambilan Mata Kuliah',
+                        html: `
                             <div class="bg-white rounded-lg shadow p-4 mb-4">
                                 <h2 class="text-xl font-bold mb-4">Detail Mata Kuliah</h2>
                                 <p class="mb-2"><strong class="text-gray-700">Kode:</strong> <span class="text-gray-900">${kode}</span></p>
@@ -492,99 +500,99 @@ use Illuminate\Support\Str;
                             </div>
                             <p class="mt-4">Apakah Anda yakin ingin mengambil mata kuliah ini?</p>
                         `,
-                            icon: 'question',
-                            showCancelButton: true,
-                            confirmButtonColor: '#34803C',
-                            cancelButtonColor: '#880000',
-                            confirmButtonText: 'Ya, Ambil',
-                            cancelButtonText: 'Batal',
-                            reverseButtons: true
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                const formData = new FormData(form);
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#34803C',
+                        cancelButtonColor: '#880000',
+                        confirmButtonText: 'Ya, Ambil',
+                        cancelButtonText: 'Batal',
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            const formData = new FormData(form);
 
-                                // Send the form data using fetch API
-                                fetch(form.action, {
-                                        method: 'POST',
-                                        body: formData,
-                                        headers: {
-                                            'X-CSRF-TOKEN': document.querySelector(
-                                                'meta[name="csrf-token"]').content,
-                                            'Accept': 'application/json',
-                                            'X-Requested-With': 'XMLHttpRequest'
-                                        },
-                                    })
-                                    .then(response => {
-                                        if (!response.ok) {
-                                            return response.json().then(err => Promise.reject(err));
-                                        }
-                                        return response.json();
-                                    })
-                                    .then(data => {
-                                        if (data.success) {
-                                            // Add the course to the summary table
-                                            addCourseToSummary({
-                                                kode: kode,
-                                                nama: nama,
-                                                waktu: hariJam,
-                                                sks: sks
-                                            });
-
-                                            // Update total SKS
-                                            updateTotalSKS(sks);
-
-                                            // Show success message
-                                            Swal.fire({
-                                                title: 'Berhasil!',
-                                                text: 'Mata kuliah berhasil ditambahkan',
-                                                icon: 'success',
-                                                timer: 1500,
-                                                showConfirmButton: false
-                                            });
-                                        } else {
-                                            throw new Error(data.message || 'Terjadi kesalahan');
-                                        }
-                                    })
-                                    .catch((error) => {
-                                        console.error('Error:', error);
-
-                                        let errorMessage =
-                                            'Terjadi kesalahan saat menambahkan mata kuliah';
-
-                                        if (error.errors) {
-                                            errorMessage = Object.values(error.errors).flat().join(
-                                                '\n');
-                                        } else if (error.message) {
-                                            errorMessage = error.message;
-                                        }
-
-                                        if (errorMessage.toLowerCase().includes('duplicate') ||
-                                            errorMessage.toLowerCase().includes('already exists')) {
-                                            errorMessage = 'Mata kuliah ini sudah diambil sebelumnya';
-                                        }
-
-                                        Swal.fire({
-                                            title: 'Peringatan',
-                                            text: errorMessage,
-                                            icon: 'warning'
+                            // Send the form data using fetch API
+                            fetch(form.action, {
+                                    method: 'POST',
+                                    body: formData,
+                                    headers: {
+                                        'X-CSRF-TOKEN': document.querySelector(
+                                            'meta[name="csrf-token"]').content,
+                                        'Accept': 'application/json',
+                                        'X-Requested-With': 'XMLHttpRequest'
+                                    },
+                                })
+                                .then(response => {
+                                    if (!response.ok) {
+                                        return response.json().then(err => Promise.reject(err));
+                                    }
+                                    return response.json();
+                                })
+                                .then(data => {
+                                    if (data.success) {
+                                        // Add the course to the summary table
+                                        addCourseToSummary({
+                                            kode: kode,
+                                            nama: nama,
+                                            waktu: hariJam,
+                                            sks: sks
                                         });
+
+                                        // Update total SKS
+                                        updateTotalSKS(sks);
+
+                                        // Show success message
+                                        Swal.fire({
+                                            title: 'Berhasil!',
+                                            text: 'Mata kuliah berhasil ditambahkan',
+                                            icon: 'success',
+                                            timer: 1500,
+                                            showConfirmButton: false
+                                        });
+                                    } else {
+                                        throw new Error(data.message || 'Terjadi kesalahan');
+                                    }
+                                })
+                                .catch((error) => {
+                                    console.error('Error:', error);
+
+                                    let errorMessage =
+                                        'Terjadi kesalahan saat menambahkan mata kuliah';
+
+                                    if (error.errors) {
+                                        errorMessage = Object.values(error.errors).flat().join(
+                                            '\n');
+                                    } else if (error.message) {
+                                        errorMessage = error.message;
+                                    }
+
+                                    if (errorMessage.toLowerCase().includes('duplicate') ||
+                                        errorMessage.toLowerCase().includes('already exists')) {
+                                        errorMessage = 'Mata kuliah ini sudah diambil sebelumnya';
+                                    }
+
+                                    Swal.fire({
+                                        title: 'Peringatan',
+                                        text: errorMessage,
+                                        icon: 'warning'
                                     });
-                            }
-                        });
+                                });
+                        }
                     });
                 });
+            });
 
-                // Function to add a course to the summary table
-                function addCourseToSummary(course) {
-                    const summaryTable = document.querySelector('table:first-of-type tbody');
-                    const newRow = document.createElement('tr');
-                    newRow.style.backgroundColor = '#23252A';
+            // Function to add a course to the summary table
+            function addCourseToSummary(course) {
+                const summaryTable = document.querySelector('table:first-of-type tbody');
+                const newRow = document.createElement('tr');
+                newRow.style.backgroundColor = '#23252A';
 
-                    // Calculate the new row number
-                    const rowNumber = summaryTable.rows.length + 1;
+                // Calculate the new row number
+                const rowNumber = summaryTable.rows.length + 1;
 
-                    // Create the row content
-                    newRow.innerHTML = `
+                // Create the row content
+                newRow.innerHTML = `
                         <td class="px-4 py-2 border-r border-white">${rowNumber}</td>
                         <td class="px-4 py-2 w-1/3 border-r border-white">${course.kode}</td>
                         <td class="px-4 py-2 w-1/3 border-r border-white">${course.nama}</td>
@@ -595,291 +603,291 @@ use Illuminate\Support\Str;
                         </td>
                     `;
 
-                    summaryTable.appendChild(newRow);
-                }
+                summaryTable.appendChild(newRow);
+            }
 
-                function hasConflict(newKode, newHariJam) {
-                    const summaryTable = document.querySelector('table:first-of-type tbody');
-                    for (let row of summaryTable.rows) {
-                        const existingKode = row.cells[1].textContent;
-                        const existingHariJam = row.cells[3].textContent;
+            function hasConflict(newKode, newHariJam) {
+                const summaryTable = document.querySelector('table:first-of-type tbody');
+                for (let row of summaryTable.rows) {
+                    const existingKode = row.cells[1].textContent;
+                    const existingHariJam = row.cells[3].textContent;
 
-                        if (existingKode === newKode) {
-                            return true; // Duplicate course
-                        }
-
-                        if (isTimeConflict(existingHariJam, newHariJam)) {
-                            return true; // Time conflict
-                        }
+                    if (existingKode === newKode) {
+                        return true; // Duplicate course
                     }
+
+                    if (isTimeConflict(existingHariJam, newHariJam)) {
+                        return true; // Time conflict
+                    }
+                }
+                return false;
+            }
+
+            function isTimeConflict(time1, time2) {
+                // Remove any leading/trailing whitespace
+                time1 = time1.trim();
+                time2 = time2.trim();
+
+                // Parse the day and time range
+                const [day1, timeRange1] = time1.split(',').map(s => s.trim());
+                const [day2, timeRange2] = time2.split(',').map(s => s.trim());
+
+                // If days are different, there's no conflict
+                if (day1 !== day2) {
                     return false;
                 }
 
-                function isTimeConflict(time1, time2) {
-                    // Remove any leading/trailing whitespace
-                    time1 = time1.trim();
-                    time2 = time2.trim();
+                // Parse time ranges
+                const [start1, end1] = timeRange1.split('-').map(t => t.trim());
+                const [start2, end2] = timeRange2.split('-').map(t => t.trim());
 
-                    // Parse the day and time range
-                    const [day1, timeRange1] = time1.split(',').map(s => s.trim());
-                    const [day2, timeRange2] = time2.split(',').map(s => s.trim());
+                // Convert times to minutes for easier comparison
+                const toMinutes = (timeStr) => {
+                    const [hours, minutes] = timeStr.split(':').map(Number);
+                    return hours * 60 + minutes;
+                };
 
-                    // If days are different, there's no conflict
-                    if (day1 !== day2) {
-                        return false;
-                    }
+                const start1Min = toMinutes(start1);
+                const end1Min = toMinutes(end1);
+                const start2Min = toMinutes(start2);
+                const end2Min = toMinutes(end2);
 
-                    // Parse time ranges
-                    const [start1, end1] = timeRange1.split('-').map(t => t.trim());
-                    const [start2, end2] = timeRange2.split('-').map(t => t.trim());
+                // Check for overlap
+                return (start1Min < end2Min && start2Min < end1Min);
+            }
+            // Function to update total SKS display
+            function updateTotalSKS(newSks) {
+                const totalSksElement = document.getElementById('totalSks');
+                const currentTotal = parseInt(totalSksElement.textContent || '0');
+                const newTotal = currentTotal + newSks;
+                totalSksElement.textContent = newTotal;
 
-                    // Convert times to minutes for easier comparison
-                    const toMinutes = (timeStr) => {
-                        const [hours, minutes] = timeStr.split(':').map(Number);
-                        return hours * 60 + minutes;
-                    };
+                // Show the SKS sidebar if it's not already visible
+                const sksSidebar = document.getElementById('sksSidebar');
+                sksSidebar.classList.add('show');
+            }
 
-                    const start1Min = toMinutes(start1);
-                    const end1Min = toMinutes(end1);
-                    const start2Min = toMinutes(start2);
-                    const end2Min = toMinutes(end2);
+            // Function to calculate initial total SKS
+            function calculateInitialTotalSKS() {
+                const summaryTable = document.querySelector('table:first-of-type tbody');
+                let total = 0;
 
-                    // Check for overlap
-                    return (start1Min < end2Min && start2Min < end1Min);
-                }
-                // Function to update total SKS display
-                function updateTotalSKS(newSks) {
-                    const totalSksElement = document.getElementById('totalSks');
-                    const currentTotal = parseInt(totalSksElement.textContent || '0');
-                    const newTotal = currentTotal + newSks;
-                    totalSksElement.textContent = newTotal;
-
-                    // Show the SKS sidebar if it's not already visible
-                    const sksSidebar = document.getElementById('sksSidebar');
-                    sksSidebar.classList.add('show');
-                }
-
-                // Function to calculate initial total SKS
-                function calculateInitialTotalSKS() {
-                    const summaryTable = document.querySelector('table:first-of-type tbody');
-                    let total = 0;
-
-                    Array.from(summaryTable.rows).forEach(row => {
-                        const sks = parseInt(row.cells[4].textContent); // Assuming SKS is in the 5th column
-                        if (!isNaN(sks)) {
-                            total += sks;
-                        }
-                    });
-
-                    document.getElementById('totalSks').textContent = total;
-                }
-
-                // Calculate initial total SKS when page loads
-                document.addEventListener('DOMContentLoaded', calculateInitialTotalSKS);
-
-
-                // Function to update the summary table
-                function updateSummaryTable(course) {
-                    const summaryTable = document.querySelector('table:first-of-type tbody');
-                    const rowCount = summaryTable.rows.length + 1;
-
-                    const newRow = summaryTable.insertRow();
-                    newRow.style.backgroundColor = '#23252A';
-
-                    // Insert cells
-                    const cellNo = newRow.insertCell();
-                    const cellKode = newRow.insertCell();
-                    const cellNama = newRow.insertCell();
-                    const cellWaktu = newRow.insertCell();
-                    const cellSks = newRow.insertCell();
-
-                    // Add classes and content
-                    [cellNo, cellKode, cellNama, cellWaktu, cellSks].forEach(cell => {
-                        cell.className = 'px-4 py-2 border-r border-white';
-                    });
-
-                    cellNo.textContent = rowCount;
-                    cellKode.textContent = course.kode;
-                    cellNama.textContent = course.nama;
-                    cellWaktu.textContent = course.waktu;
-                    cellSks.textContent = course.sks;
-                }
-
-                // Function to update total SKS
-                function updateTotalSks(newSks) {
-                    const totalSksElement = document.getElementById('totalSks');
-                    const currentTotal = parseInt(totalSksElement.textContent);
-                    totalSksElement.textContent = (currentTotal + newSks).toString();
-
-                    // Show the SKS sidebar if it's not already visible
-                    const sksSidebar = document.getElementById('sksSidebar');
-                    sksSidebar.classList.add('show');
-                }
-            </script>
-
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
-
-                    // Initialize listeners for cancel buttons
-                    initializeCancelButtons();
-                    // Initialize the SKS sidebar
-                    calculateInitialTotalSKS();
-                    initializeSKSSidebar();
-
-                    function initializeCancelButtons() {
-                        document.querySelectorAll('.cancel-course').forEach(button => {
-                            button.addEventListener('click', handleCancelClick);
-                        });
-                    }
-
-                    function handleCancelClick(event) {
-                        const button = event.currentTarget;
-                        const row = button.closest('tr');
-                        const courseId = button.getAttribute('data-id');
-                        const sks = parseInt(button.getAttribute('data-sks'));
-
-                        Swal.fire({
-                            title: 'Konfirmasi Pembatalan',
-                            text: 'Apakah Anda yakin ingin membatalkan mata kuliah ini?',
-                            icon: 'warning',
-                            showCancelButton: true,
-                            confirmButtonColor: '#d33',
-                            cancelButtonColor: '#3085d6',
-                            confirmButtonText: 'Ya, Batalkan!',
-                            cancelButtonText: 'Tidak'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                cancelCourse(courseId, row, sks);
-                            }
-                        });
-                    }
-
-                    function cancelCourse(courseId, row, sks) {
-                        fetch('/irs-rekap/destroy', {
-                                method: 'DELETE',
-                                headers: {
-                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                                    'Content-Type': 'application/json',
-                                    'Accept': 'application/json'
-                                },
-                                body: JSON.stringify({
-                                    id: courseId // Pastikan ini sesuai dengan mata_kuliah_id yang ingin dihapus
-                                })
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                if (data.success) {
-                                    row.remove();
-                                    updateTotalSKSAfterCancel(sks);
-                                    reorderTableRows();
-
-                                    Swal.fire({
-                                        title: 'Berhasil!',
-                                        text: 'Mata kuliah berhasil dibatalkan',
-                                        icon: 'success',
-                                        timer: 1500,
-                                        showConfirmButton: false
-                                    });
-                                }
-                            })
-                    }
-
-                    function updateTotalSKSAfterCancel(canceledSKS) {
-                        const totalSksElement = document.getElementById('totalSks');
-                        const currentTotal = parseInt(totalSksElement.textContent || '0');
-                        const newTotal = Math.max(0, currentTotal - canceledSKS);
-                        totalSksElement.textContent = newTotal;
-
-                        if (newTotal === 0) {
-                            document.getElementById('sksSidebar').classList.remove('show');
-                        }
-                    }
-
-                    function reorderTableRows() {
-                        const tbody = document.querySelector('table:first-of-type tbody');
-                        Array.from(tbody.rows).forEach((row, index) => {
-                            row.cells[0].textContent = index + 1;
-                        });
-                    }
-
-                    function initializeSKSSidebar() {
-                        const toggleButton = document.getElementById('toggleSidebar');
-                        const sidebar = document.getElementById('sksSidebar');
-
-                        toggleButton.addEventListener('click', () => {
-                            sidebar.classList.toggle('show');
-                            toggleButton.classList.toggle('rotated');
-                        });
+                Array.from(summaryTable.rows).forEach(row => {
+                    const sks = parseInt(row.cells[4].textContent); // Assuming SKS is in the 5th column
+                    if (!isNaN(sks)) {
+                        total += sks;
                     }
                 });
-            </script>
 
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    // Function to check time conflicts
-                    function checkTimeConflicts() {
-                        const takenCourses = Array.from(document.querySelector('table:first-of-type tbody').rows)
-                            .map(row => ({
-                                name: row.cells[2].textContent,
-                                code: row.cells[1].textContent,
-                                time: row.cells[3].textContent
-                            }));
+                document.getElementById('totalSks').textContent = total;
+            }
 
-                        const availableCourses = document.querySelectorAll('.course-row');
+            // Calculate initial total SKS when page loads
+            document.addEventListener('DOMContentLoaded', calculateInitialTotalSKS);
 
-                        availableCourses.forEach(courseRow => {
-                            const existingOverlay = courseRow.querySelector('.collision-overlay');
-                            if (existingOverlay) {
-                                existingOverlay.remove();
+
+            // Function to update the summary table
+            function updateSummaryTable(course) {
+                const summaryTable = document.querySelector('table:first-of-type tbody');
+                const rowCount = summaryTable.rows.length + 1;
+
+                const newRow = summaryTable.insertRow();
+                newRow.style.backgroundColor = '#23252A';
+
+                // Insert cells
+                const cellNo = newRow.insertCell();
+                const cellKode = newRow.insertCell();
+                const cellNama = newRow.insertCell();
+                const cellWaktu = newRow.insertCell();
+                const cellSks = newRow.insertCell();
+
+                // Add classes and content
+                [cellNo, cellKode, cellNama, cellWaktu, cellSks].forEach(cell => {
+                    cell.className = 'px-4 py-2 border-r border-white';
+                });
+
+                cellNo.textContent = rowCount;
+                cellKode.textContent = course.kode;
+                cellNama.textContent = course.nama;
+                cellWaktu.textContent = course.waktu;
+                cellSks.textContent = course.sks;
+            }
+
+            // Function to update total SKS
+            function updateTotalSks(newSks) {
+                const totalSksElement = document.getElementById('totalSks');
+                const currentTotal = parseInt(totalSksElement.textContent);
+                totalSksElement.textContent = (currentTotal + newSks).toString();
+
+                // Show the SKS sidebar if it's not already visible
+                const sksSidebar = document.getElementById('sksSidebar');
+                sksSidebar.classList.add('show');
+            }
+        </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+                // Initialize listeners for cancel buttons
+                initializeCancelButtons();
+                // Initialize the SKS sidebar
+                calculateInitialTotalSKS();
+                initializeSKSSidebar();
+
+                function initializeCancelButtons() {
+                    document.querySelectorAll('.cancel-course').forEach(button => {
+                        button.addEventListener('click', handleCancelClick);
+                    });
+                }
+
+                function handleCancelClick(event) {
+                    const button = event.currentTarget;
+                    const row = button.closest('tr');
+                    const courseId = button.getAttribute('data-id');
+                    const sks = parseInt(button.getAttribute('data-sks'));
+
+                    Swal.fire({
+                        title: 'Konfirmasi Pembatalan',
+                        text: 'Apakah Anda yakin ingin membatalkan mata kuliah ini?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Ya, Batalkan!',
+                        cancelButtonText: 'Tidak'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            cancelCourse(courseId, row, sks);
+                        }
+                    });
+                }
+
+                function cancelCourse(courseId, row, sks) {
+                    fetch('/irs-rekap/destroy', {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                id: courseId // Pastikan ini sesuai dengan mata_kuliah_id yang ingin dihapus
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                row.remove();
+                                updateTotalSKSAfterCancel(sks);
+                                reorderTableRows();
+
+                                Swal.fire({
+                                    title: 'Berhasil!',
+                                    text: 'Mata kuliah berhasil dibatalkan',
+                                    icon: 'success',
+                                    timer: 1500,
+                                    showConfirmButton: false
+                                });
                             }
+                        })
+                }
 
-                            const courseTime = courseRow.dataset.courseTime;
-                            const courseName = courseRow.querySelector('td:nth-child(3)').textContent;
-                            const courseCode = courseRow.querySelector('td:nth-child(2)').textContent;
-                            const conflicts = [];
+                function updateTotalSKSAfterCancel(canceledSKS) {
+                    const totalSksElement = document.getElementById('totalSks');
+                    const currentTotal = parseInt(totalSksElement.textContent || '0');
+                    const newTotal = Math.max(0, currentTotal - canceledSKS);
+                    totalSksElement.textContent = newTotal;
 
-                            takenCourses.forEach(takenCourse => {
-                                if (isTimeConflict(takenCourse.time, courseTime)) {
-                                    conflicts.push({
-                                        conflictingCourse: {
-                                            name: courseName,
-                                            code: courseCode,
-                                            time: courseTime
-                                        },
-                                        takenCourse: takenCourse
-                                    });
-                                }
-                            });
+                    if (newTotal === 0) {
+                        document.getElementById('sksSidebar').classList.remove('show');
+                    }
+                }
 
-                            if (conflicts.length > 0) {
-                                const overlay = createCollisionOverlay(conflicts);
-                                courseRow.appendChild(overlay);
+                function reorderTableRows() {
+                    const tbody = document.querySelector('table:first-of-type tbody');
+                    Array.from(tbody.rows).forEach((row, index) => {
+                        row.cells[0].textContent = index + 1;
+                    });
+                }
+
+                function initializeSKSSidebar() {
+                    const toggleButton = document.getElementById('toggleSidebar');
+                    const sidebar = document.getElementById('sksSidebar');
+
+                    toggleButton.addEventListener('click', () => {
+                        sidebar.classList.toggle('show');
+                        toggleButton.classList.toggle('rotated');
+                    });
+                }
+            });
+        </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Function to check time conflicts
+                function checkTimeConflicts() {
+                    const takenCourses = Array.from(document.querySelector('table:first-of-type tbody').rows)
+                        .map(row => ({
+                            name: row.cells[2].textContent,
+                            code: row.cells[1].textContent,
+                            time: row.cells[3].textContent
+                        }));
+
+                    const availableCourses = document.querySelectorAll('.course-row');
+
+                    availableCourses.forEach(courseRow => {
+                        const existingOverlay = courseRow.querySelector('.collision-overlay');
+                        if (existingOverlay) {
+                            existingOverlay.remove();
+                        }
+
+                        const courseTime = courseRow.dataset.courseTime;
+                        const courseName = courseRow.querySelector('td:nth-child(3)').textContent;
+                        const courseCode = courseRow.querySelector('td:nth-child(2)').textContent;
+                        const conflicts = [];
+
+                        takenCourses.forEach(takenCourse => {
+                            if (isTimeConflict(takenCourse.time, courseTime)) {
+                                conflicts.push({
+                                    conflictingCourse: {
+                                        name: courseName,
+                                        code: courseCode,
+                                        time: courseTime
+                                    },
+                                    takenCourse: takenCourse
+                                });
                             }
                         });
-                    }
-                    // Create collision overlay element
-                    function createCollisionOverlay(conflicts, currentCourse) {
-                        const overlay = document.createElement('div');
-                        overlay.className = 'collision-overlay';
 
-                        const text = document.createElement('span');
-                        text.className = 'collision-text';
+                        if (conflicts.length > 0) {
+                            const overlay = createCollisionOverlay(conflicts);
+                            courseRow.appendChild(overlay);
+                        }
+                    });
+                }
+                // Create collision overlay element
+                function createCollisionOverlay(conflicts, currentCourse) {
+                    const overlay = document.createElement('div');
+                    overlay.className = 'collision-overlay';
+
+                    const text = document.createElement('span');
+                    text.className = 'collision-text';
 
 
-                        overlay.appendChild(text);
+                    overlay.appendChild(text);
 
-                        overlay.addEventListener('click', () => {
-                            showConflictDetails(conflicts, currentCourse);
-                        });
+                    overlay.addEventListener('click', () => {
+                        showConflictDetails(conflicts, currentCourse);
+                    });
 
-                        return overlay;
-                    }
+                    return overlay;
+                }
 
-                    // Show conflict details in a popup
-                    function showConflictDetails(conflicts) {
-                        const conflictsList = conflicts.map(conflict =>
-                            `<ul class="list-none p-0">
+                // Show conflict details in a popup
+                function showConflictDetails(conflicts) {
+                    const conflictsList = conflicts.map(conflict =>
+                        `<ul class="list-none p-0">
                                 <li class="mb-4 bg-gray-100 rounded-lg p-4 shadow flex flex-col items-center text-center">
                                     <div class="mb-2">
                                         <strong class="text-gray-800">${conflict.conflictingCourse.name}</strong> 
@@ -898,11 +906,11 @@ use Illuminate\Support\Str;
                                     </div>
                                 </li>
                             </ul>`
-                        ).join('');
+                    ).join('');
 
-                        Swal.fire({
-                            title: 'Detail Tabrakan Jadwal',
-                            html: `
+                    Swal.fire({
+                        title: 'Detail Tabrakan Jadwal',
+                        html: `
                                 <div class="text-left">
                                     <p class="mb-4 text-center">Terjadi tabrakan jadwal:</p>
                                     <ul class="list-disc pl-5">
@@ -910,152 +918,152 @@ use Illuminate\Support\Str;
                                     </ul>
                                 </div>
                             `,
-                            icon: 'warning',
-                            confirmButtonText: 'Tutup'
-                        });
-                    }
-
-                    // Check for conflicts whenever the course list changes
-                    function initializeConflictDetection() {
-                        // Initial check
-                        checkTimeConflicts();
-
-                        // Create a MutationObserver to watch for changes in the taken courses table
-                        const observer = new MutationObserver(checkTimeConflicts);
-
-                        const takenCoursesTable = document.querySelector('table:first-of-type tbody');
-                        observer.observe(takenCoursesTable, {
-                            childList: true,
-                            subtree: true
-                        });
-                    }
-
-                    // Initialize conflict detection
-                    initializeConflictDetection();
-                });
-            </script>
-
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    const toggleButtons = document.querySelectorAll('.toggle-semester');
-
-                    toggleButtons.forEach(button => {
-                        button.addEventListener('click', function() {
-                            const semesterId = this.dataset.semester;
-                            const content = document.getElementById('semester');
-                            const plusIcon = this.querySelector('.plus-icon');
-                            const minusIcon = this.querySelector('.minus-icon');
-
-                            // Toggle content visibility
-                            content.classList.toggle('hidden');
-
-                            // Toggle icons
-                            plusIcon.classList.toggle('hidden');
-                            minusIcon.classList.toggle('hidden');
-                        });
-                    });
-                });
-            </script>
-
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    // Cek status IRS dari localStorage saat halaman dimuat
-                    const isSubmitted = localStorage.getItem('irsSubmitted') === 'true';
-                    if (isSubmitted) {
-                        setSubmittedState();
-                    } else {
-                        setDraftState();
-                    }
-                });
-
-                function ajukanIRS() {
-                    Swal.fire({
-                        title: 'Konfirmasi Pengajuan',
-                        text: 'Apakah Anda yakin ingin mengajukan IRS?',
-                        icon: 'question',
-                        showCancelButton: true,
-                        confirmButtonColor: '#34803C',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Ya, Ajukan!',
-                        cancelButtonText: 'Batal',
-                        reverseButtons: true
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            // Simpan status ke localStorage
-                            localStorage.setItem('irsSubmitted', 'true');
-                            setSubmittedState();
-                            Swal.fire({
-                                title: 'Berhasil!',
-                                text: 'IRS berhasil diajukan',
-                                icon: 'success',
-                                timer: 1500,
-                                showConfirmButton: false
-                            });
-                        }
-                    });
-                }
-
-                function batalAjukanIRS() {
-                    Swal.fire({
-                        title: 'Konfirmasi Pembatalan',
-                        text: 'Apakah Anda yakin ingin membatalkan pengajuan IRS?',
                         icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#d33',
-                        cancelButtonColor: '#3085d6',
-                        confirmButtonText: 'Ya, Batalkan!',
-                        cancelButtonText: 'Tidak',
-                        reverseButtons: true
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            // Hapus status dari localStorage
-                            localStorage.removeItem('irsSubmitted');
-                            setDraftState();
-                            Swal.fire({
-                                title: 'IRS dibatalkan',
-                                text: 'IRS telah dibatalkan dan dapat diedit kembali',
-                                icon: 'success',
-                                timer: 1500,
-                                showConfirmButton: false
-                            });
-                        }
+                        confirmButtonText: 'Tutup'
                     });
                 }
 
-                function setSubmittedState() {
-                    // Sembunyikan tabel list mata kuliah
-                    document.getElementById('listMataKuliah').classList.add('hidden');
+                // Check for conflicts whenever the course list changes
+                function initializeConflictDetection() {
+                    // Initial check
+                    checkTimeConflicts();
 
-                    // Disable tombol batalkan
-                    const cancelButtons = document.querySelectorAll('.cancel-course');
-                    cancelButtons.forEach(button => {
-                        button.disabled = true;
-                        button.classList.remove('bg-red-600', 'hover:bg-red-700');
-                        button.classList.add('bg-gray-400', 'cursor-not-allowed');
+                    // Create a MutationObserver to watch for changes in the taken courses table
+                    const observer = new MutationObserver(checkTimeConflicts);
+
+                    const takenCoursesTable = document.querySelector('table:first-of-type tbody');
+                    observer.observe(takenCoursesTable, {
+                        childList: true,
+                        subtree: true
                     });
-
-                    // Update tampilan tombol
-                    document.getElementById('ajukanButton').classList.add('hidden'); // Sembunyikan tombol Ajukan
-                    document.getElementById('batalAjukanButton').classList.remove('hidden'); // Tampilkan tombol Batal Ajukan
                 }
 
-                function setDraftState() {
-                    // Tampilkan tabel list mata kuliah
-                    document.getElementById('listMataKuliah').classList.remove('hidden');
+                // Initialize conflict detection
+                initializeConflictDetection();
+            });
+        </script>
 
-                    // Enable tombol batalkan
-                    const cancelButtons = document.querySelectorAll('.cancel-course');
-                    cancelButtons.forEach(button => {
-                        button.disabled = false;
-                        button.classList.remove('bg-gray-400', 'cursor-not-allowed');
-                        button.classList.add('bg-red-600', 'hover:bg-red-700');
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const toggleButtons = document.querySelectorAll('.toggle-semester');
+
+                toggleButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const semesterId = this.dataset.semester;
+                        const content = document.getElementById('semester');
+                        const plusIcon = this.querySelector('.plus-icon');
+                        const minusIcon = this.querySelector('.minus-icon');
+
+                        // Toggle content visibility
+                        content.classList.toggle('hidden');
+
+                        // Toggle icons
+                        plusIcon.classList.toggle('hidden');
+                        minusIcon.classList.toggle('hidden');
                     });
+                });
+            });
+        </script>
 
-                    // Update tampilan tombol
-                    document.getElementById('ajukanButton').classList.remove('hidden'); // Tampilkan tombol Ajukan
-                    document.getElementById('batalAjukanButton').classList.add('hidden'); // Sembunyikan tombol Batal Ajukan
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Cek status IRS dari localStorage saat halaman dimuat
+                const isSubmitted = localStorage.getItem('irsSubmitted') === 'true';
+                if (isSubmitted) {
+                    setSubmittedState();
+                } else {
+                    setDraftState();
                 }
-            </script>
+            });
+
+            function ajukanIRS() {
+                Swal.fire({
+                    title: 'Konfirmasi Pengajuan',
+                    text: 'Apakah Anda yakin ingin mengajukan IRS?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#34803C',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, Ajukan!',
+                    cancelButtonText: 'Batal',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Simpan status ke localStorage
+                        localStorage.setItem('irsSubmitted', 'true');
+                        setSubmittedState();
+                        Swal.fire({
+                            title: 'Berhasil!',
+                            text: 'IRS berhasil diajukan',
+                            icon: 'success',
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+                    }
+                });
+            }
+
+            function batalAjukanIRS() {
+                Swal.fire({
+                    title: 'Konfirmasi Pembatalan',
+                    text: 'Apakah Anda yakin ingin membatalkan pengajuan IRS?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Ya, Batalkan!',
+                    cancelButtonText: 'Tidak',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Hapus status dari localStorage
+                        localStorage.removeItem('irsSubmitted');
+                        setDraftState();
+                        Swal.fire({
+                            title: 'IRS dibatalkan',
+                            text: 'IRS telah dibatalkan dan dapat diedit kembali',
+                            icon: 'success',
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+                    }
+                });
+            }
+
+            function setSubmittedState() {
+                // Sembunyikan tabel list mata kuliah
+                document.getElementById('listMataKuliah').classList.add('hidden');
+
+                // Disable tombol batalkan
+                const cancelButtons = document.querySelectorAll('.cancel-course');
+                cancelButtons.forEach(button => {
+                    button.disabled = true;
+                    button.classList.remove('bg-red-600', 'hover:bg-red-700');
+                    button.classList.add('bg-gray-400', 'cursor-not-allowed');
+                });
+
+                // Update tampilan tombol
+                document.getElementById('ajukanButton').classList.add('hidden'); // Sembunyikan tombol Ajukan
+                document.getElementById('batalAjukanButton').classList.remove('hidden'); // Tampilkan tombol Batal Ajukan
+            }
+
+            function setDraftState() {
+                // Tampilkan tabel list mata kuliah
+                document.getElementById('listMataKuliah').classList.remove('hidden');
+
+                // Enable tombol batalkan
+                const cancelButtons = document.querySelectorAll('.cancel-course');
+                cancelButtons.forEach(button => {
+                    button.disabled = false;
+                    button.classList.remove('bg-gray-400', 'cursor-not-allowed');
+                    button.classList.add('bg-red-600', 'hover:bg-red-700');
+                });
+
+                // Update tampilan tombol
+                document.getElementById('ajukanButton').classList.remove('hidden'); // Tampilkan tombol Ajukan
+                document.getElementById('batalAjukanButton').classList.add('hidden'); // Sembunyikan tombol Batal Ajukan
+            }
+        </script>
 </body>
 
 </html>

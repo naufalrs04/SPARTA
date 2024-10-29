@@ -15,6 +15,16 @@ class DashboardMahasiswaController extends Controller
 {
     public function index()
     {
+        // if (!Auth::check()) {
+        //     return redirect()->route('login');
+        // }
+
+        // $user = Auth::user();
+
+        // $data = Mahasiswa::where('id', Auth::id())->first();
+        // $data->semester = 
+        // $nama_mahasiswa = User::where('id', Auth::id())->first()->nama;
+
         if (!Auth::check()) {
             return redirect()->route('login');
         }
@@ -22,7 +32,8 @@ class DashboardMahasiswaController extends Controller
         $user = Auth::user();
 
         // Ambil data status dari tabel mahasiswas berdasarkan user_id
-        $mahasiswa = Mahasiswa::where('user_id', $user->id)->first();
+        $mahasiswa = Mahasiswa::where('id', $user->id)->first();
+        $nama_mahasiswa = User::where('id', Auth::id())->first()->nama;
         $status = $mahasiswa ? $mahasiswa->status : null;
         $nim = $mahasiswa ? $mahasiswa->nim_nip : null; 
         $ipk = $mahasiswa ? $mahasiswa->IPK : null;     
@@ -49,7 +60,7 @@ class DashboardMahasiswaController extends Controller
             $jadwal -> nama_ruangan = Ruangan::where('id', $jadwal->ruangan_id)->first()->nama;
         }
 
-        return view('dashboardMahasiswa', compact('user','data','jadwal_kuliah'));
+        return view('dashboardMahasiswa', compact('user','data','nama_mahasiswa','jadwal_kuliah'));
 
     }
 }

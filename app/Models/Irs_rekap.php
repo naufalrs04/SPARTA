@@ -17,5 +17,7 @@ class Irs_rekap extends Model
         'mahasiswa_id',
         'mata_kuliah_id',
         'ruangan_id',
+        'semester',
+        'status_pengajuan',
     ];
 }

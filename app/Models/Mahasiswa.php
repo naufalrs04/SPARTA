@@ -10,10 +10,11 @@ class Mahasiswa extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
+        'nim',
         'status',
         'semester',
         'prodi',
         'IPK',
+        'IPS_Sebelumnya',
     ];
 }

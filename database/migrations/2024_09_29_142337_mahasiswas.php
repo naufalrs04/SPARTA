@@ -13,14 +13,13 @@ return new class extends Migration
     {
         //
         Schema::create ('mahasiswas', function (Blueprint $table) {
-            $table-> unsignedBigInteger('user_id');
-            $table-> foreign('user_id')-> references('id')-> on('users')-> onDelete('cascade');
+            $table-> id();
             $table-> string('nim');
             $table-> boolean('status')->nullable();
             $table-> integer('semester');
             $table-> string('prodi');
-            $table->float('IPK', 3, 2)->nullable();
-            $table->float('IPS_Sebelumnya', 3, 2)->nullable();
+            $table-> float('IPK', 3, 2)->nullable();
+            $table-> float('IPS_Sebelumnya', 3, 2)->nullable();
             
             $table-> timestamps();
         });

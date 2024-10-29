@@ -17,17 +17,15 @@ class mahasiswa extends Seeder
         //
         $data_mahasiswa = [
             [
-                'user_id' => 1,
-                'nim' => 24060119140121,
+                'nim' => '240601122120011',
                 'status' => null,
-                'semester' => 2,
+                'semester' => 3,
                 'prodi' => 'Informatika',
                 'IPK' => 3.89,
                 'IPS_Sebelumnya' => 3.94,
             ],
             [
-                'user_id' => 6,
-                'nim' => 24060119130068,
+                'nim' => '24060119130068',
                 'status' => null,
                 'semester' => 2,
                 'prodi' => 'Informatika',

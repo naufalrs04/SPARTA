@@ -22,7 +22,7 @@ class PengisianIRS extends Controller
         }
 
         $user = Auth::user();
-        $mahasiswa_id = Mahasiswa::where('user_id', Auth::id())->first();
+        $mahasiswa_id = Mahasiswa::where('id', Auth::id())->first();
 
         // Data dari tabel irs
         $list_mata_kuliah = irs::all();
@@ -43,10 +43,28 @@ class PengisianIRS extends Controller
         }
 
         // Data dari tabel irs_rekap
-        $irs_rekap = irs_rekap::where('mahasiswa_id', Auth::id())->get();
-        
+
+        // $semester = Mahasiswa::where('id', $mahasiswa_id)->value('semester');
+
+        // $irs_rekap = irs_rekap::where('mahasiswa_id', Auth::id())->get();
+
+        $mahasiswaId = Auth::id();
+        $semesterMahasiswa = Mahasiswa::where('id', $mahasiswaId)->value('semester');
+
+        // Ambil semua data dari irs_rekap berdasarkan mahasiswa_id dan semester
+        $irs_rekap = irs_rekap::where('mahasiswa_id', $mahasiswaId)
+            ->where('semester', $semesterMahasiswa)
+            ->get();
+
+        $groupedByMahasiswa = $irs_rekap->groupBy('mahasiswa_id');
+
+        // Mengelompokkan setiap mahasiswa berdasarkan semester
+        $groupedData = [];
+        foreach ($groupedByMahasiswa as $mahasiswaId => $rekaps) {
+            $groupedData[$mahasiswaId] = $rekaps->groupBy('semester');
+        }
+
         foreach ($irs_rekap as $rekap) {
-            
             $rekap->kode = Mata_Kuliah::where('id', $rekap->mata_kuliah_id)->first()->kode;
             $rekap->nama = Mata_Kuliah::where('id', $rekap->mata_kuliah_id)->first()->nama;
             $rekap->sks = Mata_Kuliah::where('id', $rekap->mata_kuliah_id)->first()->sks;
@@ -62,16 +80,16 @@ class PengisianIRS extends Controller
             $rekap->kapasitas_ruangan = Ruangan::where('id', $rekap->ruangan_id)->first()->kapasitas;
         }
 
-        $semester =  Mahasiswa::where('user_id', Auth::id())->get();
-        foreach($semester as $s){
-            $s->semester = Mahasiswa::where('user_id', $s->user_id)->first()->semester;
+        $semester =  Mahasiswa::where('id', Auth::id())->get();
+        foreach ($semester as $s) {
+            $s->semester = Mahasiswa::where('id', $s->id)->first()->semester;
         }
 
-        return view('pengisianirs', compact('user', 'list_mata_kuliah', 'irs_rekap', 'semester'));
+        return view('pengisianirs', compact('user', 'list_mata_kuliah', 'irs_rekap', 'groupedData', 'semester', 'semesterMahasiswa'));
     }
 
     public function store(Request $request)
-    {   
+    {
 
         // $user = Auth::user();
         $validated = $request->validate([
@@ -84,7 +102,7 @@ class PengisianIRS extends Controller
 
         // Check for existing IRS entries for the current student
         $existingIrs = irs_rekap::where('mahasiswa_id', $mahasiswa_id)->get();
-
+        $semester = Mahasiswa::where('id', $mahasiswa_id)->value('semester');
         // Check for duplicate course
         if ($existingIrs->contains('mata_kuliah_id', $validated['mata_kuliah_id'])) {
             return response()->json([
@@ -111,11 +129,13 @@ class PengisianIRS extends Controller
                     'mahasiswa_id' => $mahasiswa_id,
                     'mata_kuliah_id' => $validated['mata_kuliah_id'],
                     'ruangan_id' => $validated['ruangan_id'],
+                    'semester' => $semester,
                 ],
                 [
                     'mahasiswa_id' => $mahasiswa_id,
                     'mata_kuliah_id' => $validated['mata_kuliah_id'],
                     'ruangan_id' => $validated['ruangan_id'],
+                    'semester' => $semester,
                 ]
             );
 
@@ -174,38 +194,38 @@ class PengisianIRS extends Controller
         ]);
     }
 
-    public function storeToIrsLempar(Request $request)
-    {
-        // Validasi input
-        $validated = $request->validate([
-            'mata_kuliah_id' => 'required|integer|exists:mata_kuliahs,id',
-            'ruangan_id' => 'required|integer|exists:ruangans,id',
-        ]);
-        
-        $mahasiswa_id = Auth::id();
-    
-        // Proses untuk menyimpan data
-        try {
-            irs_lempar::create([
-                'mahasiswa_id' => $mahasiswa_id,
-                'mata_kuliah_id' => $validated['mata_kuliah_id'],
-                'ruangan_id' => $validated['ruangan_id'],
-                'status_mata_kuliah' => 'Baru',
-                'status_persetujuan' => null,
-            ]);
-    
-            return response()->json([
-                'success' => true,
-                'message' => 'Data berhasil diajukan ke IRS Lempar.'
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Error in storing IRS Lempar: ' . $e->getMessage());
-            return response()->json([
-                'success' => false,
-                'message' => 'Terjadi kesalahan saat menyimpan data.'
-            ], 500);
-        }
-    }
-    
-    
+    // public function storeToIrsLempar(Request $request)
+    // {
+    //     // Validasi input
+    //     $validated = $request->validate([
+    //         'mata_kuliah_id' => 'required|integer|exists:mata_kuliahs,id',
+    //         'ruangan_id' => 'required|integer|exists:ruangans,id',
+    //     ]);
+
+    //     $mahasiswa_id = Auth::id();
+
+    //     // Proses untuk menyimpan data
+    //     try {
+    //         irs_lempar::create([
+    //             'mahasiswa_id' => $mahasiswa_id,
+    //             'mata_kuliah_id' => $validated['mata_kuliah_id'],
+    //             'ruangan_id' => $validated['ruangan_id'],
+    //             'status_mata_kuliah' => 'Baru',
+    //             'status_persetujuan' => null,
+    //         ]);
+
+    //         return response()->json([
+    //             'success' => true,
+    //             'message' => 'Data berhasil diajukan ke IRS Lempar.'
+    //         ]);
+    //     } catch (\Exception $e) {
+    //         Log::error('Error in storing IRS Lempar: ' . $e->getMessage());
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => 'Terjadi kesalahan saat menyimpan data.'
+    //         ], 500);
+    //     }
+    // }
+
+
 }
