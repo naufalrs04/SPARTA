@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('nama');
-            $table->string('nim_nip');
             $table->boolean('kp');
             $table->boolean('dk');
             $table->boolean('pa');

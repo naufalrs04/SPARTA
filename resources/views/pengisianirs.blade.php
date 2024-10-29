@@ -274,9 +274,10 @@ use Illuminate\Support\Str;
                     <div class="w-full bg-[#1E1F24] opacity-65 rounded-lg border-[#49454F] border-opacity-50 border-2">
                         <div class="m-2">
                             <div class="w-full bg-[#757575] rounded-lg">
+                                <!-- Looping per mahasiswa_id dan semester -->
                                 <div class="w-full flex justify-between items-center px-4 py-3">
                                     <div>
-                                        <h2 class="font-bold text-md sm:text-lg">IRS Semester {{$semester}}</h2>
+                                        <h2 class="font-bold text-md sm:text-lg">IRS Semester XX</h2>
                                         <p class="text-md sm:text-lg">Jumlah SKS : {{ $irs_rekap->sum('sks') }}</p>
                                     </div>
                                     <button type="button"
@@ -315,7 +316,7 @@ use Illuminate\Support\Str;
                                             @foreach($irs_rekap as $rekap)
                                             <tr class="border-t">
                                                 <td class="px-4 py-2 text-black">{{ $loop->iteration }}</td>
-                                                <td class="px-4 py-2 text-black">{{$rekap->kode}}</td>
+                                                <td class="px-4 py-2 text-black">{{ $rekap->kode}}</td>
                                                 <td class="px-4 py-2 text-black">{{ Str::before($rekap->nama, '-') }}</td>
                                                 <td class="px-4 py-2 text-black">{{ substr($rekap->nama, -1) }}</td>
                                                 <td class="px-4 py-2 text-black">{{$rekap->sks}}</td>

@@ -14,8 +14,10 @@ return new class extends Migration
         //
         Schema::create('irs_lempar', function (Blueprint $table) {
             $table->unsignedBigInteger('mahasiswa_id');
-
             $table->integer('semester');
+
+            $table->primary(['mahasiswa_id', 'semester']);
+
             $table->integer('jumlah_sks');
             $table->boolean('status_persetujuan')->nullable();
 

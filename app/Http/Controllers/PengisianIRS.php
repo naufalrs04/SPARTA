@@ -22,6 +22,7 @@ class PengisianIRS extends Controller
         }
 
         $user = Auth::user();
+        $mahasiswa_id = Mahasiswa::where('user_id', Auth::id())->first();
 
         // Data dari tabel irs
         $list_mata_kuliah = irs::all();
@@ -42,8 +43,10 @@ class PengisianIRS extends Controller
         }
 
         // Data dari tabel irs_rekap
-        $irs_rekap = irs_rekap::all();
+        $irs_rekap = irs_rekap::where('mahasiswa_id', Auth::id())->get();
+        
         foreach ($irs_rekap as $rekap) {
+            
             $rekap->kode = Mata_Kuliah::where('id', $rekap->mata_kuliah_id)->first()->kode;
             $rekap->nama = Mata_Kuliah::where('id', $rekap->mata_kuliah_id)->first()->nama;
             $rekap->sks = Mata_Kuliah::where('id', $rekap->mata_kuliah_id)->first()->sks;
@@ -59,13 +62,18 @@ class PengisianIRS extends Controller
             $rekap->kapasitas_ruangan = Ruangan::where('id', $rekap->ruangan_id)->first()->kapasitas;
         }
 
-        $semester =  Mahasiswa::where('id', $user->id)->first()->semester;
+        $semester =  Mahasiswa::where('user_id', Auth::id())->get();
+        foreach($semester as $s){
+            $s->semester = Mahasiswa::where('user_id', $s->user_id)->first()->semester;
+        }
 
         return view('pengisianirs', compact('user', 'list_mata_kuliah', 'irs_rekap', 'semester'));
     }
 
     public function store(Request $request)
-    {
+    {   
+
+        // $user = Auth::user();
         $validated = $request->validate([
             'mata_kuliah_id' => 'required|integer|exists:mata_kuliahs,id',
             'ruangan_id' => 'required|integer|exists:ruangans,id',
