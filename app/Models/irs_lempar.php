@@ -13,9 +13,8 @@ class irs_lempar extends Model
 
     protected $fillable = [
         'mahasiswa_id',
-        'mata_kuliah_id',
-        'ruangan_id',
-        'status_mata_kuliah',
+        'semester',
+        'jumlah_sks',
         'status_persetujuan',
     ];
 }

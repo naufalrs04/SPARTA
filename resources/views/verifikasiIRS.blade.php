@@ -49,47 +49,30 @@
                         <thead>
                             <tr style="background-color: rgba(135, 138, 145, 0.37);">
                                 <th class="px-4 py-2 w-1/8 border-r border-white rounded-tl-lg">No</th>
-                                <th class="px-4 py-2 w-1/4 border-r border-white">NIM</th>
                                 <th class="px-4 py-2 w-1/3 border-r border-white">Nama</th>
                                 <th class="px-4 py-2 w-1/4 border-r border-white">Status Pengajuan</th>
                                 <th class="px-4 py-2 w-1/4 rounded-tr-lg">Info</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach ($list_mahasiswa as $daftar_mahasiswa)
                             <tr style="background-color: #23252A;">
-                                <td class="px-4 py-2 border-r border-white">1</td>
-                                <td class="px-4 py-2 border-r border-white">24060122120010</td>
-                                <td class="px-4 py-2 border-r border-white">Muhammad Luthfan</td>
-                                <td class="px-3 py-3 border-r border-white text-center flex justify-center items-center">
-                                    <div class="w-32 text-white text-center rounded-md px-2 py-2" style="background-color: #880000;">
-                                        <p> Terverifikasi</p>
-                                    </div>
-                                </td>                                
-                                <td class="px-4 py-2">
-                                    <a href="" class="w-1/2 flex items-center justify-end mr-2 ml-2 cursor-pointer hover:text-gray-400 transition-colors duration-200 ease-in-out">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right-square-fill" viewBox="0 0 16 16">
-                                            <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm5.5 10a.5.5 0 0 0 .832.374l4.5-4a.5.5 0 0 0 0-.748l-4.5-4A.5.5 0 0 0 5.5 4z"/>
-                                        </svg>
-                                    </a>
-                                </td>   
-                            </tr>
-                            <tr style="background-color: #23252A;">
-                                <td class="px-4 py-2 border-r border-white">2</td>
-                                <td class="px-4 py-2 border-r border-white">24060122120011</td>
-                                <td class="px-4 py-2 border-r border-white">Muhammad Fadhil</td>
-                                <td class="px-3 py-3 border-r border-white text-center flex justify-center items-center">
-                                    <div class="w-32 text-white text-center rounded-md px-2 py-2" style="background-color: #880000;">
-                                        <p> Terverifikasi</p>
-                                    </div>
-                                </td>                                
-                                <td class="px-4 py-2">
-                                    <a href="" class="w-1/2 flex items-center justify-end mr-2 ml-2 cursor-pointer hover:text-gray-400 transition-colors duration-200 ease-in-out">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right-square-fill" viewBox="0 0 16 16">
-                                            <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm5.5 10a.5.5 0 0 0 .832.374l4.5-4a.5.5 0 0 0 0-.748l-4.5-4A.5.5 0 0 0 5.5 4z"/>
-                                        </svg>
-                                    </a>
-                                </td>   
-                            </tr>
+                                    <td class="px-4 py-2 border-r border-white">{{ $loop->iteration }}</td>
+                                    <td class="px-4 py-2 border-r border-white">{{ $daftar_mahasiswa->nama }}</td>
+                                    <td class="px-3 py-3 border-r border-white text-center flex justify-center items-center">
+                                        <div class="w-32 text-white text-center rounded-md px-2 py-2" style="background-color: #880000;">
+                                            <p> Terverifikasi</p>
+                                        </div>
+                                    </td>                                
+                                    <td class="px-4 py-2">
+                                        <a href="" class="w-1/2 flex items-center justify-end mr-2 ml-2 cursor-pointer hover:text-gray-400 transition-colors duration-200 ease-in-out">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right-square-fill" viewBox="0 0 16 16">
+                                                <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm5.5 10a.5.5 0 0 0 .832.374l4.5-4a.5.5 0 0 0 0-.748l-4.5-4A.5.5 0 0 0 5.5 4z"/>
+                                            </svg>
+                                        </a>
+                                    </td>   
+                                </tr>
+                                @endforeach
                         </tbody>
                     </table>
                 </div>

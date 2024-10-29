@@ -1,3 +1,7 @@
+@php
+use Illuminate\Support\Str;
+@endphp
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,16 +15,18 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
         #sksSidebar {
-        opacity: 0;
-        transition: left 0.3s ease-in-out, opacity 0.3s ease-in-out; /* Ubah right menjadi left */
-        top: 30%;
-        left: -300px; /* Ubah right menjadi left dan nilai positif menjadi negatif */
-        color: white;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        z-index: 1000;
-        animation: slide 3s infinite;
+            opacity: 0;
+            transition: left 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            /* Ubah right menjadi left */
+            top: 30%;
+            left: -300px;
+            /* Ubah right menjadi left dan nilai positif menjadi negatif */
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            animation: slide 3s infinite;
         }
 
         .hidden {
@@ -28,27 +34,30 @@
         }
 
         #sksSidebar.show {
-        left: 0px; /* Ubah right menjadi left */
-        opacity: 1;
+            left: 0px;
+            /* Ubah right menjadi left */
+            opacity: 1;
         }
 
         #toggleSidebar {
-        top: 30%;
-        left: 0; /* Ubah right menjadi left */
-        color: white;
-        padding: 10px;
-        border-radius: 0 10px 10px 0; /* Ubah border-radius untuk sisi kanan */
-        cursor: pointer;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        z-index: 1001;
-        transition: transform 0.3s ease-in-out;
+            top: 30%;
+            left: 0;
+            /* Ubah right menjadi left */
+            color: white;
+            padding: 10px;
+            border-radius: 0 10px 10px 0;
+            /* Ubah border-radius untuk sisi kanan */
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 1001;
+            transition: transform 0.3s ease-in-out;
         }
 
         #toggleSidebar.rotated {
             transform: rotate(180deg);
         }
 
-       
+
 
         /* Update collision-overlay jika diperlukan */
         .collision-overlay {
@@ -119,56 +128,53 @@
                         </thead>
                         <tbody>
                             @foreach ($irs_rekap as $rekap)
-                                <tr style="background-color: #23252A;">
-                                    <td class="px-4 py-2 border-r border-white">{{ $loop->iteration }}</td>
-                                    <td class="px-4 py-2 w-1/3 border-r border-white">{{ $rekap->kode }}</td>
-                                    <td class="px-4 py-2 w-1/3 border-r border-white">{{ $rekap->nama }}</td>
-                                    <td class="px-4 py-2 w-1/3 border-r border-white">
-                                        {{ $rekap->hari }},
-                                        {{ \Carbon\Carbon::parse($rekap->jam_mulai)->format('H:i') }} -
-                                        {{ \Carbon\Carbon::parse($rekap->jam_selesai)->format('H:i') }}
-                                    </td>
-                                    <td class="px-4 py-2 w-1/3 border-r border-white">{{ $rekap->sks }}</td>
-                                    <td class="px-4 py-2 border-white">
-                                        <button class="cancel-course bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded"
+                            <tr style="background-color: #23252A;">
+                                <td class="px-4 py-2 border-r border-white">{{ $loop->iteration }}</td>
+                                <td class="px-4 py-2 w-1/3 border-r border-white">{{ $rekap->kode }}</td>
+                                <td class="px-4 py-2 w-1/3 border-r border-white">{{ $rekap->nama }}</td>
+                                <td class="px-4 py-2 w-1/3 border-r border-white">
+                                    {{ $rekap->hari }},
+                                    {{ \Carbon\Carbon::parse($rekap->jam_mulai)->format('H:i') }} -
+                                    {{ \Carbon\Carbon::parse($rekap->jam_selesai)->format('H:i') }}
+                                </td>
+                                <td class="px-4 py-2 w-1/3 border-r border-white">{{ $rekap->sks }}</td>
+                                <td class="px-4 py-2 border-white">
+                                    <button class="cancel-course bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded"
                                         data-id="{{ $rekap->mata_kuliah_id }}"
                                         data-sks="{{ $rekap->sks }}">
                                         Batalkan
                                     </button>
-                                    </td>
-                                </tr>
+                                </td>
+                            </tr>
                             @endforeach
                         </tbody>
                     </table>
 
                     <div class="pt-5 pb-3 flex">
                         <div class="w-3/5 flex justify-between">
-                            <p class="pl-1 text-sm italic">Notes : Jika mata kuliah ingin diproses oleh dosen wali, klik
-                                tombol di sebelah kiri</p>
+                            <p class="pl-1 text-sm italic">Notes : Jika mata kuliah ingin diproses oleh dosen wali, klik tombol di sebelah</p>
                         </div>
-                        <div
-                            class="w-1/6 ml-auto text-white flex text-center items-center justify-center py-3 rounded-md cursor-pointer bg-[#34803C] hover:bg-green-800 font-bold">
-                            <button id="ajukanButton" onclick="ajukanIRS()">Ajukan</button>
+                        <div id="ajukanButton" class="w-1/6 ml-auto text-white flex text-center items-center justify-center py-3 rounded-md cursor-pointer bg-[#34803C] hover:bg-green-800 font-bold">
+                            <button onclick="ajukanIRS()">Ajukan</button>
                         </div>
-                        <div
-                            class="w-1/6 ml-auto text-white flex text-center items-center justify-center py-3 rounded-md cursor-pointer bg-[#880000] hover:bg-red-500 font-bold hidden">
-                            <button id="batalAjukanButton" onclick="batalAjukanIRS()">Batal Ajukan</button>
+                        <div id="batalAjukanButton" class="w-1/6 ml-auto text-white flex text-center items-center justify-center py-3 rounded-md cursor-pointer bg-[#880000] hover:bg-red-500 font-bold hidden">
+                            <button onclick="batalAjukanIRS()">Batal Ajukan</button>
                         </div>
                     </div>
 
 
-                    
+
                     <!-- Sidebar Melayang -->
                     <div id="sksSidebar" class="fixed left-[-300px] bg-yellow-600 h-auto w-64 text-white transition-all duration-300 p-4 shadow-lg rounded-lg">
                         <h2 class="text-xl font-bold mb-4">Total SKS Diambil</h2>
                         <div id="totalSks" class="text-4xl font-semibold">0</div>
                     </div>
 
-                    
+
                     <!-- Tombol untuk memperlihatkan sidebar -->
                     <button id="toggleSidebar" class="fixed left-0 bg-yellow-500 text-white p-3 rounded-r-lg shadow-lg focus:outline-none">
                         <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                            <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
                         </svg>
                     </button>
 
@@ -207,54 +213,54 @@
                             </thead>
                             <tbody>
                                 @foreach ($list_mata_kuliah as $index => $mata_kuliah)
-                                    <tr class="course-row" style="background-color: #23252A;"
-                                        data-course-id="{{ $mata_kuliah->id }}"
-                                        data-course-time="{{ $mata_kuliah->hari }}, {{ \Carbon\Carbon::parse($mata_kuliah->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($mata_kuliah->jam_selesai)->format('H:i') }}">
-                                        <td class="px-4 py-2 border-r border-white">{{ $loop->iteration }}</td>
-                                        <td class="px-4 py-2 w-1/3 border-r border-white">{{ $mata_kuliah->kode }}
-                                        </td>
-                                        <td class="px-4 py-2 w-1/3 border-r border-white">{{ $mata_kuliah->nama }}
-                                        </td>
-                                        <td class="px-4 py-2 w-1/3 border-r border-white">
-                                            {{ $mata_kuliah->hari }},
-                                            {{ \Carbon\Carbon::parse($mata_kuliah->jam_mulai)->format('H:i') }} -
-                                            {{ \Carbon\Carbon::parse($mata_kuliah->jam_selesai)->format('H:i') }}
-                                        </td>
-                                        <td class="px-4 py-2 border-r border-white">
-                                            <form action="{{ route('irs-rekap.store') }}" method="POST">
-                                                @csrf
-                                                <input type="hidden" name="mata_kuliah_id"
-                                                    value="{{ $mata_kuliah->id }}">
-                                                <input type="hidden" name="ruangan_id" value="1">
-                                                <div
-                                                    class="text-white text-center items-center justify-center mx-2 my-1 rounded-md cursor-pointer bg-[#34803C] hover:bg-green-800 font-bold">
-                                                    <button class="ambil-mata-kuliah"
-                                                        data-kode="{{ $mata_kuliah->kode }}"
-                                                        data-nama="{{ $mata_kuliah->nama }}"
-                                                        data-hari-jam="{{ $mata_kuliah->hari }}, {{ \Carbon\Carbon::parse($mata_kuliah->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($mata_kuliah->jam_selesai)->format('H:i') }}"
-                                                        data-sks="{{ $mata_kuliah->sks }}" type="submit">
-                                                        Ambil
-                                                    </button>
-                                                </div>
-                                            </form>
-
-                                        </td>
-                                        <td class="px-4 py-2 border-white">
+                                <tr class="course-row" style="background-color: #23252A;"
+                                    data-course-id="{{ $mata_kuliah->id }}"
+                                    data-course-time="{{ $mata_kuliah->hari }}, {{ \Carbon\Carbon::parse($mata_kuliah->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($mata_kuliah->jam_selesai)->format('H:i') }}"
+                                    data-ruangan-id="{{ $mata_kuliah->ruangan_id }}">
+                                    <td class="px-4 py-2 border-r border-white">{{ $loop->iteration }}</td>
+                                    <td class="px-4 py-2 w-1/3 border-r border-white">{{ $mata_kuliah->kode }}
+                                    </td>
+                                    <td class="px-4 py-2 w-1/3 border-r border-white">{{ $mata_kuliah->nama }}
+                                    </td>
+                                    <td class="px-4 py-2 w-1/3 border-r border-white">
+                                        {{ $mata_kuliah->hari }},
+                                        {{ \Carbon\Carbon::parse($mata_kuliah->jam_mulai)->format('H:i') }} -
+                                        {{ \Carbon\Carbon::parse($mata_kuliah->jam_selesai)->format('H:i') }}
+                                    </td>
+                                    <td class="px-4 py-2 border-r border-white">
+                                        <form action="{{ route('irs-rekap.store') }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="mata_kuliah_id" value="{{ $mata_kuliah->id }}">
+                                            <input type="hidden" name="ruangan_id" value="{{ $mata_kuliah->ruangan_id}}">
                                             <div
-                                                class="h-7 w-7 mx-auto rounded-lg bg-white flex justify-center items-center">
-                                                <button
-                                                    class="show-details justify-center text-center text-3xl text-black font-bold focus:outline-none"
-                                                    data-index="{{ $index }}">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16"
-                                                        height="16" fill="currentColor"
-                                                        class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-                                                        <path
-                                                            d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
-                                                    </svg>
+                                                class="text-white text-center items-center justify-center mx-2 my-1 rounded-md cursor-pointer bg-[#34803C] hover:bg-green-800 font-bold">
+                                                <button class="ambil-mata-kuliah"
+                                                    data-kode="{{ $mata_kuliah->kode }}"
+                                                    data-nama="{{ $mata_kuliah->nama }}"
+                                                    data-hari-jam="{{ $mata_kuliah->hari }}, {{ \Carbon\Carbon::parse($mata_kuliah->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($mata_kuliah->jam_selesai)->format('H:i') }}"
+                                                    data-sks="{{ $mata_kuliah->sks }}" type="submit">
+                                                    Ambil
                                                 </button>
                                             </div>
-                                        </td>
-                                    </tr>
+                                        </form>
+
+                                    </td>
+                                    <td class="px-4 py-2 border-white">
+                                        <div
+                                            class="h-7 w-7 mx-auto rounded-lg bg-white flex justify-center items-center">
+                                            <button
+                                                class="show-details justify-center text-center text-3xl text-black font-bold focus:outline-none"
+                                                data-index="{{ $index }}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                    height="16" fill="currentColor"
+                                                    class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -270,8 +276,8 @@
                             <div class="w-full bg-[#757575] rounded-lg">
                                 <div class="w-full flex justify-between items-center px-4 py-3">
                                     <div>
-                                        <h2 class="font-bold text-md sm:text-lg">IRS Semester 1</h2>
-                                        <p class="text-md sm:text-lg">Jumlah SKS 21</p>
+                                        <h2 class="font-bold text-md sm:text-lg">IRS Semester {{$semester}}</h2>
+                                        <p class="text-md sm:text-lg">Jumlah SKS : {{ $irs_rekap->sum('sks') }}</p>
                                     </div>
                                     <button type="button"
                                         class="toggle-semester p-2 hover:bg-[#666666] rounded-full transition-colors">
@@ -296,7 +302,7 @@
                                             <tr>
                                                 <th class="px-4 py-2 text-left text-black rounded-tl-lg">NO</th>
                                                 <th class="px-4 py-2 text-left text-black">KODE</th>
-                                                <th class="px-4 py-2 text-left text-black">MATAKULIAH</th>
+                                                <th class="px-4 py-2 text-left text-black">MATA KULIAH</th>
                                                 <th class="px-4 py-2 text-left text-black">KELAS</th>
                                                 <th class="px-4 py-2 text-left text-black">SKS</th>
                                                 <th class="px-4 py-2 text-left text-black">RUANG</th>
@@ -306,16 +312,18 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            @foreach($irs_rekap as $rekap)
                                             <tr class="border-t">
-                                                <td class="px-4 py-2 text-black">1</td>
-                                                <td class="px-4 py-2 text-black">wkwkwkw</td>
-                                                <td class="px-4 py-2 text-black">wkwkwk</td>
-                                                <td class="px-4 py-2 text-black">wwww</td>
-                                                <td class="px-4 py-2 text-black">w</td>
-                                                <td class="px-4 py-2 text-black">w</td>
-                                                <td class="px-4 py-2 text-black">w</td>
-                                                <td class="px-4 py-2 text-black">w</td>
+                                                <td class="px-4 py-2 text-black">{{ $loop->iteration }}</td>
+                                                <td class="px-4 py-2 text-black">{{$rekap->kode}}</td>
+                                                <td class="px-4 py-2 text-black">{{ Str::before($rekap->nama, '-') }}</td>
+                                                <td class="px-4 py-2 text-black">{{ substr($rekap->nama, -1) }}</td>
+                                                <td class="px-4 py-2 text-black">{{$rekap->sks}}</td>
+                                                <td class="px-4 py-2 text-black">{{$rekap->nama_ruangan}}</td>
+                                                <td class="px-4 py-2 text-black">Baru</td>
+                                                <td class="px-4 py-2 text-black">XX</td>
                                             </tr>
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>
@@ -949,8 +957,17 @@
             </script>
 
             <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    // Cek status IRS dari localStorage saat halaman dimuat
+                    const isSubmitted = localStorage.getItem('irsSubmitted') === 'true';
+                    if (isSubmitted) {
+                        setSubmittedState();
+                    } else {
+                        setDraftState();
+                    }
+                });
+
                 function ajukanIRS() {
-                    // Tampilkan popup konfirmasi
                     Swal.fire({
                         title: 'Konfirmasi Pengajuan',
                         text: 'Apakah Anda yakin ingin mengajukan IRS?',
@@ -963,25 +980,9 @@
                         reverseButtons: true
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            // Sembunyikan tabel list mata kuliah
-                            document.getElementById('listMataKuliah').classList.add('hidden');
-
-                            // Disable semua tombol batalkan dan ubah tampilannya
-                            const cancelButtons = document.querySelectorAll('.cancel-course');
-                            cancelButtons.forEach(button => {
-                                button.disabled = true;
-                                button.classList.remove('bg-red-600', 'hover:bg-red-700');
-                                button.classList.add('bg-gray-400', 'cursor-not-allowed');
-                            });
-
-                            // Sembunyikan tombol "Ajukan" dan tampilkan tombol "Batal Ajukan"
-                            document.getElementById('ajukanButton').parentElement.classList.add('hidden');
-                            document.getElementById('batalAjukanButton').parentElement.classList.remove('hidden');
-
-                            // Kirim form jika diperlukan
-                            // document.querySelector('form[action="{{ route('irs.ajukan') }}"]').submit();
-
-                            // Tampilkan notifikasi sukses
+                            // Simpan status ke localStorage
+                            localStorage.setItem('irsSubmitted', 'true');
+                            setSubmittedState();
                             Swal.fire({
                                 title: 'Berhasil!',
                                 text: 'IRS berhasil diajukan',
@@ -994,7 +995,6 @@
                 }
 
                 function batalAjukanIRS() {
-                    // Tampilkan popup konfirmasi
                     Swal.fire({
                         title: 'Konfirmasi Pembatalan',
                         text: 'Apakah Anda yakin ingin membatalkan pengajuan IRS?',
@@ -1007,22 +1007,9 @@
                         reverseButtons: true
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            // Tampilkan kembali tabel list mata kuliah
-                            document.getElementById('listMataKuliah').classList.remove('hidden');
-
-                            // Enable kembali semua tombol batalkan dan kembalikan tampilannya
-                            const cancelButtons = document.querySelectorAll('.cancel-course');
-                            cancelButtons.forEach(button => {
-                                button.disabled = false;
-                                button.classList.remove('bg-gray-400', 'cursor-not-allowed');
-                                button.classList.add('bg-red-600', 'hover:bg-red-700');
-                            });
-
-                            // Tampilkan kembali tombol "Ajukan" dan sembunyikan tombol "Batal Ajukan"
-                            document.getElementById('ajukanButton').parentElement.classList.remove('hidden');
-                            document.getElementById('batalAjukanButton').parentElement.classList.add('hidden');
-
-                            // Tampilkan notifikasi sukses
+                            // Hapus status dari localStorage
+                            localStorage.removeItem('irsSubmitted');
+                            setDraftState();
                             Swal.fire({
                                 title: 'IRS dibatalkan',
                                 text: 'IRS telah dibatalkan dan dapat diedit kembali',
@@ -1030,18 +1017,42 @@
                                 timer: 1500,
                                 showConfirmButton: false
                             });
-
-                            // Tambahkan kode untuk mengirim request ke server jika diperlukan
-                            // Misalnya:
-                            // fetch('/batal-ajukan-irs', {
-                            //     method: 'POST',
-                            //     headers: {
-                            //         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                            //         'Content-Type': 'application/json'
-                            //     }
-                            // });
                         }
                     });
+                }
+
+                function setSubmittedState() {
+                    // Sembunyikan tabel list mata kuliah
+                    document.getElementById('listMataKuliah').classList.add('hidden');
+
+                    // Disable tombol batalkan
+                    const cancelButtons = document.querySelectorAll('.cancel-course');
+                    cancelButtons.forEach(button => {
+                        button.disabled = true;
+                        button.classList.remove('bg-red-600', 'hover:bg-red-700');
+                        button.classList.add('bg-gray-400', 'cursor-not-allowed');
+                    });
+
+                    // Update tampilan tombol
+                    document.getElementById('ajukanButton').classList.add('hidden'); // Sembunyikan tombol Ajukan
+                    document.getElementById('batalAjukanButton').classList.remove('hidden'); // Tampilkan tombol Batal Ajukan
+                }
+
+                function setDraftState() {
+                    // Tampilkan tabel list mata kuliah
+                    document.getElementById('listMataKuliah').classList.remove('hidden');
+
+                    // Enable tombol batalkan
+                    const cancelButtons = document.querySelectorAll('.cancel-course');
+                    cancelButtons.forEach(button => {
+                        button.disabled = false;
+                        button.classList.remove('bg-gray-400', 'cursor-not-allowed');
+                        button.classList.add('bg-red-600', 'hover:bg-red-700');
+                    });
+
+                    // Update tampilan tombol
+                    document.getElementById('ajukanButton').classList.remove('hidden'); // Tampilkan tombol Ajukan
+                    document.getElementById('batalAjukanButton').classList.add('hidden'); // Sembunyikan tombol Batal Ajukan
                 }
             </script>
 </body>

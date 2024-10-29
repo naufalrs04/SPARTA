@@ -57,10 +57,11 @@ class PengisianIRS extends Controller
             // Ruangan
             $rekap->nama_ruangan = Ruangan::where('id', $rekap->ruangan_id)->first()->nama;
             $rekap->kapasitas_ruangan = Ruangan::where('id', $rekap->ruangan_id)->first()->kapasitas;
-
         }
 
-        return view('pengisianirs', compact('user', 'list_mata_kuliah', 'irs_rekap'));
+        $semester =  Mahasiswa::where('id', $user->id)->first()->semester;
+
+        return view('pengisianirs', compact('user', 'list_mata_kuliah', 'irs_rekap', 'semester'));
     }
 
     public function store(Request $request)
@@ -101,8 +102,11 @@ class PengisianIRS extends Controller
                 [
                     'mahasiswa_id' => $mahasiswa_id,
                     'mata_kuliah_id' => $validated['mata_kuliah_id'],
+                    'ruangan_id' => $validated['ruangan_id'],
                 ],
                 [
+                    'mahasiswa_id' => $mahasiswa_id,
+                    'mata_kuliah_id' => $validated['mata_kuliah_id'],
                     'ruangan_id' => $validated['ruangan_id'],
                 ]
             );
