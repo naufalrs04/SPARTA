@@ -32,14 +32,14 @@ class DashboardMahasiswaController extends Controller
         $user = Auth::user();
 
         // Ambil data status dari tabel mahasiswas berdasarkan user_id
-        $mahasiswa = Mahasiswa::where('id', $user->id)->first();
+        $mahasiswa = Mahasiswa::where('nim', $user->nim_nip)->first();
         $nama_mahasiswa = User::where('id', Auth::id())->first()->nama;
         $status = $mahasiswa ? $mahasiswa->status : null;
         $nim = $mahasiswa ? $mahasiswa->nim_nip : null; 
         $ipk = $mahasiswa ? $mahasiswa->IPK : null;     
         $prodi = $mahasiswa ? $mahasiswa->prodi : null; 
         $semester = $mahasiswa ? $mahasiswa->semester : null; 
-        
+        $mahasiswa_id = $mahasiswa->id;
 
         $data = [
             'nama' => $user->nama,
@@ -60,7 +60,7 @@ class DashboardMahasiswaController extends Controller
             $jadwal -> nama_ruangan = Ruangan::where('id', $jadwal->ruangan_id)->first()->nama;
         }
 
-        return view('dashboardMahasiswa', compact('user','data','nama_mahasiswa','jadwal_kuliah'));
+        return view('dashboardMahasiswa', compact('user','data','nama_mahasiswa','jadwal_kuliah','mahasiswa_id'));
 
     }
 }

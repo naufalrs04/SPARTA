@@ -22,7 +22,6 @@ class PengisianIRS extends Controller
         }
 
         $user = Auth::user();
-        $mahasiswa_id = Mahasiswa::where('id', Auth::id())->first();
 
         // Data dari tabel irs
         $list_mata_kuliah = irs::all();
@@ -48,11 +47,13 @@ class PengisianIRS extends Controller
 
         // $irs_rekap = irs_rekap::where('mahasiswa_id', Auth::id())->get();
 
-        $mahasiswaId = Auth::id();
-        $semesterMahasiswa = Mahasiswa::where('id', $mahasiswaId)->value('semester');
-
+        
+        
+        $mahasiswa = Mahasiswa::where('nim', $user->nim_nip)->first();
+        $mahasiswa_id = $mahasiswa->id;
+        $semesterMahasiswa = $mahasiswa->semester;
         // Ambil semua data dari irs_rekap berdasarkan mahasiswa_id dan semester
-        $irs_rekap = irs_rekap::where('mahasiswa_id', $mahasiswaId)
+        $irs_rekap = irs_rekap::where('mahasiswa_id', $mahasiswa_id)
             ->where('semester', $semesterMahasiswa)
             ->get();
 
@@ -80,12 +81,8 @@ class PengisianIRS extends Controller
             $rekap->kapasitas_ruangan = Ruangan::where('id', $rekap->ruangan_id)->first()->kapasitas;
         }
 
-        $semester =  Mahasiswa::where('id', Auth::id())->get();
-        foreach ($semester as $s) {
-            $s->semester = Mahasiswa::where('id', $s->id)->first()->semester;
-        }
 
-        return view('pengisianirs', compact('user', 'list_mata_kuliah', 'irs_rekap', 'groupedData', 'semester', 'semesterMahasiswa'));
+        return view('pengisianirs', compact('user', 'list_mata_kuliah', 'irs_rekap', 'groupedData',  'semesterMahasiswa','mahasiswa_id'));
     }
 
     public function store(Request $request)
@@ -96,13 +93,18 @@ class PengisianIRS extends Controller
             'mata_kuliah_id' => 'required|integer|exists:mata_kuliahs,id',
             'ruangan_id' => 'required|integer|exists:ruangans,id',
         ]);
-
-        $mahasiswa_id = Auth::id();
         $mataKuliah = Mata_Kuliah::find($validated['mata_kuliah_id']);
+        $user = Auth::user();
+        $mahasiswa = Mahasiswa::where('nim', $user->nim_nip)->first();
 
         // Check for existing IRS entries for the current student
-        $existingIrs = irs_rekap::where('mahasiswa_id', $mahasiswa_id)->get();
-        $semester = Mahasiswa::where('id', $mahasiswa_id)->value('semester');
+        $mahasiswa_id = $mahasiswa->id;
+        // Cek entri IRS yang sudah ada untuk mahasiswa ini
+        $semester = $mahasiswa->semester;
+        $existingIrs = irs_rekap::where('mahasiswa_id', $mahasiswa_id)
+        ->where('semester', $semester)
+        ->get();
+        // Ambil data semester mahasiswa jika ada
         // Check for duplicate course
         if ($existingIrs->contains('mata_kuliah_id', $validated['mata_kuliah_id'])) {
             return response()->json([
@@ -170,29 +172,54 @@ class PengisianIRS extends Controller
     }
 
     public function destroy(Request $request)
-    {
-        $request->validate([
-            'id' => 'required|integer'  // Hapus validasi exists karena sudah tidak diperlukan
-        ]);
-
-        $mahasiswaId = Auth::id();  // Menggunakan Auth::id() untuk mendapatkan ID user yang sedang login
-
-        Log::info('Attempting to delete IRS record:', [
-            'mata_kuliah_id' => $request->id,
-            'mahasiswa_id' => $mahasiswaId
-        ]);
-
-        $irsRekap = irs_rekap::where('mata_kuliah_id', $request->id)
-            ->where('mahasiswa_id', $mahasiswaId)
-            ->first();
-
-        $irsRekap->delete();
-
+{
+    $request->validate([
+        'id' => 'required|integer',
+        'mahasiswa'=>'required|integer'
+    ]);
+    
+    // Dapatkan user yang sedang login
+    $user = Auth::user();
+    $mahasiswa = Mahasiswa::where('nim', $user->nim_nip)->first();
+    
+    if (!$mahasiswa) {
         return response()->json([
-            'success' => true,
-            'message' => 'Mata kuliah berhasil dibatalkan'
+            'success' => false,
+            'message' => 'Mahasiswa tidak ditemukan'
         ]);
     }
+    
+    $mahasiswaId = $mahasiswa->id;
+    $semester = $mahasiswa->semester;
+    
+    // Cari record IRS yang spesifik berdasarkan kombinasi unik
+    $irsRekap = irs_rekap::where('mahasiswa_id', $request->mahasiswa)
+        ->where('mata_kuliah_id', $request->id)
+        ->where('semester', $semester)
+        ->first();
+    
+    if ($irsRekap) {
+        try {
+            $irsRekap->delete();
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Mata kuliah berhasil dibatalkan'
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error deleting IRS: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat menghapus data'
+            ], 500);
+        }
+    } else {
+        return response()->json([
+            'success' => false,
+            'message' => 'Data IRS tidak ditemukan atau Anda tidak memiliki akses untuk menghapusnya'
+        ], 403);
+    }
+}
 
     // public function storeToIrsLempar(Request $request)
     // {

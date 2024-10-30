@@ -141,7 +141,8 @@ use Illuminate\Support\Str;
                                 <td class="px-4 py-2 border-white">
                                     <button class="cancel-course bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded"
                                         data-id="{{ $rekap->mata_kuliah_id }}"
-                                        data-sks="{{ $rekap->sks }}">
+                                        data-sks="{{ $rekap->sks }}"
+                                        data-mahasiswa="{{ $mahasiswa_id }}">
                                         Batalkan
                                     </button>
                                 </td>
@@ -586,6 +587,7 @@ use Illuminate\Support\Str;
             function addCourseToSummary(course) {
                 const summaryTable = document.querySelector('table:first-of-type tbody');
                 const newRow = document.createElement('tr');
+                
                 newRow.style.backgroundColor = '#23252A';
 
                 // Calculate the new row number
