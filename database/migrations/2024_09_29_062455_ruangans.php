@@ -12,16 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         //
-        Schema::create ('mahasiswas', function (Blueprint $table) {
+        Schema::create ('ruangans', function (Blueprint $table) {
             $table-> id();
-            $table-> unsignedBigInteger('user_id');
-
-            $table-> foreign('user_id')-> references('id')-> on('users')-> onDelete('cascade');
-            $table-> boolean('status')->nullable();
-            $table-> integer('semester');
-            $table-> string('prodi');
-            $table->float('IPK', 3, 2)->nullable();
-
+            $table-> unsignedBigInteger('gedung_id');
+            $table-> string('kode');
+            $table-> string('nama');
+            $table-> string('kapasitas');
+            $table-> foreign('gedung_id')->references('id')->on('gedungs')->onDelete('cascade');
             $table-> timestamps();
         });
     }
@@ -31,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        
     }
 };

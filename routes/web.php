@@ -38,7 +38,14 @@ Route::post('/update-status', [RegistrasiController::class, 'updateStatus'])->na
 
 Route::get('/khs', [KHSController::class, 'index'])->middleware('auth')->name('khs');
 
+// Route untuk index
 Route::get('/pengisianirs', [PengisianIRS::class, 'index'])->middleware('auth')->name('pengisianirs');
+
+
+Route::post('/irs-rekap/store', [PengisianIRS::class, 'store'])->name('irs-rekap.store');
+Route::delete('/irs-rekap/destroy', [PengisianIRS::class, 'destroy'])->name('irs-rekap.destroy');
+Route::post('/irs-rekap/ajukan', [PengisianIRS::class, 'storeToIrsLempar'])->name('irs.ajukan');
+// Route::post('/irs-rekap/batal', [PengisianIRS::class, 'batalIRS']);
 
 Route::get('/dashboardMahasiswa', [DashboardMahasiswaController::class, 'index'])->middleware('auth') ->name('dashboardMahasiswa');
 
@@ -79,6 +86,9 @@ Route::get('/jadwalmengajar', [jadwalmengajar::class, 'index'])->middleware('aut
 
 Route::get('/verifikasiIRS', [verifikasiIRS::class, 'index'])->middleware('auth')->name('verifikasiIRS');
 
+Route::post('/verifikasi-irs/setujui', [verifikasiIRS::class, 'setujuiIRS'])->name('verifikasi-irs.setujui');
+Route::post('/verifikasi-irs/tolak', [verifikasiIRS::class, 'tolakIRS'])->name('verifikasi-irs.tolak');
+
 
 Route::get('/verifikasijadwal', [verifikasijadwal::class, 'index'])->middleware('auth')->name('verifikasijadwal');
 
@@ -89,4 +99,3 @@ Route::get('/search-mata-kuliah', [PengisianIRS::class, 'searchMataKuliah'])->na
 Route::get('/profile', function () {
     return view('profile');
 })->name('profile');
-

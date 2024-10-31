@@ -17,13 +17,32 @@ class mahasiswa extends Seeder
         //
         $data_mahasiswa = [
             [
-                'user_id' => 1,
+                'nim' => '240601122120011',
                 'status' => null,
-                'semester' => 1,
+                'semester' => 3,
                 'prodi' => 'Informatika',
                 'IPK' => 3.89,
+                'IPS_Sebelumnya' => 3.94,
+                'id_wali' => 1,
             ],
-
+            [
+                'nim' => '24060119130068',
+                'status' => null,
+                'semester' => 2,
+                'prodi' => 'Informatika',
+                'IPK' => 3.79,
+                'IPS_Sebelumnya' => 3.91,
+                'id_wali' => 1,
+            ],
+            [
+                'nim' => '24060119157680',
+                'status' => null,
+                'semester' => 2,
+                'prodi' => 'Informatika',
+                'IPK' => 3.80,
+                'IPS_Sebelumnya' => 3.50,
+                'id_wali' => 1,
+            ]
         ];
 
         DB::table('mahasiswas')->insert($data_mahasiswa);
