@@ -18,7 +18,7 @@ use Illuminate\Support\Str;
             opacity: 0;
             transition: left 0.3s ease-in-out, opacity 0.3s ease-in-out;
             /* Ubah right menjadi left */
-            top: 30%;
+            top: 70%;
             left: -300px;
             /* Ubah right menjadi left dan nilai positif menjadi negatif */
             color: white;
@@ -40,7 +40,7 @@ use Illuminate\Support\Str;
         }
 
         #toggleSidebar {
-            top: 30%;
+            top: 70%;
             left: 0;
             /* Ubah right menjadi left */
             color: white;
@@ -56,8 +56,6 @@ use Illuminate\Support\Str;
         #toggleSidebar.rotated {
             transform: rotate(180deg);
         }
-
-
 
         /* Update collision-overlay jika diperlukan */
         .collision-overlay {
@@ -84,7 +82,6 @@ use Illuminate\Support\Str;
             cursor: not-allowed;
         }
     </style>
-
 </head>
 
 <body class="bg-gray-900 text-gray-100">
@@ -163,17 +160,14 @@ use Illuminate\Support\Str;
                         </div>
                     </div>
 
-
-
                     <!-- Sidebar Melayang -->
-                    <div id="sksSidebar" class="fixed left-[-300px] bg-yellow-600 h-auto w-64 text-white transition-all duration-300 p-4 shadow-lg rounded-lg">
-                        <h2 class="text-xl font-bold mb-4">Total SKS Diambil</h2>
-                        <div id="totalSks" class="text-4xl font-semibold">0</div>
+                    <div id="sksSidebar" class="bg-opacity-85 fixed  left-[-300px] bg-yellow-600 h-auto w-64 text-white transition-all duration-300 p-4 shadow-lg rounded-lg">
+                        <h2 class="text-xl text-right font-bold mb-4">Total SKS Diambil</h2>
+                        <div id="totalSks" class="text-right text-4xl font-semibold">0</div>
                     </div>
 
-
                     <!-- Tombol untuk memperlihatkan sidebar -->
-                    <button id="toggleSidebar" class="fixed left-0 bg-yellow-500 text-white p-3 rounded-r-lg shadow-lg focus:outline-none">
+                    <button id="toggleSidebar" class="fixed bg-opacity-85 left-0 bg-yellow-500 text-white p-3 rounded-r-lg shadow-lg focus:outline-none">
                         <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
                             <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
                         </svg>
@@ -245,23 +239,16 @@ use Illuminate\Support\Str;
                                                 </button>
                                             </div>
                                         </form>
-
                                     </td>
                                     <td class="px-4 py-2 border-white">
-                                        <div
-                                            class="h-7 w-7 mx-auto rounded-lg bg-white flex justify-center items-center">
-                                            <button
-                                                class="show-details justify-center text-center text-3xl text-black font-bold focus:outline-none"
-                                                data-index="{{ $index }}">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16"
-                                                    height="16" fill="currentColor"
-                                                    class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-                                                    <path
-                                                        d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+                                        <div class="h-7 w-7 mx-auto rounded-lg bg-white border border-transparent flex justify-center items-center hover:bg-gray-400 transition-colors duration-200">
+                                            <button class="show-details justify-center text-center text-3xl text-black font-bold focus:outline-none" data-index="{{ $index }}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+                                                    <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
                                                 </svg>
                                             </button>
                                         </div>
-                                    </td>
+                                    </td> 
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -296,7 +283,8 @@ use Illuminate\Support\Str;
                                 </div>
 
                                 <div class="semester-content hidden px-4 pb-4 overflow-x-auto" id="semester">
-                                    <h4 class="text-center text-lg font-semibold mb-4">IRS Mahasiswa (Belum / Sudah Disetujui Wali)</h4>
+                                    <h4 class="text-center text-lg font-semibold mb-4">IRS Mahasiswa {{$rekap->status_pengajuan}} ! </h4>
+                                    
                                     <table class="w-full bg-white rounded-lg">
                                         <thead class="bg-gray-100">
                                             <tr>

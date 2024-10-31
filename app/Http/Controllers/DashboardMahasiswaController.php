@@ -9,29 +9,19 @@ use App\Models\Ruangan;
 use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\irs_rekap;
 
 
 class DashboardMahasiswaController extends Controller
 {
     public function index()
     {
-        // if (!Auth::check()) {
-        //     return redirect()->route('login');
-        // }
-
-        // $user = Auth::user();
-
-        // $data = Mahasiswa::where('id', Auth::id())->first();
-        // $data->semester = 
-        // $nama_mahasiswa = User::where('id', Auth::id())->first()->nama;
-
         if (!Auth::check()) {
             return redirect()->route('login');
         }
 
         $user = Auth::user();
 
-        // Ambil data status dari tabel mahasiswas berdasarkan user_id
         $mahasiswa = Mahasiswa::where('nim', $user->nim_nip)->first();
         $nama_mahasiswa = User::where('id', Auth::id())->first()->nama;
         $status = $mahasiswa ? $mahasiswa->status : null;
@@ -50,7 +40,7 @@ class DashboardMahasiswaController extends Controller
             'semester' => $semester
         ];
 
-        $jadwal_kuliah = irs::all();
+        $jadwal_kuliah = irs_rekap::where('mahasiswa_id', $mahasiswa_id)->get();
 
         foreach ($jadwal_kuliah as $jadwal ){
             $jadwal -> hari = Mata_Kuliah::where('id', $jadwal->mata_kuliah_id)->first()->hari;
