@@ -142,7 +142,8 @@ use Illuminate\Support\Str;
                                     <button class="cancel-course bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded"
                                         data-id="{{ $rekap->mata_kuliah_id }}"
                                         data-sks="{{ $rekap->sks }}"
-                                        data-mahasiswa="{{ $mahasiswa_id }}">
+                                        mahasiswa="{{ $mahasiswa_id }}"
+                                        semester="{{ $semesterMahasiswa }}">
                                         Batalkan
                                     </button>
                                 </td>
@@ -748,6 +749,8 @@ use Illuminate\Support\Str;
                     const row = button.closest('tr');
                     const courseId = button.getAttribute('data-id');
                     const sks = parseInt(button.getAttribute('data-sks'));
+                    const mahasiswaId = button.getAttribute('mahasiswa');
+                    const semester = button.getAttribute('semester'); // Tambahkan ini
 
                     Swal.fire({
                         title: 'Konfirmasi Pembatalan',
@@ -760,39 +763,54 @@ use Illuminate\Support\Str;
                         cancelButtonText: 'Tidak'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            cancelCourse(courseId, row, sks);
+                            cancelCourse(courseId, mahasiswaId, semester, row, sks); // Tambahkan semester
                         }
                     });
                 }
 
-                function cancelCourse(courseId, row, sks) {
+                function cancelCourse(courseId, mahasiswaId, semester, row, sks) {
                     fetch('/irs-rekap/destroy', {
-                            method: 'DELETE',
-                            headers: {
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                                'Content-Type': 'application/json',
-                                'Accept': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                id: courseId // Pastikan ini sesuai dengan mata_kuliah_id yang ingin dihapus
-                            })
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken,
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            id: courseId,
+                            mahasiswa: mahasiswaId,
+                            semester: semester // Tambahkan ini
                         })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                row.remove();
-                                updateTotalSKSAfterCancel(sks);
-                                reorderTableRows();
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            row.remove();
+                            updateTotalSKSAfterCancel(sks);
+                            reorderTableRows();
 
-                                Swal.fire({
-                                    title: 'Berhasil!',
-                                    text: 'Mata kuliah berhasil dibatalkan',
-                                    icon: 'success',
-                                    timer: 1500,
-                                    showConfirmButton: false
-                                });
-                            }
-                        })
+                            Swal.fire({
+                                title: 'Berhasil!',
+                                text: 'Mata kuliah berhasil dibatalkan',
+                                icon: 'success',
+                                timer: 1500,
+                                showConfirmButton: false
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Gagal!',
+                                text: data.message || 'Terjadi kesalahan',
+                                icon: 'error'
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Terjadi kesalahan saat menghapus data',
+                            icon: 'error'
+                        });
+                    });
                 }
 
                 function updateTotalSKSAfterCancel(canceledSKS) {
@@ -824,6 +842,7 @@ use Illuminate\Support\Str;
                 }
             });
         </script>
+
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {

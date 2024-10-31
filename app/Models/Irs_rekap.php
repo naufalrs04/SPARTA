@@ -11,8 +11,8 @@ class Irs_rekap extends Model
    
     protected $table = 'irs_rekap';
     // Add this line to specify the primary key
-    protected $primaryKey = 'mata_kuliah_id'; // or whichever column is your primary key
-
+    // protected $primaryKey = 'mata_kuliah_id'; // or whichever column is your primary key
+    public $incrementing = false;
     protected $fillable = [
         'mahasiswa_id',
         'mata_kuliah_id',

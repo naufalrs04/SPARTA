@@ -174,34 +174,41 @@ class PengisianIRS extends Controller
     public function destroy(Request $request)
 {
     $request->validate([
-        'id' => 'required|integer',
-        'mahasiswa'=>'required|integer'
+        'id' => 'required|integer|min:1',
+        'mahasiswa' => 'required|integer|min:1',
+        'semester' => 'required|integer|min:1'
     ]);
+
+    $mahasiswaId = (int) $request->mahasiswa;
+    $mataKuliahId = (int) $request->id;
+    $semester = (int) $request->semester;
     
-    // Dapatkan user yang sedang login
     $user = Auth::user();
     $mahasiswa = Mahasiswa::where('nim', $user->nim_nip)->first();
-    
+
     if (!$mahasiswa) {
         return response()->json([
             'success' => false,
             'message' => 'Mahasiswa tidak ditemukan'
-        ]);
+        ], 404);
     }
-    
-    $mahasiswaId = $mahasiswa->id;
-    $semester = $mahasiswa->semester;
-    
-    // Cari record IRS yang spesifik berdasarkan kombinasi unik
-    $irsRekap = irs_rekap::where('mahasiswa_id', $request->mahasiswa)
-        ->where('mata_kuliah_id', $request->id)
+
+    // Pastikan mahasiswa yang login memiliki id yang sesuai
+    if ($mahasiswa->id !== $mahasiswaId) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Anda tidak memiliki akses untuk menghapus data ini'
+        ], 403);
+    }
+
+    $irsRekap = irs_rekap::where('mahasiswa_id', $mahasiswaId)
+        ->where('mata_kuliah_id', $mataKuliahId)
         ->where('semester', $semester)
         ->first();
-    
+
     if ($irsRekap) {
         try {
             $irsRekap->delete();
-            
             return response()->json([
                 'success' => true,
                 'message' => 'Mata kuliah berhasil dibatalkan'
@@ -216,10 +223,13 @@ class PengisianIRS extends Controller
     } else {
         return response()->json([
             'success' => false,
-            'message' => 'Data IRS tidak ditemukan atau Anda tidak memiliki akses untuk menghapusnya'
-        ], 403);
+            'message' => 'Data IRS tidak ditemukan'
+        ], 404);
     }
 }
+
+
+    
 
     // public function storeToIrsLempar(Request $request)
     // {

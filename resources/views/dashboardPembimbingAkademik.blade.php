@@ -59,7 +59,7 @@
                     <!-- Box Status Akademik -->
                     <div class="col-span-8 bg-gray-700 rounded-lg shadow-lg flex flex-col" style="background-color: #17181C;">
                         <h2 class="text-center text-lg font-semibold mb-4">Status Akademik</h2>
-
+                        
                         <!-- Box Utama Status Akademik -->
                         <div class="grid grid-cols-12 w-full rounded-lg flex-grow" style="background-color: #2A2C33;">
                             <div class="col-span-8 p-6 rounded-tl-lg rounded-bl-lg text-lg space-y-5 box-border border-black">
