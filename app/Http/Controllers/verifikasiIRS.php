@@ -14,13 +14,13 @@ class verifikasiIRS extends Controller
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-
-        $user = Auth::user();
-
+        
         // Daftar mahasiswa yang sudah mengajukan IRS
-        $list_mahasiswa = irs_rekap::all();
+        $user = Auth::user();
+        $mahasiswa = Mahasiswa::where('nim', $user->nim_nip)->first();
+        $list_mahasiswa = Mahasiswa::all();
         foreach ($list_mahasiswa as $daftar_mahasiswa) {
-            $daftar_mahasiswa->nama = Mahasiswa::where('id', $daftar_mahasiswa->mahasiswa_id)->first()->nama;
+            $daftar_mahasiswa->nama = Mahasiswa::where('nim', $user->nim_nip)->first()->nama;
             $daftar_mahasiswa->semester = Mahasiswa::where('id', $daftar_mahasiswa->mahasiswa_id)->first()->semester;
         }
 

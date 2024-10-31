@@ -60,8 +60,11 @@
                                     <td class="px-4 py-2 border-r border-white">{{ $loop->iteration }}</td>
                                     <td class="px-4 py-2 border-r border-white">{{ $daftar_mahasiswa->nama }}</td>
                                     <td class="px-3 py-3 border-r border-white text-center flex justify-center items-center">
-                                        <div class="w-32 text-white text-center rounded-md px-2 py-2" style="background-color: #880000;">
-                                            <p> Terverifikasi</p>
+                                        <div class="text-center items-center justify-center mx-2 my-1 rounded-md">
+                                            <button class="w-32 text-white text-center rounded-md px-2 py-2" style="background-color: #02a525;">Setuju
+                                            </button>
+                                            <button class="w-32 text-white text-center rounded-md px-2 py-2" style="background-color: #a30101;">Batal
+                                            </button>
                                         </div>
                                     </td>                                
                                     <td class="px-4 py-2">
@@ -97,6 +100,11 @@
                                 <td class="px-4 py-2 border-r border-white">Muhammad Rahman Haryanto</td>
                                 <td class="px-3 py-3 border-r border-white text-center flex justify-center items-center">
                                     <div class="w-32 text-white text-center rounded-md px-2 py-2" style="background-color: #34803C;">
+                                        <p> Terverifikasi</p>
+                                    </div>
+                                </td>
+                                <td class="px-3 py-3 border-r border-white text-center flex justify-center items-center">
+                                    <div class="w-32 text-white text-center rounded-md px-2 py-2" style="background-color: #a30101;">
                                         <p> Terverifikasi</p>
                                     </div>
                                 </td>                                
