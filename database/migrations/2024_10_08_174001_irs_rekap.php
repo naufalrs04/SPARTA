@@ -16,7 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('mahasiswa_id'); //Group by
             $table->unsignedBigInteger('mata_kuliah_id');
             $table->unsignedBigInteger('ruangan_id');
-            $table-> integer('semester')->nullable();
+            $table->integer('semester')->nullable();
+            $table->integer('sks');
             $table->string('status_pengajuan')->nullable();
 
             // Foreign key

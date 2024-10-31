@@ -42,41 +42,52 @@
                     </div>
                 </div>
             </div>
-            
+
             <div id="contentBelumVerifikasi">
                 <div class="bg-[#23252A] ml-8 mr-8 mt-8 mb-8 flex flex-grow rounded-lg">
                     <table class="table-auto p-5 w-full text-center rounded-lg border-collapse">
                         <thead>
                             <tr style="background-color: rgba(135, 138, 145, 0.37);">
-                                <th class="px-4 py-2 w-1/8 border-r border-white rounded-tl-lg">No</th>
-                                <th class="px-4 py-2 w-1/3 border-r border-white">Nama</th>
-                                <th class="px-4 py-2 w-1/4 border-r border-white">Status Pengajuan</th>
-                                <th class="px-4 py-2 w-1/4 rounded-tr-lg">Info</th>
+                                <th class="px-4 py-2 border-r border-white rounded-tl-lg">No</th>
+                                <th class="px-4 py-2 w-1/3 border-r border-white">Nama Mahasiswa</th>
+                                <th class="px-4 py-2 w-1/3 border-r border-white">NIM</th>
+                                <th class="px-4 py-2 w-1/3 border-r border-white">Jumlah SKS</th>
+                                <th class="px-4 py-2 w-1/3 border-r border-white">Persetujuan</th>
+                                <th class="px-4 py-2 rounded-tr-lg">Detail</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($list_mahasiswa as $daftar_mahasiswa)
+                            @foreach ($mhs_perwalian as $mhs)
                             <tr style="background-color: #23252A;">
-                                    <td class="px-4 py-2 border-r border-white">{{ $loop->iteration }}</td>
-                                    <td class="px-4 py-2 border-r border-white">{{ $daftar_mahasiswa->nama }}</td>
-                                    <td class="px-3 py-3 border-r border-white text-center flex justify-center items-center">
-                                        <div class="w-32 text-white text-center rounded-md px-2 py-2" style="background-color: #880000;">
-                                            <p> Terverifikasi</p>
-                                        </div>
-                                    </td>                                
-                                    <td class="px-4 py-2">
-                                        <a href="" class="w-1/2 flex items-center justify-end mr-2 ml-2 cursor-pointer hover:text-gray-400 transition-colors duration-200 ease-in-out">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right-square-fill" viewBox="0 0 16 16">
-                                                <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm5.5 10a.5.5 0 0 0 .832.374l4.5-4a.5.5 0 0 0 0-.748l-4.5-4A.5.5 0 0 0 5.5 4z"/>
+                                <td class="px-4 py-2 border-r border-white">{{ $loop->iteration }}</td>
+                                <td class="px-4 py-2 border-r border-white">{{ $mhs->nama }}</td>
+                                <td class="px-4 py-2 border-r border-white">{{ $mhs->nim }}</td>
+                                <td class="px-4 py-2 border-r border-white">{{ $mhs->total_sks }}</td>
+                                <td class="px-3 py-3 space-x-4 border-r border-white text-center flex justify-center items-center">
+                                    <button class="setujui-irs bg-green-600 hover:bg-green-800 text-white px-4 py-1 rounded">Setujui</button>
+                                    <button class="tolak-irs bg-red-600 hover:bg-red-800 text-white px-4 py-1 rounded">Tolak</button>
+                                </td>
+                                <td>
+                                    <div
+                                        class="h-7 w-7 mx-auto rounded-lg bg-white flex justify-center items-center">
+                                        <button
+                                            class="show-details justify-center text-center text-3xl text-black font-bold focus:outline-none"
+                                            data-index="">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                height="16" fill="currentColor"
+                                                class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+                                                <path
+                                                    d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
                                             </svg>
-                                        </a>
-                                    </td>   
-                                </tr>
-                                @endforeach
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
-            </div>            
+            </div>
 
             <div id="contentSudahVerifikasi" class="hidden">
                 <div class="bg-[#23252A] ml-8 mr-8 mt-8 mb-8 flex flex-grow rounded-lg">
@@ -99,14 +110,14 @@
                                     <div class="w-32 text-white text-center rounded-md px-2 py-2" style="background-color: #34803C;">
                                         <p> Terverifikasi</p>
                                     </div>
-                                </td>                                
+                                </td>
                                 <td class="px-4 py-2">
                                     <a href="" class="w-1/2 flex items-center justify-end mr-2 ml-2 cursor-pointer hover:text-gray-400 transition-colors duration-200 ease-in-out">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right-square-fill" viewBox="0 0 16 16">
-                                            <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm5.5 10a.5.5 0 0 0 .832.374l4.5-4a.5.5 0 0 0 0-.748l-4.5-4A.5.5 0 0 0 5.5 4z"/>
+                                            <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm5.5 10a.5.5 0 0 0 .832.374l4.5-4a.5.5 0 0 0 0-.748l-4.5-4A.5.5 0 0 0 5.5 4z" />
                                         </svg>
                                     </a>
-                                </td>   
+                                </td>
                             </tr>
                             <tr style="background-color: #23252A;">
                                 <td class="px-4 py-2 border-r border-white">2</td>
@@ -116,41 +127,41 @@
                                     <div class="w-32 text-white text-center rounded-md px-2 py-2" style="background-color: #34803C;">
                                         <p> Terverifikasi</p>
                                     </div>
-                                </td>                                
+                                </td>
                                 <td class="px-4 py-2">
                                     <a href="" class="w-1/2 flex items-center justify-end mr-2 ml-2 cursor-pointer hover:text-gray-400 transition-colors duration-200 ease-in-out">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right-square-fill" viewBox="0 0 16 16">
-                                            <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm5.5 10a.5.5 0 0 0 .832.374l4.5-4a.5.5 0 0 0 0-.748l-4.5-4A.5.5 0 0 0 5.5 4z"/>
+                                            <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm5.5 10a.5.5 0 0 0 .832.374l4.5-4a.5.5 0 0 0 0-.748l-4.5-4A.5.5 0 0 0 5.5 4z" />
                                         </svg>
                                     </a>
-                                </td>   
+                                </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-            
+
             <script>
                 function switchIRS(selected) {
                     const pengisianIRS = document.getElementById('pengisianIRS');
                     const irsMahasiswa = document.getElementById('irsMahasiswa');
-                    
+
                     const contentBelumVerifikasi = document.getElementById('contentBelumVerifikasi');
                     const contentSudahVerifikasi = document.getElementById('contentSudahVerifikasi');
-                    
+
                     // Log untuk debugging
                     console.log("Switching to:", selected);
-                    
+
                     if (selected === 'belumVerifikasi') {
                         pengisianIRS.classList.add('bg-yellow-500', 'border-[#17181C]');
                         irsMahasiswa.classList.remove('bg-yellow-500', 'border-[#17181C]');
-                        
+
                         contentBelumVerifikasi.classList.remove('hidden');
                         contentSudahVerifikasi.classList.add('hidden');
                     } else if (selected === 'sudahVerifikasi') {
                         irsMahasiswa.classList.add('bg-yellow-500', 'border-[#17181C]');
                         pengisianIRS.classList.remove('bg-yellow-500', 'border-[#17181C]');
-                        
+
                         contentBelumVerifikasi.classList.add('hidden');
                         contentSudahVerifikasi.classList.remove('hidden');
                     }

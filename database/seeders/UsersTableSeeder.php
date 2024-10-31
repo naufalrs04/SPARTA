@@ -83,6 +83,19 @@ class UsersTableSeeder extends Seeder
                 'ba' => 0, 
                 'ma' => 1
             ],
+            [
+                'id' => 7, 
+                'email' => 'tomlembong@students.sparta.ac.id', 
+                'password' => MD5('tomlembong123'), 
+                'nama' => 'Pak Tom Lembong',
+                'nim_nip' => 24060119157680,
+                'kp' => 0,
+                'dk' => 0, 
+                'pa' => 0, 
+                'ba' => 0, 
+                'ma' => 1
+            ],
+
         ];
         
         DB::table('users')->insert($data);

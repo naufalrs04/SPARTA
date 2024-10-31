@@ -233,6 +233,7 @@ use Illuminate\Support\Str;
                                             @csrf
                                             <input type="hidden" name="mata_kuliah_id" value="{{ $mata_kuliah->id }}">
                                             <input type="hidden" name="ruangan_id" value="{{ $mata_kuliah->ruangan_id}}">
+                                            <input type="hidden" name="sks" id="input-sks" value="{{ $mata_kuliah->sks }}">
                                             <div
                                                 class="text-white text-center items-center justify-center mx-2 my-1 rounded-md cursor-pointer bg-[#34803C] hover:bg-green-800 font-bold">
                                                 <button class="ambil-mata-kuliah"

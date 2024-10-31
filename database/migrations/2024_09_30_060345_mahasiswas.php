@@ -20,6 +20,9 @@ return new class extends Migration
             $table-> string('prodi');
             $table-> float('IPK', 3, 2)->nullable();
             $table-> float('IPS_Sebelumnya', 3, 2)->nullable();
+            $table-> unsignedBigInteger('id_wali');
+
+            $table->foreign('id_wali')->references('id')->on('dosens')->onDelete('cascade');
             
             $table-> timestamps();
         });

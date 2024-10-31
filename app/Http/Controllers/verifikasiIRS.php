@@ -1,11 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Mahasiswa;
+use App\Models\Dosen;
 use App\Models\irs_rekap;
+use App\Models\Mata_Kuliah;
+use Illuminate\Support\Facades\DB;
 
 class verifikasiIRS extends Controller
 {
@@ -14,16 +17,21 @@ class verifikasiIRS extends Controller
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-
+    
+        // Ambil data dosen berdasarkan NIP
         $user = Auth::user();
-
-        // Daftar mahasiswa yang sudah mengajukan IRS
-        $list_mahasiswa = irs_rekap::all();
-        foreach ($list_mahasiswa as $daftar_mahasiswa) {
-            $daftar_mahasiswa->nama = Mahasiswa::where('id', $daftar_mahasiswa->mahasiswa_id)->first()->nama;
-            $daftar_mahasiswa->semester = Mahasiswa::where('id', $daftar_mahasiswa->mahasiswa_id)->first()->semester;
+        $dosen = Dosen::where('nip', $user->nim_nip)->first();
+    
+        // Ambil semua mahasiswa bimbingan dosen
+        $mhs_perwalian = Mahasiswa::where('id_wali', $dosen->id)->get();
+        
+        foreach ($mhs_perwalian as $mhs) {
+            $mhs->rekap = irs_rekap::where('mahasiswa_id', $mhs->id)->get();
+            $mhs->nama = User::where('nim_nip', $mhs->nim)->first()->nama;
+            $mhs->total_sks = irs_rekap::where('mahasiswa_id', $mhs->id)->sum('sks');
         }
 
-        return view('verifikasiIRS', compact('user', 'list_mahasiswa'));
+        return view('verifikasiIRS', compact('user', 'mhs_perwalian'));
     }
+
 }
