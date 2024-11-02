@@ -788,7 +788,6 @@ use Illuminate\Support\Str;
                     })
             }
 
-
             function updateTotalSKSAfterCancel(canceledSKS) {
                 const totalSksElement = document.getElementById('totalSks');
                 const currentTotal = parseInt(totalSksElement.textContent || '0');

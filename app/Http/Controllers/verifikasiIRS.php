@@ -28,17 +28,21 @@ class verifikasiIRS extends Controller
     $mhs_belum_verifikasi = collect();
     // Data untuk sudah terverifikasi
     $mhs_sudah_verifikasi = collect();
+
+    // dd($mhs_perwalian);
     foreach ($mhs_perwalian as $mhs) {
         $mhs->nama = User::where('nim_nip', $mhs->nim)->first()->nama;
         $mhs->total_sks = irs_rekap::where('mahasiswa_id', $mhs->id)->sum('sks');
         $rekap_belum = irs_rekap::where('mahasiswa_id', $mhs->id)
-                                ->where('status_pengajuan', '!=', 'disetujui')
+                                ->where('status_pengajuan', null)
                                 ->get();
         
-        // Ambil rekap IRS yang sudah disetujui
+        // Ambil rekap IRS yang sudah diverifikasi
         $rekap_sudah = irs_rekap::where('mahasiswa_id', $mhs->id)
-                                ->where('status_pengajuan', 'disetujui')
+                                ->where('status_pengajuan', '!=', null)
                                 ->get();
+
+        $mhs -> status_pengajuan = irs_rekap::where('mahasiswa_id', $mhs->id)->first()->status_pengajuan;
 
         // Jika ada rekap yang belum disetujui
         if ($rekap_belum->isNotEmpty()) {
@@ -60,7 +64,6 @@ class verifikasiIRS extends Controller
     
     return view('verifikasiIRS', compact('user', 'mhs_belum_verifikasi', 'mhs_sudah_verifikasi'));
 }
-
 
     public function setujuiIRS(Request $request)
     {
@@ -91,6 +94,22 @@ class verifikasiIRS extends Controller
             return response()->json(['success' => true, 'message' => 'IRS berhasil ditolak']);
         } else {
             return response()->json(['success' => false, 'message' => 'Gagal mengubah status penolakan'], 500);
+        }
+    }
+
+    public function batalkanIRS(Request $request)
+    {
+        $request->validate([
+            'mahasiswa_id' => 'required|integer',
+        ]);
+    
+        $updated = irs_rekap::where('mahasiswa_id', $request->mahasiswa_id)
+                    ->update(['status_pengajuan' => null]);
+    
+        if ($updated) {
+            return response()->json(['success' => true, 'message' => 'IRS berhasil dibatalkan']);
+        } else {
+            return response()->json(['success' => false, 'message' => 'Gagal mengubah status pembatalan'], 500);
         }
     }
 }

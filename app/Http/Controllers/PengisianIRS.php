@@ -57,11 +57,12 @@ class PengisianIRS extends Controller
 
         $groupedByMahasiswa = $irs_rekap->groupBy('mahasiswa_id');
 
-        // Mengelompokkan setiap mahasiswa berdasarkan semester
         $groupedData = [];
         foreach ($groupedByMahasiswa as $mahasiswaId => $rekaps) {
             $groupedData[$mahasiswaId] = $rekaps->groupBy('semester');
         }
+
+        // dd($groupedData);
 
         foreach ($irs_rekap as $rekap) {
             $rekap->kode = Mata_Kuliah::where('id', $rekap->mata_kuliah_id)->first()->kode;
@@ -94,7 +95,6 @@ class PengisianIRS extends Controller
         $user = Auth::user();
         $mahasiswa = Mahasiswa::where('nim', $user->nim_nip)->first();
 
-        // Cek entri IRS yang sudah ada untuk mahasiswa ini
         $mahasiswa_id = $mahasiswa->id;
         $semester = $mahasiswa->semester;
         $existingIrs = irs_rekap::where('mahasiswa_id', $mahasiswa_id)
