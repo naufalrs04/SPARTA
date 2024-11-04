@@ -98,7 +98,7 @@
                     </a>
                 </li>
                 <li class="px-7 py-7 transition-transform duration-200 hover:translate-x-2 hover:bg-zinc-800 rounded-md">
-                    <a href="/pembagiankelas" class="block text-white hover:text-yellow-400 font-semibold">Pembagian Kelas Departemen</a>
+                    <a href="/pembagiankelasInfo" class="block text-white hover:text-yellow-400 font-semibold">Pembagian Kelas Departemen</a>
                 </li>
                 @endif
             </ul>

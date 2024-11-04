@@ -75,7 +75,7 @@ Route::get('/profile', function () {
 Route::get('/pembagiankelas', [pembagiankelas::class, 'index'])->middleware('auth')->name('pembagiankelas');
 
 Route::get('/pembagiankelasInfo', [pembagiankelasInfo::class, 'index'])->middleware('auth')->name('pembagiankelasInfo');
-
+Route::post('/simpan-ruangan', [pembagiankelasInfo::class, 'simpanRuangan'])->name('simpan.ruangan');
 Route::get('/perwalian', [perwalian::class, 'index'])->middleware('auth')->name('perwalian');
 
 Route::get('/inputnilai', [inputnilai::class, 'index'])->middleware('auth')->name('inputnilai');
@@ -85,6 +85,7 @@ Route::get('/inputnilaiInfo', [inputnilaiInfo::class, 'index'])->middleware('aut
 Route::get('/jadwalmengajar', [jadwalmengajar::class, 'index'])->middleware('auth')->name('jadwalmengajar');
 
 Route::get('/verifikasiIRS', [verifikasiIRS::class, 'index'])->middleware('auth')->name('verifikasiIRS');
+Route::post('/verifikasiIRS/approve', [verifikasiIRS::class, 'approveIRS'])->name('verifikasiIRS.approve');
 
 Route::post('/verifikasi-irs/setujui', [verifikasiIRS::class, 'setujuiIRS'])->name('verifikasi-irs.setujui');
 Route::post('/verifikasi-irs/tolak', [verifikasiIRS::class, 'tolakIRS'])->name('verifikasi-irs.tolak');
