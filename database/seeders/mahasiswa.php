@@ -43,7 +43,6 @@ class mahasiswa extends Seeder
                 'IPS_Sebelumnya' => 3.50,
                 'id_wali' => 1,
             ]
-
         ];
 
         DB::table('mahasiswas')->insert($data_mahasiswa);

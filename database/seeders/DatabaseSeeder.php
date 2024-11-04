@@ -16,6 +16,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UsersTableSeeder::class,
             dosen::class,
+            bagian_akademik::class,
+            prodi::class,
             mahasiswa::class,
             gedung::class,
             ruangan::class,

@@ -18,6 +18,7 @@ class DashboardBagianAkademikController extends Controller
         $data = [
             'nama' => $user->nama,
             'nim_nip' => $user->nim_nip,
+            'status' => $user->status, // Pastikan field ini ada dalam model User
         ];
 
         return view('dashboardBagianAkademik', compact('data', 'user'));

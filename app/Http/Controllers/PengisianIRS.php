@@ -79,7 +79,6 @@ class PengisianIRS extends Controller
             $rekap->kapasitas_ruangan = Ruangan::where('id', $rekap->ruangan_id)->first()->kapasitas;
         }
 
-
         return view('pengisianirs', compact('user', 'list_mata_kuliah', 'irs_rekap', 'groupedData',  'semesterMahasiswa', 'mahasiswa_id'));
     }
 
@@ -215,41 +214,5 @@ class PengisianIRS extends Controller
             ], 403);
         }
     }
-
-
-
-    // public function storeToIrsLempar(Request $request)
-    // {
-    //     // Validasi input
-    //     $validated = $request->validate([
-    //         'mata_kuliah_id' => 'required|integer|exists:mata_kuliahs,id',
-    //         'ruangan_id' => 'required|integer|exists:ruangans,id',
-    //     ]);
-
-    //     $mahasiswa_id = Auth::id();
-
-    //     // Proses untuk menyimpan data
-    //     try {
-    //         irs_lempar::create([
-    //             'mahasiswa_id' => $mahasiswa_id,
-    //             'mata_kuliah_id' => $validated['mata_kuliah_id'],
-    //             'ruangan_id' => $validated['ruangan_id'],
-    //             'status_mata_kuliah' => 'Baru',
-    //             'status_persetujuan' => null,
-    //         ]);
-
-    //         return response()->json([
-    //             'success' => true,
-    //             'message' => 'Data berhasil diajukan ke IRS Lempar.'
-    //         ]);
-    //     } catch (\Exception $e) {
-    //         Log::error('Error in storing IRS Lempar: ' . $e->getMessage());
-    //         return response()->json([
-    //             'success' => false,
-    //             'message' => 'Terjadi kesalahan saat menyimpan data.'
-    //         ], 500);
-    //     }
-    // }
-
 
 }

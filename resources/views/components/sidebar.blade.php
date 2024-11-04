@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sidebar Navigation</title>
+    <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('assets/faviconD-96x96.png') }}">
     <style>
         .active-state {
             transform: translateX(0.5rem);
@@ -97,7 +98,7 @@
                     </a>
                 </li>
                 <li class="px-7 py-7 transition-transform duration-200 hover:translate-x-2 hover:bg-zinc-800 rounded-md">
-                    <a href="/pembagiankelas" class="block text-white hover:text-yellow-400 font-semibold">Pembagian Kelas Departemen</a>
+                    <a href="/pembagiankelasInfo" class="block text-white hover:text-yellow-400 font-semibold">Pembagian Kelas Departemen</a>
                 </li>
                 @endif
             </ul>
