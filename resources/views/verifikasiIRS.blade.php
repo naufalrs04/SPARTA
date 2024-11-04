@@ -143,8 +143,8 @@
                                 <td class="px-4 py-2 border-r border-white">{{ $mhs->nim }}</td>
                                 <td class="px-4 py-2 border-r border-white">{{ $mhs->total_sks }}</td>
                                 <td class="px-4 py-2 border-r border-white">{{ $mhs->status_pengajuan }}</td>
-                                <td class="px-3 py-3 space-x-4 border-r border-white text-center flex justify-center items-center">
-                                    <button class="tolak-irs bg-yellow-600 hover:bg-yellow-800 text-white px-4 py-1 rounded"
+                                <td class="px-3 py-3 space-x-4 text-center flex justify-center items-center">
+                                    <button class="batalkan-irs bg-yellow-600 hover:bg-yellow-800 text-white px-4 py-1 rounded"
                                         data-mahasiswa-id="{{ $mhs->id }}">Batalkan</button>
                                 </td>
                             </tr>
@@ -287,7 +287,57 @@
                     });
                 });
             });
+            document.querySelectorAll('.batalkan-irs').forEach(button => {
+                button.addEventListener('click', function() {
+                    const mahasiswaId = this.getAttribute('data-mahasiswa-id');
+
+                    // Konfirmasi sebelum membatalkan
+                    Swal.fire({
+                        title: 'Konfirmasi Pembatalan IRS',
+                        text: "Apakah Anda yakin ingin mmembatalkan IRS ini?",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Ya, Batalkan!',
+                        cancelButtonText: 'Batal'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            fetch("{{ route('verifikasi-irs.batal') }}", {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                                    },
+                                    body: JSON.stringify({
+                                        mahasiswa_id: mahasiswaId
+                                    })
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Berhasil!',
+                                            text: data.message,
+                                        }).then(() => {
+                                            location.reload();
+                                        });
+                                    } else {
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Gagal!',
+                                            text: data.message,
+                                        });
+                                    }
+                                })
+                                .catch(error => console.error("Error:", error));
+                        }
+                    });
+                });
+            });
         });
+
     </script>
     <script>
         document.querySelectorAll('.show-details').forEach(button => {

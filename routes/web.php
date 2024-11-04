@@ -89,6 +89,7 @@ Route::post('/verifikasiIRS/approve', [verifikasiIRS::class, 'approveIRS'])->nam
 
 Route::post('/verifikasi-irs/setujui', [verifikasiIRS::class, 'setujuiIRS'])->name('verifikasi-irs.setujui');
 Route::post('/verifikasi-irs/tolak', [verifikasiIRS::class, 'tolakIRS'])->name('verifikasi-irs.tolak');
+Route::post('/verifikasi-irs/batal', [verifikasiIRS::class, 'batalkanIRS'])->name('verifikasi-irs.batal');
 
 
 Route::get('/verifikasijadwal', [verifikasijadwal::class, 'index'])->middleware('auth')->name('verifikasijadwal');
