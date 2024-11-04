@@ -27,120 +27,86 @@
             @include('components.navbar')
 
             <!-- Main Content -->
-                <!-- back to pembagian kelas -->
-                <div class="flex justify-start my-4 mb-6 ml-8 ">
-                    <a href="/pembagiankelas" class="text-white text-left underline-offset-2 hover:text-gray-300 cursor-pointer"><< Back to Pembagian Kelas Departemen</a>
-                </div>
-                <div class="flex justify-center my-3 mb-3 ">
-                    <a class="text-white text-center text-lg font-semibold">Departemen XX</a>
-                </div>
-                <div class="flex justify-center my-3 mb-3">
-                    <a class="text-white mb-5 mt-5 text-sm">Status Pengajuan : Not Set / Belum Diajukan</a>
-                </div>    
-                
-                <!-- Dropdown Gedung -->
-                <div class="flex justify-center mt-3 mb-3">
-                    <div class="max-w-xl relative">
-                        <button id="dropdownGedungButton" class="w-[280px] text-gray-400 p-4 pr-10 pl-4 focus:ring-2 focus:ring-gray-800 rounded-lg bg-[#2A2C33] cursor-pointer border border-transparent hover:border-gray-600 focus:border-gray-600 transition duration-100 ease-in-out flex justify-between items-center">
-                            <span id="selectedGedung">Pilih Gedung</span>
-                            <svg class="w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                            </svg>
-                        </button>
-
-                        <!-- Dropdown list -->
-                        <div id="dropdownGedung" class="hidden bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200 divide-y divide-gray-100 dark:divide-gray-600 rounded-lg shadow w-full absolute z-10 mt-2">
-                            <ul class="py-2 text-sm" aria-labelledby="dropdownGedungButton">
-                                <li><a href="#" data-gedung="Gedung A" class="block px-4 py-2 hover:bg-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">Gedung A</a></li>
-                                <li><a href="#" data-gedung="Gedung B" class="block px-4 py-2 hover:bg-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">Gedung B</a></li>
-                                <li><a href="#" data-gedung="Gedung C" class="block px-4 py-2 hover:bg-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">Gedung C</a></li>
-                                <li><a href="#" data-gedung="Gedung D" class="block px-4 py-2 hover:bg-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">Gedung D</a></li>
-                                <li><a href="#" data-gedung="Gedung E" class="block px-4 py-2 hover:bg-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">Gedung E</a></li>
-                            </ul>
+            <div class="flex justify-center mt-3 pb-1 p-5">
+                <div class="max-w-xl relative">
+                    <!-- Dropdown Departemen -->
+                    <form id="ruanganForm" method="POST" action="{{ route('simpan.ruangan') }}">
+                                @csrf
+                                <input type="hidden" id="selectedProdi" name="prodi" value="">
+                                <button id="dropdownDepartemenButton" class="w-[280px] text-gray-400 p-4 pr-10 pl-4 focus:ring-2 focus:ring-gray-800 rounded-lg bg-[#2A2C33] cursor-pointer border border-transparent hover:border-gray-600 focus:border-gray-600 transition duration-100 ease-in-out flex justify-between items-center">
+                                    <span id="selectedDepartemen">Departemen XX</span>
+                                    <svg class="w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                                    </svg>
+                                </button>
+                        
+                                <!-- Dropdown list -->
+                                <div id="dropdownDepartemen" class="hidden bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200 divide-y divide-gray-100 dark:divide-gray-600 rounded-lg shadow w-full absolute z-10 mt-2">
+                                    <ul class="py-2 text-sm" aria-labelledby="dropdownDepartemenButton">
+                                        @foreach($prodi as $jurusan)
+                                            <li>
+                                                <span 
+                                                    data-departemen="{{ $jurusan->nama }}" 
+                                                    class="block px-4 py-2 hover:bg-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">
+                                                    {{ $jurusan->nama }}
+                                                </span>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                        <div class="flex justify-center my-3 mb-3">
+                            <a class="text-white mb-5 mt-5 text-sm">Status Pengajuan : Not Set / Belum Diajukan</a>
+                        </div>   
 
-                <!-- Checkbox Gedung A -->
-                <table id="checkboxContainerA" class="hidden mt-5 mb-5 ml-5 flex justify-center">
-                    <tr>
-                        <td class="pr-6">
-                            <div class="flex items-center">
-                                <input id="checkbox-1" type="checkbox" class="h-5 w-5 border-gray-300 rounded bg-black cursor-pointer" />
-                                <label for="checkbox-1" class="ml-2 text-xl text-white font-bold">A101</label>
-                            </div>
-                        </td>
-                        <td class="pr-6">
-                            <div class="flex items-center">
-                                <input id="checkbox-2" type="checkbox" class="h-5 w-5 border-gray-300 rounded bg-black cursor-pointer" />
-                                <label for="checkbox-2" class="ml-2 text-xl text-white font-bold">A102</label>
-                            </div>
-                        </td>
-                        <td class="pr-6">
-                            <div class="flex items-center">
-                                <input id="checkbox-3" type="checkbox" class="h-5 w-5 border-gray-300 rounded bg-black cursor-pointer" />
-                                <label for="checkbox-3" class="ml-2 text-xl text-white font-bold">A103</label>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="pr-6">
-                            <div class="flex items-center">
-                                <input id="checkbox-1" type="checkbox" class="h-5 w-5 border-gray-300 rounded bg-black cursor-pointer" />
-                                <label for="checkbox-1" class="ml-2 text-xl text-white font-bold">A201</label>
-                            </div>
-                        </td>
-                        <td class="pr-6">
-                            <div class="flex items-center">
-                                <input id="checkbox-2" type="checkbox" class="h-5 w-5 border-gray-300 rounded bg-black cursor-pointer" />
-                                <label for="checkbox-2" class="ml-2 text-xl text-white font-bold">A202</label>
-                            </div>
-                        </td>
-                        <td class="pr-6">
-                            <div class="flex items-center">
-                                <input id="checkbox-3" type="checkbox" class="h-5 w-5 border-gray-300 rounded bg-black cursor-pointer" />
-                                <label for="checkbox-3" class="ml-2 text-xl text-white font-bold">A203</label>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
+                        <!-- Table Gedung dan Ruangan -->
+                        <div class="px-8 pt-2 mt-10 mb-5 rounded-tl-lg">
+                            <h2 class="text-center text-lg font-semibold mb-5">Gedung dan Ruangan</h2>
+                            <table class="table-auto p-5 w-full text-center rounded-lg border-collapse">
+                                <thead>
+                                    <tr style="background-color: rgba(135, 138, 145, 0.37);">
+                                        @foreach($gedung as $index => $gedungs)
+                                            <th class="px-4 py-2 w-1/{{ count($gedung) }} border-r border-white 
+                                                {{ $index === 0 ? 'rounded-tl-lg' : '' }}
+                                                {{ $index === count($gedung) - 1 ? 'rounded-tr-lg' : '' }}">
+                                                {{ $gedungs->nama }}
+                                            </th>
+                                        @endforeach
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        @foreach($gedung as $gedungs)
+                                            <td class="border-r border-white">
+                                                <div class="flex flex-col items-center">
+                                                    @foreach($ruangan[$gedungs->id] ?? [] as $ruang)
+                                                        <div class="flex items-center">
+                                                            <input id="checkbox-{{ $ruang->id }}" name="ruangan[]" value="{{ $ruang->id }}" type="checkbox" class="h-5 w-5 border-gray-300 rounded bg-black cursor-pointer" />
+                                                            <label for="checkbox-{{ $ruang->id }}" class="ml-2 text-xl text-white font-bold">{{ $ruang->nama }}</label>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            </td>
+                                        @endforeach
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
 
-                <!-- Checkbox Gedung B -->
-                <table id="checkboxContainerB" class="hidden mt-5 mb-5 ml-5 flex justify-center">
-                    <tr>
-                        <td class="pr-6">
-                            <div class="flex items-center">
-                                <input id="checkbox-4" type="checkbox" class="h-5 w-5 border-gray-300 rounded bg-black cursor-pointer" />
-                                <label for="checkbox-4" class="ml-2 text-xl text-white font-bold">B101</label>
-                            </div>
-                        </td>
-                        <td class="pr-6">
-                            <div class="flex items-center">
-                                <input id="checkbox-5" type="checkbox" class="h-5 w-5 border-gray-300 rounded bg-black cursor-pointer" />
-                                <label for="checkbox-5" class="ml-2 text-xl text-white font-bold">B102</label>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-
-                <!-- Checkbox Gedung C -->
-                <table id="checkboxContainerC" class="hidden mt-5 mb-5 ml-5 flex justify-center">
-                    <tr>
-                        <td class="pr-6">
-                            <div class="flex items-center">
-                                <input id="checkbox-6" type="checkbox" class="h-5 w-5 border-gray-300 rounded bg-black cursor-pointer" />
-                                <label for="checkbox-6" class="ml-2 text-xl text-white font-bold">C101</label>
-                            </div>
-                        </td>
-                        <td class="pr-6">
-                            <div class="flex items-center">
-                                <input id="checkbox-7" type="checkbox" class="h-5 w-5 border-gray-300 rounded bg-black cursor-pointer" />
-                                <label for="checkbox-7" class="ml-2 text-xl text-white font-bold">C102</label>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-                
+                        <div class="px-8 mt-5 flex justify-end">
+                            <button type="submit" class="rounded-lg py-2 px-5 bg-[#34803C] hover:bg-[#2b6e32] text-white">
+                                <strong>Simpan</strong>
+                            </button>
+                        </div>
+                    </form>
+                    
+                    @if(session('success'))
+                        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                            <strong class="font-bold">Sukses!</strong>
+                            <span class="block sm:inline">{{ session('success') }}</span>
+                        </div>
+                    @endif
                 <!-- Ringkasan table departemen -->
                 <div class="px-8 pt-2 mt-10 mb-5 rounded-tl-lg">
                     <h2 class="text-center text-lg font-semibold mb-5">Ringkasan Departemen XX</h2>
@@ -155,51 +121,10 @@
                         <tbody>
                             <tr style="background-color: #23252A;">
                                 <td class="px-4 py-2 border-r border-white">Informatika</td>
-                                
                                 <td class="px-3 py-3 border-r border-white text-center flex justify-center items-center">
                                         <p>E</p>
                                 </td>                                
                                 <td class="px-4 py-2 border-white">E101</td>
-                            </tr>
-                            <tr style="background-color: #23252A;">
-                                <td class="px-4 py-2 border-r border-white">Informatika</td>
-                                
-                                <td class="px-3 py-3 border-r border-white text-center flex justify-center items-center">
-                                    <p>E</p>
-                                </td>                                  
-                                <td class="px-4 py-2 border-white">E102</td>
-                            </tr>
-                            <tr style="background-color: #23252A;">
-                                <td class="px-4 py-2 border-r border-white">Informatika</td>
-                                
-                                <td class="px-3 py-3 border-r border-white text-center flex justify-center items-center">
-                                    <p>E</p>
-                                </td>                                   
-                                <td class="px-4 py-2 border-white">E103</td>
-                            </tr>
-                            <tr style="background-color: #23252A;">
-                                <td class="px-4 py-2 border-r border-white">Informatika</td>
-                                
-                                <td class="px-3 py-3 border-r border-white text-center flex justify-center items-center">
-                                    <p>E</p>
-                                </td>                                   
-                                <td class="px-4 py-2 border-white">E104</td>
-                            </tr>
-                            <tr style="background-color: #23252A;">
-                                <td class="px-4 py-2 border-r border-white">Informatika</td>
-                                
-                                <td class="px-3 py-3 border-r border-white text-center flex justify-center items-center">
-                                    <p>E</p>
-                                </td>                                 
-                                <td class="px-4 py-2 border-white">E105</td>
-                            </tr>
-                            <tr style="background-color: #23252A;">
-                                <td class="px-4 py-2 border-r border-white">Informatika</td>
-                                
-                                <td class="px-3 py-3 border-r border-white text-center flex justify-center items-center">
-                                    <p>E</p>
-                                </td>                                  
-                                <td class="px-4 py-2 border-white">E106</td>
                             </tr>
                         </tbody>
                     </table>
@@ -211,53 +136,113 @@
                 </div>
         </div>
     </div>
+
     <script>
-        const dropdownGedungButton = document.getElementById('dropdownGedungButton');
-        const dropdownGedung = document.getElementById('dropdownGedung');
-        const selectedGedungText = document.getElementById('selectedGedung');
+        const dropdownDepartemenButton = document.getElementById('dropdownDepartemenButton');
+        const dropdownDepartemen = document.getElementById('dropdownDepartemen');
+        const selectedDepartemenText = document.getElementById('selectedDepartemen');
+    
+        //const dropdownGedungButton = document.getElementById('dropdownGedungButton');
+        // const dropdownGedung = document.getElementById('dropdownGedung');
+        // const selectedGedungText = document.getElementById('selectedGedung');
     
         const checkboxContainerA = document.getElementById('checkboxContainerA');
         const checkboxContainerB = document.getElementById('checkboxContainerB');
         const checkboxContainerC = document.getElementById('checkboxContainerC');
     
-        // Toggle dropdown visibility
-        dropdownGedungButton.addEventListener('click', function(event) {
+        // Toggle dropdown visibility for departments
+        dropdownDepartemenButton.addEventListener('click', function(event) {
             event.stopPropagation();  
-            dropdownGedung.classList.toggle('hidden');
+            dropdownDepartemen.classList.toggle('hidden');
         });
     
-        // Menangani klik pada pilihan gedung
-        dropdownGedung.querySelectorAll('a').forEach(function(item) {
-            item.addEventListener('click', function(event) {
-                event.preventDefault();
-                const selectedGedung = this.getAttribute('data-gedung');
-                selectedGedungText.textContent = selectedGedung;
-                dropdownGedung.classList.add('hidden');  
-    
-                // Sembunyikan semua checkbox terlebih dahulu
-                checkboxContainerA.classList.add('hidden');
-                checkboxContainerB.classList.add('hidden');
-                checkboxContainerC.classList.add('hidden');
-    
-                // Tampilkan checkbox sesuai pilihan gedung
-                if (selectedGedung === "Gedung A") {
-                    checkboxContainerA.classList.remove('hidden');
-                } else if (selectedGedung === "Gedung B") {
-                    checkboxContainerB.classList.remove('hidden');
-                } else if (selectedGedung === "Gedung C") {
-                    checkboxContainerC.classList.remove('hidden');
-                }
+        // Handle clicks on department choices
+        dropdownDepartemen.querySelectorAll('span').forEach(function(item) {
+                item.addEventListener('click', function(event) {
+                    const selectedDepartemen = this.getAttribute('data-departemen');
+                    selectedDepartemenText.textContent = selectedDepartemen;
+                    document.getElementById('selectedProdi').value = selectedDepartemen;
+                    dropdownDepartemen.classList.add('hidden');
+                });
             });
-        });
+        // // Toggle dropdown visibility for buildings
+        // dropdownGedungButton.addEventListener('click', function(event) {
+        //     event.stopPropagation();  
+        //     dropdownGedung.classList.toggle('hidden');
+        // });
     
-        // Tutup dropdown jika klik di luar
-        window.addEventListener('click', function(event) {
-            if (!dropdownGedungButton.contains(event.target) && !dropdownGedung.contains(event.target)) {
-                dropdownGedung.classList.add('hidden');
-            }
-        });
+        // Handle clicks on building choices
+        // dropdownGedung.querySelectorAll('a').forEach(function(item) {
+        //     item.addEventListener('click', function(event) {
+        //         event.preventDefault();
+        //         const selectedGedung = this.getAttribute('data-gedung');
+        //         selectedGedungText.textContent = selectedGedung;
+        //         dropdownGedung.classList.add('hidden');  
+    
+        //         // Hide all checkboxes first
+        //         checkboxContainerA.classList.add('hidden');
+        //         checkboxContainerB.classList.add('hidden');
+        //         checkboxContainerC.classList.add('hidden');
+    
+        //         // Show checkboxes based on selected building
+        //         if (selectedGedung === "Gedung A") {
+        //             checkboxContainerA.classList.remove('hidden');
+        //         } else if (selectedGedung === "Gedung B") {
+        //             checkboxContainerB.classList.remove('hidden');
+        //         } else if (selectedGedung === "Gedung C") {
+        //             checkboxContainerC.classList.remove('hidden');
+        //         }
+        //     });
+        // });
+    
+        // Close dropdowns if click outside
+        // window.addEventListener('click', function(event) {
+        //     if (!dropdownDepartemenButton.contains(event.target) && !dropdownDepartemen.contains(event.target)) {
+        //         dropdownDepartemen.classList.add('hidden');
+        //     }
+        //     if (!dropdownGedungButton.contains(event.target) && !dropdownGedung.contains(event.target)) {
+        //         dropdownGedung.classList.add('hidden');
+        //     }
+        // });
+
         
-    </script>
+        </script>
+
+        <script>
+            const gedungButtons = document.querySelectorAll('[id^="dropdownGedungButton"]');
+            const checkboxContainers = document.querySelectorAll('[id^="checkboxContainer"]');
+
+            gedungButtons.forEach(button => {
+                button.addEventListener('click', function(event) {
+                    event.stopPropagation();
+                    const gedung = this.getAttribute('data-gedung');
+                    const targetContainer = document.getElementById(`checkboxContainer${gedung}`);
+                    
+                    checkboxContainers.forEach(container => container.classList.add('hidden'));
+                    if (targetContainer) {
+                        targetContainer.classList.remove('hidden');
+                    }
+                });
+            });
+
+           
+
+            // Tangani submit form
+            document.getElementById('ruanganForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Validasi: pastikan prodi dipilih
+                if (!document.getElementById('selectedProdi').value) {
+                    alert('Silakan pilih Departemen terlebih dahulu.');
+                    return;
+                }
+
+                // Kirim form
+                this.submit();
+            });
+        </script>
+
+
 </body>
 
 </html>

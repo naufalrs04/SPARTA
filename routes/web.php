@@ -75,7 +75,7 @@ Route::get('/profile', function () {
 Route::get('/pembagiankelas', [pembagiankelas::class, 'index'])->middleware('auth')->name('pembagiankelas');
 
 Route::get('/pembagiankelasInfo', [pembagiankelasInfo::class, 'index'])->middleware('auth')->name('pembagiankelasInfo');
-
+Route::post('/simpan-ruangan', [pembagiankelasInfo::class, 'simpanRuangan'])->name('simpan.ruangan');
 Route::get('/perwalian', [perwalian::class, 'index'])->middleware('auth')->name('perwalian');
 
 Route::get('/inputnilai', [inputnilai::class, 'index'])->middleware('auth')->name('inputnilai');
