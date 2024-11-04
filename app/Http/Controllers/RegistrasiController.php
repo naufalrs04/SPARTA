@@ -25,6 +25,7 @@ class RegistrasiController extends Controller
         $request->validate([
             'status' => 'required|boolean',
         ]);
+
         $user = Auth::user();
         $mahasiswa = Mahasiswa::where('nim', $user->nim_nip)->first();
 

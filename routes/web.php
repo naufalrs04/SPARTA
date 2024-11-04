@@ -85,6 +85,7 @@ Route::get('/inputnilaiInfo', [inputnilaiInfo::class, 'index'])->middleware('aut
 Route::get('/jadwalmengajar', [jadwalmengajar::class, 'index'])->middleware('auth')->name('jadwalmengajar');
 
 Route::get('/verifikasiIRS', [verifikasiIRS::class, 'index'])->middleware('auth')->name('verifikasiIRS');
+Route::post('/verifikasiIRS/approve', [verifikasiIRS::class, 'approveIRS'])->name('verifikasiIRS.approve');
 
 
 Route::get('/verifikasijadwal', [verifikasijadwal::class, 'index'])->middleware('auth')->name('verifikasijadwal');
