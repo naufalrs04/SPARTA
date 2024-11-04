@@ -4,19 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
 class Irs_rekap extends Model
 {
     use HasFactory;
-
+   
     protected $table = 'irs_rekap';
-
     protected $fillable = [
         'mahasiswa_id',
-        'irs_id',
+        'mata_kuliah_id',
+        'ruangan_id',
         'semester',
-        'status',
-        'total_sks',
-        'ip_semester',
+        'sks',
+        'status_pengajuan',
     ];
 }

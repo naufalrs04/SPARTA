@@ -26,7 +26,8 @@ class RegistrasiController extends Controller
             'status' => 'required|boolean',
         ]);
 
-        $mahasiswa = Mahasiswa::where('user_id', Auth::id())->first();
+        $user = Auth::user();
+        $mahasiswa = Mahasiswa::where('nim', $user->nim_nip)->first();
 
         if ($mahasiswa) {
             $mahasiswa->status = $request->status;

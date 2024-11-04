@@ -12,6 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         //
+        Schema::create ('dosens', function (Blueprint $table) {
+            $table-> id();
+            $table-> string('nip');
+            $table-> boolean('status')->default(1);
+            $table-> string('prodi');
+            
+            $table-> timestamps();
+        });
     }
 
     /**

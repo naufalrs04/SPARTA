@@ -72,11 +72,11 @@
                             <div class="col-span-8 p-6 rounded-tl-lg rounded-bl-lg text-lg space-y-5 box-border border-black">
                                 <div>
                                     <p style="color: #F0B90B"><strong>Nama :</strong></p>
-                                    <p>{{ $data['nama'] }}</p>
+                                    <p>{{ $nama_mahasiswa }}</p>
                                 </div>
                                 <div>
                                     <p style="color: #F0B90B"><strong>NIM :</strong></p>
-                                    <p class="mb-1">{{ $data['nim_nip'] }}</p>
+                                    <p class="mb-1">{{ $user->nim_nip }}</p>
                                 </div>
                                 <div>
                                     <p style="color: #F0B90B"><strong>Semester Akademik :</strong></p>
@@ -86,7 +86,7 @@
                             <div class="col-span-4 p-6 text-center rounded-tr-lg rounded-br-lg text-lg space-y-2 box-border border-black flex flex-col items-center gap-1.5">
                                 <p style="color: #F0B90B"><strong>Semester Studi :</strong></p>
                                 <div class="box-border border-2 w-20 h-20 flex justify-center items-center rounded-lg" style="border-color: #F0B90B">
-                                    <span class="text-5xl"><strong>{{ $data['semester'] }}</strong></span>
+                                    <span class="text-5xl"><strong>{{$data['semester']}}</strong></span>
                                 </div>
                             </div>
                             @if($data['status']==1)

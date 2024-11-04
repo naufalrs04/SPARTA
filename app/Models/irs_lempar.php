@@ -5,17 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Mahasiswa extends Model
+class irs_lempar extends Model
 {
     use HasFactory;
 
+    protected $table = 'irs_lempar';
+
     protected $fillable = [
-        'nim',
-        'status',
+        'mahasiswa_id',
         'semester',
-        'prodi',
-        'IPK',
-        'IPS_Sebelumnya',
-        'id_wali',
+        'jumlah_sks',
+        'status_persetujuan',
     ];
 }
