@@ -53,13 +53,19 @@
         <div class="flex-grow" style="background-color: #17181C;">
             @include('components.navbar')
 
+            <div class="pl-8 pt-5 flex justify-left items-center">
+                <p class="welcome-message-static">Welcome Back, </p>
+                <span class="welcome-message" id="typewriter"></span>
+                <span class="text-2xl" aria-label="Waving Hand" role="img">👋</span>
+            </div>
+
             <!-- Main Content -->
             <div class="bg-gray-800 px-8 pt-5 flex justify-center items-center" style="background-color: #17181C;">
                 <div class="grid grid-cols-12 w-full gap-14">
                     <!-- Box Status Akademik -->
                     <div class="col-span-8 bg-gray-700 rounded-lg shadow-lg flex flex-col" style="background-color: #17181C;">
                         <h2 class="text-center text-lg font-semibold mb-4">Status Akademik</h2>
-
+                        
                         <!-- Box Utama Status Akademik -->
                         <div class="grid grid-cols-12 w-full rounded-lg flex-grow" style="background-color: #2A2C33;">
                             <div class="col-span-8 p-6 rounded-tl-lg rounded-bl-lg text-lg space-y-5 box-border border-black">
@@ -137,6 +143,42 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const messages = ["{{ $user['nama'] }} !" ]; // Pesan yang ingin ditampilkan
+            let messageIndex = 0;
+            let charIndex = 0;
+            const typingSpeed = 100; 
+            const erasingSpeed = 50; 
+            const delayBetweenMessages = 2000; 
+            const typewriterElement = document.getElementById("typewriter");
+
+            function typeMessage() {
+                if (charIndex < messages[messageIndex].length) {
+                    typewriterElement.textContent += messages[messageIndex].charAt(charIndex);
+                    charIndex++;
+                    setTimeout(typeMessage, typingSpeed);
+                } else {
+                    setTimeout(eraseMessage, delayBetweenMessages);
+                }
+            }
+
+            function eraseMessage() {
+                if (charIndex > 0) {
+                    typewriterElement.textContent = messages[messageIndex].substring(0, charIndex - 1);
+                    charIndex--;
+                    setTimeout(eraseMessage, erasingSpeed);
+                } else {
+                    messageIndex = (messageIndex + 1) % messages.length; // Loop pesan
+                    setTimeout(typeMessage, typingSpeed);
+                }
+            }
+
+            // Mulai mengetik pesan
+            setTimeout(typeMessage, typingSpeed);
+        });
+    </script>
 </body>
 
 </html>

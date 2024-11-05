@@ -27,13 +27,13 @@ class pembagiankelasInfo extends Controller
         }
 
         $gedung = Gedung::all();
-        foreach($gedung as $gedungs){
-            $gedungs->nama = Gedung::where('id', $gedungs->id)->first()->nama;
-        }
+        
 
         $ruangan = Ruangan::all()->groupBy('gedung_id');
+
         
-        return view('/pembagiankelasInfo', compact( 'user','prodi','jurusan','ruangan','gedung','gedungs'));
+        
+        return view('/pembagiankelasInfo', compact( 'user','prodi','jurusan','ruangan','gedung',));
     }
 
     public function simpanRuangan(Request $request)
@@ -46,6 +46,16 @@ class pembagiankelasInfo extends Controller
 
     $prodi = $request->input('prodi');
     $ruanganIds = $request->input('ruangan');
+
+    $existingRuangan = ruangan_prodi::where('nama_prodi', $prodi)
+        ->whereIn('ruangan_id', $ruanganIds)
+        ->pluck('ruangan_id')
+        ->toArray();
+
+    if (!empty($existingRuangan)) {
+        $existingRuanganNames = Ruangan::whereIn('id', $existingRuangan)->pluck('nama')->implode(', ');
+        return redirect()->back()->with('error', "Ruangan {$existingRuanganNames} sudah terdaftar untuk prodi {$prodi}.");
+    }
 
     foreach ($ruanganIds as $ruanganId) {
         ruangan_prodi::create([

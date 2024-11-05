@@ -85,9 +85,11 @@ Route::get('/inputnilaiInfo', [inputnilaiInfo::class, 'index'])->middleware('aut
 Route::get('/jadwalmengajar', [jadwalmengajar::class, 'index'])->middleware('auth')->name('jadwalmengajar');
 
 Route::get('/verifikasiIRS', [verifikasiIRS::class, 'index'])->middleware('auth')->name('verifikasiIRS');
+Route::post('/verifikasiIRS/approve', [verifikasiIRS::class, 'approveIRS'])->name('verifikasiIRS.approve');
 
 Route::post('/verifikasi-irs/setujui', [verifikasiIRS::class, 'setujuiIRS'])->name('verifikasi-irs.setujui');
 Route::post('/verifikasi-irs/tolak', [verifikasiIRS::class, 'tolakIRS'])->name('verifikasi-irs.tolak');
+Route::post('/verifikasi-irs/batal', [verifikasiIRS::class, 'batalkanIRS'])->name('verifikasi-irs.batal');
 
 
 Route::get('/verifikasijadwal', [verifikasijadwal::class, 'index'])->middleware('auth')->name('verifikasijadwal');
