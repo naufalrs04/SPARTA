@@ -7,6 +7,7 @@
     <title>Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMJTVF1a1wMA2gO/YHbx+fyfJhN/0Q5ntv7zYY" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
         @keyframes slideIn {
             0% {
@@ -44,7 +45,10 @@
     </style>
 </head>
 
-<body class="bg-gray-900 text-gray-100">
+<body class="bg-gray-900 text-gray-100" 
+    x-data="{darkMode: localStorage.getItem('dark') === true}"
+    x-inite="$watch('darkMode', val => localStorage.setItem('dark', val))"
+    x-bind:class="{'dark' : darkMode}">
     <div class="flex min-h-screen">
         <!-- Sidebar -->
         @include('components.sidebar')

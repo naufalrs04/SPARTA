@@ -1,3 +1,4 @@
+
 <div class="flex-grow" style="background-color: #17181C;">
     <!-- Navbar Atas-->
     <nav class="pr-8 flex justify-end items-center box-border border-b-2 border-black"
@@ -9,6 +10,9 @@
             <div x-data="{ open: false }" class="justify-center items-center" style="background-color: #1E1F24;">
                 <div class="relative border-b-4 border-transparent py-3">
                     <div class="flex justify-center items-center space-x-3">
+                        <div class="mr-3 pr-3">
+                            <x-theme-switcher />                    
+                        </div>
                         <div class="text-right pr-8">
                             <h2 class="text-xl font-semibold">{{ $user['nama'] }}</h2>
                             <h2 class="text-lg text-gray-400">{{ $user['nim_nip'] }}</h2>
