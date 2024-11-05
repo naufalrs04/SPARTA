@@ -21,6 +21,4 @@ class Mata_Kuliah extends Model
         'jam_mulai',
         'jam_selesai',
     ];
-
-
 }
