@@ -19,6 +19,7 @@ use App\Http\Controllers\perwalian;
 use App\Http\Controllers\inputnilai;
 use App\Http\Controllers\inputnilaiInfo;
 use App\Http\Controllers\jadwalmengajar;
+use App\Http\Controllers\PenyusunanJadwalController;
 use App\Http\Controllers\verifikasiIRS;
 use App\Http\Controllers\verifikasijadwal;
 use App\Http\Controllers\verifikasiRuangKuliah;
@@ -58,7 +59,9 @@ Route::get('/dashboardDekan', [DashboardDekanController::class, 'index'])->middl
 //KAPRODI
 Route::get('/dashboardKaprodi', [DashboardKaprodiController::class, 'index'])->middleware('auth')->name('dashboardKaprodi');
 
-Route::get('/penyusunanjadwal', [penyusunanjadwal::class, 'index'])->middleware('auth')->name('Penyusunanjadwal');
+Route::get('/penyusunanjadwal', [PenyusunanJadwalController::class, 'index'])->middleware('auth')->name('Penyusunanjadwal');
+
+Route::post('/penyusunan-jadwal/store', [PenyusunanJadwalController::class, 'store'])->name('penyusunan-jadwal.store');
 
 Route::get('/jadwalpengisianIRS', [jadwalpengisianIRS::class, 'index'])->middleware('auth')->name('jadwalpengisianIRS');
 
