@@ -9,7 +9,7 @@ class Gedung extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'nama_gedung'
+        'nama'
     ];
     public function ruangans()
     {

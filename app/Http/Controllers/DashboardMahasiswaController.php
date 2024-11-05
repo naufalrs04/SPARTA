@@ -9,6 +9,7 @@ use App\Models\Ruangan;
 use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\irs_rekap;
 
 
 class DashboardMahasiswaController extends Controller
@@ -21,14 +22,14 @@ class DashboardMahasiswaController extends Controller
 
         $user = Auth::user();
 
-        // Ambil data status dari tabel mahasiswas berdasarkan user_id
-        $mahasiswa = Mahasiswa::where('user_id', $user->id)->first();
+        $mahasiswa = Mahasiswa::where('nim', $user->nim_nip)->first();
+        $nama_mahasiswa = User::where('id', Auth::id())->first()->nama;
         $status = $mahasiswa ? $mahasiswa->status : null;
         $nim = $mahasiswa ? $mahasiswa->nim_nip : null; 
         $ipk = $mahasiswa ? $mahasiswa->IPK : null;     
         $prodi = $mahasiswa ? $mahasiswa->prodi : null; 
         $semester = $mahasiswa ? $mahasiswa->semester : null; 
-        
+        $mahasiswa_id = $mahasiswa->id;
 
         $data = [
             'nama' => $user->nama,
@@ -39,7 +40,7 @@ class DashboardMahasiswaController extends Controller
             'semester' => $semester
         ];
 
-        $jadwal_kuliah = irs::all();
+        $jadwal_kuliah = irs_rekap::where('mahasiswa_id', $mahasiswa_id)->get();
 
         foreach ($jadwal_kuliah as $jadwal ){
             $jadwal -> hari = Mata_Kuliah::where('id', $jadwal->mata_kuliah_id)->first()->hari;
@@ -49,7 +50,7 @@ class DashboardMahasiswaController extends Controller
             $jadwal -> nama_ruangan = Ruangan::where('id', $jadwal->ruangan_id)->first()->nama;
         }
 
-        return view('dashboardMahasiswa', compact('user','data','jadwal_kuliah'));
+        return view('dashboardMahasiswa', compact('user','data','nama_mahasiswa','jadwal_kuliah','mahasiswa_id'));
 
     }
 }

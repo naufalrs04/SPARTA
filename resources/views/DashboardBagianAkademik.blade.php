@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -68,21 +66,20 @@
                             <div class="col-span-8 p-6 rounded-tl-lg rounded-bl-lg text-lg space-y-5 box-border border-black">
                                 <div>
                                     <p style="color: #F0B90B"><strong>Nama :</strong></p>
-                                    <p>Luthfan Lazuardi, S.Kom, M.Cs</p>
+                                    <p>{{ $data['nama'] }}</p>
                                 </div>
                                 <div>
                                     <p style="color: #F0B90B"><strong>NIP :</strong></p>
-                                    <p class="mb-1">10101010101010</p>
+                                    <p class="mb-1">{{ $data['nim_nip'] }}</p>
                                 </div>
                                 <div>
                                     <p style="color: #F0B90B"><strong>Status:</strong></p>
-                                    <p>Dosen</p>
+                                    <p>{{ $data['status'] }}</p>
                                 </div>
                             </div>
                             <div class="col-span-12 text-white text-center rounded-md mx-5 mb-5 flex justify-center items-center" style="background-color: #34803C;">
                                 <p><strong>AKTIF</strong></p>
                             </div>
-
                         </div>
                     </div>
 

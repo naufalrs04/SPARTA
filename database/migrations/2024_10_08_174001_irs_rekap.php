@@ -13,17 +13,17 @@ return new class extends Migration
     {
         //
         Schema::create('irs_rekap', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('mahasiswa_id');
-            $table->unsignedBigInteger('irs_id');
-            $table->string('semester');
-            $table->string('status');
-            $table->integer('total_sks');
-            $table->float('ip_semester')->nullable();
+            $table->unsignedBigInteger('mahasiswa_id'); //Group by
+            $table->unsignedBigInteger('mata_kuliah_id');
+            $table->unsignedBigInteger('ruangan_id');
+            $table->integer('semester')->nullable();
+            $table->integer('sks');
+            $table->string('status_pengajuan')->nullable();
 
             // Foreign key
             $table->foreign('mahasiswa_id')->references('id')->on('mahasiswas')->onDelete('cascade');
-            $table->foreign('irs_id')->references('id')->on('irs')->onDelete('cascade');
+            $table->foreign('mata_kuliah_id')->references('id')->on('mata_kuliahs')->onDelete('cascade');
+            $table->foreign('ruangan_id')->references('id')->on('ruangans')->onDelete('cascade');
 
             $table->timestamps();
         });

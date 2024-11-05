@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Dosen extends Model
 {
     use HasFactory;
+
     protected $fillable = [
-        'user_id',
-        'notelp',
+        'nip',
         'status',
-        
+        'prodi',
     ];
 }
