@@ -100,7 +100,8 @@ Route::post('/verifikasi-irs/batal', [verifikasiIRS::class, 'batalkanIRS'])->nam
 Route::get('/verifikasijadwal', [verifikasijadwal::class, 'index'])->middleware('auth')->name('verifikasijadwal');
 
 Route::get('/verifikasiRuangKuliah', [verifikasiRuangKuliah::class, 'index'])->middleware('auth')->name('verifikasiRuangKuliah');
-
+Route::post('/verifikasi-ruang/{prodi}', [verifikasiRuangKuliah::class, 'verifikasi'])->name('verifikasi.ruang');
+Route::post('/tolak-ruang/{prodi}', [verifikasiRuangKuliah::class, 'tolak'])->name('tolak.ruang');
 Route::get('/search-mata-kuliah', [PengisianIRS::class, 'searchMataKuliah'])->name('search.mata_kuliah');
 
 Route::get('/profile', function () {

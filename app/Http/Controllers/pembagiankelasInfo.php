@@ -31,6 +31,8 @@ class pembagiankelasInfo extends Controller
 
         $ruangan = Ruangan::all()->groupBy('gedung_id');
 
+        $rekap_prodi = ruangan_prodi::all();
+        
         
         
         return view('/pembagiankelasInfo', compact( 'user','prodi','jurusan','ruangan','gedung',));
