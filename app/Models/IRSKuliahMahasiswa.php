@@ -2,16 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-class PenyusunanJadwal extends Model
+class IRSKuliahMahasiswa extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        // other fields
         'nama_mk',
         'kode_mk',
         'sks_mk',
@@ -22,11 +20,6 @@ class PenyusunanJadwal extends Model
         'kelas',
         'hari',
         'jammulai',
-        'jamakhir'
+        'jamakhir',
     ];
-
-    public function mataKuliah()
-    {
-        return $this->belongsTo(Mata_Kuliah::class, 'mata_kuliah_id');
-    }
 }

@@ -10,7 +10,7 @@ use App\Http\Controllers\DashboardKaprodiController;
 use App\Http\Controllers\DashboardMahasiswaController;
 use App\Http\Controllers\DashboardBagianAkademikController;
 use App\Http\Controllers\DashboardPembimbingAkademikController;
-use App\Http\Controllers\jadwalpengisianIRS;
+use App\Http\Controllers\JadwalPengisianIRSController;
 use App\Http\Controllers\penyusunanjadwal;
 use App\Http\Controllers\resetpassword;
 use App\Http\Controllers\pembagiankelas;
@@ -24,7 +24,7 @@ use App\Http\Controllers\verifikasiIRS;
 use App\Http\Controllers\verifikasijadwal;
 use App\Http\Controllers\verifikasiRuangKuliah;
 use App\Http\Controllers\profile;
-
+use App\Models\JadwalPengisianIRS;
 
 Route::get('/login', function () {
     return view('login');
@@ -63,7 +63,9 @@ Route::get('/penyusunanjadwal', [PenyusunanJadwalController::class, 'index'])->m
 
 Route::post('/penyusunan-jadwal/store', [PenyusunanJadwalController::class, 'store'])->name('penyusunan-jadwal.store');
 
-Route::get('/jadwalpengisianIRS', [jadwalpengisianIRS::class, 'index'])->middleware('auth')->name('jadwalpengisianIRS');
+Route::get('/jadwalpengisianIRS', [JadwalPengisianIRSController::class, 'index'])->middleware('auth')->name('jadwalpengisianIRS');
+
+Route::patch('/jadwal-pengisian/{id}', [JadwalPengisianIRSController::class, 'update']);
 
 Route::get('/resetpassword', function () {
     return view('resetpassword');

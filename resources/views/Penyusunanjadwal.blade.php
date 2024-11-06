@@ -132,13 +132,25 @@
                                         <p class="text-white">{{ $mk->nama_mk }}</p>
                                     </td>                          <!-- Correctly access the mataKuliah relationship -->
                                     <td class="px-5 py-2 text-center">
-                                        <button onclick="window.location.href='#'" class="transition-colors duration-200">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" class="fill-green-300 hover:fill-green-700 transition-colors duration-200 ease-in-out" viewBox="0 0 16 16">
-                                                <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0"/>
-                                            </svg>
-                                        </button>                                                                                                                                         
+                                        <button 
+                                            class="show-details transition-colors duration-200 bg-[#878A91] p-2 rounded-lg"
+                                            data-nama="{{ $mk->nama_mk }}" 
+                                            data-kode="{{ $mk->kode_mk }}" 
+                                            data-sks="{{ $mk->sks_mk }}"
+                                            data-semester="{{ $mk->smt_mk }}"
+                                            data-prodi="{{ $mk->prodi_mk }}" 
+                                            data-tahunajaran="{{ $mk->tahunajaran }}"
+                                            data-dosen="{{ $mk->dosen }}"
+                                            data-kelas="{{ $mk->kelas }}" 
+                                            data-hari="{{ $mk->hari }}"
+                                            data-jammulai="{{ $mk->jammulai }}"
+                                            data-jamakhir="{{ $mk->jamakhir }}"
+                                            onclick="showDetails(this)">
+                                            Info
+                                        </button>                                                                                                                                          
                                     </td>                             
                                 </tr>
+                                dd($mklist);
                             @endforeach
                         </tbody>
                     </table>
@@ -224,6 +236,30 @@
                                             <input type="text" id="sks_mk" name="sks_mk" class="w-full p-2 border rounded-md" readonly>
                                         </div>
                                         <div class="mb-4">
+                                            <label for="smt_mk" class="block text-left font-semibold mb-2">Semester Mata Kuliah</label>
+                                            <input type="text" id="smt_mk" name="smt_mk" class="w-full p-2 border rounded-md" readonly>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label for="prodi_mk" class="block text-left font-semibold mb-2">Prodi Mata Kuliah</label>
+                                            <input type="text" id="prodi_mk" name="prodi_mk" class="w-full p-2 border rounded-md" readonly>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label for="tahunajaran" class="block text-left font-semibold mb-2">Tahun Ajaran</label>
+                                            <select id="tahunajaran" name="tahunajaran" class="w-full p-2 border rounded-md">
+                                                <option value="" disabled selected>Pilih Tahun Ajaran</option>
+                                                <option value="Ganjil Tahun Ajaran 2024/2025">Ganjil Tahun Ajaran 2024/2025</option>
+                                                <option value="Genap Tahun Ajaran 2024/2025">Ganjil Tahun Ajaran 2024/2025</option>
+                                                <option value="Ganjil Tahun Ajaran 2025/2026">Ganjil Tahun Ajaran 2025/2026</option>
+                                                <option value="Genap Tahun Ajaran 2025/2026">Genap Tahun Ajaran 2025/2026</option>
+                                                <option value="Ganjil Tahun Ajaran 2026/2027">Ganjil Tahun Ajaran 2026/2027</option>
+                                                <option value="Genap Tahun Ajaran 2026/2027">Genap Tahun Ajaran 2026/2027</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label for="dosen" class="block text-left font-semibold mb-2">Dosen Pengampu</label>
+                                            <input type="text" id="dosen" name="dosen" class="w-full p-2 border rounded-md" placeholder="Masukkan Kelas">
+                                        </div>
+                                        <div class="mb-4">
                                             <label for="kelas" class="block text-left font-semibold mb-2">Masukkan Kelas</label>
                                             <input type="text" id="kelas" name="kelas" class="w-full p-2 border rounded-md" placeholder="Masukkan Kelas">
                                         </div>
@@ -260,6 +296,8 @@
                                     const namaMkSelect = document.getElementById('nama_mk');
                                     const kodeMkInput = document.getElementById('kode_mk');
                                     const sksMKInput = document.getElementById('sks_mk');
+                                    const smtMKInput = document.getElementById('smt_mk');
+                                    const prodiMKInput = document.getElementById('prodi_mk');
 
                                     namaMkSelect.addEventListener('change', function() {
                                         const selectedIndex = namaMkSelect.value;
@@ -269,9 +307,13 @@
                                         if (selectedCourse) {
                                             kodeMkInput.value = selectedCourse.kodemk;
                                             sksMKInput.value = selectedCourse.sksmk;
+                                            smtMKInput.value = selectedCourse.smtmk;
+                                            prodiMKInput.value = selectedCourse.prodimk;
                                         } else {
                                             kodeMkInput.value = '';
                                             sksMKInput.value = '';
+                                            smtMkInput.value = '';
+                                            prodiMKInput.value = '';
                                         }
                                     });
                                 },
@@ -281,6 +323,10 @@
                                         nama_mk: document.getElementById('nama_mk').value,
                                         kode_mk: document.getElementById('kode_mk').value,
                                         sks_mk: document.getElementById('sks_mk').value,
+                                        smt_mk: document.getElementById('smt_mk').value,
+                                        prodi_mk: document.getElementById('prodi_mk').value,
+                                        tahunajaran: document.getElementById('tahunajaran').value,
+                                        dosen: document.getElementById('dosen').value,
                                         kelas: document.getElementById('kelas').value,
                                         hari: document.getElementById('hari').value,
                                         jammulai: document.getElementById('jammulai').value,
@@ -293,6 +339,10 @@
                                         nama_mk: document.getElementById('nama_mk').options[document.getElementById('nama_mk').selectedIndex].text,
                                         kode_mk: document.getElementById('kode_mk').value,
                                         sks_mk: document.getElementById('sks_mk').value,
+                                        smt_mk: document.getElementById('smt_mk').value,
+                                        prodi_mk: document.getElementById('prodi_mk').value,
+                                        tahunajaran: document.getElementById('tahunajaran').value,
+                                        dosen: document.getElementById('dosen').value,
                                         kelas: document.getElementById('kelas').value,
                                         hari: document.getElementById('hari').value,
                                         jammulai: document.getElementById('jammulai').value,
@@ -322,6 +372,10 @@
                                                 nama: formData.nama_mk,
                                                 kode: formData.kode_mk,
                                                 sks: formData.sks_mk,
+                                                semester: formData.smt_mk,
+                                                prodi: formData.prodi_mk,
+                                                tahunajaran: formData.tahunajaran,
+                                                dosen: formData.dosen,
                                                 kelas: formData.kelas,
                                                 hari: formData.hari,
                                                 jammulai: formData.jammulai,
@@ -363,7 +417,13 @@
                 });
 
                 function addCourseToSummary(course) {
-                    const summaryTable = document.querySelector('table:first-of-type tbody');
+                    const summaryTable = document.querySelector('.show-details');
+
+                    if (!summaryTable) {
+                        console.error("Error: .show-details table not found.");
+                        return;
+                    }
+
                     const newRow = document.createElement('tr');
 
                     newRow.style.backgroundColor = '#23252A';
@@ -373,19 +433,182 @@
 
                     // Create the row content
                     newRow.innerHTML = `
-                                <td class="px-4 py-2 border-r border-white">${course.nama}</td>
-                                <td class="px-4 py-2 w-1/3 border-r border-white">${course.kode}</td>
-                                <td class="px-4 py-2 w-1/3 border-r border-white">${course.sks}</td>
-                                <td class="px-4 py-2 w-1/3 border-r border-white">${course.kelas}</td>
-                                <td class="px-4 py-2 w-1/3 border-r border-white">${course.hari}</td>
-                                <td class="px-4 py-2 w-1/3 border-r border-white">${course.jammulai}</td>
-                                <td class="px-4 py-2 w-1/3 border-r border-white">${course.jamakhir}</td>
+                                <div class="text-left space-y-4">
+                                    <div>
+                                        <h2 class="font-bold mb-1">Nama Mata Kuliah :</h2>
+                                        <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                            <h2 class="ml-5 text-black font-bold">${course.nama}</h2>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h2 class="font-bold mb-1">Kode Mata Kuliah :</h2>
+                                        <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                            <h2 class="ml-5 text-black font-bold">${course.kode}</h2>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h2 class="font-bold mb-1">SKS :</h2>
+                                        <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                            <h2 class="ml-5 text-black font-bold">${course.sks}</h2>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h2 class="font-bold mb-1">Semester :</h2>
+                                        <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                            <h2 class="ml-5 text-black font-bold">${course.semester}</h2>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h2 class="font-bold mb-1">Program Studi :</h2>
+                                        <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                            <h2 class="ml-5 text-black font-bold">${course.prodi}</h2>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h2 class="font-bold mb-1">Tahun Ajaran :</h2>
+                                        <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                            <h2 class="ml-5 text-black font-bold">${course.tahunajaran}</h2>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h2 class="font-bold mb-1">Dosen Pengampu :</h2>
+                                        <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                            <h2 class="ml-5 text-black font-bold">${course.dosen}</h2>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h2 class="font-bold mb-1">Kapasitas :</h2>
+                                        <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                            <h2 class="ml-5 text-black font-bold">${course.kelas}</h2>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h2 class="font-bold mb-1">Hari :</h2>
+                                        <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                            <h2 class="ml-5 text-black font-bold">${course.hari}</h2>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h2 class="font-bold mb-1">Jam Mulai :</h2>
+                                        <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                            <h2 class="ml-5 text-black font-bold">${course.jammulai}</h2>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h2 class="font-bold mb-1">Jam Berakhir :</h2>
+                                        <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                            <h2 class="ml-5 text-black font-bold">${course.jamakhir}</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                                // <td class="px-4 py-2 border-r border-white">${course.nama}</td>
+                                // <td class="px-4 py-2 w-1/3 border-r border-white">${course.kode}</td>
+                                // <td class="px-4 py-2 w-1/3 border-r border-white">${course.sks}</td>
+                                // <td class="px-4 py-2 w-1/3 border-r border-white">${course.semester}</td>
+                                // <td class="px-4 py-2 w-1/3 border-r border-white">${course.prodi}</td>
+                                // <td class="px-4 py-2 w-1/3 border-r border-white">${course.tahunajaran}</td>
+                                // <td class="px-4 py-2 w-1/3 border-r border-white">${course.dosen}</td>
+                                // <td class="px-4 py-2 w-1/3 border-r border-white">${course.kelas}</td>
+                                // <td class="px-4 py-2 w-1/3 border-r border-white">${course.hari}</td>
+                                // <td class="px-4 py-2 w-1/3 border-r border-white">${course.jammulai}</td>
+                                // <td class="px-4 py-2 w-1/3 border-r border-white">${course.jamakhir}</td>
                                 <td class="px-4 py-2 border-white">
                                     <button class="cancel-course bg-red-500 text-white px-2 py-1 rounded">Batalkan</button>
                                 </td>
                             `;
 
                     summaryTable.appendChild(newRow);
+                }
+
+                function showDetails(button) {
+                    const nama = button.getAttribute('data-nama');
+                    const kode = button.getAttribute('data-kode');
+                    const sks = button.getAttribute('data-sks');
+                    const semester = button.getAttribute('data-semester');
+                    const prodi = button.getAttribute('data-prodi');
+                    const tahunajaran = button.getAttribute('data-tahunajaran');
+                    const dosen = button.getAttribute('data-dosen');
+                    const kelas = button.getAttribute('data-kelas');
+                    const hari = button.getAttribute('data-hari');
+                    const jammulai = button.getAttribute('data-jammulai');
+                    const jamakhir = button.getAttribute('data-jamakhir');
+
+                    // Display details using SweetAlert2 for a cleaner modal popup
+                    Swal.fire({
+                        title: 'Detail Mata Kuliah',
+                        html: `
+                            <div class="text-left space-y-4">
+                                    <div>
+                                        <h2 class="font-bold mb-1">Nama Mata Kuliah :</h2>
+                                        <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                            <h2 class="ml-5 text-black font-bold">${nama}</h2>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h2 class="font-bold mb-1">Kode Mata Kuliah :</h2>
+                                        <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                            <h2 class="ml-5 text-black font-bold">${kode}</h2>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h2 class="font-bold mb-1">SKS :</h2>
+                                        <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                            <h2 class="ml-5 text-black font-bold">${sks}</h2>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h2 class="font-bold mb-1">Semester :</h2>
+                                        <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                            <h2 class="ml-5 text-black font-bold">${semester}</h2>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h2 class="font-bold mb-1">Program Studi :</h2>
+                                        <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                            <h2 class="ml-5 text-black font-bold">${prodi}</h2>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h2 class="font-bold mb-1">Tahun AJaran :</h2>
+                                        <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                            <h2 class="ml-5 text-black font-bold">${tahunajaran}</h2>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h2 class="font-bold mb-1">Dosen Pengampu :</h2>
+                                        <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                            <h2 class="ml-5 text-black font-bold">${dosen}</h2>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h2 class="font-bold mb-1">Kelas :</h2>
+                                        <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                            <h2 class="ml-5 text-black font-bold">${kelas}</h2>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h2 class="font-bold mb-1">Hari :</h2>
+                                        <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                            <h2 class="ml-5 text-black font-bold">${hari}</h2>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h2 class="font-bold mb-1">Jam Mulai :</h2>
+                                        <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                            <h2 class="ml-5 text-black font-bold">${jammulai}</h2>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h2 class="font-bold mb-1">Jam Berakhir :</h2>
+                                        <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                            <h2 class="ml-5 text-black font-bold">${jamakhir}</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                        `,
+                        icon: 'info',
+                        confirmButtonText: 'Tutup'
+                    });
                 }
             </script>
 
