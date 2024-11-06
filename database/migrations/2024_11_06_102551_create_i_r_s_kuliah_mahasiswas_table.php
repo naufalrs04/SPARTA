@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('penyusunan_jadwals', function (Blueprint $table) {
+        Schema::create('i_r_s_kuliah_mahasiswas', function (Blueprint $table) {
             $table->id();
             $table->string('nama_mk');
             $table->string('kode_mk');
@@ -25,8 +25,6 @@ return new class extends Migration
             $table->string('hari');
             $table->time('jammulai');
             $table->time('jamakhir');
-
-            // Foreign key constraint for kode_mk referencing kode in mata_kuliahs
             $table->timestamps();
         });
     }
@@ -36,9 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('penyusunanjadwals', function (Blueprint $table) {
-            $table->dropForeign(['kode_mk']);
-            $table->dropColumn(['kode_mk', 'nama_mk']);
-        });
+        Schema::dropIfExists('i_r_s_kuliah_mahasiswas');
     }
 };
