@@ -15,14 +15,15 @@ class PenyusunanJadwal extends Model
         'nama_mk',
         'kode_mk',
         'sks_mk',
-        'smt_mk',
-        'prodi_mk',
-        'tahunajaran',
-        'dosen',
+        'ssemester_mk',
+        'prodi',
         'kelas',
+        'tahun_ajaran',
+        'dosen',
+        'ruang',
         'hari',
-        'jammulai',
-        'jamakhir'
+        'jam_mulai',
+        'jam_akhir'
     ];
 
     public function mataKuliah()

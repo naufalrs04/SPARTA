@@ -87,20 +87,20 @@
                                             data-nama="{{ $mk->nama_mk }}" 
                                             data-kode="{{ $mk->kode_mk }}" 
                                             data-sks="{{ $mk->sks_mk }}"
-                                            data-semester="{{ $mk->smt_mk }}"
-                                            data-prodi="{{ $mk->prodi_mk }}" 
-                                            data-tahunajaran="{{ $mk->tahunajaran }}"
-                                            data-dosen="{{ $mk->dosen }}"
+                                            data-semester="{{ $mk->semester_mk }}"
+                                            data-prodi="{{ $mk->prodi }}" 
                                             data-kelas="{{ $mk->kelas }}" 
+                                            data-tahunajaran="{{ $mk->tahun_ajaran }}"
+                                            data-dosen="{{ $mk->dosen }}"
+                                            data-ruang="{{ $mk->ruang }}"
                                             data-hari="{{ $mk->hari }}"
-                                            data-jammulai="{{ $mk->jammulai }}"
-                                            data-jamakhir="{{ $mk->jamakhir }}"
+                                            data-jammulai="{{ $mk->jam_mulai }}"
+                                            data-jamakhir="{{ $mk->jam_selesai }}"
                                             onclick="showDetails(this)">
                                             Info
-                                        </button>                                                                                                                                          
+                                        </button>                                                                                                                                        
                                     </td>                             
                                 </tr>
-                                dd($mklist);
                             @endforeach
                         </tbody>
                     </table>
@@ -141,8 +141,10 @@
                         button.addEventListener('click', () => {
                             // Create dropdown options for `nama_mk` based on `mata kuliah`
                             let namaMkOptions = `<option value="" disabled selected>Pilih Mata Kuliah</option>`;
+                            let ruanganOptions = `<option value="" disabled selected>Pilih Ruangan</option>`;
                             courseDetails.forEach((course, index) => {
                                 namaMkOptions += `<option value="${index}">${course.namemk}</option>`;
+                                ruanganOptions += `<option value="${index}">${course.namaRuangan}</option>`;
                             });
 
                             // Display the form in SweetAlert2
@@ -188,6 +190,12 @@
                                             <label for="dosen" class="block text-left font-semibold mb-2">Dosen Pengampu</label>
                                             <input type="text" id="dosen" name="dosen" class="w-full p-2 border rounded-md" placeholder="Masukkan Kelas">
                                         </div>
+                                                                                                               <div class="mb-4">
+                                            <label for="ruang" class="block text-left font-semibold mb-2">Pilih Ruang</label>
+                                            <select id="ruang" name="ruang" class="w-full p-2 border rounded-md">
+                                                ${ruanganOptions}
+                                            </select>
+                                        </div>
                                         <div class="mb-4">
                                             <label for="kelas" class="block text-left font-semibold mb-2">Masukkan Kelas</label>
                                             <input type="text" id="kelas" name="kelas" class="w-full p-2 border rounded-md" placeholder="Masukkan Kelas">
@@ -225,8 +233,8 @@
                                     const namaMkSelect = document.getElementById('nama_mk');
                                     const kodeMkInput = document.getElementById('kode_mk');
                                     const sksMKInput = document.getElementById('sks_mk');
-                                    const smtMKInput = document.getElementById('smt_mk');
-                                    const prodiMKInput = document.getElementById('prodi_mk');
+                                    const smtMKInput = document.getElementById('semester_mk');
+                                    const prodiMKInput = document.getElementById('prodi');
 
                                     namaMkSelect.addEventListener('change', function() {
                                         const selectedIndex = namaMkSelect.value;
@@ -252,14 +260,15 @@
                                         nama_mk: document.getElementById('nama_mk').value,
                                         kode_mk: document.getElementById('kode_mk').value,
                                         sks_mk: document.getElementById('sks_mk').value,
-                                        smt_mk: document.getElementById('smt_mk').value,
-                                        prodi_mk: document.getElementById('prodi_mk').value,
-                                        tahunajaran: document.getElementById('tahunajaran').value,
+                                        smt_mk: document.getElementById('semester_mk').value,
+                                        prodi_mk: document.getElementById('prodi').value,
+                                        kelas : document.getElementById('kelas').value,
+                                        tahunajaran: document.getElementById('tahun_ajaran').value,
                                         dosen: document.getElementById('dosen').value,
-                                        kelas: document.getElementById('kelas').value,
+                                        ruangan: document.getElementById('ruangan').value,
                                         hari: document.getElementById('hari').value,
-                                        jammulai: document.getElementById('jammulai').value,
-                                        jamakhir: document.getElementById('jamakhir').value
+                                        jammulai: document.getElementById('jam_mulai').value,
+                                        jamakhir: document.getElementById('jam_selesai').value
                                     };
                                 }
                             }).then((result) => {
@@ -268,14 +277,15 @@
                                         nama_mk: document.getElementById('nama_mk').options[document.getElementById('nama_mk').selectedIndex].text,
                                         kode_mk: document.getElementById('kode_mk').value,
                                         sks_mk: document.getElementById('sks_mk').value,
-                                        smt_mk: document.getElementById('smt_mk').value,
-                                        prodi_mk: document.getElementById('prodi_mk').value,
-                                        tahunajaran: document.getElementById('tahunajaran').value,
+                                        smt_mk: document.getElementById('semester_mk').value,
+                                        prodi_mk: document.getElementById('prodi').value,
+                                        kelas : document.getElementById('kelas').value,
+                                        tahunajaran: document.getElementById('tahun_ajaran').value,
                                         dosen: document.getElementById('dosen').value,
-                                        kelas: document.getElementById('kelas').value,
+                                        ruangan: document.getElementById('ruangan').value,
                                         hari: document.getElementById('hari').value,
-                                        jammulai: document.getElementById('jammulai').value,
-                                        jamakhir: document.getElementById('jamakhir').value
+                                        jammulai: document.getElementById('jam_mulai').value,
+                                        jamakhir: document.getElementById('jam_selesai').value
                                     };
 
                                     fetch("{{ route('penyusunan-jadwal.store') }}", {
@@ -301,14 +311,15 @@
                                                 nama: formData.nama_mk,
                                                 kode: formData.kode_mk,
                                                 sks: formData.sks_mk,
-                                                semester: formData.smt_mk,
-                                                prodi: formData.prodi_mk,
-                                                tahunajaran: formData.tahunajaran,
-                                                dosen: formData.dosen,
+                                                semester: formData.semester_mk,
+                                                prodi: formData.prodi,
                                                 kelas: formData.kelas,
+                                                tahunajaran: formData.tahun_ajaran,
+                                                dosen: formData.dosen,
+                                                ruangan: formData.ruangan,
                                                 hari: formData.hari,
-                                                jammulai: formData.jammulai,
-                                                jamakhir: formData.jamakhir,
+                                                jammulai: formData.jam_mulai,
+                                                jamakhir: formData.jam_selesai,
                                             });
 
                                             // Show success message
@@ -412,6 +423,12 @@
                                         </div>
                                     </div>
                                     <div>
+                                        <h2 class="font-bold mb-1">Kapasitas :</h2>
+                                        <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                            <h2 class="ml-5 text-black font-bold">${course.ruangan}</h2>
+                                        </div>
+                                    </div>
+                                    <div>
                                         <h2 class="font-bold mb-1">Hari :</h2>
                                         <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
                                             <h2 class="ml-5 text-black font-bold">${course.hari}</h2>
@@ -438,6 +455,7 @@
                                 // <td class="px-4 py-2 w-1/3 border-r border-white">${course.tahunajaran}</td>
                                 // <td class="px-4 py-2 w-1/3 border-r border-white">${course.dosen}</td>
                                 // <td class="px-4 py-2 w-1/3 border-r border-white">${course.kelas}</td>
+                                // <td class="px-4 py-2 w-1/3 border-r border-white">${course.ruangan}</td>
                                 // <td class="px-4 py-2 w-1/3 border-r border-white">${course.hari}</td>
                                 // <td class="px-4 py-2 w-1/3 border-r border-white">${course.jammulai}</td>
                                 // <td class="px-4 py-2 w-1/3 border-r border-white">${course.jamakhir}</td>
@@ -458,6 +476,7 @@
                     const tahunajaran = button.getAttribute('data-tahunajaran');
                     const dosen = button.getAttribute('data-dosen');
                     const kelas = button.getAttribute('data-kelas');
+                    const ruangan = button.getAttribute('data-ruang');
                     const hari = button.getAttribute('data-hari');
                     const jammulai = button.getAttribute('data-jammulai');
                     const jamakhir = button.getAttribute('data-jamakhir');
@@ -498,6 +517,12 @@
                                         </div>
                                     </div>
                                     <div>
+                                        <h2 class="font-bold mb-1">Program Studi :</h2>
+                                        <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                            <h2 class="ml-5 text-black font-bold">${kelas}</h2>
+                                        </div>
+                                    </div>
+                                    <div>
                                         <h2 class="font-bold mb-1">Tahun AJaran :</h2>
                                         <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
                                             <h2 class="ml-5 text-black font-bold">${tahunajaran}</h2>
@@ -510,9 +535,9 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <h2 class="font-bold mb-1">Kelas :</h2>
+                                        <h2 class="font-bold mb-1">Dosen Pengampu :</h2>
                                         <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
-                                            <h2 class="ml-5 text-black font-bold">${kelas}</h2>
+                                            <h2 class="ml-5 text-black font-bold">${ruangan}</h2>
                                         </div>
                                     </div>
                                     <div>

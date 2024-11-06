@@ -16,15 +16,15 @@ return new class extends Migration
             $table->string('nama_mk');
             $table->string('kode_mk');
             $table->string('sks_mk');
-            $table->string('snt _mk');
             $table->integer('semester_mk');
-            $table->string('prodi_mk');
-            $table->string('tahunajaran');
-            $table->string('dosen');
+            $table->string('prodi');
             $table->string('kelas');
+            $table->string('tahun_ajaran');
+            $table->string('dosen');
+            $table->string('ruang');
             $table->string('hari');
-            $table->time('jammulai');
-            $table->time('jamakhir');
+            $table->time('jam_mulai');
+            $table->time('jam_selesai');
 
             // Foreign key constraint for kode_mk referencing kode in mata_kuliahs
             $table->timestamps();

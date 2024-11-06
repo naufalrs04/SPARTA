@@ -8,7 +8,8 @@ use App\Models\PenyusunanJadwal;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StorePenyusunanJadwalRequest;
 use App\Http\Requests\UpdatePenyusunanJadwalRequest;
-
+use App\Models\ruangan_prodi;
+use App\Models\Ruangan;
 class PenyusunanJadwalController extends Controller
 {
     /**
@@ -21,10 +22,25 @@ class PenyusunanJadwalController extends Controller
         }
         $user = Auth::user();
         $matakuliahList = Mata_Kuliah::select('kode as kodemk', 'nama as namemk', 'sks as sksmk', 'semester as smtmk', 'prodi as prodimk')->get();
+        foreach ($matakuliahList as $matakuliah) {
+            // Ambil daftar ruangan_id yang sesuai dengan prodi mata kuliah
+            $ruanganList = Ruangan_Prodi::where('nama_prodi', $matakuliah->prodimk)->select('ruangan_id')->get();  
+            $namaRuanganList = [];
 
+            foreach ($ruanganList as $ruangan) {
+                // Ambil nama ruangan berdasarkan ruangan_id
+                $namaRuangan = Ruangan::where('id', $ruangan->ruangan_id)->select('nama')->first();
+                $namaRuanganList[] = $namaRuangan->nama;  
+            }
+        
+            $matakuliah->ruangan_nama = $namaRuanganList;
+        }
+        // dd($namaRuanganList);
         $mklist = PenyusunanJadwal::all();
 
-        return view('penyusunanjadwal', compact('user', 'matakuliahList', 'mklist'));
+        // dd($mklist);
+
+        return view('penyusunanjadwal', compact('user', 'matakuliahList', 'namaRuanganList','namaRuangan','mklist'));
     }
 
     public function penyusunanjadwalkuliah() 
@@ -50,14 +66,15 @@ class PenyusunanJadwalController extends Controller
             'nama_mk' => 'required|exists:mata_kuliahs,nama',
             'kode_mk' => 'required|exists:mata_kuliahs,kode',
             'sks_mk' => 'required|exists:mata_kuliahs,sks',
-            'smt_mk' => 'required|exists:mata_kuliahs,semester',
-            'prodi_mk' => 'required|exists:mata_kuliahs,prodi',
-            'tahunajaran' => 'required|string',
-            'dosen' => 'required|string',
+            'semester_mk' => 'required|exists:mata_kuliahs,semester',
+            'prodi' => 'required|exists:mata_kuliahs,prodi',
             'kelas' => 'required|string',
+            'tahun_ajaran' => 'required|string',
+            'dosen' => 'required|string',
+            'ruang' => 'required|string',
             'hari' => 'required|string',
-            'jammulai' => 'required',
-            'jamakhir' => 'required',
+            'jam_mulai' => 'required',
+            'jam_selesai' => 'required',
         ]);
 
         // Create a new PenyusunanJadwal entry
@@ -65,14 +82,14 @@ class PenyusunanJadwalController extends Controller
         $penyusunanJadwal->nama_mk = $request->nama_mk;
         $penyusunanJadwal->kode_mk = $request->kode_mk;
         $penyusunanJadwal->sks_mk = $request->sks_mk;
-        $penyusunanJadwal->smt_mk = $request->smt_mk;
-        $penyusunanJadwal->prodi_mk = $request->prodi_mk;
-        $penyusunanJadwal->tahunajaran = $request->tahunajaran;
+        $penyusunanJadwal->semester_mk = $request->semester_mk;
+        $penyusunanJadwal->prodi = $request->prodi;
+        $penyusunanJadwal->tahun_ajaran = $request->tahun_ajaran;
         $penyusunanJadwal->dosen = $request->dosen;
-        $penyusunanJadwal->kelas = $request->kelas;
+        $penyusunanJadwal->ruang = $request->ruang;
         $penyusunanJadwal->hari = $request->hari;
-        $penyusunanJadwal->jammulai = $request->jammulai;
-        $penyusunanJadwal->jamakhir = $request->jamakhir;
+        $penyusunanJadwal->jam_mulai = $request->jam_mulai;
+        $penyusunanJadwal->jam_selesai = $request->jam_selesai;
         $penyusunanJadwal->save();
 
         return response()->json([
