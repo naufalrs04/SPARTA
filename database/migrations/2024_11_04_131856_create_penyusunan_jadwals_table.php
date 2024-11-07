@@ -22,9 +22,11 @@ return new class extends Migration
             $table->string('tahun_ajaran');
             $table->string('dosen');
             $table->string('ruang');
+            $table->integer('kapasitas');
             $table->string('hari');
             $table->time('jam_mulai');
             $table->time('jam_selesai');
+            $table->string('status_pengajuan');
 
             // Foreign key constraint for kode_mk referencing kode in mata_kuliahs
             $table->timestamps();

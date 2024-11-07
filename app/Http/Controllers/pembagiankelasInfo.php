@@ -44,10 +44,12 @@ class pembagiankelasInfo extends Controller
         'prodi' => 'required|string',
         'ruangan' => 'required|array',
         'ruangan.*' => 'exists:ruangans,id',
+        'kapasitas' => 'required|integer|min:1', // Validasi kapasitas
     ]);
 
     $prodi = $request->input('prodi');
     $ruanganIds = $request->input('ruangan');
+    $kapasitas = $request->input('kapasitas'); // Ambil kapasitas
 
     $existingRuangan = ruangan_prodi::where('nama_prodi', $prodi)
         ->whereIn('ruangan_id', $ruanganIds)
@@ -63,9 +65,11 @@ class pembagiankelasInfo extends Controller
         ruangan_prodi::create([
             'ruangan_id' => $ruanganId,
             'nama_prodi' => $prodi,
+            'kapasitas' => $kapasitas, // Simpan kapasitas
         ]);
     }
 
     return redirect()->back()->with('success', 'Data berhasil disimpan.');
 }
+
 }

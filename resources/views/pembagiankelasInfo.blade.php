@@ -34,6 +34,7 @@
                     <!-- Dropdown Departemen -->
                     <form id="ruanganForm" method="POST" action="{{ route('simpan.ruangan') }}">
                                 @csrf
+                                <h2 class="text-center text-lg font-semibold mb-5">Pilih Departemen</h2>
                                 <input type="hidden" id="selectedProdi" name="prodi" value="">
                                 <button id="dropdownDepartemenButton" class="w-[280px] text-gray-400 p-4 pr-10 pl-4 focus:ring-2 focus:ring-gray-800 rounded-lg bg-[#2A2C33] cursor-pointer border border-transparent hover:border-gray-600 focus:border-gray-600 transition duration-100 ease-in-out flex justify-between items-center">
                                     <span id="selectedDepartemen">Pilih Departemen </span>
@@ -41,7 +42,6 @@
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
                                     </svg>
                                 </button>
-                        
                                 <!-- Dropdown list -->
                                 <div id="dropdownDepartemen" class="hidden bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200 divide-y divide-gray-100 dark:divide-gray-600 rounded-lg shadow w-full absolute z-10 mt-2">
                                     <ul class="py-2 text-sm" aria-labelledby="dropdownDepartemenButton">
@@ -60,11 +60,11 @@
                         </div>
                         <div class="flex justify-center my-3 mb-3">
                             
-                        </div>   
-
+                        </div>
                         <!-- Table Gedung dan Ruangan -->
-                        <div class="mb-6 mx-3">
+                        <div class="mb-6 mx-3 ">
                             <h2 class="text-center text-lg font-semibold mb-5">Gedung dan Ruangan</h2>
+                            
                             <div class="overflow-x-auto">
                                 <table class="w-full text-center rounded-lg">
                                     <thead>
@@ -97,6 +97,9 @@
                                         </tr>
                                     </tbody>
                                 </table>
+                            </div>
+                            <div class="flex justify-center my-3 mb-3">
+                                <input type="number" name="kapasitas" placeholder="Masukkan kapasitas" class="border rounded p-2 text-gray-400 p-4 pr-10 pl-4 focus:ring-2 focus:ring-gray-800 rounded-lg bg-[#2A2C33] cursor-pointer border border-transparent hover:border-gray-600 focus:border-gray-600 transition duration-100 ease-in-out flex justify-between items-center" />
                             </div>
                         </div>
                         <div class="px-8 mt-5 flex justify-end">

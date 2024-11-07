@@ -10,20 +10,24 @@ class PenyusunanJadwal extends Model
 {
     use HasFactory;
 
+    protected $table ='penyusunan_jadwals';
+    
     protected $fillable = [
         // other fields
         'nama_mk',
         'kode_mk',
         'sks_mk',
-        'ssemester_mk',
+        'semester_mk',
         'prodi',
         'kelas',
         'tahun_ajaran',
         'dosen',
         'ruang',
+        'kapasitas',
         'hari',
         'jam_mulai',
-        'jam_akhir'
+        'jam_akhir',
+        'status_pengajuan',
     ];
 
     public function mataKuliah()

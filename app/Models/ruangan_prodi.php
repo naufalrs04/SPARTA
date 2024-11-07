@@ -13,5 +13,6 @@ class ruangan_prodi extends Model
         'ruangan_id',
         'nama_prodi',
         'status_pengajuan',
+        'kapasitas',
     ];
 }
