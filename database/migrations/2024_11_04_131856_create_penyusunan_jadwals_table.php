@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('hari');
             $table->time('jam_mulai');
             $table->time('jam_selesai');
-            $table->string('status_pengajuan');
+            $table->string('status_pengajuan')->nullable();
 
             // Foreign key constraint for kode_mk referencing kode in mata_kuliahs
             $table->timestamps();

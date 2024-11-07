@@ -26,7 +26,7 @@ class PenyusunanJadwal extends Model
         'kapasitas',
         'hari',
         'jam_mulai',
-        'jam_akhir',
+        'jam_selesai',
         'status_pengajuan',
     ];
 

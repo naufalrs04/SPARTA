@@ -13,6 +13,7 @@ use App\Models\Ruangan;
 use App\Models\Dosen;
 use App\Models\User;
 use Database\Seeders\PenyusunanJadwalSeeder;
+use Illuminate\Support\Facades\Log;
 
 class PenyusunanJadwalController extends Controller
 {
@@ -33,7 +34,6 @@ class PenyusunanJadwalController extends Controller
                         ->select('ruangan_id','kapasitas')
                         ->get();    
             $ruanganDetailList = [];
-
             foreach ($ruanganList as $ruangan) {
                 $namaRuangan = Ruangan::where('id', $ruangan->ruangan_id)->select('nama')->first();
                 $ruanganDetailList[] = [
@@ -41,24 +41,18 @@ class PenyusunanJadwalController extends Controller
                     'kapasitas' => $ruangan->kapasitas
                 ];
             }
-        
             // Tambahkan daftar ruangan dengan detail kapasitas ke objek mata kuliah
             $matakuliah->ruangan_detail = $ruanganDetailList;
         }
         // dd($ruanganDetailList);
-
         $mklist = PenyusunanJadwal::all();
-
         $dosen = Dosen::all();
 
         foreach ($dosen as $daftar_dosen) {
             $daftar_dosen->nama = User::where('nim_nip', $daftar_dosen->nip)->first()->nama;
         }
-        
         // dd($daftar_dosen);
-
         // dd($mklist);
-
         return view('penyusunanjadwal', compact('user', 'matakuliahList','mklist','ruanganDetailList','dosen'));
     }
 
@@ -80,49 +74,44 @@ class PenyusunanJadwalController extends Controller
      */
     public function store(Request $request)
 {
-    // Validate the request data
-    $request->validate([
-        'nama_mk' => 'required|exists:mata_kuliahs,nama', 
-        'kode_mk' => 'required|exists:mata_kuliahs,kode', 
-        'sks_mk' => 'required|exists:mata_kuliahs,sks', 
-        'semester_mk' => 'required|exists:mata_kuliahs,semester', 
-        'prodi' => 'required|exists:mata_kuliahs,prodi', 
+    Log::info($request->all()); // Log semua input yang diterima
+
+    // Validasi data
+    $validatedData = $request->validate([
+        'nama_mk' => 'required|string',
+        'kode_mk' => 'required|string',
+        'sks_mk' => 'required|integer',
+        'semester_mk' => 'required|integer',
+        'prodi' => 'required|string',
         'kelas' => 'required|string',
         'tahun_ajaran' => 'required|string',
-        'dosen' => 'required|array', 
+        'dosen' => 'required|array', // Pastikan ini adalah array jika bisa memilih lebih dari satu dosen
         'ruang' => 'required|string',
+        'kapasitas' => 'required|integer',
         'hari' => 'required|string',
-        'jam_mulai' => 'required|date_format:H:i', 
-        'jam_selesai' => 'required|date_format:H:i|after:jam_mulai', 
+        'jam_mulai' => 'required|date_format:H:i',
+        'jam_selesai' => 'required|date_format:H:i|after:jam_mulai',
     ]);
 
-    
-    $penyusunanJadwal = new PenyusunanJadwal();
-    $penyusunanJadwal->nama_mk = $request->nama_mk;
-    $penyusunanJadwal->kode_mk = $request->kode_mk;
-    $penyusunanJadwal->sks_mk = $request->sks_mk;
-    $penyusunanJadwal->semester_mk = $request->semester_mk;
-    $penyusunanJadwal->prodi = $request->prodi;
-    $penyusunanJadwal->tahun_ajaran = $request->tahun_ajaran;
-    $penyusunanJadwal->ruang = $request->ruang;
-    $penyusunanJadwal->hari = $request->hari;
-    $penyusunanJadwal->jam_mulai = $request->jam_mulai;
-    $penyusunanJadwal->jam_selesai = $request->jam_selesai;
+    try {
+        $penyusunanJadwal = new PenyusunanJadwal();
+        $penyusunanJadwal->fill($validatedData);
+        $penyusunanJadwal->dosen = implode(',', $validatedData['dosen']); // Menyimpan dosen sebagai string
+        $penyusunanJadwal->save();
 
-   
-    $penyusunanJadwal->save();
-
- 
-    $penyusunanJadwal->dosen()->sync($request->dosen); 
-
-    // Return a JSON response
-    return response()->json([
-        'success' => true,
-        'message' => 'Jadwal berhasil ditambahkan',
-        'data' => $penyusunanJadwal
-    ]);
+        return response()->json([
+            'success' => true,
+            'message' => 'Jadwal berhasil ditambahkan',
+            'data' => $penyusunanJadwal
+        ]);
+    } catch (\Exception $e) {
+        Log::error('Error saving schedule: ' . $e->getMessage());
+        return response()->json([
+            'success' => false,
+            'message' => 'Gagal menambahkan jadwal. Silakan coba lagi.'
+        ], 500);
+    }
 }
-
     /**
      * Display the specified resource.
      */
