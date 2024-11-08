@@ -23,6 +23,7 @@ use App\Http\Controllers\verifikasiIRS;
 use App\Http\Controllers\verifikasijadwal;
 use App\Http\Controllers\verifikasiRuangKuliah;
 use App\Http\Controllers\profile;
+use App\Http\Controllers\ThemeController;
 
 
 Route::get('/login', function () {
@@ -101,3 +102,10 @@ Route::get('/search-mata-kuliah', [PengisianIRS::class, 'searchMataKuliah'])->na
 Route::get('/profile', function () {
     return view('profile');
 })->name('profile');
+
+
+//Theme Dark Light
+Route::get('/', [ThemeController::class,'readCookie']);
+
+Route::post('/cookie/create/update',[ThemeController::class,'createAndUpdate'])->name('create-update'); 
+
