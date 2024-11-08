@@ -37,20 +37,19 @@ class verifikasiRuangKuliah extends Controller
         return view('/verifikasiRuangKuliah', compact('user', 'verif'));
     }
 
+    public function verifikasi($prodi)
+    {
+        ruangan_prodi::where('nama_prodi', $prodi)
+            ->update(['status_pengajuan' => 'ter-Verifikasi']);
 
-public function verifikasi($prodi)
-{
-    ruangan_prodi::where('nama_prodi', $prodi)
-        ->update(['status_pengajuan' => 'ter-Verifikasi']);
+        return response()->json(['success' => true]);
+    }
 
-    return response()->json(['success' => true]);
-}
+    public function tolak($prodi)
+    {
+        ruangan_prodi::where('nama_prodi', $prodi)
+            ->update(['status_pengajuan' => 'Ditolak']);
 
-public function tolak($prodi)
-{
-    ruangan_prodi::where('nama_prodi', $prodi)
-        ->update(['status_pengajuan' => 'Ditolak']);
-
-    return response()->json(['success' => true]);
-}
+        return response()->json(['success' => true]);
+    }
 }

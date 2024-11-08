@@ -11,6 +11,7 @@ use App\Models\Mata_Kuliah;
 use App\Models\Ruangan;
 use App\Models\Mahasiswa;
 use App\Models\irs_rekap;
+use App\Models\PenyusunanJadwal;
 use Illuminate\Support\Facades\DB;
 
 class PengisianIRS extends Controller
@@ -80,7 +81,9 @@ class PengisianIRS extends Controller
             $rekap->kapasitas_ruangan = Ruangan::where('id', $rekap->ruangan_id)->first()->kapasitas;
         }
 
-        return view('pengisianirs', compact('user', 'list_mata_kuliah', 'irs_rekap', 'groupedData',  'semesterMahasiswa', 'mahasiswa_id'));
+        $mata_kuliah = PenyusunanJadwal::where('status_pengajuan', 'ter-Verifikasi')->get();
+
+        return view('pengisianirs', compact('user', 'list_mata_kuliah', 'irs_rekap', 'groupedData',  'semesterMahasiswa', 'mahasiswa_id', 'mata_kuliah'));
     }
 
     public function store(Request $request)

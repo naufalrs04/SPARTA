@@ -207,49 +207,50 @@ use Illuminate\Support\Str;
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($list_mata_kuliah as $index => $mata_kuliah)
-                                <tr class="course-row" style="background-color: #23252A;"
-                                    data-course-id="{{ $mata_kuliah->id }}"
-                                    data-course-time="{{ $mata_kuliah->hari }}, {{ \Carbon\Carbon::parse($mata_kuliah->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($mata_kuliah->jam_selesai)->format('H:i') }}"
-                                    data-ruangan-id="{{ $mata_kuliah->ruangan_id }}">
-                                    <td class="px-4 py-2 border-r border-white">{{ $loop->iteration }}</td>
-                                    <td class="px-4 py-2 w-1/3 border-r border-white">{{ $mata_kuliah->kode }}
-                                    </td>
-                                    <td class="px-4 py-2 w-1/3 border-r border-white">{{ $mata_kuliah->nama }}
-                                    </td>
-                                    <td class="px-4 py-2 w-1/3 border-r border-white">
-                                        {{ $mata_kuliah->hari }},
-                                        {{ \Carbon\Carbon::parse($mata_kuliah->jam_mulai)->format('H:i') }} -
-                                        {{ \Carbon\Carbon::parse($mata_kuliah->jam_selesai)->format('H:i') }}
-                                    </td>
-                                    <td class="px-4 py-2 border-r border-white">
-                                        <form action="{{ route('irs-rekap.store') }}" method="POST">
-                                            @csrf
-                                            <input type="hidden" name="mata_kuliah_id" value="{{ $mata_kuliah->id }}">
-                                            <input type="hidden" name="ruangan_id" value="{{ $mata_kuliah->ruangan_id}}">
-                                            <input type="hidden" name="sks" id="input-sks" value="{{ $mata_kuliah->sks }}">
-                                            <div
-                                                class="text-white text-center items-center justify-center mx-2 my-1 rounded-md cursor-pointer bg-[#34803C] hover:bg-green-800 font-bold">
-                                                <button class="ambil-mata-kuliah"
-                                                    data-kode="{{ $mata_kuliah->kode }}"
-                                                    data-nama="{{ $mata_kuliah->nama }}"
-                                                    data-hari-jam="{{ $mata_kuliah->hari }}, {{ \Carbon\Carbon::parse($mata_kuliah->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($mata_kuliah->jam_selesai)->format('H:i') }}"
-                                                    data-sks="{{ $mata_kuliah->sks }}" type="submit">
-                                                    Ambil
+                                @foreach ($mata_kuliah as $index => $mk)
+                                    <tr class="course-row" style="background-color: #23252A;"
+                                        data-course-id="{{ $mk->id }}"
+                                        data-course-time="{{ $mk->hari }}, {{ \Carbon\Carbon::parse($mk->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($mk->jam_selesai)->format('H:i') }}"
+                                        data-ruangan-id="{{ $mk->ruang }}">
+                                        <td class="px-4 py-2 border-r border-white">{{ $loop->iteration }}</td>
+                                        <td class="px-4 py-2 w-1/3 border-r border-white">{{ $mk->kode_mk }}
+                                        </td>
+                                        <td class="px-4 py-2 w-1/3 border-r border-white">{{ $mk->nama_mk }} - {{ $mk->kelas }}
+                                        </td>
+                                        <td class="px-4 py-2 w-1/3 border-r border-white">
+                                            {{ $mk->hari }},
+                                            {{ \Carbon\Carbon::parse($mk->jam_mulai)->format('H:i') }} -
+                                            {{ \Carbon\Carbon::parse($mk->jam_selesai)->format('H:i') }}
+                                        </td>
+                                        <td class="px-4 py-2 border-r border-white">
+                                            <form action="{{ route('irs-rekap.store') }}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="mata_kuliah_id" value="{{ $mk->id }}">
+                                                <input type="hidden" name="ruangan_id" value="{{ $mk->ruang}}">
+                                                <input type="hidden" name="sks" id="input-sks" value="{{ $mk->sks_mk }}">
+                                                <div
+                                                    class="text-white text-center items-center justify-center mx-2 my-1 rounded-md cursor-pointer bg-[#34803C] hover:bg-green-800 font-bold">
+                                                    <button class="ambil-mata-kuliah"
+                                                        data-kode="{{ $mk->kode_mk }}"
+                                                        data-nama="{{ $mk->nama_mk }}"
+                                                        data-kelas="{{ $mk->kelas }}"
+                                                        data-hari-jam="{{ $mk->hari }}, {{ \Carbon\Carbon::parse($mk->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($mk->jam_selesai)->format('H:i') }}"
+                                                        data-sks="{{ $mk->sks_mk }}" type="submit">
+                                                        Ambil
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </td>
+                                        <td class="px-4 py-2 border-white">
+                                            <div class="h-7 w-7 mx-auto rounded-lg bg-white border border-transparent flex justify-center items-center hover:bg-gray-400 transition-colors duration-200">
+                                                <button class="show-details justify-center text-center text-3xl text-black font-bold focus:outline-none" data-index="{{ $index }}">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+                                                        <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+                                                    </svg>
                                                 </button>
                                             </div>
-                                        </form>
-                                    </td>
-                                    <td class="px-4 py-2 border-white">
-                                        <div class="h-7 w-7 mx-auto rounded-lg bg-white border border-transparent flex justify-center items-center hover:bg-gray-400 transition-colors duration-200">
-                                            <button class="show-details justify-center text-center text-3xl text-black font-bold focus:outline-none" data-index="{{ $index }}">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-                                                    <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </td> 
-                                </tr>
+                                        </td> 
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>

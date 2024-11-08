@@ -98,6 +98,9 @@ Route::post('/verifikasi-irs/batal', [verifikasiIRS::class, 'batalkanIRS'])->nam
 
 
 Route::get('/verifikasijadwal', [verifikasijadwal::class, 'index'])->middleware('auth')->name('verifikasijadwal');
+Route::post('/verifikasi-jadwal/{prodi}', [verifikasiJadwal::class, 'verifikasi'])->name('verifikasi.jadwal');
+Route::post('/tolak-jadwal/{prodi}', [verifikasiJadwal::class, 'tolak'])->name('tolak.jadwal');
+
 
 Route::get('/verifikasiRuangKuliah', [verifikasiRuangKuliah::class, 'index'])->middleware('auth')->name('verifikasiRuangKuliah');
 Route::post('/verifikasi-ruang/{prodi}', [verifikasiRuangKuliah::class, 'verifikasi'])->name('verifikasi.ruang');

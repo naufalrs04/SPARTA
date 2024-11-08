@@ -205,20 +205,24 @@
                     <table class="table-auto p-5 w-full text-center rounded-lg border-collapse" name="tabel_jadwal">
                         <thead>
                             <tr class="bg-[#878A91]">
-                                <th class="px-4 py-2 w-auto border-r border-white rounded-tl-lg">Mata Kuliah</th>
-                                <th class="px-4 py-2 w-1/8 rounded-tr-lg">Tambahkan</th>
+                                <th class="px-4 py-2 w-auto border-r border-white rounded-tl-lg">Kelas</th>
+                                <th class="px-4 py-2 w-auto border-r border-white">Jam</th>
+                                <th class="px-4 py-2 w-1/8 rounded-tr-lg">Info</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($mklist as $mk)
                                 <tr style="background-color: #23252A;">
                                     <td class="px-4 py-2 border-r border-white">
-                                        <p class="text-white">{{ $mk->nama_mk }}</p>
+                                        <p class="text-white">{{ $mk->nama_mk }}-{{ $mk->kelas }}</p>
+                                    </td>
+                                    <td class="px-4 py-2 border-r border-white">
+                                        <p class="text-white">{{ $mk->hari }}, {{ $mk->jam_mulai }}-{{ $mk->jam_selesai }}</p>
                                     </td>
                                     <td class="px-5 py-2 text-center">
                                         <button
                                             class="show-details transition-colors duration-200 bg-[#878A91] p-2 rounded-lg"
-                                            data-nama="{{ $mk->name_mk }}" 
+                                            data-nama="{{ $mk->nama_mk }}" 
                                             data-kode="{{ $mk->kode_mk }}"
                                             data-sks="{{ $mk->sks_mk }}" 
                                             data-semester="{{ $mk->semester_mk }}"
@@ -239,6 +243,14 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="px-8 mt-5 flex justify-end">
+                    <button type="button" id="ajukanButton"
+                        class="rounded-lg py-2 px-5 bg-[#34803C] hover:bg-[#2b6e32] text-white">
+                        <strong>Ajukan</strong>
+                    </button>
+                </div>
+
+
                 <script>
                     document.getElementById('jadwal-form').addEventListener('submit', function(event) {
                         event.preventDefault(); // Mencegah form dari pengiriman default
@@ -324,6 +336,28 @@
                         document.getElementById('sks_mk').value = sksMk;
                         document.getElementById('prodi').value = prodiMk;
                         document.getElementById('semester_mk').value = semesterMk;
+                    });
+
+                    document.getElementById('ajukanButton').addEventListener('click', function() {
+                        Swal.fire({
+                            title: 'Konfirmasi',
+                            text: "Apakah Anda yakin ingin mengajukan?",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Ya, Ajukan!',
+                            cancelButtonText: 'Batal'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Here you can add the logic to submit the application
+                                Swal.fire(
+                                    'Berhasil!',
+                                    'Pengajuan Anda telah dikirim.',
+                                    'success'
+                                )
+                            }
+                        })
                     });
 
                 </script>

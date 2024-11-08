@@ -62,7 +62,7 @@
                                     </td>
                                 @endif
                                 <td class="px-5 py-2 text-center">
-                                    <button onclick="showInfo('{{ $verifikasi->prodi }}', {{ $verifikasi->ruang }})"
+                                    <button onclick="showInfo('{{ $verifikasi->prodi }}', {!! htmlspecialchars(json_encode($verifikasi->jadwal_details), ENT_QUOTES, 'UTF-8') !!})"
                                         class="info w-16 text-white rounded-md px-3 py-2 bg-gray-400 hover:bg-gray-500">
                                         Info
                                     </button>
@@ -75,19 +75,12 @@
         </div>
     </div>
    <script>
-    function showInfo(prodi, ruang) {
-        // Menghasilkan daftar ruangan dalam format tabel
-        let ruanganList = ruang.map(room => 
+    function showInfo(prodi, jadwalDetails) {
+        let jadwalList = jadwalDetails.map(room => 
             `<tr>
                 <td>${room.nama_mk}</td>
-                <td>${room.kode_mk}</td>
-                <td>${room.sks_mk}</td>
-                <td>${room.semester_mk}</td>
-                <td>${room.kelas}</td>
                 <td>${room.tahun_ajaran}</td>
-                <td>${room.dosen}</td>
                 <td>${room.ruang}</td>
-                <td>${room.kapasitas}</td>
                 <td>${room.hari}</td>
                 <td>${room.jam_mulai}</td>
                 <td>${room.jam_selesai}</td>
@@ -103,14 +96,7 @@
                     <thead>
                         <tr>
                             <th>Nama MK</th>
-                            <th>Kode MK</th>
-                            <th>SKS</th>
-                            <th>Semester</th>
-                            <th>Kelas</th>
                             <th>Tahun Ajaran</th>
-                            <th>Dosen</th>
-                            <th>Ruang</th>
-                            <th>Kapasitas</th>
                             <th>Hari</th>
                             <th>Jam Mulai</th>
                             <th>Jam Selesai</th>
@@ -118,15 +104,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        ${ruanganList}
+                        ${jadwalList}
                     </tbody>
                 </table>
                 <div class="mt-4 flex justify-center gap-4">
-                    <button onclick="verifikasiRuang('${prodi}')" 
+                    <button onclick="verifikasiJadwal('${prodi}')" 
                             class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
                         Verifikasi
                     </button>
-                    <button onclick="tolakRuang('${prodi}')" 
+                    <button onclick="tolakJadwal('${prodi}')" 
                             class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
                         Tolak
                     </button>
@@ -136,6 +122,90 @@
             showConfirmButton: false,
             customClass: {
                 popup: 'swal-wide',
+            }
+        });
+    }
+
+    function verifikasiJadwal(prodi) {
+        Swal.fire({
+            title: 'Konfirmasi',
+            text: `Apakah anda yakin ingin memverifikasi jadwal untuk ${prodi}?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, Verifikasi!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`/verifikasi-jadwal/${prodi}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if(data.success) {
+                        Swal.fire(
+                            'Berhasil!',
+                            'Jadwal telah diverifikasi.',
+                            'success'
+                        ).then(() => {
+                            location.reload();
+                        });
+                    }
+                })
+                .catch(error => {
+                    Swal.fire(
+                        'Error!',
+                        'Terjadi kesalahan.',
+                        'error'
+                    );
+                });
+            }
+        });
+    }
+
+    function tolakJadwal(prodi) {
+        Swal.fire({
+            title: 'Konfirmasi',
+            text: `Apakah anda yakin ingin menolak jadwal untuk ${prodi}?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, Tolak!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`/tolak-jadwal/${prodi}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if(data.success) {
+                        Swal.fire(
+                            'Berhasil!',
+                            'Jadwal telah ditolak.',
+                            'success'
+                        ).then(() => {
+                            location.reload();
+                        });
+                    }
+                })
+                .catch(error => {
+                    Swal.fire(
+                        'Error!',
+                        'Terjadi kesalahan.',
+                        'error'
+                    );
+                });
             }
         });
     }
