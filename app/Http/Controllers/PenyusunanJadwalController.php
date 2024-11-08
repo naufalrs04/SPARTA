@@ -27,6 +27,7 @@ class PenyusunanJadwalController extends Controller
         }
         $user = Auth::user();
         $matakuliahList = Mata_Kuliah::select('kode as kodemk', 'nama as namemk', 'sks as sksmk', 'semester as smtmk', 'prodi as prodimk')->get();
+        // dd($matakuliahList);
         foreach ($matakuliahList as $matakuliah) {
             // Ambil daftar ruangan_id yang sesuai dengan prodi mata kuliah
             $ruanganList = ruangan_prodi::where('nama_prodi', $matakuliah->prodimk)
@@ -44,8 +45,10 @@ class PenyusunanJadwalController extends Controller
             // Tambahkan daftar ruangan dengan detail kapasitas ke objek mata kuliah
             $matakuliah->ruangan_detail = $ruanganDetailList;
         }
+        // dd($matakuliah);
         // dd($ruanganDetailList);
         $mklist = PenyusunanJadwal::all();
+        // dd($mklist);
         $dosen = Dosen::all();
 
         foreach ($dosen as $daftar_dosen) {

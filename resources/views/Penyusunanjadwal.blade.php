@@ -56,7 +56,8 @@
                                     <select id="nama_mk" name="nama_mk" class="w-full p-2 border rounded-lg bg-gray-900 border-gray-700 text-white" required>
                                         <option value="">--Pilih Mata Kuliah--</option>
                                         @foreach ($matakuliahList as $matakuliah)
-                                            <option value="{{ $matakuliah->kodemk }}" 
+                                            <option value="{{ $matakuliah->kodemk }}"
+                                            data-nama="{{ $matakuliah->namemk }}"
                                             data-sks="{{ $matakuliah->sksmk }}" 
                                             data-prodi="{{ $matakuliah->prodimk }}" 
                                             data-semester="{{ $matakuliah->smtmk }}">
@@ -141,17 +142,15 @@
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-2 gap-6 mt-4">
+                        <div class="grid grid-cols-2 gap-6">
                             <div class="mb-4">
                                 <label for="jam_mulai" class="block text-sm font-medium mb-2">Jam Mulai</label>
-                                <input type="time" id="jam_mulai" name="jam_mulai"
-                                    class="w-full p-2 border rounded-lg bg-gray-900 border-gray-700 text-white" required>
+                                <input type="time" id="jam_mulai" name="jam_mulai" class="w-full p-2 border rounded-lg bg-gray-900 border-gray-700 text-white" required>
                             </div>
 
                             <div class="mb-4">
                                 <label for="jam_selesai" class="block text-sm font-medium mb-2">Jam Selesai</label>
-                                <input type="time" id="jam_selesai" name="jam_selesai"
-                                    class="w-full p-2 border rounded-lg bg-gray-900 border-gray-700 text-white" required>
+                                <input type="time" id="jam_selesai" name="jam_selesai" class="w-full p-2 border rounded-lg bg-gray-400 border-gray-700 text-white" readonly>
                             </div>
                         </div>
                         <div id="dosen-container">
@@ -180,7 +179,6 @@
                                 Tambah
                             </button>
                         </div>
-
                     </form>
                 </div>
             </div>
@@ -219,7 +217,7 @@
                                     <td class="px-5 py-2 text-center">
                                         <button
                                             class="show-details transition-colors duration-200 bg-[#878A91] p-2 rounded-lg"
-                                            data-nama="{{ $mk->nama_mk }}" 
+                                            data-nama="{{ $mk->name_mk }}" 
                                             data-kode="{{ $mk->kode_mk }}"
                                             data-sks="{{ $mk->sks_mk }}" 
                                             data-semester="{{ $mk->semester_mk }}"
@@ -351,5 +349,61 @@
    
     });
 </script>
+
+<script>
+// Add this script after your form
+document.addEventListener('DOMContentLoaded', function() {
+    const jamMulaiInput = document.getElementById('jam_mulai');
+    const jamSelesaiInput = document.getElementById('jam_selesai');
+    const sksInput = document.getElementById('sks_mk');
+    const namaMkSelect = document.getElementById('nama_mk');
+
+    // Function to calculate end time
+    function calculateEndTime() {
+        const jamMulai = jamMulaiInput.value;
+        const sks = parseInt(sksInput.value);
+        
+        if (jamMulai && !isNaN(sks)) {
+            // Parse jam mulai
+            const [hours, minutes] = jamMulai.split(':').map(Number);
+            
+            // Calculate total minutes to add (50 minutes per SKS)
+            const minutesToAdd = 50 * sks;
+            
+            // Create new date object for calculation
+            const startDate = new Date();
+            startDate.setHours(hours, minutes, 0);
+            
+            // Add the calculated minutes
+            const endDate = new Date(startDate.getTime() + minutesToAdd * 60000);
+            
+            // Format the end time
+            const endHours = String(endDate.getHours()).padStart(2, '0');
+            const endMinutes = String(endDate.getMinutes()).padStart(2, '0');
+            
+            // Set the end time value
+            jamSelesaiInput.value = `${endHours}:${endMinutes}`;
+        }
+    }
+
+    // Calculate end time when start time changes
+    jamMulaiInput.addEventListener('change', calculateEndTime);
+    
+    // Calculate end time when SKS changes
+    sksInput.addEventListener('change', calculateEndTime);
+    
+    // Calculate end time when mata kuliah selection changes
+    namaMkSelect.addEventListener('change', function() {
+        const selectedOption = this.options[this.selectedIndex];
+        const sks = selectedOption.getAttribute('data-sks');
+        if (sks) {
+            sksInput.value = sks;
+            calculateEndTime();
+        }
+    });
+});
+</script>
+
+
 
 </html>
