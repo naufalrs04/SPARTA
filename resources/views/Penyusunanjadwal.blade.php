@@ -56,8 +56,9 @@
                                     <select id="nama_mk" name="nama_mk" class="w-full p-2 border rounded-lg bg-gray-900 border-gray-700 text-white" required>
                                         <option value="">--Pilih Mata Kuliah--</option>
                                         @foreach ($matakuliahList as $matakuliah)
-                                            <option value="{{ $matakuliah->kodemk }}"
+                                            <option value="{{ $matakuliah->namemk }}"
                                             data-nama="{{ $matakuliah->namemk }}"
+                                            data-kode="{{ $matakuliah->kodemk }}"
                                             data-sks="{{ $matakuliah->sksmk }}" 
                                             data-prodi="{{ $matakuliah->prodimk }}" 
                                             data-semester="{{ $matakuliah->smtmk }}">
@@ -314,7 +315,7 @@
                     document.getElementById('nama_mk').addEventListener('change', function() {
                         var selectedOption = this.options[this.selectedIndex];
 
-                        var kodeMk = selectedOption.value;
+                        var kodeMk = selectedOption.getAttribute('data-kode');
                         var sksMk = selectedOption.getAttribute('data-sks');
                         var prodiMk = selectedOption.getAttribute('data-prodi');
                         var semesterMk = selectedOption.getAttribute('data-semester');

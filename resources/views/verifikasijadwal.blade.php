@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verifikasi Jadwal Departemen</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <body class="bg-gray-900 text-gray-100">
@@ -30,95 +32,115 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach ($verif as $verifikasi)
                             <tr style="background-color: #23252A;">
-                                <td class="px-4 py-2 border-r border-white">Informatika</td>
-                                
-                                <td class="px-3 py-3 border-r border-white text-center flex justify-center items-center">
-                                    <div class="w-32 text-white text-center rounded-md px-2 py-2" style="background-color: #34803C;">
-                                        <p>ter-Verifikasi</p>
-                                    </div>
-                                </td>                                
+                                <td class="px-4 py-2 border-r border-white">{{ $verifikasi->prodi }}</td>
+
+                                @if ($verifikasi->status_pengajuan == 'ter-Verifikasi')
+                                    <td
+                                        class="px- 3 py-3 border-r border-white text-center flex justify-center items-center">
+                                        <div class="w-32 text-white text-center rounded-md px-2 py-2"
+                                            style="background-color: #34803C;">
+                                            <p>ter-Verifikasi</p>
+                                        </div>
+                                    </td>
+                                @elseif($verifikasi->status_pengajuan == 'Ditolak')
+                                    <td
+                                        class="px-3 py-3 border-r border-white text-center flex justify-center items-center">
+                                        <div class="w-32 text-white text-center rounded-md px-2 py-2"
+                                            style="background-color: #851010;">
+                                            <p>Ditolak</p>
+                                        </div>
+                                    </td>
+                                @else
+                                    <td
+                                        class="px-3 py-3 border-r border-white text-center flex justify-center items-center">
+                                        <div class="w-32 text-white text-center rounded-md px-2 py-2"
+                                            style="background-color: #999b25;">
+                                            <p>Belum</p>
+                                        </div>
+                                    </td>
+                                @endif
                                 <td class="px-5 py-2 text-center">
-                                    <button onclick="window.location.href='#'" class="w-16 text-white rounded-md px-3 py-2 bg-gray-400 hover:bg-gray-500">
+                                    <button onclick="showInfo('{{ $verifikasi->prodi }}', {{ $verifikasi->ruang }})"
+                                        class="info w-16 text-white rounded-md px-3 py-2 bg-gray-400 hover:bg-gray-500">
                                         Info
                                     </button>
                                 </td>
                             </tr>
-                            <tr style="background-color: #23252A;">
-                                <td class="px-4 py-2 border-r border-white">Fisika</td>
-                                
-                                <td class="px-3 py-3 border-r border-white text-center flex justify-center items-center">
-                                    <div class="w-32 text-white text-center rounded-md px-2 py-2" style="background-color: #34803C;">
-                                        <p>ter-Verifikasi</p>
-                                    </div>
-                                </td>                                
-                                <td class="px-5 py-2 text-center">
-                                    <button class="w-16 text-white rounded-md px-3 py-2 bg-gray-400 hover:bg-gray-500">
-                                        Info
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr style="background-color: #23252A;">
-                                <td class="px-4 py-2 border-r border-white">Matematika</td>
-                                
-                                <td class="px-3 py-3 border-r border-white text-center flex justify-center items-center">
-                                    <div class="w-32 text-white text-center rounded-md px-2 py-2" style="background-color: #880000;">
-                                        <p> Not Set</p>
-                                    </div>
-                                </td>                                
-                                <td class="px-5 py-2 text-center">
-                                    <button onclick="window.location.href='#'" class="w-16 text-white rounded-md px-3 py-2 bg-gray-400 hover:bg-gray-500">
-                                        Info
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr style="background-color: #23252A;">
-                                <td class="px-4 py-2 border-r border-white">Statistika</td>
-                                
-                                <td class="px-3 py-3 border-r border-white text-center flex justify-center items-center">
-                                    <div class="w-32 text-white text-center rounded-md px-2 py-2" style="background-color: #880000;">
-                                        <p>Not Set</p>
-                                    </div>
-                                </td>                                
-                                <td class="px-5 py-2 text-center">
-                                    <button class="w-16 text-white rounded-md px-3 py-2 bg-gray-400 hover:bg-gray-500">
-                                        Info
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr style="background-color: #23252A;">
-                                <td class="px-4 py-2 border-r border-white">Kimia</td>
-                                
-                                <td class="px-3 py-3 border-r border-white text-center flex justify-center items-center">
-                                    <div class="w-32 text-white text-center rounded-md px-2 py-2" style="background-color: #34803C;">
-                                        <p>ter-Verifikasi</p>
-                                    </div>
-                                </td>                                
-                                <td class="px-5 py-2 text-center">
-                                    <button onclick="window.location.href='#'" class="w-16 text-white rounded-md px-3 py-2 bg-gray-400 hover:bg-gray-500">
-                                        Info
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr style="background-color: #23252A;">
-                                <td class="px-4 py-2 border-r border-white">Biologi</td>
-                                
-                                <td class="px-3 py-3 border-r border-white text-center flex justify-center items-center">
-                                    <div class="w-32 text-white text-center rounded-md px-2 py-2" style="background-color: #34803C;">
-                                        <p>ter-Verifikasi</p>
-                                    </div>
-                                </td>                                
-                                <td class="px-5 py-2 text-center">
-                                    <button onclick="window.location.href='#'" class="w-16 text-white rounded-md px-3 py-2 bg-gray-400 hover:bg-gray-500">
-                                        Info
-                                    </button>
-                                </td>
-                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
         </div>
     </div>
+   <script>
+    function showInfo(prodi, ruang) {
+        // Menghasilkan daftar ruangan dalam format tabel
+        let ruanganList = ruang.map(room => 
+            `<tr>
+                <td>${room.nama_mk}</td>
+                <td>${room.kode_mk}</td>
+                <td>${room.sks_mk}</td>
+                <td>${room.semester_mk}</td>
+                <td>${room.kelas}</td>
+                <td>${room.tahun_ajaran}</td>
+                <td>${room.dosen}</td>
+                <td>${room.ruang}</td>
+                <td>${room.kapasitas}</td>
+                <td>${room.hari}</td>
+                <td>${room.jam_mulai}</td>
+                <td>${room.jam_selesai}</td>
+                
+            </tr>`
+        ).join('');
+
+        // Menampilkan SweetAlert dengan informasi mata kuliah
+        Swal.fire({
+            title: `Info Mata Kuliah - ${prodi}`,
+            html: `
+                <table class="w-full">
+                    <thead>
+                        <tr>
+                            <th>Nama MK</th>
+                            <th>Kode MK</th>
+                            <th>SKS</th>
+                            <th>Semester</th>
+                            <th>Kelas</th>
+                            <th>Tahun Ajaran</th>
+                            <th>Dosen</th>
+                            <th>Ruang</th>
+                            <th>Kapasitas</th>
+                            <th>Hari</th>
+                            <th>Jam Mulai</th>
+                            <th>Jam Selesai</th>
+                            <th>Status Pengajuan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${ruanganList}
+                    </tbody>
+                </table>
+                <div class="mt-4 flex justify-center gap-4">
+                    <button onclick="verifikasiRuang('${prodi}')" 
+                            class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+                        Verifikasi
+                    </button>
+                    <button onclick="tolakRuang('${prodi}')" 
+                            class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+                        Tolak
+                    </button>
+                </div>
+            `,
+            icon: 'info',
+            showConfirmButton: false,
+            customClass: {
+                popup: 'swal-wide',
+            }
+        });
+    }
+</script>
 </body>
+
 
 </html>
