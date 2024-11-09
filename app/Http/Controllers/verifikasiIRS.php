@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Mahasiswa;
 use App\Models\Dosen;
-use App\Models\irs_rekap;
+use App\Models\Irs_rekap;
 use App\Models\Mata_Kuliah;
 use Illuminate\Support\Facades\DB;
 
@@ -22,6 +22,7 @@ class verifikasiIRS extends Controller
     $user = Auth::user();
     $dosen = Dosen::where('nip', $user->nim_nip)->first();
 
+
     // Ambil semua mahasiswa bimbingan dosen
     $mhs_perwalian = Mahasiswa::where('id_wali', $dosen->id)->get();
 
@@ -32,17 +33,24 @@ class verifikasiIRS extends Controller
     // dd($mhs_perwalian);
     foreach ($mhs_perwalian as $mhs) {
         $mhs->nama = User::where('nim_nip', $mhs->nim)->first()->nama;
-        $mhs->total_sks = irs_rekap::where('mahasiswa_id', $mhs->id)->sum('sks');
-        $rekap_belum = irs_rekap::where('mahasiswa_id', $mhs->id)
+        $mhs->total_sks = Irs_rekap::where('mahasiswa_id', $mhs->id)->sum('sks');
+
+        // Ambil mata kuliah
+        $mhs->mata_kuliah = Irs_rekap::where('mahasiswa_id', $mhs->id)->get();
+
+        $rekap_belum = Irs_rekap::where('mahasiswa_id', $mhs->id)
                                 ->where('status_pengajuan', null)
                                 ->get();
         
         // Ambil rekap IRS yang sudah diverifikasi
-        $rekap_sudah = irs_rekap::where('mahasiswa_id', $mhs->id)
+        $rekap_sudah = Irs_rekap::where('mahasiswa_id', $mhs->id)
                                 ->where('status_pengajuan', '!=', null)
                                 ->get();
 
-        $mhs -> status_pengajuan = irs_rekap::where('mahasiswa_id', $mhs->id)->first()->status_pengajuan;
+        // Cek apakah ada rekap IRS yang ditemukan
+        $rekap_pertama = Irs_rekap::where('mahasiswa_id', $mhs->id)->first();
+        $mhs->status_pengajuan = $rekap_pertama ? $rekap_pertama->status_pengajuan : null;
+
 
         // Jika ada rekap yang belum disetujui
         if ($rekap_belum->isNotEmpty()) {
@@ -71,7 +79,7 @@ class verifikasiIRS extends Controller
             'mahasiswa_id' => 'required|integer',
         ]);
 
-        $updated = irs_rekap::where('mahasiswa_id', $request->mahasiswa_id)
+        $updated = Irs_rekap::where('mahasiswa_id', $request->mahasiswa_id)
                     ->update(['status_pengajuan' => 'disetujui']);
 
         if ($updated) {
@@ -87,7 +95,7 @@ class verifikasiIRS extends Controller
             'mahasiswa_id' => 'required|integer',
         ]);
     
-        $updated = irs_rekap::where('mahasiswa_id', $request->mahasiswa_id)
+        $updated = Irs_rekap::where('mahasiswa_id', $request->mahasiswa_id)
                     ->update(['status_pengajuan' => 'ditolak']);
     
         if ($updated) {
@@ -103,7 +111,7 @@ class verifikasiIRS extends Controller
             'mahasiswa_id' => 'required|integer',
         ]);
     
-        $updated = irs_rekap::where('mahasiswa_id', $request->mahasiswa_id)
+        $updated = Irs_rekap::where('mahasiswa_id', $request->mahasiswa_id)
                     ->update(['status_pengajuan' => null]);
     
         if ($updated) {

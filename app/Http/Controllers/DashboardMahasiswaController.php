@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\irs;
+use App\Models\Irs_rekap;
 use App\Models\Mata_Kuliah;
 use App\Models\Ruangan;
 use App\Models\Mahasiswa;
+use App\Models\PenyusunanJadwal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\irs_rekap;
+
 
 
 class DashboardMahasiswaController extends Controller
@@ -40,14 +41,18 @@ class DashboardMahasiswaController extends Controller
             'semester' => $semester
         ];
 
-        $jadwal_kuliah = irs_rekap::where('mahasiswa_id', $mahasiswa_id)->get();
+        $jadwal_kuliah = Irs_rekap::where('mahasiswa_id', $mahasiswa_id)
+                        ->where('semester',$semester)
+                          ->where('status_pengajuan', 'disetujui')
+                          ->get();
+
+        // dd($jadwal_kuliah);
 
         foreach ($jadwal_kuliah as $jadwal ){
-            $jadwal -> hari = Mata_Kuliah::where('id', $jadwal->mata_kuliah_id)->first()->hari;
-            $jadwal -> jam_mulai = Mata_Kuliah::where('id', $jadwal->mata_kuliah_id)->first()->jam_mulai;
-            $jadwal -> jam_selesai = Mata_Kuliah::where('id', $jadwal->mata_kuliah_id)->first()->jam_selesai;
-            $jadwal -> nama_matakuliah = Mata_Kuliah::where('id', $jadwal->mata_kuliah_id)->first()->nama;
-            $jadwal -> nama_ruangan = Ruangan::where('id', $jadwal->ruangan_id)->first()->nama;
+            $jadwal -> hari = PenyusunanJadwal::where('kode_mk', $jadwal->kode_mk)->first()->hari;
+            $jadwal -> jam_mulai = PenyusunanJadwal::where('kode_mk', $jadwal->kode_mk)->first()->jam_mulai;
+            $jadwal -> jam_selesai = PenyusunanJadwal::where('kode_mk', $jadwal->kode_mk)->first()->jam_selesai;
+            $jadwal -> status_pengajuan = PenyusunanJadwal::where('kode_mk', $jadwal->kode_mk)->first()->status_pengajuan;
         }
 
         return view('dashboardMahasiswa', compact('user','data','nama_mahasiswa','jadwal_kuliah','mahasiswa_id'));

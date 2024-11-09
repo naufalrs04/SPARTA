@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             irs::class,
             jadwal_kuliah::class,
             JadwalPengisianIRSSeeder::class,
+            TestJadwal::class
         ]);
     }
 }

@@ -97,10 +97,10 @@
                         <tr>
                             <th>Nama MK</th>
                             <th>Tahun Ajaran</th>
+                            <th>Ruangan</th>
                             <th>Hari</th>
                             <th>Jam Mulai</th>
                             <th>Jam Selesai</th>
-                            <th>Status Pengajuan</th>
                         </tr>
                     </thead>
                     <tbody>

@@ -139,20 +139,23 @@
                     </thead>
                     <tbody>
                         @foreach($jadwal_kuliah as $jadwal)
-                        <tr style="background-color: #23252A">
-                            <td class="px-4 py-2 border-r border-white">
-                                {{ $jadwal->hari }}, {{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}
-                            </td>
+                            @if($jadwal_kuliah -> status_pengajuan == 'disetujui')
+                                <tr style="background-color: #23252A">
+                                    <td class="px-4 py-2 border-r border-white">
+                                        {{ $jadwal->hari }}, {{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}
+                                    </td>
 
-                            <td class="px-4 py-2 border-r border-white">
-                                {{$jadwal->nama_matakuliah}}
-                            </td>
+                                    <td class="px-4 py-2 border-r border-white">
+                                        {{$jadwal->nama_mk}} - {{$jadwal->kelas}}
+                                    </td>
 
-                            <td class="px-4 py-2">
-                                {{$jadwal->nama_ruangan}}
-                            </td>
-                        </tr>
+                                    <td class="px-4 py-2">
+                                        {{$jadwal->ruang}}
+                                    </td>
+                                </tr>
+                            @endif
                         @endforeach
+                        
                     </tbody>
 
                 </table>
