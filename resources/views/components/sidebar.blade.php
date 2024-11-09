@@ -21,11 +21,11 @@
 </head>
 
 <body>
-    <aside class="flex-none w-1/6 box-border" style="{{ $theme == 'light' ? 'background-color: #101115;' : 'background-color: #ffffff;' }}" >
+    <aside class="flex-none w-1/6 box-border backdrop-blur-sm" style="{{ $theme == 'light' ? 'background-color: rgba(16, 17, 21, 0.7);' : 'background-color: rgba(255, 255, 255, 0.7);' }}">
         <div class="p-10">
-            <img class="w-auto" <img src="{{ $theme == 'light' ? asset('assets/Logo.png') : asset('assets/Logo_black.png') }}" alt="Logo">
+            <img class="w-auto" src="{{ $theme == 'light' ? asset('assets/Logo.png') : asset('assets/Logo_black.png') }}" alt="Logo">
         </div>
-        <nav class="mt-14 mr-6 text-left" >
+        <nav class="mt-14 mr-6 text-left">
             <ul>
                 @if ($user->ma==1)
                 <li class="px-7 py-7 transition-transform duration-200 hover:translate-x-2 hover:bg-zinc-800 rounded-md">

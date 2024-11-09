@@ -10,7 +10,7 @@ use App\Http\Controllers\DashboardKaprodiController;
 use App\Http\Controllers\DashboardMahasiswaController;
 use App\Http\Controllers\DashboardBagianAkademikController;
 use App\Http\Controllers\DashboardPembimbingAkademikController;
-use App\Http\Controllers\jadwalpengisianIRS;
+use App\Http\Controllers\JadwalPengisianIRSController;
 use App\Http\Controllers\penyusunanjadwal;
 use App\Http\Controllers\resetpassword;
 use App\Http\Controllers\pembagiankelas;
@@ -19,12 +19,13 @@ use App\Http\Controllers\perwalian;
 use App\Http\Controllers\inputnilai;
 use App\Http\Controllers\inputnilaiInfo;
 use App\Http\Controllers\jadwalmengajar;
+use App\Http\Controllers\PenyusunanJadwalController;
 use App\Http\Controllers\verifikasiIRS;
 use App\Http\Controllers\verifikasijadwal;
 use App\Http\Controllers\verifikasiRuangKuliah;
 use App\Http\Controllers\profile;
 use App\Http\Controllers\ThemeController;
-
+use App\Models\JadwalPengisianIRS;
 
 Route::get('/login', function () {
     return view('login');
@@ -59,9 +60,13 @@ Route::get('/dashboardDekan', [DashboardDekanController::class, 'index'])->middl
 //KAPRODI
 Route::get('/dashboardKaprodi', [DashboardKaprodiController::class, 'index'])->middleware('auth')->name('dashboardKaprodi');
 
-Route::get('/penyusunanjadwal', [penyusunanjadwal::class, 'index'])->middleware('auth')->name('Penyusunanjadwal');
+Route::get('/penyusunanjadwal', [PenyusunanJadwalController::class, 'index'])->middleware('auth')->name('Penyusunanjadwal');
 
-Route::get('/jadwalpengisianIRS', [jadwalpengisianIRS::class, 'index'])->middleware('auth')->name('jadwalpengisianIRS');
+Route::post('/penyusunan-jadwal/store', [PenyusunanJadwalController::class, 'store'])->name('penyusunan-jadwal.store');
+
+Route::get('/jadwalpengisianIRS', [JadwalPengisianIRSController::class, 'index'])->middleware('auth')->name('jadwalpengisianIRS');
+
+Route::patch('/jadwal-pengisian/{id}', [JadwalPengisianIRSController::class, 'update']);
 
 Route::get('/resetpassword', function () {
     return view('resetpassword');
@@ -96,7 +101,8 @@ Route::post('/verifikasi-irs/batal', [verifikasiIRS::class, 'batalkanIRS'])->nam
 Route::get('/verifikasijadwal', [verifikasijadwal::class, 'index'])->middleware('auth')->name('verifikasijadwal');
 
 Route::get('/verifikasiRuangKuliah', [verifikasiRuangKuliah::class, 'index'])->middleware('auth')->name('verifikasiRuangKuliah');
-
+Route::post('/verifikasi-ruang/{prodi}', [verifikasiRuangKuliah::class, 'verifikasi'])->name('verifikasi.ruang');
+Route::post('/tolak-ruang/{prodi}', [verifikasiRuangKuliah::class, 'tolak'])->name('tolak.ruang');
 Route::get('/search-mata-kuliah', [PengisianIRS::class, 'searchMataKuliah'])->name('search.mata_kuliah');
 
 Route::get('/profile', function () {

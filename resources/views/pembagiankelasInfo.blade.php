@@ -10,6 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    @vite('resources/css/app.css')
     <style>
         input[type="checkbox"] {
             accent-color: black; 
@@ -20,128 +21,138 @@
     </style>
 </head>
 
-<body class="{{ $theme == 'light' ? 'dark bg-gray-900 text-gray-100' : 'light bg-gray-100 text-gray-900' }}">
-    <div class="flex min-h-screen">
+<body class="{{ $theme == 'light' ? 'text-gray-100' : 'text-gray-900' }}">
+    <div class="flex min-h-screen backdrop-blur-sm " style="{{ $theme == 'light' ? 'background-color: #17181C;' : 'background-color: #eeeeee;' }}">
+        <!-- Efek latar belakang -->
+        <div class="absolute inset-0 z-[-1]">
+            <div class="absolute inset-0 flex justify-center">
+                <div class="bg-shape1 bg-teal opacity-50 bg-blur"></div>
+                <div class="bg-shape2 bg-primary opacity-50 bg-blur"></div>
+                <div class="bg-shape1 bg-purple opacity-50 bg-blur"></div>
+            </div>
+        </div> 
         <!-- Sidebar -->
-        @include('components.sidebar')
+        @include('components.sidebar', ['theme' => $theme])
 
         <!-- Content -->
-        <div class="flex-grow" style="{{ $theme == 'light' ? 'background-color: #17181C;' : 'background-color: #eeeeee;' }}>
+        <div class="flex-grow">
             <!-- Navbar -->
-            @include('components.navbar')
+            @include('components.navbar', ['theme' => $theme])
 
             <!-- Main Content -->
-            <div class="flex justify-center mt-3 pb-1 p-5">
-                <div class="max-w-xl relative" >
-                    <!-- Dropdown Departemen -->
-                    <form id="ruanganForm" method="POST" action="{{ route('simpan.ruangan') }}">
-                                @csrf
-                                <input type="hidden" id="selectedProdi" name="prodi" value="">
-                                <button id="dropdownDepartemenButton" class="w-[280px] p-4 pr-10 pl-4 rounded-lg cursor-pointer transition duration-100 ease-in-out flex justify-between items-center
-                                text-gray-400 {{ $theme == 'light' ? 'bg-[#2A2C33] hover:bg-zinc-800 border-transparent focus:ring-gray-800' : 'bg-gray-200 hover:bg-zinc-200 border-gray-300 focus:ring-gray-300' }}" >
-                                    <span id="selectedDepartemen">Pilih Departemen </span>
-                                    <svg class="w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                                    </svg>
-                                </button>
-                        
-                                <!-- Dropdown list -->
-                                <div id="dropdownDepartemen" class="hidden {{ $theme == 'light' ? 'bg-gray-700' : 'bg-gray-50' }} {{ $theme == 'light' ? 'text-gray-200' : 'text-gray-700' }} {{ $theme == 'light' ? 'divide-gray-600' : 'divide-gray-100' }} rounded-lg shadow w-full absolute z-10 mt-2">
-                                    <ul class="py-2 text-sm" aria-labelledby="dropdownDepartemenButton">
-                                        @foreach($prodi as $jurusan)
-                                            <li>
-                                                <span 
-                                                    data-departemen="{{ $jurusan->nama }}" 
-                                                    class="block px-4 py-2 {{ $theme == 'light' ? 'hover:bg-gray-600 hover:text-white' : 'hover:bg-gray-300 hover:text-black' }}">
-                                                    {{ $jurusan->nama }}
-                                                </span>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex justify-center my-3 mb-3">
-                        
-                        </div>   
-
-                        <!-- Table Gedung dan Ruangan -->
-                        <div class="mb-6 mx-3" >
-                            <h2 class="text-center text-base font-semibold mb-5">Gedung dan Ruangan</h2>
-                            <div class="overflow-x-auto" style="box-shadow: 0 2px 6px 6px rgba(0, 0, 0, 0.1)">
-                                <table class="w-full text-center rounded-lg" >
-                                    <thead>
-                                        <tr class="{{ $theme == 'light' ? 'bg-gray-700' : 'bg-gray-200' }}">
-                                            @foreach ($gedung as $index => $g)
-                                                <th class="px-4 py-2 {{ $index === 0 ? 'rounded-tl-lg' : '' }} {{ $index === count($gedung) - 1 ? 'rounded-tr-lg' : 'border-r border-gray-600' }}">
-                                                    {{ $g->nama }}
-                                                </th>
-                                            @endforeach
-                                        </tr>                                        
-                                    </thead>
-                                    <tbody>
-                                        <tr class="{{ $theme == 'light' ? 'bg-gray-800' : 'bg-gray-100' }}" >
-                                            @foreach ($gedung as $index => $g)
-                                                <td class="p-2 {{ $index !== count($gedung) - 1 ? 'border-r border-gray-600' : '' }}">
-                                                    <div class="flex flex-col items-center">
-                                                        @foreach ($ruangan[$g->id] ?? [] as $r)
-                                                        <div class="flex items-center me-4 mt-2 mb-2">
-                                                            <input id="checkbox-{{ $r->id }}" name="ruangan[]"
-                                                                    value="{{ $r->id }}" type="checkbox"
-                                                                    class="w-4 h-4 text-yellow-400 {{ $theme == 'light' ? 'bg-gray-600 border-gray-400' : 'bg-gray-300 border-gray-400' }} rounded focus:ring-yellow-500 dark:focus:ring-yellow-600 dark:ring-offset-gray-800 focus:ring-2 cursor-pointer"
-                                                                    data-gedung="{{ $g->nama }}">
-                                                            <label for="checkbox-{{ $r->id }}" class="ms-2 text-base font-semibold {{ $theme == 'light' ? 'text-gray-300' : 'text-gray-800' }}">
-                                                                {{ $r->nama }}
-                                                            </label>
-                                                        </div>
-                                                        @endforeach
-                                                    </div>
-                                                </td>
-                                            @endforeach
-                                        </tr>   
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="px-8 mt-5 flex justify-end">
-                            <button type="submit" class="rounded-lg py-2 px-5 bg-[#34803C] hover:bg-[#2b6e32] text-white">
-                                <strong>Simpan</strong>
+            <div class="{{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-gray-100/20' }}">
+                <div class="flex justify-center pb-1">
+                    <div class="max-w-xl relative mt-8 ">
+                        <!-- Dropdown Departemen -->
+                        <form id="ruanganForm" method="POST" action="{{ route('simpan.ruangan') }}">
+                            @csrf
+                            <input type="hidden" id="selectedProdi" name="prodi" value="">
+                            <button id="dropdownDepartemenButton" class="w-[280px] p-4 pr-10 pl-4 rounded-xl cursor-pointer transition duration-100 ease-in-out flex justify-between items-center
+                            text-gray-400 {{ $theme == 'light' ? 'bg-[#2A2C33] hover:bg-zinc-800 border-transparent focus:ring-gray-800 outline outline-1 outline-zinc-700' : 'bg-gray-200 hover:bg-zinc-200 border-gray-300 focus:ring-gray-300 outline outline-1' }} shadow-[4px_6px_1px_1px_rgba(0,_0,_0,_0.8)]">
+                                <span id="selectedDepartemen">Pilih Departemen </span>
+                                <svg class="w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                                </svg>
                             </button>
-                        </div>
-                    </form>
-                    
-                    <div class="mb-6 mx-3" id="ringkasanSection">
-                        <h2 class="text-center text-lg font-semibold mb-5">Ringkasan <span id="ringkasanTitle"></span></h2>
-                        <div class="overflow-x-auto" style="box-shadow: 0 2px 6px 6px rgba(0, 0, 0, 0.1)">
-                            <table class="w-full text-center rounded-lg">
-                                <thead>
-                                    <tr class="{{ $theme == 'light' ? 'bg-gray-700' : 'bg-gray-200' }}">
-                                        <th class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-600' }} rounded-tl-lg">Departemen</th>
-                                        <th class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-600' }}">Gedung</th>
-                                        <th class="px-4 py-2 rounded-tr-lg">Ruangan</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="ringkasanBody">
-                                    <tr style=" {{ $theme == 'light' ? 'background-color: #1F2937;' : 'background-color: #F9FAFB;' }} ">
-                                        <td colspan="3" class="{{ $theme == 'light' ? 'bg-gray-800 text-gray-300' : 'bg-gray-100 text-gray-500' }}">Silakan pilih ruangan untuk melihat ringkasan.</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+
+                            <!-- Dropdown list -->
+                            <div id="dropdownDepartemen" class="hidden {{ $theme == 'light' ? 'bg-gray-700 outline outline-1 outline-zinc-700' : 'bg-gray-50 outline outline-1' }} {{ $theme == 'light' ? 'text-gray-200' : 'text-gray-700' }} {{ $theme == 'light' ? 'divide-gray-600' : 'divide-gray-100' }} rounded-xl shadow w-full absolute z-10 mt-3" style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5)">
+                                <ul class="py-2 text-sm" aria-labelledby="dropdownDepartemenButton">
+                                    @foreach($prodi as $jurusan)
+                                    <li>
+                                        <span data-departemen="{{ $jurusan->nama }}" class="block px-4 py-2 cursor-pointer {{ $theme == 'light' ? 'hover:bg-gray-600 hover:text-white' : 'hover:bg-gray-300 hover:text-black' }}">
+                                            {{ $jurusan->nama }}
+                                        </span>
+                                    </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </form>
                     </div>
-        
-                    <div class="px-8 mt-5 flex justify-end">
-                        <button type="button" id="ajukanButton" class="rounded-lg py-2 px-5 bg-[#34803C] hover:bg-[#2b6e32] text-white">
-                            <strong>Ajukan</strong>
-                        </button>
+                </div>
+
+                <!-- Table Gedung dan Ruangan -->
+                <div class="mb-6 mt-8 mx-3">
+                    <h2 class="text-center text-base font-semibold mb-5">Gedung dan Ruangan</h2>
+                    <div class="ml-6 mr-6 overflow-x-auto rounded-xl {{ $theme == 'light' ? 'outline outline-1 outline-zinc-700' : 'outline outline-1' }}" style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5)">
+                        <table class="w-full text-center">
+                            <thead>
+                                <tr class="{{ $theme == 'light' ? 'bg-gray-700' : 'bg-gray-200' }}">
+                                    @foreach ($gedung as $index => $g)
+                                    <th class="px-4 py-2 {{ $index === 0 ? 'rounded-tl-lg' : '' }} {{ $index === count($gedung) - 1 ? 'rounded-tr-lg' : 'border-r border-gray-600' }}">
+                                        {{ $g->nama }}
+                                    </th>
+                                    @endforeach
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="{{ $theme == 'light' ? 'bg-gray-800' : 'bg-gray-100' }}">
+                                    @foreach ($gedung as $index => $g)
+                                    <td class="p-2 {{ $index !== count($gedung) - 1 ? 'border-r border-gray-600' : '' }}">
+                                        <div class="flex flex-col items-center">
+                                            @foreach ($ruangan[$g->id] ?? [] as $r)
+                                            <div class="flex items-center me-4 mt-2 mb-2">
+                                                <input id="checkbox-{{ $r->id }}" name="ruangan[]"
+                                                        value="{{ $r->id }}" type="checkbox"
+                                                        class="w-4 h-4 text-yellow-400 {{ $theme == 'light' ? 'bg-gray-600 border-gray-400' : 'bg-gray-300 border-gray-400' }} rounded focus:ring-yellow-500 dark:focus:ring-yellow-600 dark:ring-offset-gray-800 focus:ring-2 cursor-pointer"
+                                                        data-gedung="{{ $g->nama }}">
+                                                <label for="checkbox-{{ $r->id }}" class="ms-2 text-base font-semibold {{ $theme == 'light' ? 'text-gray-300' : 'text-gray-800' }}">
+                                                    {{ $r->nama }}
+                                                </label>
+                                            </div>
+                                            @endforeach
+                                        </div>
+                                    </td>
+                                    @endforeach
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
+                </div>
+
+                <!-- Button Simpan -->
+                <div class="px-8 mt-5 flex justify-end">
+                    <button type="submit" class="rounded-lg py-2 px-5 bg-gradient-to-l from-green-500 via-green-600 to-green-700 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white">
+                        <strong>Simpan</strong>
+                    </button>
+                </div>
+                </form>
+
+                <!-- Ringkasan -->
+                <div class="mb-6 mx-3 rounded-xl" id="ringkasanSection">
+                    <h2 class="text-center text-lg font-semibold mb-5">Ringkasan <span id="ringkasanTitle"></span></h2>
+                    <div class="ml-6 mr-6 overflow-x-auto rounded-xl {{ $theme == 'light' ? 'outline outline-1 outline-zinc-700' : 'outline outline-1' }}" style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5)">
+                        <table class="w-full text-center rounded-xl">
+                            <thead>
+                                <tr class="{{ $theme == 'light' ? 'bg-gray-700' : 'bg-gray-200' }}">
+                                    <th class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-600' }}">Departemen</th>
+                                    <th class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-600' }}">Gedung</th>
+                                    <th class="px-4 py-2">Ruangan</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ringkasanBody">
+                                <tr style="{{ $theme == 'light' ? 'background-color: #1F2937;' : 'background-color: #F9FAFB;' }}">
+                                    <td colspan="3" class="{{ $theme == 'light' ? 'bg-gray-800 text-gray-300 rounded-xl' : 'bg-gray-100 text-gray-500 rounded-xl' }}">Silakan pilih ruangan untuk melihat ringkasan.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Button Ajukan -->
+                <div class="px-8 mt-5 pb-64 flex justify-end">
+                    <button type="button" id="ajukanButton" class="rounded-lg py-2 px-5 bg-gradient-to-l from-green-500 via-green-600 to-green-700 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white">
+                        <strong>Ajukan</strong>
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
+
+
     <script>
-        const dropdownDepartemenButton = document.getElementById('dropdownDepartemenButton');
+    const dropdownDepartemenButton = document.getElementById('dropdownDepartemenButton');
     const dropdownDepartemen = document.getElementById('dropdownDepartemen');
     const selectedDepartemenText = document.getElementById('selectedDepartemen');
 
@@ -274,8 +285,6 @@ document.getElementById('ruanganForm').addEventListener('submit', function(e) {
                 }
             })
         });
-
-        
     </script>
 
     <script>
@@ -301,14 +310,14 @@ document.getElementById('ruanganForm').addEventListener('submit', function(e) {
             const row = document.createElement('tr');
             row.className = '{{ $theme == 'light' ? 'bg-gray-800' : 'bg-gray-100' }}';
             row.innerHTML = `
-                <td class="px-4 py-2 border-r border-gray-600">${prodi}</td>
-                <td class="px-4 py-2 border-r border-gray-600">${gedungNama}</td>
-                <td class="px-4 py-2">${ruanganNama}</td>
+                <td class="px-4 py-2 rounded-xl border-r border-gray-600">${prodi}</td>
+                <td class="px-4 py-2 rounded-xl border-r border-gray-600">${gedungNama}</td>
+                <td class="px-4 py-2 rounded-xl">${ruanganNama}</td>
             `;
             ringkasanBody.appendChild(row);
         });
     } else {
-        ringkasanBody.innerHTML = '<tr><td colspan="3" class="text-gray-500">Silakan pilih ruangan untuk melihat ringkasan.</td></tr>';
+        ringkasanBody.innerHTML = '<tr><td colspan="3" class="text-gray-500 rounded-xl">Silakan pilih ruangan untuk melihat ringkasan.</td></tr>';
     }
 }
 // Call updateRingkasan on page load if a prodi is already selected

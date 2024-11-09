@@ -17,10 +17,5 @@ class Mata_Kuliah extends Model
         'sks',
         'semester',
         'prodi',
-        'hari',
-        'jam_mulai',
-        'jam_selesai',
     ];
-
-
 }

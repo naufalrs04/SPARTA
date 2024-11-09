@@ -10,12 +10,11 @@
     }
 </style>
 
-<div class="flex-grow " style="{{ $theme == 'light' ? 'background-color: #1E1F24;' : 'background-color: #e0e0e0;' }}">
+<div class="flex-grow ">
     {{-- Navbar Atas {{ $theme == 'light' ? 'border-b-2 border-black' : 'border-b-2 border-gray-300' }} --}}
-    <nav class="pr-8 flex justify-between box-border shadow-lg" 
-    style="{{ $theme == 'light' ? 'background-color: #1E1F24;' : 'background-color: #e0e0e0;' }} {{ $theme == 'light' ? 'border-b-2 border-black' : 'border-b-2 border-gray-300' }}">
+    <nav class="pr-8 flex justify-between box-border {{ $theme == 'light' ? 'bg-gray-900/60' : 'bg-gray-200/30' }}" >
 
-        <div class="flex items-center ml-8">
+        <div class="flex items-center ml-8 ">
             <span class="navbar-text">
                 <form action="{{ route('create-update') }}" method="post" class="flex items-center">
                     @csrf
@@ -42,7 +41,7 @@
         <!-- Foto Profil -->
         <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"></script>
         <div class="pl-4">
-            <div x-data="{ open: false }" class=" flex justify-start items-center" style="{{ $theme == 'light' ? 'background-color: #1E1F24;' : 'background-color: #e0e0e0;' }}">
+            <div x-data="{ open: false }" class=" flex justify-start items-center">
                 <div class="relative border-b-4 border-transparent py-3">
                     <div class="flex justify-center items-center space-x-3">
 
@@ -66,7 +65,7 @@
                         x-transition:leave-start="transform opacity-100 scale-100"
                         x-transition:leave-end="transform opacity-0 scale-95"
                         @click.away="open = false"
-                        class="absolute right-0 w-60 z-50 px-5 py-3 {{ $theme == 'light' ? 'bg-zinc-800 dark:border-transparent bg-white text-white' : 'bg-white text-black border border-gray-300' }} rounded-lg shadow mt-5">
+                        class="absolute right-0 w-60 z-50 px-5 py-3 {{ $theme == 'light' ? 'bg-zinc-800 border-transparent text-white' : 'bg-white text-black border border-gray-300' }} rounded-lg shadow mt-5">
                         <ul class="space-y-3 {{ $theme == 'light' ? 'text-white' : 'text-gray-900' }}">
                             <li class="font-medium">
                                 <a href="profile"

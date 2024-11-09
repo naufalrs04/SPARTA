@@ -256,7 +256,6 @@ use Illuminate\Support\Str;
                     </div>
                 </div>
             </div>
-
             <div id="contentIRSMahasiswa" class="hidden">
                 @foreach($groupedData as $mahasiswaId => $semesterGroups)
                 <div class="mahasiswa-container px-4 sm:px-6 md:px-8 pt-5 pb-10">

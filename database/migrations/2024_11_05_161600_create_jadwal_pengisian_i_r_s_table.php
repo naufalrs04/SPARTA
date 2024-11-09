@@ -11,15 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
-        Schema::create ('mata_kuliahs', function (Blueprint $table) {
-            $table-> id();
-            $table-> string('kode');
-            $table-> string('nama');
-            $table-> integer('sks');
-            $table-> integer('semester');
-            $table-> string('prodi');
-            $table-> timestamps();
+        Schema::create('jadwal_pengisian_i_r_s', function (Blueprint $table) {
+            $table->id();
+            $table->string('keterangan');
+            $table->date('jadwalmulai')->nullable();
+            $table->date('jadwalberakhir')->nullable(); 
+            $table->timestamps();
         });
     }
 
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('jadwal_pengisian_i_r_s');
     }
 };
