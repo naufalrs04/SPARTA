@@ -108,8 +108,8 @@
                                                 <td class="px-4 py-2 text-black">{{ $mk->kelas }}</td>
                                                 <td class="px-4 py-2 text-black">{{ $mk->sks }}</td>
                                                 <td class="px-4 py-2 text-black">{{ $mk->ruang }}</td>
-                                                <td class="px-4 py-2 text-black">{{ }}</td>
-                                                <td class="px-4 py-2 text-black">XX</td>
+                                                <td class="px-4 py-2 text-black">{{ $mk->status_pengambilan }}</td>
+                                                <td class="px-4 py-2 text-black">{{ $mk->dosen }}</td>
                                             </tr>
                                         @endforeach
                                         </tbody>

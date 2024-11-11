@@ -5,6 +5,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Mahasiswa;
+use App\Models\PenyusunanJadwal;
 use App\Models\Dosen;
 use App\Models\Irs_rekap;
 use App\Models\Mata_Kuliah;
@@ -29,18 +30,28 @@ class verifikasiIRS extends Controller
 
     // Ambil semua mahasiswa bimbingan dosen
     $mhs_perwalian = Mahasiswa::where('id_wali', $dosen->id)->get();
-
+    // dd($mhs_perwalian);
+    
     $mhs_belum_verifikasi = collect();
     // Data untuk sudah terverifikasi
     $mhs_sudah_verifikasi = collect();
 
-    // dd($mhs_perwalian);
+    $rekap = irs_rekap::select('kode_mk')->get();
+
     foreach ($mhs_perwalian as $mhs) {
         $mhs->nama = User::where('nim_nip', $mhs->nim)->first()->nama;
         $mhs->total_sks = Irs_rekap::where('mahasiswa_id', $mhs->id)->sum('sks');
 
         // Ambil mata kuliah
-        $mhs->mata_kuliah = Irs_rekap::where('mahasiswa_id', $mhs->id)->get();
+        $mhs->mata_kuliah = Irs_rekap::where('mahasiswa_id', $mhs->id)->get()
+        ->map(function ($rekap) {
+            $jadwal = PenyusunanJadwal::where('kode_mk', $rekap->kode_mk)
+                                       ->where('kelas', $rekap->kelas)
+                                       ->first();
+            $rekap->dosen = $jadwal ? $jadwal->dosen : 'Dosen Tidak Ditemukan';
+            return $rekap;
+        });
+        // dd($mhs->dosen);
 
         $rekap_belum = Irs_rekap::where('mahasiswa_id', $mhs->id)
                                 ->where('status_pengajuan', null)
@@ -72,6 +83,8 @@ class verifikasiIRS extends Controller
             $mhs_sudah_verifikasi->push($mhs_copy);
         }
     }
+
+    // dd($mhs);
 
     
     return view('verifikasiIRS', compact('user', 'mhs_belum_verifikasi', 'mhs_sudah_verifikasi', 'theme'));
