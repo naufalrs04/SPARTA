@@ -100,18 +100,18 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-
+                                        @foreach ($mhs->mata_kuliah as $mk)
                                             <tr class="border-t">
                                                 <td class="px-4 py-2 text-black">{{ $loop->iteration }}</td>
-                                                <td class="px-4 py-2 text-black"></td>
-                                                <td class="px-4 py-2 text-black"></td>
-                                                <td class="px-4 py-2 text-black"></td>
-                                                <td class="px-4 py-2 text-black"></td>
-                                                <td class="px-4 py-2 text-black"></td>
-                                                <td class="px-4 py-2 text-black">Baru</td>
+                                                <td class="px-4 py-2 text-black">{{ $mk->kode_mk }}</td>
+                                                <td class="px-4 py-2 text-black">{{ $mk->nama_mk }}</td>
+                                                <td class="px-4 py-2 text-black">{{ $mk->kelas }}</td>
+                                                <td class="px-4 py-2 text-black">{{ $mk->sks }}</td>
+                                                <td class="px-4 py-2 text-black">{{ $mk->ruang }}</td>
+                                                <td class="px-4 py-2 text-black">{{ }}</td>
                                                 <td class="px-4 py-2 text-black">XX</td>
                                             </tr>
-
+                                        @endforeach
                                         </tbody>
                                     </table>
                                 </td>

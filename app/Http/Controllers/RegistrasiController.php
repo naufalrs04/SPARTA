@@ -9,15 +9,18 @@ use App\Models\Mahasiswa;
 class RegistrasiController extends Controller
 {
     //
-    public function index()
+    public function index(Request $request)
     {
         if (!Auth::check()) {
             return redirect()->route('login');
         }
 
         $user = Auth::user();
+
+        // Ambil tema dari cookie atau gunakan 'light' sebagai default
+        $theme = $request->cookie('theme') ?? 'light';
         
-        return view('/registrasi', compact('user'));
+        return view('/registrasi', compact('user', 'theme'));
     }
 
     public function updateStatus(Request $request)

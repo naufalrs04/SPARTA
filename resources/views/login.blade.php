@@ -31,10 +31,10 @@
 </head>
 
 <body class="h-full">
-    <div class="bg-cover bg-center p-12 text-center w-full h-full flex flex-col items-center justify-center" style="background-image: url('{{ asset('assets/background_login_page.jpg') }}');">
+    <div class="bg-cover bg-center p-12 text-center w-full h-full flex flex-col items-center justify-center " style="background-image: url('{{ asset('assets/background_login_page.jpg') }}');">
         <img class="mb-10" src="{{ asset('assets/Logo.png') }}" alt="Logo" style="height: 15%; width: auto;">
 
-        <div class="rounded-lg shadow-lg p-10 w-full max-w-sm" style="background-color: #23252A">
+        <div class="bg-white/5 border border-white/10 rounded-2xl shadow-xl p-10 w-full max-w-sm backdrop-blur-lg">
             <div class="sm:mx-auto sm:w-full sm:max-w-sm">
                 <h2 class="mb-10 text-center text-2xl font-bold leading-9 tracking-tight text-white">Log in to your account</h2>
             </div>

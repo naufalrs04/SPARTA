@@ -9,9 +9,6 @@ class JadwalPengisianIRS extends Model
 {
     use HasFactory;
 
-    // $table->string('keterangan');
-    // $table->date('jadwalmulai')->nullable();
-    // $table->date('jadwalberakhir')->nullable(); 
     protected $fillable = [
         'keterangan',
         'jadwalmulai',

@@ -8,6 +8,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    @vite('resources/css/app.css')
     <style>
         .swal-wide {
             width: 600px !important;
@@ -41,67 +44,81 @@
     </style>
 </head>
 
-<body class="bg-gray-900 text-gray-100">
-    <div class="flex min-h-screen">
+<body class="{{ $theme == 'light' ? 'text-gray-100' : 'text-gray-900' }}">
+    <div class="flex min-h-screen backdrop-blur-sm" style="{{ $theme == 'light' ? 'background-color: #17181C;' : 'background-color: #eeeeee;' }}">
+        <!-- Efek latar belakang -->
+        <div class="absolute inset-0 z-[-1]">
+            <div class="absolute inset-0 flex justify-center">
+                <div class="bg-shape1 bg-teal opacity-50 bg-blur"></div>
+                <div class="bg-shape2 bg-primary opacity-50 bg-blur"></div>
+                <div class="bg-shape1 bg-purple opacity-50 bg-blur"></div>
+            </div>
+        </div> 
         <!-- Sidebar -->
-        @include('components.sidebar')
+        @include('components.sidebar', ['theme' => $theme])
 
         <!-- Content -->
-        <div class="flex-grow" style="background-color: #17181C;">
+        <div class="flex-grow">
             <!-- Navbar -->
-            @include('components.navbar')
+            @include('components.navbar', ['theme' => $theme])
 
             <!-- Main Content -->
-            <div class="px-8 pt-5 mt-5 mb-5 rounded-tl-lg">
-                <h2 class="text-center text-lg font-semibold mb-4">Verifikasi Ruang Kuliah</h2>
-                <table class="table-auto p-5 w-full text-center rounded-lg border-collapse">
-                    <thead>
-                        <tr style="background-color: rgba(135, 138, 145, 0.37);">
-                            <th class="px-4 py-2 w-1/4 border-r border-white rounded-tl-lg">Departemen</th>
-                            <th class="px-4 py-2 w-1/2 border-r border-white">Status</th>
-                            <th class="px-4 py-2 w-1/4 rounded-tr-lg">Info</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($verif as $v)
-                            <tr style="background-color: #23252A;">
-                                <td class="px-4 py-2 border-r border-white">{{ $v->nama_prodi }}</td>
+            <div class="pb-64 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
+                <div class="px-8 pt-8 mb-8">
+                    <div class="text-center">
+                        <h2 class="text-center text-lg font-semibold mb-4 rounded-lg inline-block  px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">Verifikasi Ruang Kuliah</h2>
+                    </div>
+                    <div class="overflow-x-auto rounded-3xl {{ $theme == 'light' ? 'border border-black' : 'border border-black' }}" style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5)">
+                        <table class="table-auto p-5 w-full text-center border-collapse">
+                            <thead>
+                                <tr class="{{ $theme == 'light' ? 'bg-gray-700' : 'bg-gray-200' }}">
+                                    <th class="px-4 py-2 w-1/4 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">Departemen</th>
+                                    <th class="px-4 py-2 w-1/2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">Status</th>
+                                    <th class="px-4 py-2 w-1/4 ">Info</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($verif as $v)
+                                    <tr class="{{ $theme == 'light' ? 'bg-[#2A2C33]' : 'bg-[#EEEEEE]' }}">
+                                        <td class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $v->nama_prodi }}</td>
 
-                                @if ($v->status_pengajuan == 'ter-Verifikasi')
-                                    <td
-                                        class="px- 3 py-3 border-r border-white text-center flex justify-center items-center">
-                                        <div class="w-32 text-white text-center rounded-md px-2 py-2"
-                                            style="background-color: #34803C;">
-                                            <p>ter-Verifikasi</p>
-                                        </div>
-                                    </td>
-                                @elseif($v->status_pengajuan == 'Ditolak')
-                                    <td
-                                        class="px-3 py-3 border-r border-white text-center flex justify-center items-center">
-                                        <div class="w-32 text-white text-center rounded-md px-2 py-2"
-                                            style="background-color: #851010;">
-                                            <p>Ditolak</p>
-                                        </div>
-                                    </td>
-                                @else
-                                    <td
-                                        class="px-3 py-3 border-r border-white text-center flex justify-center items-center">
-                                        <div class="w-32 text-white text-center rounded-md px-2 py-2"
-                                            style="background-color: #999b25;">
-                                            <p>Belum</p>
-                                        </div>
-                                    </td>
-                                @endif
-                                <td class="px-5 py-2 text-center">
-                                    <button onclick="showInfo('{{ $v->nama_prodi }}', {{ $v->ruangan_details }})"
-                                        class="info w-16 text-white rounded-md px-3 py-2 bg-gray-400 hover:bg-gray-500">
-                                        Info
-                                    </button>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                                        @if ($v->status_pengajuan == 'ter-Verifikasi')
+                                            <td
+                                                class="px-3 py-3 border-r text-center flex justify-center items-center {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">
+                                                <div class="w-32 text-white text-center rounded-lg px-2 py-2 bg-gradient-to-l from-green-500 via-green-600 to-green-700">
+                                                    <p class="font-bold">Terverifikasi</p>
+                                                </div>
+                                            </td>
+                                        @elseif($v->status_pengajuan == 'Ditolak')
+                                            <td
+                                                class="px-3 py-3 border-r text-center flex justify-center items-center {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">
+                                                <div class="w-32 text-white text-center rounded-md px-2 py-2 bg-gradient-to-l from-red-500 via-red-600 to-red-700">
+                                                    <p class="font-bold">Ditolak</p>
+                                                </div>
+                                            </td>
+                                        @else
+                                            <td
+                                                class="px-3 py-3 border-r text-center flex justify-center items-center {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">
+                                                <div class="w-32 text-white text-center rounded-md px-2 py-2 bg-gradient-to-l from-orange-500 via-orange-600 to-orange-700">
+                                                    <p class="font-bold">Belum</p>
+                                                </div>
+                                            </td>
+                                        @endif
+                                        <td class="px-5 py-2 text-center">
+                                            <button onclick="showInfo('{{ $v->nama_prodi }}', {{ $v->ruangan_details }})"
+                                                class="info w-16 text-white font-bold rounded-lg px-3 py-2 bg-gradient-to-t from-gray-400 via-gray-500 to-gray-500 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out">
+                                                Info
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="pb-48 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
+
             </div>
         </div>
     </div>

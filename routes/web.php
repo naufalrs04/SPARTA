@@ -24,6 +24,7 @@ use App\Http\Controllers\verifikasiIRS;
 use App\Http\Controllers\verifikasijadwal;
 use App\Http\Controllers\verifikasiRuangKuliah;
 use App\Http\Controllers\profile;
+use App\Http\Controllers\ThemeController;
 use App\Models\JadwalPengisianIRS;
 
 Route::get('/login', function () {
@@ -61,8 +62,8 @@ Route::get('/dashboardKaprodi', [DashboardKaprodiController::class, 'index'])->m
 
 Route::get('/penyusunanjadwal', [PenyusunanJadwalController::class, 'index'])->middleware('auth')->name('Penyusunanjadwal');
 
-Route::post('/penyusunan-jadwal/store', [PenyusunanJadwalController::class, 'store'])->name('penyusunan-jadwal.store');
-
+// Route::post('/penyusunan-jadwal/store', [PenyusunanJadwalController::class, 'store'])->name('penyusunan-jadwal.store');
+Route::post('/jadwal/tambah', [PenyusunanJadwalController::class, 'store'])->name('jadwal.store');
 Route::get('/jadwalpengisianIRS', [JadwalPengisianIRSController::class, 'index'])->middleware('auth')->name('jadwalpengisianIRS');
 
 Route::patch('/jadwal-pengisian/{id}', [JadwalPengisianIRSController::class, 'update']);
@@ -98,6 +99,9 @@ Route::post('/verifikasi-irs/batal', [verifikasiIRS::class, 'batalkanIRS'])->nam
 
 
 Route::get('/verifikasijadwal', [verifikasijadwal::class, 'index'])->middleware('auth')->name('verifikasijadwal');
+Route::post('/verifikasi-jadwal/{prodi}', [verifikasiJadwal::class, 'verifikasi'])->name('verifikasi.jadwal');
+Route::post('/tolak-jadwal/{prodi}', [verifikasiJadwal::class, 'tolak'])->name('tolak.jadwal');
+
 
 Route::get('/verifikasiRuangKuliah', [verifikasiRuangKuliah::class, 'index'])->middleware('auth')->name('verifikasiRuangKuliah');
 Route::post('/verifikasi-ruang/{prodi}', [verifikasiRuangKuliah::class, 'verifikasi'])->name('verifikasi.ruang');
@@ -107,3 +111,10 @@ Route::get('/search-mata-kuliah', [PengisianIRS::class, 'searchMataKuliah'])->na
 Route::get('/profile', function () {
     return view('profile');
 })->name('profile');
+
+
+//Theme Dark Light
+Route::get('/', [ThemeController::class,'readCookie']);
+
+Route::post('/cookie/create/update',[ThemeController::class,'createAndUpdate'])->name('create-update'); 
+

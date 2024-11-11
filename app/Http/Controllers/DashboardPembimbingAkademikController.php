@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 class DashboardPembimbingAkademikController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         if (!Auth::check()) {
             return redirect()->route('login');
@@ -15,11 +15,14 @@ class DashboardPembimbingAkademikController extends Controller
 
         $user = Auth::user();
 
+        // Ambil tema dari cookie atau gunakan 'light' sebagai default
+        $theme = $request->cookie('theme') ?? 'light';
+
         $data = [
             'nama' => $user->nama,
             'nim_nip' => $user->nim_nip,
         ];
-        return view('dashboardPembimbingAkademik', compact('data', 'user'));
+        return view('dashboardPembimbingAkademik', compact('data', 'user', 'theme'));
     }
 
 }

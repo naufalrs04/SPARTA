@@ -8,17 +8,19 @@ use App\Models\Ruangan;
 use App\Models\Gedung;
 use App\Models\ruangan_prodi;
 use App\Models\prodi;
-use Database\Seeders\ruangan as SeedersRuangan;
 
 class pembagiankelasInfo extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         if (!Auth::check()) {
             return redirect()->route('login');
         }
 
         $user = Auth::user();
+        
+        // Ambil nilai tema dari cookie
+        $theme = $request->cookie('theme') ?? 'light';
         
         $prodi=prodi::all();
         foreach ($prodi as $jurusan) {
@@ -35,7 +37,7 @@ class pembagiankelasInfo extends Controller
         
         
         
-        return view('/pembagiankelasInfo', compact( 'user','prodi','jurusan','ruangan','gedung',));
+        return view('/pembagiankelasInfo', compact( 'user','prodi','jurusan','ruangan','gedung','theme'));
     }
 
     public function simpanRuangan(Request $request)
@@ -44,10 +46,12 @@ class pembagiankelasInfo extends Controller
         'prodi' => 'required|string',
         'ruangan' => 'required|array',
         'ruangan.*' => 'exists:ruangans,id',
+        'kapasitas' => 'required|integer|min:1', // Validasi kapasitas
     ]);
 
     $prodi = $request->input('prodi');
     $ruanganIds = $request->input('ruangan');
+    $kapasitas = $request->input('kapasitas'); // Ambil kapasitas
 
     $existingRuangan = ruangan_prodi::where('nama_prodi', $prodi)
         ->whereIn('ruangan_id', $ruanganIds)
@@ -63,9 +67,11 @@ class pembagiankelasInfo extends Controller
         ruangan_prodi::create([
             'ruangan_id' => $ruanganId,
             'nama_prodi' => $prodi,
+            'kapasitas' => $kapasitas, // Simpan kapasitas
         ]);
     }
 
     return redirect()->back()->with('success', 'Data berhasil disimpan.');
 }
+
 }

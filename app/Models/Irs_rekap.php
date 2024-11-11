@@ -11,10 +11,14 @@ class Irs_rekap extends Model
     protected $table = 'irs_rekap';
     protected $fillable = [
         'mahasiswa_id',
-        'mata_kuliah_id',
-        'ruangan_id',
         'semester',
+        'jadwal_id',
+        'kode_mk',
+        'nama_mk',
+        'kelas',
+        'ruang',
         'sks',
+        'status_pengambilan',
         'status_pengajuan',
     ];
 }

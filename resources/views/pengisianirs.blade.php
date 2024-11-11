@@ -118,6 +118,7 @@ use Illuminate\Support\Str;
                                 <th class="px-4 py-2 border-r border-white rounded-tl-lg">No</th>
                                 <th class="px-4 py-2 w-1/3 border-r border-white">Kode MK</th>
                                 <th class="px-4 py-2 w-1/3 border-r border-white">Mata Kuliah</th>
+                                <th class="px-4 py-2 border-r border-white">Kelas</th>
                                 <th class="px-4 py-2 w-1/3 border-r border-white">Waktu</th>
                                 <th class="px-4 py-2 w-1/3 border-r border-white">SKS</th>
                                 <th class="px-4 py-2 rounded-tr-lg">Batalkan</th>
@@ -127,8 +128,9 @@ use Illuminate\Support\Str;
                             @foreach ($irs_rekap as $rekap)
                             <tr style="background-color: #23252A;">
                                 <td class="px-4 py-2 border-r border-white">{{ $loop->iteration }}</td>
-                                <td class="px-4 py-2 w-1/3 border-r border-white">{{ $rekap->kode }}</td>
-                                <td class="px-4 py-2 w-1/3 border-r border-white">{{ $rekap->nama }}</td>
+                                <td class="px-4 py-2 w-1/3 border-r border-white">{{ $rekap->kode_mk }}</td>
+                                <td class="px-4 py-2 w-1/3 border-r border-white">{{ $rekap->nama_mk }}</td>
+                                <td class="px-4 py-2 border-r border-white">{{ $rekap->kelas }}</td>
                                 <td class="px-4 py-2 w-1/3 border-r border-white">
                                     {{ $rekap->hari }},
                                     {{ \Carbon\Carbon::parse($rekap->jam_mulai)->format('H:i') }} -
@@ -137,7 +139,7 @@ use Illuminate\Support\Str;
                                 <td class="px-4 py-2 w-1/3 border-r border-white">{{ $rekap->sks }}</td>
                                 <td class="px-4 py-2 border-white">
                                     <button class="cancel-course bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded"
-                                        data-id="{{ $rekap->mata_kuliah_id }}"
+                                        data-id="{{ $rekap->kode_mk }}"
                                         data-mahasiswa-id="{{ $rekap->mahasiswa_id }}"
                                         data-semester="{{ $rekap->semester }}">
                                         Batalkan
@@ -202,54 +204,66 @@ use Illuminate\Support\Str;
                                     <th class="px-4 py-2 w-1/3 border-r border-white">Kode Mata Kuliah</th>
                                     <th class="px-4 py-2 w-1/3 border-r border-white">Mata Kuliah</th>
                                     <th class="px-4 py-2 w-1/3 border-r border-white">Waktu</th>
+                                    <th class="px-4 py-2 w-1/3 border-r border-white">Kapasitas</th>
                                     <th class="px-4 py-2 border-r border-white">Pengambilan</th>
                                     <th class="px-4 py-2 border-white rounded-tr-lg">Info</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($list_mata_kuliah as $index => $mata_kuliah)
-                                <tr class="course-row" style="background-color: #23252A;"
-                                    data-course-id="{{ $mata_kuliah->id }}"
-                                    data-course-time="{{ $mata_kuliah->hari }}, {{ \Carbon\Carbon::parse($mata_kuliah->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($mata_kuliah->jam_selesai)->format('H:i') }}"
-                                    data-ruangan-id="{{ $mata_kuliah->ruangan_id }}">
-                                    <td class="px-4 py-2 border-r border-white">{{ $loop->iteration }}</td>
-                                    <td class="px-4 py-2 w-1/3 border-r border-white">{{ $mata_kuliah->kode }}
-                                    </td>
-                                    <td class="px-4 py-2 w-1/3 border-r border-white">{{ $mata_kuliah->nama }}
-                                    </td>
-                                    <td class="px-4 py-2 w-1/3 border-r border-white">
-                                        {{ $mata_kuliah->hari }},
-                                        {{ \Carbon\Carbon::parse($mata_kuliah->jam_mulai)->format('H:i') }} -
-                                        {{ \Carbon\Carbon::parse($mata_kuliah->jam_selesai)->format('H:i') }}
-                                    </td>
-                                    <td class="px-4 py-2 border-r border-white">
-                                        <form action="{{ route('irs-rekap.store') }}" method="POST">
-                                            @csrf
-                                            <input type="hidden" name="mata_kuliah_id" value="{{ $mata_kuliah->id }}">
-                                            <input type="hidden" name="ruangan_id" value="{{ $mata_kuliah->ruangan_id}}">
-                                            <input type="hidden" name="sks" id="input-sks" value="{{ $mata_kuliah->sks }}">
-                                            <div
-                                                class="text-white text-center items-center justify-center mx-2 my-1 rounded-md cursor-pointer bg-[#34803C] hover:bg-green-800 font-bold">
-                                                <button class="ambil-mata-kuliah"
-                                                    data-kode="{{ $mata_kuliah->kode }}"
-                                                    data-nama="{{ $mata_kuliah->nama }}"
-                                                    data-hari-jam="{{ $mata_kuliah->hari }}, {{ \Carbon\Carbon::parse($mata_kuliah->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($mata_kuliah->jam_selesai)->format('H:i') }}"
-                                                    data-sks="{{ $mata_kuliah->sks }}" type="submit">
-                                                    Ambil
+                                @foreach ($list_mata_kuliah as $index => $mk)
+                                    <tr class="course-row" style="background-color: #23252A;"
+                                        data-course-id="{{ $mk->id }}"
+                                        data-course-time="{{ $mk->hari }}, {{ \Carbon\Carbon::parse($mk->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($mk->jam_selesai)->format('H:i') }}"
+                                        data-ruangan-id="{{ $mk->ruang }}">
+                                        <td class="px-4 py-2 border-r border-white">{{ $loop->iteration }}</td>
+                                        <td class="px-4 py-2 w-1/3 border-r border-white">{{ $mk->kode_mk }}
+                                        </td>
+                                        <td class="px-4 py-2 w-1/3 border-r border-white">{{ $mk->nama_mk }} - {{ $mk->kelas }}
+                                        </td>
+                                        <td class="px-4 py-2 w-1/3 border-r border-white">
+                                            {{ $mk->hari }},
+                                            {{ \Carbon\Carbon::parse($mk->jam_mulai)->format('H:i') }} -
+                                            {{ \Carbon\Carbon::parse($mk->jam_selesai)->format('H:i') }}
+                                        </td>
+                                        <td class="px-4 py-2 w-1/3 border-r border-white">{{ $mk->jumlah_pendaftar }} / {{ $mk->kapasitas }}
+                                        </td>
+                                        <td class="px-4 py-2 border-r border-white">
+                                            <form action="{{ route('irs-rekap.store') }}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="kode_mk" value="{{ $mk->kode_mk }}">
+                                                <input type="hidden" name="ruang" value="{{ $mk->ruang}}">
+                                                <input type="hidden" name="sks_mk" id="input-sks" value="{{ $mk->sks_mk }}">
+                                                <input type="hidden" name="id" value="{{ $mk->id }}">
+                                                <input type="hidden" name="nama_mk" value="{{ $mk->nama_mk }}">
+                                                <input type="hidden" name="kelas" value="{{ $mk->kelas }}">
+                                                <input type="hidden" name="kapasitas" value="{{ $mk->kapasitas }}">
+                                                
+                                                <div
+                                                    class="text-white text-center items-center justify-center mx-2 my-1 rounded-md cursor-pointer bg-[#34803C] hover:bg-green-800 font-bold">
+                                                    <button class="ambil-mata-kuliah"
+                                                        data-kode="{{ $mk->kode_mk }}"
+                                                        data-nama="{{ $mk->nama_mk }}"
+                                                        data-jadwal="{{ $mk->id }}"
+                                                        data-ruang="{{ $mk->ruang }}"
+                                                        data-kelas="{{ $mk->kelas }}"
+                                                        data-kapasitas="{{ $mk->kapasitas }}"
+                                                        data-hari-jam="{{ $mk->hari }}, {{ \Carbon\Carbon::parse($mk->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($mk->jam_selesai)->format('H:i') }}"
+                                                        data-sks="{{ $mk->sks_mk }}" type="submit">
+                                                        Ambil
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </td>
+                                        <td class="px-4 py-2 border-white">
+                                            <div class="h-7 w-7 mx-auto rounded-lg bg-white border border-transparent flex justify-center items-center hover:bg-gray-400 transition-colors duration-200">
+                                                <button class="show-details justify-center text-center text-3xl text-black font-bold focus:outline-none" data-index="{{ $index }}">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+                                                        <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+                                                    </svg>
                                                 </button>
                                             </div>
-                                        </form>
-                                    </td>
-                                    <td class="px-4 py-2 border-white">
-                                        <div class="h-7 w-7 mx-auto rounded-lg bg-white border border-transparent flex justify-center items-center hover:bg-gray-400 transition-colors duration-200">
-                                            <button class="show-details justify-center text-center text-3xl text-black font-bold focus:outline-none" data-index="{{ $index }}">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-                                                    <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </td> 
-                                </tr>
+                                        </td> 
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -302,13 +316,13 @@ use Illuminate\Support\Str;
                                             @if($rekap->semester == $semester)
                                             <tr class="border-t">
                                                 <td class="px-4 py-2 text-black">{{ $loop->iteration }}</td>
-                                                <td class="px-4 py-2 text-black">{{ $rekap->kode }}</td>
-                                                <td class="px-4 py-2 text-black">{{ Str::before($rekap->nama, '-') }}</td>
-                                                <td class="px-4 py-2 text-black">{{ substr($rekap->nama, -1) }}</td>
+                                                <td class="px-4 py-2 text-black">{{ $rekap->kode_mk }}</td>
+                                                <td class="px-4 py-2 text-black">{{ $rekap->nama_mk }}</td>
+                                                <td class="px-4 py-2 text-black">{{ $rekap->kelas }}</td>
                                                 <td class="px-4 py-2 text-black">{{ $rekap->sks }}</td>
-                                                <td class="px-4 py-2 text-black">{{ $rekap->nama_ruangan }}</td>
-                                                <td class="px-4 py-2 text-black">Baru</td>
-                                                <td class="px-4 py-2 text-black">XX</td>
+                                                <td class="px-4 py-2 text-black">{{ $rekap->ruang }}</td>
+                                                <td class="px-4 py-2 text-black">{{ $rekap->status_pengambilan }} </td>
+                                                <td class="px-4 py-2 text-black">{{ $rekap->nama_dosen }}</td>
                                             </tr>
                                             @endif
                                             @endforeach
@@ -400,45 +414,45 @@ use Illuminate\Support\Str;
                         html: `
                                         <div class="text-left space-y-4">
                                             <div>
-                                                <h2 class="font-bold mb-1">Nama Mata Kuliah :</h2>
+                                                <h2 class="font-bold mb-1">Mata Kuliah :</h2>
                                                 <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
-                                                    <h2 class="ml-5 text-black font-bold">${details.nama}</h2>
+                                                    <h2 class="ml-5 text-black font-bold">${details.nama_mk} - ${details.kelas} </h2>
                                                 </div>
                                             </div>
                                             <div>
                                                 <h2 class="font-bold mb-1">Kode Mata Kuliah :</h2>
                                                 <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
-                                                    <h2 class="ml-5 text-black font-bold">${details.kode}</h2>
+                                                    <h2 class="ml-5 text-black font-bold">${details.kode_mk}</h2>
                                                 </div>
                                             </div>
                                             <div>
                                                 <h2 class="font-bold mb-1">SKS :</h2>
                                                 <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
-                                                    <h2 class="ml-5 text-black font-bold">${details.sks}</h2>
+                                                    <h2 class="ml-5 text-black font-bold">${details.sks_mk}</h2>
                                                 </div>
                                             </div>
                                             <div>
                                                 <h2 class="font-bold mb-1">Jadwal :</h2>
                                                 <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
-                                                    <h2 class="ml-5 text-black font-bold">${details.jadwal}</h2>
+                                                    <h2 class="ml-5 text-black font-bold">${details.hari}, ${details.jam_mulai} - ${details.jam_selesai}</h2>
                                                 </div>
                                             </div>
                                             <div>
                                                 <h2 class="font-bold mb-1">Ruangan :</h2>
                                                 <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
-                                                    <h2 class="ml-5 text-black font-bold">${details.nama_ruangan}</h2>
+                                                    <h2 class="ml-5 text-black font-bold">${details.ruang}</h2>
                                                 </div>
                                             </div>
                                             <div>
                                                 <h2 class="font-bold mb-1">Kapasitas:</h2>
                                                 <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
-                                                    <h2 class="ml-5 text-black font-bold">${details.kapasitas_ruangan}</h2>
+                                                    <h2 class="ml-5 text-black font-bold">${details.kapasitas}</h2>
                                                 </div>
                                             </div>
                                             <div>
                                                 <h2 class="font-bold mb-1">Dosen Pengampu :</h2>
                                                 <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
-                                                    <h2 class="ml-5 text-black font-bold">"Belum database"</h2>
+                                                    <h2 class="ml-5 text-black font-bold">${details.dosen}</h2>
                                                 </div>
                                             </div>
                                         </div>
@@ -464,6 +478,10 @@ use Illuminate\Support\Str;
                 // Get the button that was clicked
                 const button = event.submitter;
                 const kode = button.getAttribute('data-kode');
+                const jadwal = button.getAttribute('data-jadwal');
+                const ruang = button.getAttribute('data-ruang');
+                const kelas = button.getAttribute('data-kelas');
+                const kapasitas = button.getAttribute('data-kapasitas');
                 const nama = button.getAttribute('data-nama');
                 const hariJam = button.getAttribute('data-hari-jam');
                 const sks = parseInt(button.getAttribute('data-sks'));
@@ -523,6 +541,7 @@ use Illuminate\Support\Str;
                                     addCourseToSummary({
                                         kode: kode,
                                         nama: nama,
+                                        kelas: kelas,
                                         waktu: hariJam,
                                         sks: sks
                                     });
@@ -586,6 +605,7 @@ use Illuminate\Support\Str;
                         <td class="px-4 py-2 border-r border-white">${rowNumber}</td>
                         <td class="px-4 py-2 w-1/3 border-r border-white">${course.kode}</td>
                         <td class="px-4 py-2 w-1/3 border-r border-white">${course.nama}</td>
+                        <td class="px-4 py-2 border-r border-white">${course.kelas}</td>
                         <td class="px-4 py-2 w-1/3 border-r border-white">${course.waktu}</td>
                         <td class="px-4 py-2 w-1/3 border-r border-white">${course.sks}</td>
                         <td class="px-4 py-2 border-white">
@@ -688,17 +708,19 @@ use Illuminate\Support\Str;
             const cellNo = newRow.insertCell();
             const cellKode = newRow.insertCell();
             const cellNama = newRow.insertCell();
+            const cellKelas = newRow.insertCell();
             const cellWaktu = newRow.insertCell();
             const cellSks = newRow.insertCell();
 
             // Add classes and content
-            [cellNo, cellKode, cellNama, cellWaktu, cellSks].forEach(cell => {
+            [cellNo, cellKode, cellNama, cellKelas, cellWaktu, cellSks].forEach(cell => {
                 cell.className = 'px-4 py-2 border-r border-white';
             });
 
             cellNo.textContent = rowCount;
             cellKode.textContent = course.kode;
             cellNama.textContent = course.nama;
+            cellKelas.textContent = course.kelas;
             cellWaktu.textContent = course.waktu;
             cellSks.textContent = course.sks;
         }
@@ -735,6 +757,7 @@ use Illuminate\Support\Str;
                 const button = event.currentTarget;
                 const row = button.closest('tr');
                 const courseId = button.getAttribute('data-id');
+                const kelas = button.getAttribute('data-kelas');
                 const mahasiswaId = button.getAttribute('data-mahasiswa-id');
                 const semester = button.getAttribute('data-semester');
                 const sks = parseInt(button.getAttribute('data-sks'));
@@ -819,122 +842,126 @@ use Illuminate\Support\Str;
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Function to check time conflicts
-            function checkTimeConflicts() {
-                const takenCourses = Array.from(document.querySelector('table:first-of-type tbody').rows)
-                    .map(row => ({
-                        name: row.cells[2].textContent,
-                        code: row.cells[1].textContent,
-                        time: row.cells[3].textContent
-                    }));
+    // Function to check time conflicts
+    function checkTimeConflicts() {
+        const takenCourses = Array.from(document.querySelector('table:first-of-type tbody').rows)
+            .map(row => ({
+                name: row.cells[2].textContent,
+                code: row.cells[1].textContent,
+                time: row.cells[4].textContent.trim(),
+                class: row.cells[3].textContent.trim() // Tambahkan pengambilan kelas dari kolom yang sesuai
+            }));
 
-                const availableCourses = document.querySelectorAll('.course-row');
+        const availableCourses = document.querySelectorAll('.course-row');
 
-                availableCourses.forEach(courseRow => {
-                    const existingOverlay = courseRow.querySelector('.collision-overlay');
-                    if (existingOverlay) {
-                        existingOverlay.remove();
-                    }
+        availableCourses.forEach(courseRow => {
+            const existingOverlay = courseRow.querySelector('.collision-overlay');
+            if (existingOverlay) {
+                existingOverlay.remove();
+            }
 
-                    const courseTime = courseRow.dataset.courseTime;
-                    const courseName = courseRow.querySelector('td:nth-child(3)').textContent;
-                    const courseCode = courseRow.querySelector('td:nth-child(2)').textContent;
-                    const conflicts = [];
+            const courseTime = courseRow.dataset.courseTime;
+            const courseName = courseRow.querySelector('td:nth-child(3)').textContent;
+            const courseCode = courseRow.querySelector('td:nth-child(2)').textContent;
+            const courseClass = courseRow.querySelector('td:nth-child(4)').textContent; // Ambil kelas dari kolom ke-4
+            const conflicts = [];
 
-                    takenCourses.forEach(takenCourse => {
-                        if (isTimeConflict(takenCourse.time, courseTime)) {
-                            conflicts.push({
-                                conflictingCourse: {
-                                    name: courseName,
-                                    code: courseCode,
-                                    time: courseTime
-                                },
-                                takenCourse: takenCourse
-                            });
-                        }
+            takenCourses.forEach(takenCourse => {
+                if (isTimeConflict(takenCourse.time, courseTime)) {
+                    conflicts.push({
+                        conflictingCourse: {
+                            name: courseName,
+                            code: courseCode,
+                            time: courseTime,
+                            class: courseClass
+                        },
+                        takenCourse: takenCourse
                     });
+                }
+            });
 
-                    if (conflicts.length > 0) {
-                        const overlay = createCollisionOverlay(conflicts);
-                        courseRow.appendChild(overlay);
-                    }
-                });
+            if (conflicts.length > 0) {
+                const overlay = createCollisionOverlay(conflicts);
+                courseRow.appendChild(overlay);
             }
-            // Create collision overlay element
-            function createCollisionOverlay(conflicts, currentCourse) {
-                const overlay = document.createElement('div');
-                overlay.className = 'collision-overlay';
-
-                const text = document.createElement('span');
-                text.className = 'collision-text';
-
-
-                overlay.appendChild(text);
-
-                overlay.addEventListener('click', () => {
-                    showConflictDetails(conflicts, currentCourse);
-                });
-
-                return overlay;
-            }
-
-            // Show conflict details in a popup
-            function showConflictDetails(conflicts) {
-                const conflictsList = conflicts.map(conflict =>
-                    `<ul class="list-none p-0">
-                                <li class="mb-4 bg-gray-100 rounded-lg p-4 shadow flex flex-col items-center text-center">
-                                    <div class="mb-2">
-                                        <strong class="text-gray-800">${conflict.conflictingCourse.name}</strong> 
-                                        <span class="text-gray-600">(${conflict.conflictingCourse.code})</span>
-                                        <br>
-                                        <span class="text-sm text-gray-600">${conflict.conflictingCourse.time}</span>
-                                    </div>
-                                    <div class="mb-2">
-                                        <span class="font-bold text-red-600 bg-red-200 px-2 py-1 rounded">bertabrakan dengan</span>
-                                    </div>
-                                    <div>
-                                        <strong class="text-gray-800">${conflict.takenCourse.name}</strong> 
-                                        <span class="text-gray-600">(${conflict.takenCourse.code})</span>
-                                        <br>
-                                        <span class="text-sm text-gray-600">${conflict.takenCourse.time}</span>
-                                    </div>
-                                </li>
-                            </ul>`
-                ).join('');
-
-                Swal.fire({
-                    title: 'Detail Tabrakan Jadwal',
-                    html: `
-                                <div class="text-left">
-                                    <p class="mb-4 text-center">Terjadi tabrakan jadwal:</p>
-                                    <ul class="list-disc pl-5">
-                                        ${conflictsList}
-                                    </ul>
-                                </div>
-                            `,
-                    icon: 'warning',
-                    confirmButtonText: 'Tutup'
-                });
-            }
-
-            // Check for conflicts whenever the course list changes
-            function initializeConflictDetection() {
-                // Initial check
-                checkTimeConflicts();
-
-                // Create a MutationObserver to watch for changes in the taken courses table
-                const observer = new MutationObserver(checkTimeConflicts);
-
-                const takenCoursesTable = document.querySelector('table:first-of-type tbody');
-                observer.observe(takenCoursesTable, {
-                    childList: true,
-                    subtree: true
-                });
-            }
-
-            // Initialize conflict detection
-            initializeConflictDetection();
         });
+    }
+
+    // Create collision overlay element
+    function createCollisionOverlay(conflicts, currentCourse) {
+        const overlay = document.createElement('div');
+        overlay.className = 'collision-overlay';
+
+        const text = document.createElement('span');
+        text.className = 'collision-text';
+
+        overlay.appendChild(text);
+
+        overlay.addEventListener('click', () => {
+            showConflictDetails(conflicts, currentCourse);
+        });
+
+        return overlay;
+    }
+
+    // Show conflict details in a popup
+    function showConflictDetails(conflicts) {
+        const conflictsList = conflicts.map(conflict =>
+            `<ul class="list-none p-0">
+                <li class="mb-4 bg-gray-100 rounded-lg p-4 shadow flex flex-col items-center text-center">
+                    <div class="mb-2">
+                        <strong class="text-gray-800">${conflict.conflictingCourse.name} </strong>
+                        <span class="text-gray-600">(${conflict.conflictingCourse.code})</span>
+                        <br>
+                        <span class="text-sm text-gray-600">${conflict.conflictingCourse.time}</span>
+                    </div>
+                    <div class="mb-2">
+                        <span class="font-bold text-red-600 bg-red-200 px-2 py-1 rounded">bertabrakan dengan</span>
+                    </div>
+                    <div>
+                        <strong class="text-gray-800">${conflict.takenCourse.name} - ${conflict.takenCourse.class}</strong>
+                        <span class="text-gray-600">(${conflict.takenCourse.code})</span>
+                        <br>
+                        <span class="text-sm text-gray-600">${conflict.takenCourse.time}</span>
+                    </div>
+                </li>
+            </ul>`
+        ).join('');
+
+        Swal.fire({
+            title: 'Detail Tabrakan Jadwal',
+            html: `
+                <div class="text-left">
+                    <p class="mb-4 text-center">Terjadi tabrakan jadwal:</p>
+                    <ul class="list-disc pl-5">
+                        ${conflictsList}
+                    </ul>
+                </div>
+            `,
+            icon: 'warning',
+            confirmButtonText: 'Tutup'
+        });
+    }
+
+    // Check for conflicts whenever the course list changes
+    function initializeConflictDetection() {
+        // Initial check
+        checkTimeConflicts();
+
+        // Create a MutationObserver to watch for changes in the taken courses table
+        const observer = new MutationObserver(checkTimeConflicts);
+
+        const takenCoursesTable = document.querySelector('table:first-of-type tbody');
+        observer.observe(takenCoursesTable, {
+            childList: true,
+            subtree: true
+        });
+    }
+
+    // Initialize conflict detection
+    initializeConflictDetection();
+});
+
     </script>
 
     <script>
@@ -962,6 +989,24 @@ use Illuminate\Support\Str;
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Cek status IRS dari localStorage saat halaman dimuat
+            const fasePembatalanIRS = @json($fasePembatalanIRS);
+            const statuspengajuan = @json($status);
+            const fasePerubahanIRS = @json($fasePerubahanIRS);
+        
+            // Jika fase pembatalan IRS aktif, sembunyikan listMataKuliah dan simpan status di localStorage
+            if (fasePembatalanIRS) {
+                localStorage.setItem('hideListMataKuliah', 'true');
+            }
+
+            // Periksa localStorage untuk melihat apakah listMataKuliah harus disembunyikan
+            const shouldHideList = localStorage.getItem('hideListMataKuliah') === 'true';
+
+            // Sembunyikan listMataKuliah jika `shouldHideList` adalah true
+            if (shouldHideList) {
+                document.getElementById('listMataKuliah').classList.add('hidden');
+            }
+
+  
             const isSubmitted = localStorage.getItem('irsSubmitted') === 'true';
             if (isSubmitted) {
                 setSubmittedState();
@@ -984,6 +1029,7 @@ use Illuminate\Support\Str;
             }).then((result) => {
                 if (result.isConfirmed) {
                     // Simpan status ke localStorage
+                    localStorage.removeItem('hideListMataKuliah');
                     localStorage.setItem('irsSubmitted', 'true');
                     setSubmittedState();
                     Swal.fire({
@@ -997,67 +1043,123 @@ use Illuminate\Support\Str;
             });
         }
 
-        function batalAjukanIRS() {
-            Swal.fire({
-                title: 'Konfirmasi Pembatalan',
-                text: 'Apakah Anda yakin ingin membatalkan pengajuan IRS?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Ya, Batalkan!',
-                cancelButtonText: 'Tidak',
-                reverseButtons: true
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Hapus status dari localStorage
-                    localStorage.removeItem('irsSubmitted');
-                    setDraftState();
-                    Swal.fire({
-                        title: 'IRS dibatalkan',
-                        text: 'IRS telah dibatalkan dan dapat diedit kembali',
-                        icon: 'success',
-                        timer: 1500,
-                        showConfirmButton: false
-                    });
+        
+        function ajukanIRS() {
+        Swal.fire({
+            title: 'Konfirmasi Pengajuan',
+            text: 'Apakah Anda yakin ingin mengajukan IRS?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#34803C',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, Ajukan!',
+            cancelButtonText: 'Batal',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                localStorage.removeItem('hideListMataKuliah'); // Hapus status sembunyikan untuk list mata kuliah
+                localStorage.setItem('irsSubmitted', 'true'); // Simpan status pengajuan IRS
+                setSubmittedState();
+                Swal.fire({
+                    title: 'Berhasil!',
+                    text: 'IRS berhasil diajukan',
+                    icon: 'success',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+            }
+        });
+    }
+
+    function batalAjukanIRS() {
+        const fasePembatalanIRS = @json($fasePembatalanIRS);
+        Swal.fire({
+            title: 'Konfirmasi Pembatalan',
+            text: 'Apakah Anda yakin ingin membatalkan pengajuan IRS?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Ya, Batalkan!',
+            cancelButtonText: 'Tidak',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Jika fase pembatalan aktif, sembunyikan listMataKuliah dan simpan status di localStorage
+                if (fasePembatalanIRS) {
+                    document.getElementById('listMataKuliah').classList.add('hidden');
+                    localStorage.setItem('hideListMataKuliah', 'true');
                 }
-            });
-        }
+                localStorage.removeItem('irsSubmitted'); // Hapus status pengajuan IRS
+                setDraftState();
+                Swal.fire({
+                    title: 'IRS dibatalkan',
+                    text: 'IRS telah dibatalkan dan dapat diedit kembali',
+                    icon: 'success',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+            }
+        });
+    }
 
-        function setSubmittedState() {
-            // Sembunyikan tabel list mata kuliah
-            document.getElementById('listMataKuliah').classList.add('hidden');
+    function setSubmittedState() {
+        // Sembunyikan listMataKuliah saat dalam status diajukan
+        document.getElementById('listMataKuliah').classList.add('hidden');
 
-            // Disable tombol batalkan
-            const cancelButtons = document.querySelectorAll('.cancel-course');
-            cancelButtons.forEach(button => {
-                button.disabled = true;
-                button.classList.remove('bg-red-600', 'hover:bg-red-700');
-                button.classList.add('bg-gray-400', 'cursor-not-allowed');
-            });
+        // Nonaktifkan tombol batalkan untuk setiap mata kuliah
+        const cancelButtons = document.querySelectorAll('.cancel-course');
+        cancelButtons.forEach(button => {
+            button.disabled = true;
+            button.classList.remove('bg-red-600', 'hover:bg-red-700');
+            button.classList.add('bg-gray-400', 'cursor-not-allowed');
+        });
 
-            // Update tampilan tombol
-            document.getElementById('ajukanButton').classList.add('hidden'); // Sembunyikan tombol Ajukan
-            document.getElementById('batalAjukanButton').classList.remove('hidden'); // Tampilkan tombol Batal Ajukan
-        }
+        // Atur tampilan tombol "Ajukan" dan "Batal Ajukan"
+        document.getElementById('ajukanButton').classList.add('hidden');
+        document.getElementById('batalAjukanButton').classList.remove('hidden');
+    }
 
-        function setDraftState() {
-            // Tampilkan tabel list mata kuliah
+    function setDraftState() {
+        const fasePembatalanIRS = @json($fasePembatalanIRS);
+
+        // Tampilkan atau sembunyikan listMataKuliah berdasarkan fase pembatalan IRS
+        if (!fasePembatalanIRS) {
             document.getElementById('listMataKuliah').classList.remove('hidden');
-
-            // Enable tombol batalkan
-            const cancelButtons = document.querySelectorAll('.cancel-course');
-            cancelButtons.forEach(button => {
-                button.disabled = false;
-                button.classList.remove('bg-gray-400', 'cursor-not-allowed');
-                button.classList.add('bg-red-600', 'hover:bg-red-700');
-            });
-
-            // Update tampilan tombol
-            document.getElementById('ajukanButton').classList.remove('hidden'); // Tampilkan tombol Ajukan
-            document.getElementById('batalAjukanButton').classList.add('hidden'); // Sembunyikan tombol Batal Ajukan
         }
+
+        // Aktifkan tombol batalkan untuk setiap mata kuliah
+        const cancelButtons = document.querySelectorAll('.cancel-course');
+        cancelButtons.forEach(button => {
+            button.disabled = false;
+            button.classList.remove('bg-gray-400', 'cursor-not-allowed');
+            button.classList.add('bg-red-600', 'hover:bg-red-700');
+        });
+
+        // Atur tampilan tombol "Ajukan" dan "Batal Ajukan"
+        document.getElementById('ajukanButton').classList.remove('hidden');
+        document.getElementById('batalAjukanButton').classList.add('hidden');
+    }
     </script>
+    <script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const fasePengisianIRS = @json($fasePengisianIRS);
+        const statuspengajuan = @json($status);
+        const fasePerubahanIRS = @json($fasePerubahanIRS);
+        if (fasePembatalanIRS && !fasePengisianIRS && statuspengajuan== null) {
+            
+            document.getElementById("batalAjukanButton").classList.remove("hidden");
+            
+        }else if(fasePerubahanIRS && statuspengajuan == null){
+            document.getElementById("batalAjukanButton").classList.remove("hidden");
+        } else {
+           
+            document.getElementById("batalAjukanButton").classList.add("hidden");
+        }
+    });
+</script>
+
 </body>
 
 </html>
