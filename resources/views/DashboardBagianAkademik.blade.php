@@ -12,7 +12,6 @@
     @vite('resources/css/app.css')
 
     <style>
-
         :root {
             --color-text-light: #000;
             --color-border-light: #333;
@@ -85,18 +84,18 @@
             @include('components.navbar', ['theme' => $theme])
 
             <!-- Main Content -->
-            <div class="pl-8 pt-5 flex justify-left items-center  {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-gray-100/20' }} ">
+            <div class="pl-8 pt-5 flex justify-left items-center  {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }} ">
                 <p class="welcome-message-static">Welcome Back, </p>
                 <span class="welcome-message" id="typewriter"></span>
                 <span class="text-2xl" aria-label="Waving Hand" role="img">👋</span>
             </div>
 
-            <div class="px-8 pt-5 flex justify-center items-center {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-gray-100/20' }}">
+            <div class="px-8 pt-5 flex justify-center items-center {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
                 <div class="grid grid-cols-12 w-full gap-14">
 
                     <!-- Box Status Akademik -->
                     <div class="col-span-8 rounded-lg flex flex-col ">
-                        <h2 class="text-center text-lg font-bold mb-4 ">Status Akademik</h2>
+                        <h2 class="text-center text-lg font-bold mb-4 {{ $theme == 'light' ? '' : 'inline-block rounded-lg mx-auto px-2 bg-opacity-50 bg-[#ffeeb6]' }}"> Status Akademik </h2>
 
                         <!-- Box Utama Status Akademik -->
                         <div class="grid grid-cols-12 w-full rounded-3xl flex-grow outline outline-1 " style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5); {{ $theme == 'light' ? 'background-color: #2A2C33;' : 'background-color: #ffffff;' }} {{ $theme == 'light' ? 'outline: 1px solid #000000;' : 'outline: 1px solid #000000;' }}">
@@ -122,7 +121,7 @@
 
                     <!-- Box Capaian Akademik -->
                     <div class="col-span-4 rounded-lg flex flex-col">
-                        <h2 class="text-center text-lg font-bold mb-4">Status Departemen</h2>
+                        <h2 class="text-center text-lg font-bold mb-4 {{ $theme == 'light' ? '' : 'inline-block rounded-lg mx-auto px-2 bg-opacity-50 bg-[#ffeeb6]' }}">Status Departemen</h2>
 
                         <!-- Box Utama Capaian Akademik -->
                         <div class="rounded-3xl outline outline-1 " style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5); {{ $theme == 'light' ? 'background-color: #2A2C33;' : 'background-color: #EEEEEE;' }} {{ $theme == 'light' ? 'outline: 1px solid #000000;' : 'outline: 1px solid #000000;' }}">
@@ -151,7 +150,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="mt-64 mb-64 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-gray-100/20' }}">
+                    <div class="mt-64 mb-64 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
 
                     </div>
                 </div>

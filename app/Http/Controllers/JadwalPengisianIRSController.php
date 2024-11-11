@@ -14,16 +14,20 @@ class JadwalPengisianIRSController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         if (!Auth::check()) {
             return redirect()->route('login');
         }
 
         $user = Auth::user();
+
+        // Ambil nilai tema dari cookie
+        $theme = $request->cookie('theme') ?? 'light';
+
         $jadwalpengisian = JadwalPengisianIRS::all();
         
-        return view('/jadwalpengisianIRS', compact('user', 'jadwalpengisian'));
+        return view('/jadwalpengisianIRS', compact('user', 'jadwalpengisian', 'theme'));
     }
 
     /**

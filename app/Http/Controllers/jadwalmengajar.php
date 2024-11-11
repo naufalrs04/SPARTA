@@ -7,14 +7,16 @@ use Illuminate\Support\Facades\Auth;
 
 class jadwalmengajar extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         if (!Auth::check()) {
             return redirect()->route('login');
         }
 
         $user = Auth::user();
+        // Ambil tema dari cookie atau gunakan 'light' sebagai default
+        $theme = $request->cookie('theme') ?? 'light';
         
-        return view('/jadwalmengajar', compact('user'));
+        return view('/jadwalmengajar', compact('user', 'theme'));
     }
 }

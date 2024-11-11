@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardDekanController extends Controller
-{    public function index()
+{    public function index(Request $request)
     {
         if (!Auth::check()) {
             return redirect()->route('login');
@@ -14,11 +14,14 @@ class DashboardDekanController extends Controller
 
         $user = Auth::user();
 
+        // Ambil tema dari cookie atau gunakan 'light' sebagai default
+        $theme = $request->cookie('theme') ?? 'light';
+
         $data = [
             'nama' => $user->nama,
             'nim_nip' => $user->nim_nip,
         ];
 
-        return view('dashboardDekan', compact('data', 'user'));
+        return view('dashboardDekan', compact('data', 'user', 'theme'));
     }
 }

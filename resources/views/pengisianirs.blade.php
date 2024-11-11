@@ -127,8 +127,8 @@ use Illuminate\Support\Str;
                             @foreach ($irs_rekap as $rekap)
                             <tr style="background-color: #23252A;">
                                 <td class="px-4 py-2 border-r border-white">{{ $loop->iteration }}</td>
-                                <td class="px-4 py-2 w-1/3 border-r border-white">{{ $rekap->kode }}</td>
-                                <td class="px-4 py-2 w-1/3 border-r border-white">{{ $rekap->nama }}</td>
+                                <td class="px-4 py-2 w-1/3 border-r border-white">{{ $rekap->kode_mk }}</td>
+                                <td class="px-4 py-2 w-1/3 border-r border-white">{{ $rekap->nama_mk }}</td>
                                 <td class="px-4 py-2 w-1/3 border-r border-white">
                                     {{ $rekap->hari }},
                                     {{ \Carbon\Carbon::parse($rekap->jam_mulai)->format('H:i') }} -
@@ -137,7 +137,7 @@ use Illuminate\Support\Str;
                                 <td class="px-4 py-2 w-1/3 border-r border-white">{{ $rekap->sks }}</td>
                                 <td class="px-4 py-2 border-white">
                                     <button class="cancel-course bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded"
-                                        data-id="{{ $rekap->mata_kuliah_id }}"
+                                        data-id="{{ $rekap->kode_mk }}"
                                         data-mahasiswa-id="{{ $rekap->mahasiswa_id }}"
                                         data-semester="{{ $rekap->semester }}">
                                         Batalkan
@@ -207,49 +207,58 @@ use Illuminate\Support\Str;
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($list_mata_kuliah as $index => $mata_kuliah)
-                                <tr class="course-row" style="background-color: #23252A;"
-                                    data-course-id="{{ $mata_kuliah->id }}"
-                                    data-course-time="{{ $mata_kuliah->hari }}, {{ \Carbon\Carbon::parse($mata_kuliah->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($mata_kuliah->jam_selesai)->format('H:i') }}"
-                                    data-ruangan-id="{{ $mata_kuliah->ruangan_id }}">
-                                    <td class="px-4 py-2 border-r border-white">{{ $loop->iteration }}</td>
-                                    <td class="px-4 py-2 w-1/3 border-r border-white">{{ $mata_kuliah->kode }}
-                                    </td>
-                                    <td class="px-4 py-2 w-1/3 border-r border-white">{{ $mata_kuliah->nama }}
-                                    </td>
-                                    <td class="px-4 py-2 w-1/3 border-r border-white">
-                                        {{ $mata_kuliah->hari }},
-                                        {{ \Carbon\Carbon::parse($mata_kuliah->jam_mulai)->format('H:i') }} -
-                                        {{ \Carbon\Carbon::parse($mata_kuliah->jam_selesai)->format('H:i') }}
-                                    </td>
-                                    <td class="px-4 py-2 border-r border-white">
-                                        <form action="{{ route('irs-rekap.store') }}" method="POST">
-                                            @csrf
-                                            <input type="hidden" name="mata_kuliah_id" value="{{ $mata_kuliah->id }}">
-                                            <input type="hidden" name="ruangan_id" value="{{ $mata_kuliah->ruangan_id}}">
-                                            <input type="hidden" name="sks" id="input-sks" value="{{ $mata_kuliah->sks }}">
-                                            <div
-                                                class="text-white text-center items-center justify-center mx-2 my-1 rounded-md cursor-pointer bg-[#34803C] hover:bg-green-800 font-bold">
-                                                <button class="ambil-mata-kuliah"
-                                                    data-kode="{{ $mata_kuliah->kode }}"
-                                                    data-nama="{{ $mata_kuliah->nama }}"
-                                                    data-hari-jam="{{ $mata_kuliah->hari }}, {{ \Carbon\Carbon::parse($mata_kuliah->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($mata_kuliah->jam_selesai)->format('H:i') }}"
-                                                    data-sks="{{ $mata_kuliah->sks }}" type="submit">
-                                                    Ambil
+                                @foreach ($list_mata_kuliah as $index => $mk)
+                                    <tr class="course-row" style="background-color: #23252A;"
+                                        data-course-id="{{ $mk->id }}"
+                                        data-course-time="{{ $mk->hari }}, {{ \Carbon\Carbon::parse($mk->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($mk->jam_selesai)->format('H:i') }}"
+                                        data-ruangan-id="{{ $mk->ruang }}">
+                                        <td class="px-4 py-2 border-r border-white">{{ $loop->iteration }}</td>
+                                        <td class="px-4 py-2 w-1/3 border-r border-white">{{ $mk->kode_mk }}
+                                        </td>
+                                        <td class="px-4 py-2 w-1/3 border-r border-white">{{ $mk->nama_mk }} - {{ $mk->kelas }}
+                                        </td>
+                                        <td class="px-4 py-2 w-1/3 border-r border-white">
+                                            {{ $mk->hari }},
+                                            {{ \Carbon\Carbon::parse($mk->jam_mulai)->format('H:i') }} -
+                                            {{ \Carbon\Carbon::parse($mk->jam_selesai)->format('H:i') }}
+                                        </td>
+                                        <td class="px-4 py-2 border-r border-white">
+                                            <form action="{{ route('irs-rekap.store') }}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="kode_mk" value="{{ $mk->kode_mk }}">
+                                                <input type="hidden" name="ruang" value="{{ $mk->ruang}}">
+                                                <input type="hidden" name="sks_mk" id="input-sks" value="{{ $mk->sks_mk }}">
+                                                <input type="hidden" name="id" value="{{ $mk->id }}">
+                                                <input type="hidden" name="nama_mk" value="{{ $mk->nama_mk }}">
+                                                <input type="hidden" name="kelas" value="{{ $mk->kelas }}">
+                                                <input type="hidden" name="kapasitas" value="{{ $mk->kapasitas }}">
+                                                
+                                                <div
+                                                    class="text-white text-center items-center justify-center mx-2 my-1 rounded-md cursor-pointer bg-[#34803C] hover:bg-green-800 font-bold">
+                                                    <button class="ambil-mata-kuliah"
+                                                        data-kode="{{ $mk->kode_mk }}"
+                                                        data-nama="{{ $mk->nama_mk }}"
+                                                        data-jadwal="{{ $mk->id }}"
+                                                        data-ruang="{{ $mk->ruang }}"
+                                                        data-kelas="{{ $mk->kelas }}"
+                                                        data-kapasitas="{{ $mk->kapasitas }}"
+                                                        data-hari-jam="{{ $mk->hari }}, {{ \Carbon\Carbon::parse($mk->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($mk->jam_selesai)->format('H:i') }}"
+                                                        data-sks="{{ $mk->sks_mk }}" type="submit">
+                                                        Ambil
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </td>
+                                        <td class="px-4 py-2 border-white">
+                                            <div class="h-7 w-7 mx-auto rounded-lg bg-white border border-transparent flex justify-center items-center hover:bg-gray-400 transition-colors duration-200">
+                                                <button class="show-details justify-center text-center text-3xl text-black font-bold focus:outline-none" data-index="{{ $index }}">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+                                                        <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+                                                    </svg>
                                                 </button>
                                             </div>
-                                        </form>
-                                    </td>
-                                    <td class="px-4 py-2 border-white">
-                                        <div class="h-7 w-7 mx-auto rounded-lg bg-white border border-transparent flex justify-center items-center hover:bg-gray-400 transition-colors duration-200">
-                                            <button class="show-details justify-center text-center text-3xl text-black font-bold focus:outline-none" data-index="{{ $index }}">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-                                                    <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </td> 
-                                </tr>
+                                        </td> 
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -302,13 +311,13 @@ use Illuminate\Support\Str;
                                             @if($rekap->semester == $semester)
                                             <tr class="border-t">
                                                 <td class="px-4 py-2 text-black">{{ $loop->iteration }}</td>
-                                                <td class="px-4 py-2 text-black">{{ $rekap->kode }}</td>
-                                                <td class="px-4 py-2 text-black">{{ Str::before($rekap->nama, '-') }}</td>
-                                                <td class="px-4 py-2 text-black">{{ substr($rekap->nama, -1) }}</td>
+                                                <td class="px-4 py-2 text-black">{{ $rekap->kode_mk }}</td>
+                                                <td class="px-4 py-2 text-black">{{ $rekap->nama_mk }}</td>
+                                                <td class="px-4 py-2 text-black">{{ $rekap->kelas }}</td>
                                                 <td class="px-4 py-2 text-black">{{ $rekap->sks }}</td>
-                                                <td class="px-4 py-2 text-black">{{ $rekap->nama_ruangan }}</td>
-                                                <td class="px-4 py-2 text-black">Baru</td>
-                                                <td class="px-4 py-2 text-black">XX</td>
+                                                <td class="px-4 py-2 text-black">{{ $rekap->ruang }}</td>
+                                                <td class="px-4 py-2 text-black">{{ $rekap->status_pengambilan }} </td>
+                                                <td class="px-4 py-2 text-black">{{ $rekap->nama_dosen }}</td>
                                             </tr>
                                             @endif
                                             @endforeach
@@ -438,7 +447,7 @@ use Illuminate\Support\Str;
                                             <div>
                                                 <h2 class="font-bold mb-1">Dosen Pengampu :</h2>
                                                 <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
-                                                    <h2 class="ml-5 text-black font-bold">"Belum database"</h2>
+                                                    <h2 class="ml-5 text-black font-bold">${details.dosen}</h2>
                                                 </div>
                                             </div>
                                         </div>
@@ -464,6 +473,10 @@ use Illuminate\Support\Str;
                 // Get the button that was clicked
                 const button = event.submitter;
                 const kode = button.getAttribute('data-kode');
+                const jadwal = button.getAttribute('data-jadwal');
+                const ruang = button.getAttribute('data-ruang');
+                const kelas = button.getAttribute('data-kelas');
+                const kapasitas = button.getAttribute('data-kapasitas');
                 const nama = button.getAttribute('data-nama');
                 const hariJam = button.getAttribute('data-hari-jam');
                 const sks = parseInt(button.getAttribute('data-sks'));
@@ -735,6 +748,7 @@ use Illuminate\Support\Str;
                 const button = event.currentTarget;
                 const row = button.closest('tr');
                 const courseId = button.getAttribute('data-id');
+                const kelas = button.getAttribute('data-kelas');
                 const mahasiswaId = button.getAttribute('data-mahasiswa-id');
                 const semester = button.getAttribute('data-semester');
                 const sks = parseInt(button.getAttribute('data-sks'));

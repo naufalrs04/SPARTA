@@ -62,8 +62,8 @@ Route::get('/dashboardKaprodi', [DashboardKaprodiController::class, 'index'])->m
 
 Route::get('/penyusunanjadwal', [PenyusunanJadwalController::class, 'index'])->middleware('auth')->name('Penyusunanjadwal');
 
-Route::post('/penyusunan-jadwal/store', [PenyusunanJadwalController::class, 'store'])->name('penyusunan-jadwal.store');
-
+// Route::post('/penyusunan-jadwal/store', [PenyusunanJadwalController::class, 'store'])->name('penyusunan-jadwal.store');
+Route::post('/jadwal/tambah', [PenyusunanJadwalController::class, 'store'])->name('jadwal.store');
 Route::get('/jadwalpengisianIRS', [JadwalPengisianIRSController::class, 'index'])->middleware('auth')->name('jadwalpengisianIRS');
 
 Route::patch('/jadwal-pengisian/{id}', [JadwalPengisianIRSController::class, 'update']);
@@ -99,6 +99,9 @@ Route::post('/verifikasi-irs/batal', [verifikasiIRS::class, 'batalkanIRS'])->nam
 
 
 Route::get('/verifikasijadwal', [verifikasijadwal::class, 'index'])->middleware('auth')->name('verifikasijadwal');
+Route::post('/verifikasi-jadwal/{prodi}', [verifikasiJadwal::class, 'verifikasi'])->name('verifikasi.jadwal');
+Route::post('/tolak-jadwal/{prodi}', [verifikasiJadwal::class, 'tolak'])->name('tolak.jadwal');
+
 
 Route::get('/verifikasiRuangKuliah', [verifikasiRuangKuliah::class, 'index'])->middleware('auth')->name('verifikasiRuangKuliah');
 Route::post('/verifikasi-ruang/{prodi}', [verifikasiRuangKuliah::class, 'verifikasi'])->name('verifikasi.ruang');

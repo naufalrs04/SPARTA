@@ -16,6 +16,7 @@ return new class extends Migration
         $table-> unsignedBigInteger('ruangan_id');
         $table->string('nama_prodi'); 
         $table->string('status_pengajuan')->nullable(); 
+        $table-> integer('kapasitas');
         $table-> foreign('ruangan_id')->references('id')->on('ruangans')->onDelete('cascade');
         $table->timestamps();
     });
