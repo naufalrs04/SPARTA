@@ -37,7 +37,7 @@ class verifikasiIRS extends Controller
     $mhs_sudah_verifikasi = collect();
 
     $rekap = irs_rekap::select('kode_mk')->get();
-
+    
     foreach ($mhs_perwalian as $mhs) {
         $mhs->nama = User::where('nim_nip', $mhs->nim)->first()->nama;
         $mhs->total_sks = Irs_rekap::where('mahasiswa_id', $mhs->id)->sum('sks');
