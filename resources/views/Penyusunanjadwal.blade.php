@@ -231,7 +231,7 @@
                                     </td>
                                     <td class="px-5 py-3 text-center">
                                         <button
-                                            class="show-details transition-colors duration-200 bg-[#878A91] p-2 rounded-lg {{ $theme == 'light' ? 'text-gray-100' : 'text-gray-100' }}"
+                                            class="show-details transition-colors duration-200 px-3 py-2 rounded-lg bg-gradient-to-l from-yellow-500 via-yellow-600 to-yellow-700 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white {{ $theme == 'light' ? 'text-gray-100' : 'text-gray-100' }}"
                                             data-nama="{{ $mk->nama_mk }}" 
                                             data-kode="{{ $mk->kode_mk }}"
                                             data-sks="{{ $mk->sks_mk }}" 
@@ -257,7 +257,6 @@
                 <div class="px-14 mt-5 pb-16 flex justify-end">
                     <button type="button" id="ajukanButton"
                         class="rounded-lg py-2 px-6 bg-gradient-to-l from-green-500 via-green-600 to-green-700 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white">
-                        
                         <strong>Ajukan</strong>
                     </button>
                 </div>
