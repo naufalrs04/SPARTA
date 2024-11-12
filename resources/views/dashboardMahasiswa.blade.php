@@ -139,7 +139,7 @@
                     </thead>
                     <tbody>
                         @foreach($jadwal_kuliah as $jadwal)
-                            @if($jadwal_kuliah -> status_pengajuan == 'disetujui')
+                            
                                 <tr style="background-color: #23252A">
                                     <td class="px-4 py-2 border-r border-white">
                                         {{ $jadwal->hari }}, {{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}
@@ -153,7 +153,7 @@
                                         {{$jadwal->ruang}}
                                     </td>
                                 </tr>
-                            @endif
+                            
                         @endforeach
                         
                     </tbody>

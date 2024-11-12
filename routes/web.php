@@ -13,7 +13,6 @@ use App\Http\Controllers\DashboardPembimbingAkademikController;
 use App\Http\Controllers\JadwalPengisianIRSController;
 use App\Http\Controllers\penyusunanjadwal;
 use App\Http\Controllers\resetpassword;
-use App\Http\Controllers\pembagiankelas;
 use App\Http\Controllers\pembagiankelasInfo;
 use App\Http\Controllers\perwalian;
 use App\Http\Controllers\inputnilai;
@@ -78,10 +77,12 @@ Route::get('/profile', function () {
 
 })->name('profile');
 
-Route::get('/pembagiankelas', [pembagiankelas::class, 'index'])->middleware('auth')->name('pembagiankelas');
+
 
 Route::get('/pembagiankelasInfo', [pembagiankelasInfo::class, 'index'])->middleware('auth')->name('pembagiankelasInfo');
 Route::post('/simpan-ruangan', [pembagiankelasInfo::class, 'simpanRuangan'])->name('simpan.ruangan');
+
+
 Route::get('/perwalian', [perwalian::class, 'index'])->middleware('auth')->name('perwalian');
 
 Route::get('/inputnilai', [inputnilai::class, 'index'])->middleware('auth')->name('inputnilai');

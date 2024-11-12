@@ -73,7 +73,10 @@
                                 @endforeach
                             </ul>
                         </div>
+                        
                 </div>
+                
+
             </div>
             <div class="flex justify-center my-3 mb-3">
 
@@ -345,6 +348,9 @@
             }
         });
     </script>
+
+    
+
 </body>
 
 </html>
