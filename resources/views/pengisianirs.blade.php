@@ -161,14 +161,16 @@ use Illuminate\Support\Str;
                             <button onclick="ajukanIRS()">Ajukan</button>
                         </div>
                         <div id="batalAjukanButton" class="w-1/6 ml-auto text-white flex text-center items-center justify-center py-3 rounded-md cursor-pointer bg-[#880000] hover:bg-red-500 font-bold hidden">
-                            <button onclick="batalAjukanIRS()">Batal Ajukan</button>
+                            <button id="button_batal" onclick="batalAjukanIRS()">Batal Ajukan</button>
                         </div>
                     </div>
 
-                    <!-- Sidebar Melayang -->
-                    <div id="sksSidebar" class="bg-opacity-85 fixed  left-[-300px] bg-yellow-600 h-auto w-64 text-white transition-all duration-300 p-4 shadow-lg rounded-lg">
+                    <!-- SKS Sidebar -->
+                    <div id="sksSidebar" class="bg-opacity-85 fixed left-[-300px] bg-yellow-600 h-auto w-64 text-white transition-all duration-300 p-4 shadow-lg rounded-lg">
                         <h2 class="text-xl text-right font-bold mb-4">Total SKS Diambil</h2>
                         <div id="totalSks" class="text-right text-4xl font-semibold">0</div>
+                        <p class="text-right text-sm mt-2">IPS semester lalu <strong>{{ $ips }}</strong></p> <!-- Display max SKS here -->
+                        <p class="text-right text-sm mt-2">Maksimum SKS: <strong>{{ $maxSKS }}</strong></p> <!-- Display max SKS here -->
                     </div>
 
                     <!-- Tombol untuk memperlihatkan sidebar -->
@@ -626,6 +628,7 @@ use Illuminate\Support\Str;
                     `;
 
             summaryTable.appendChild(newRow);
+            updateTotalSKS(course.sks); // Update total SKS
         }
 
         function hasConflict(newKode, newHariJam) {
@@ -691,11 +694,11 @@ use Illuminate\Support\Str;
 
         // Function to calculate initial total SKS
         function calculateInitialTotalSKS() {
-            const summaryTable = document.querySelector('table:first-of-type tbody');
+            const summaryTable = document.querySelector('#summaryTable tbody');
             let total = 0;
 
             Array.from(summaryTable.rows).forEach(row => {
-                const sks = parseInt(row.cells[4].textContent); // Assuming SKS is in the 5th column
+                const sks = parseInt(row.cells[5].textContent); // Assuming SKS is in the 6th column
                 if (!isNaN(sks)) {
                     total += sks;
                 }
@@ -703,6 +706,7 @@ use Illuminate\Support\Str;
 
             document.getElementById('totalSks').textContent = total;
         }
+
 
         // Calculate initial total SKS when page loads
         document.addEventListener('DOMContentLoaded', calculateInitialTotalSKS);
@@ -737,27 +741,49 @@ use Illuminate\Support\Str;
             cellSks.textContent = course.sks;
         }
 
-        // Function to update total SKS
-        function updateTotalSks(newSks) {
-            const totalSksElement = document.getElementById('totalSks');
-            const currentTotal = parseInt(totalSksElement.textContent);
-            totalSksElement.textContent = (currentTotal + newSks).toString();
+        
 
-            // Show the SKS sidebar if it's not already visible
-            const sksSidebar = document.getElementById('sksSidebar');
-            sksSidebar.classList.add('show');
-        }
     </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    const maxSKS = {{ $maxSKS }}; // Get max SKS from PHP
+
+    function updateTotalSKS(newSks) {
+        const totalSksElement = document.getElementById('totalSks');
+        const currentTotal = parseInt(totalSksElement.textContent || '0');
+        const newTotal = currentTotal + newSks;
+
+        // Check if new total exceeds max SKS
+        if (newTotal > maxSKS) {
+            Swal.fire({
+                title: 'Peringatan',
+                text: `Total SKS melebihi maksimum yang diperbolehkan (${maxSKS} SKS). Silakan kurangi mata kuliah.`,
+                icon: 'warning',
+                confirmButtonText: 'OK'
+            });
+            return; // Stop further actions
+        }
+
+        totalSksElement.textContent = newTotal; // Update total if within limit
+
+        // Show the SKS sidebar if it's not already visible
+        const sksSidebar = document.getElementById('sksSidebar');
+        sksSidebar.classList.add('show');
+    }
+
+});
+    </script>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
 
             // Initialize listeners for cancel buttons
-            initializeCancelButtons();
-            // Initialize the SKS sidebar
-            calculateInitialTotalSKS();
-            initializeSKSSidebar();
+            calculateInitialTotalSKS(); // Initialize total SKS
+            initializeCancelButtons();  // Set up cancel button event listeners
+            initializeSKSSidebar();     // Set up the SKS sidebar toggle functionality
 
             function initializeCancelButtons() {
                 document.querySelectorAll('.cancel-course').forEach(button => {
@@ -825,13 +851,14 @@ use Illuminate\Support\Str;
             function updateTotalSKSAfterCancel(canceledSKS) {
                 const totalSksElement = document.getElementById('totalSks');
                 const currentTotal = parseInt(totalSksElement.textContent || '0');
-                const newTotal = Math.max(0, currentTotal - canceledSKS);
+                const newTotal = Math.max(0, currentTotal - canceledSKS); // Ensure total doesn't go below 0
                 totalSksElement.textContent = newTotal;
 
                 if (newTotal === 0) {
                     document.getElementById('sksSidebar').classList.remove('show');
                 }
             }
+
 
             function reorderTableRows() {
                 const tbody = document.querySelector('table:first-of-type tbody');
@@ -1000,15 +1027,26 @@ use Illuminate\Support\Str;
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Cek status IRS dari localStorage saat halaman dimuat
             const fasePembatalanIRS = @json($fasePembatalanIRS);
             const statuspengajuan = @json($status);
+            console.log("Status Pengajuan:", statuspengajuan); 
             const fasePerubahanIRS = @json($fasePerubahanIRS);
-        
+            const batalAjukan = document.getElementById("button_batal");
+
             // Jika fase pembatalan IRS aktif, sembunyikan listMataKuliah dan simpan status di localStorage
-            if (fasePembatalanIRS) {
+            if (fasePembatalanIRS && statuspengajuan !== null) {
                 localStorage.setItem('hideListMataKuliah', 'true');
             }
+
+            if (fasePerubahanIRS && statuspengajuan !==null ) {
+                batalAjukanButton.setAttribute("disabled", true);
+                batalAjukanButton.classList.add("cursor-not-allowed", "opacity-50");
+                batalAjukan.setAttribute("disabled", true);
+                batalAjukan.classList.add("cursor-not-allowed", "opacity-50");
+
+            }
+
+            
 
             // Periksa localStorage untuk melihat apakah listMataKuliah harus disembunyikan
             const shouldHideList = localStorage.getItem('hideListMataKuliah') === 'true';
@@ -1018,7 +1056,6 @@ use Illuminate\Support\Str;
                 document.getElementById('listMataKuliah').classList.add('hidden');
             }
 
-  
             const isSubmitted = localStorage.getItem('irsSubmitted') === 'true';
             if (isSubmitted) {
                 setSubmittedState();
@@ -1027,35 +1064,6 @@ use Illuminate\Support\Str;
             }
         });
 
-        function ajukanIRS() {
-            Swal.fire({
-                title: 'Konfirmasi Pengajuan',
-                text: 'Apakah Anda yakin ingin mengajukan IRS?',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#34803C',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, Ajukan!',
-                cancelButtonText: 'Batal',
-                reverseButtons: true
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Simpan status ke localStorage
-                    localStorage.removeItem('hideListMataKuliah');
-                    localStorage.setItem('irsSubmitted', 'true');
-                    setSubmittedState();
-                    Swal.fire({
-                        title: 'Berhasil!',
-                        text: 'IRS berhasil diajukan',
-                        icon: 'success',
-                        timer: 1500,
-                        showConfirmButton: false
-                    });
-                }
-            });
-        }
-
-        
         function ajukanIRS() {
         Swal.fire({
             title: 'Konfirmasi Pengajuan',
@@ -1130,6 +1138,11 @@ use Illuminate\Support\Str;
         // Atur tampilan tombol "Ajukan" dan "Batal Ajukan"
         document.getElementById('ajukanButton').classList.add('hidden');
         document.getElementById('batalAjukanButton').classList.remove('hidden');
+
+        if (statuspengajuan == 'disetujui'){
+            document.getElementById('batalAjukanButton').classList.add('hidden');
+        }
+
     }
 
     function setDraftState() {
@@ -1152,25 +1165,11 @@ use Illuminate\Support\Str;
         document.getElementById('ajukanButton').classList.remove('hidden');
         document.getElementById('batalAjukanButton').classList.add('hidden');
     }
-    </script>
-    <script>
 
-    document.addEventListener('DOMContentLoaded', function() {
-        const fasePengisianIRS = @json($fasePengisianIRS);
-        const statuspengajuan = @json($status);
-        const fasePerubahanIRS = @json($fasePerubahanIRS);
-        if (fasePembatalanIRS && !fasePengisianIRS && statuspengajuan== null) {
-            
-            document.getElementById("batalAjukanButton").classList.remove("hidden");
-            
-        }else if(fasePerubahanIRS && statuspengajuan == null){
-            document.getElementById("batalAjukanButton").classList.remove("hidden");
-        } else {
-           
-            document.getElementById("batalAjukanButton").classList.add("hidden");
-        }
-    });
-</script>
+    </script>
+
+
+
 
 <script>
     function generatePDF() {

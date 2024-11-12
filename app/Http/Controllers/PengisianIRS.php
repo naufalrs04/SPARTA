@@ -30,6 +30,8 @@ class PengisianIRS extends Controller
 
         $mahasiswa = Mahasiswa::where('nim', $user->nim_nip)->first();
         $mahasiswa_id = $mahasiswa->id;
+        $ips=$mahasiswa->IPS_Sebelumnya;
+        $maxSKS = $ips > 3 ? 24 : 20;
         $semesterMahasiswa = $mahasiswa->semester;
         // Ambil semua data dari irs_rekap berdasarkan mahasiswa_id dan semester
         $irs_rekap = irs_rekap::where('mahasiswa_id', $mahasiswa_id)
@@ -43,10 +45,17 @@ class PengisianIRS extends Controller
             $rekap->jam_selesai = PenyusunanJadwal::where('kode_mk', $rekap->kode_mk)->first()->jam_selesai;
             $rekap->jadwal = $rekap->hari . ', ' . $rekap->jam_mulai . ' - ' . $rekap->jam_selesai;
 
-
             $rekap->nama_dosen = PenyusunanJadwal::where('kode_mk', $rekap->kode_mk)->pluck('dosen')->implode(', ');
         }
-        $status = $irs_rekap->first()->status_pengajuan ?? null;
+        // Group records by `status_pengajuan`, including `null` as a separate group
+        $groupedByStatus = $irs_rekap->groupBy(function ($item) {
+            return $item->status_pengajuan ?? null;
+        });
+        // dd($groupedByStatus);
+
+        $status = $groupedByStatus->keys()->firstWhere(fn($value) => $value !== 'disetujui') ?? $groupedByStatus->keys()->first();
+        
+        // dd($status);
         // $status = irs_rekap::where ('mahasiswa_id', $mahasiswa_id)
 
         // dd($rekap); 
@@ -88,98 +97,123 @@ class PengisianIRS extends Controller
             ->where('jadwalberakhir', '>=', $tanggalSekarang)
             ->first(); 
         
-        return view('pengisianirs', compact('user', 'list_mata_kuliah', 'irs_rekap', 'groupedData',  'semesterMahasiswa', 'mahasiswa_id', 'theme', 'fasePengisianIRS', 'fasePembatalanIRS', 'fasePerubahanIRS','status'));
+        return view('pengisianirs', compact('user', 'list_mata_kuliah', 'irs_rekap', 'groupedData',  'semesterMahasiswa', 'mahasiswa_id', 'theme', 'fasePengisianIRS', 'fasePembatalanIRS', 'fasePerubahanIRS','status','maxSKS','ips'));
     }
 
     public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'kode_mk' => 'required|string',
-            'nama_mk' => 'required|string',
-            'ruang' => 'required|string',
-            'kelas' => 'required|string',
-            'sks_mk' => 'required|integer|min:1',
-            'id' => 'required|integer|exists:penyusunan_jadwals,id',
-            'kapasitas' => 'required|integer',
-        ]);
+{
+    $validated = $request->validate([
+        'kode_mk' => 'required|string',
+        'nama_mk' => 'required|string',
+        'ruang' => 'required|string',
+        'kelas' => 'required|string',
+        'sks_mk' => 'required|integer|min:1',
+        'id' => 'required|integer|exists:penyusunan_jadwals,id',
+        'kapasitas' => 'required|integer',
+    ]);
 
-        $mataKuliah = PenyusunanJadwal::find($validated['kode_mk']);
-        $jumlah_pendaftar = Irs_rekap::where('kode_mk', $validated['kode_mk'])
+    $user = Auth::user();
+    $mahasiswa = Mahasiswa::where('nim', $user->nim_nip)->first();
+    $mahasiswa_id = $mahasiswa->id;
+    $semester = $mahasiswa->semester;
+    $ips = $mahasiswa->IPS_Sebelumnya;
+
+    // Define SKS limits based on IPS
+    $maxSKS = 20;
+    if ($ips >= 3) {
+        $maxSKS = 24;
+    } elseif ($ips > 0 && $ips < 3) {
+        $maxSKS = 20;
+    }
+
+    // Calculate the current total SKS for the student in the current semester
+    $currentSKS = irs_rekap::where('mahasiswa_id', $mahasiswa_id)
+                    ->where('semester', $semester)
+                    ->sum('sks');
+
+    // Check if adding the new course exceeds the maximum SKS limit
+    if (($currentSKS + $validated['sks_mk']) > $maxSKS) {
+        return response()->json([
+            'success' => false,
+            'message' => "Anda hanya dapat mengambil maksimal $maxSKS SKS berdasarkan IPS Anda."
+        ], 422);
+    }
+
+    // Check if course capacity is full
+    $jumlah_pendaftar = Irs_rekap::where('kode_mk', $validated['kode_mk'])
                                  ->where('kelas', $validated['kelas'])
                                  ->count();
 
-        // Cek apakah kapasitas sudah penuh
-        if ($jumlah_pendaftar >= $validated['kapasitas']) {
+    if ($jumlah_pendaftar >= $validated['kapasitas']) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Kapasitas mata kuliah ini sudah penuh.'
+        ], 422);
+    }
+
+    $existingIrs = irs_rekap::where('mahasiswa_id', $mahasiswa_id)
+        ->where('semester', $semester)
+        ->get();
+
+    // Check if course has already been taken
+    if ($existingIrs->contains('kode_mk', $validated['kode_mk'])) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Mata kuliah ini sudah diambil sebelumnya.'
+        ], 422);
+    }
+
+    // Check for schedule conflicts
+    $mataKuliah = PenyusunanJadwal::find($validated['kode_mk']);
+    foreach ($existingIrs as $irs) {
+        $existingMataKuliah = $irs->mataKuliah;
+        if ($existingMataKuliah && $this->isTimeConflict($mataKuliah, $existingMataKuliah)) {
             return response()->json([
                 'success' => false,
-                'message' => 'Kapasitas mata kuliah ini sudah penuh.'
+                'message' => 'Jadwal mata kuliah ini bertabrakan dengan mata kuliah yang sudah diambil.'
             ], 422);
-        }
-        $user = Auth::user();
-        $mahasiswa = Mahasiswa::where('nim', $user->nim_nip)->first();
-
-        $mahasiswa_id = $mahasiswa->id;
-        $semester = $mahasiswa->semester;
-        $existingIrs = irs_rekap::where('mahasiswa_id', $mahasiswa_id)
-            ->where('semester', $semester)
-            ->get();
-
-        // Cek jika mata kuliah sudah diambil sebelumnya
-        if ($existingIrs->contains('kode_mk', $validated['kode_mk'])) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Mata kuliah ini sudah diambil sebelumnya.'
-            ], 422);
-        }
-
-        // Cek jika ada konflik jadwal
-        foreach ($existingIrs as $irs) {
-            $existingMataKuliah = $irs->mataKuliah;
-            if ($existingMataKuliah && $this->isTimeConflict($mataKuliah, $existingMataKuliah)) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Jadwal mata kuliah ini bertabrakan dengan mata kuliah yang sudah diambil.'
-                ], 422);
-            }
-        }
-
-        // Jika tidak ada konflik, simpan data IRS
-        try {
-            $irsRekap = irs_rekap::updateOrCreate(
-                [
-                    'mahasiswa_id' => $mahasiswa_id,
-                    'semester' => $semester,
-                    'jadwal_id'=>$validated['id'],
-                    'kode_mk' => $validated['kode_mk'],
-                    'nama_mk' => $validated['nama_mk'],
-                    'kelas' => $validated['kelas'],
-                    'ruang' => $validated['ruang'],
-                    'sks' => $validated['sks_mk'],
-                ],
-                [
-                    'mahasiswa_id' => $mahasiswa_id,
-                    'semester' => $semester,
-                    'jadwal_id' => $validated['id'],
-                    'kode_mk' => $validated['kode_mk'],
-                    'nama_mk' => $validated['nama_mk'],
-                    'kelas' => $validated['kelas'],
-                    'ruang' => $validated['ruang'],
-                    'sks' => $validated['sks_mk'],
-                ]
-            );
-            return response()->json([
-                'success' => true,
-                'message' => 'Mata kuliah berhasil diambil',
-                'data' => $irsRekap
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Error in storing IRS: ' . $e->getMessage());
-            return response()->json([
-                'success' => false,
-                'message' => 'Terjadi kesalahan saat menyimpan data.'
-            ], 500);
         }
     }
+
+    // Store IRS data if no conflicts
+    try {
+        $irsRekap = irs_rekap::updateOrCreate(
+            [
+                'mahasiswa_id' => $mahasiswa_id,
+                'semester' => $semester,
+                'jadwal_id' => $validated['id'],
+                'kode_mk' => $validated['kode_mk'],
+                'nama_mk' => $validated['nama_mk'],
+                'kelas' => $validated['kelas'],
+                'ruang' => $validated['ruang'],
+                'sks' => $validated['sks_mk'],
+            ],
+            [
+                'mahasiswa_id' => $mahasiswa_id,
+                'semester' => $semester,
+                'jadwal_id' => $validated['id'],
+                'kode_mk' => $validated['kode_mk'],
+                'nama_mk' => $validated['nama_mk'],
+                'kelas' => $validated['kelas'],
+                'ruang' => $validated['ruang'],
+                'sks' => $validated['sks_mk'],
+            ]
+        );
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Mata kuliah berhasil diambil',
+            'data' => $irsRekap
+        ]);
+    } catch (\Exception $e) {
+        Log::error('Error in storing IRS: ' . $e->getMessage());
+        return response()->json([
+            'success' => false,
+            'message' => 'Terjadi kesalahan saat menyimpan data.'
+        ], 500);
+    }
+}
+
 
     private function isTimeConflict($mataKuliah1, $mataKuliah2)
 {

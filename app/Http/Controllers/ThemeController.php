@@ -22,10 +22,4 @@ class ThemeController extends Controller
         return back()->withCookie($cookie);
     }
 
-    public function dashboard(Request $request) {
-        $theme = $request->cookie('theme') ?? 'light';
-
-        return view('dashboardBagianAkademik', compact('theme', 'data'));
-    }
-
 }
