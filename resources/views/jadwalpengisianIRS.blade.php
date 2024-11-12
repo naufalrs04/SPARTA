@@ -31,19 +31,23 @@
                             <th class="px-4 py-2 w-1/6 rounded-tr-lg">Info</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @foreach ($jadwalpengisian as $jadwal)
-                            <tr data-id="{{ $jadwal->id }}" style="background-color: #23252A;">
-                                <td class="px-4 py-2 border-r border-white">{{ $jadwal->keterangan }}</td>
-                                <td class="px-4 py-2 border-r border-white">{{ $jadwal->jadwalmulai }}</td>
-                                <td class="px-4 py-2 border-r border-white">{{ $jadwal->jadwalberakhir }}</td>                              
-                                <td class="px-5 py-2 text-center">
-                                    <button class="edit-btn w-16 text-white rounded-md px-3 py-2 bg-gray-400 hover:bg-gray-500">
-                                        <strong>Edit</strong>
-                                    </button>
-                                </td>
-                            </tr>
-                        @endforeach
+                    @foreach ($jadwalpengisian as $jadwal)
+                        <tr data-id="{{ $jadwal->id }}" style="background-color: #23252A;">
+                            <td class="px-4 py-2 border-r border-white">{{ $jadwal->keterangan }}</td>
+                            <td class="px-4 py-2 border-r border-white">
+                                {!! $jadwal->jadwalmulai ?? '<em>anda belum melakukan pengaturan</em>' !!}
+                            </td>
+                            <td class="px-4 py-2 border-r border-white">
+                                {!! $jadwal->jadwalberakhir ?? '<em>anda belum melakukan pengaturan</em>' !!}
+                            </td>
+                            <td class="px-5 py-2 text-center">
+                                <button class="edit-btn w-16 text-white rounded-md px-3 py-2 bg-gray-400 hover:bg-gray-500">
+                                    <strong>Edit</strong>
+                                </button>
+                            </td>
+                        </tr>
+                    @endforeach
+
                     </tbody>
                 </table>
             </div>

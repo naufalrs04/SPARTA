@@ -11,7 +11,9 @@ use App\Models\Mata_Kuliah;
 use App\Models\Ruangan;
 use App\Models\Mahasiswa;
 use App\Models\irs_rekap;
+use App\Models\JadwalPengisianIRS;
 use App\Models\PenyusunanJadwal;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class PengisianIRS extends Controller
@@ -24,7 +26,6 @@ class PengisianIRS extends Controller
 
         $user = Auth::user();
 
-        // Ambil tema dari cookie atau gunakan 'light' sebagai default
         $theme = $request->cookie('theme') ?? 'light';
 
         $mahasiswa = Mahasiswa::where('nim', $user->nim_nip)->first();
@@ -45,6 +46,8 @@ class PengisianIRS extends Controller
 
             $rekap->nama_dosen = PenyusunanJadwal::where('kode_mk', $rekap->kode_mk)->pluck('dosen')->implode(', ');
         }
+        $status = $irs_rekap->first()->status_pengajuan ?? null;
+        // $status = irs_rekap::where ('mahasiswa_id', $mahasiswa_id)
 
         // dd($rekap); 
 
@@ -58,10 +61,34 @@ class PengisianIRS extends Controller
         // dd($groupedData);
 
 
-        $list_mata_kuliah = PenyusunanJadwal::where('status_pengajuan', 'ter-Verifikasi')->get();
+        $list_mata_kuliah = PenyusunanJadwal::where('status_pengajuan', 'ter-Verifikasi')
+                        ->get()
+                        ->each(function ($mata_kuliah) {
+                            // Hitung jumlah mahasiswa yang telah mengambil mata kuliah berdasarkan jadwal_id
+                            $mata_kuliah->jumlah_pendaftar = irs_rekap::where('jadwal_id', $mata_kuliah->id)->count();
+                        });
+        
         // dd($list_mata_kuliah);
 
-        return view('pengisianirs', compact('user', 'list_mata_kuliah', 'irs_rekap', 'groupedData',  'semesterMahasiswa', 'mahasiswa_id', 'theme'));
+        $tanggalSekarang = Carbon::now();
+    
+        // Cari fase 'Pengisian IRS' di tabel jadwal_pengisian_irs yang aktif
+        $fasePengisianIRS = JadwalPengisianIRS::where('keterangan', 'Pengisian IRS')
+            ->where('jadwalmulai', '<=', $tanggalSekarang)
+            ->where('jadwalberakhir', '>=', $tanggalSekarang)
+            ->first();
+
+        $fasePembatalanIRS = JadwalPengisianIRS::where('keterangan', 'Pembatalan IRS')
+            ->where('jadwalmulai', '<=', $tanggalSekarang)
+            ->where('jadwalberakhir', '>=', $tanggalSekarang)
+            ->first();
+
+        $fasePerubahanIRS = JadwalPengisianIRS::where('keterangan', 'Perubahan IRS')
+            ->where('jadwalmulai', '<=', $tanggalSekarang)
+            ->where('jadwalberakhir', '>=', $tanggalSekarang)
+            ->first(); 
+        
+        return view('pengisianirs', compact('user', 'list_mata_kuliah', 'irs_rekap', 'groupedData',  'semesterMahasiswa', 'mahasiswa_id', 'theme', 'fasePengisianIRS', 'fasePembatalanIRS', 'fasePerubahanIRS','status'));
     }
 
     public function store(Request $request)
@@ -77,6 +104,17 @@ class PengisianIRS extends Controller
         ]);
 
         $mataKuliah = PenyusunanJadwal::find($validated['kode_mk']);
+        $jumlah_pendaftar = Irs_rekap::where('kode_mk', $validated['kode_mk'])
+                                 ->where('kelas', $validated['kelas'])
+                                 ->count();
+
+        // Cek apakah kapasitas sudah penuh
+        if ($jumlah_pendaftar >= $validated['kapasitas']) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Kapasitas mata kuliah ini sudah penuh.'
+            ], 422);
+        }
         $user = Auth::user();
         $mahasiswa = Mahasiswa::where('nim', $user->nim_nip)->first();
 
@@ -206,5 +244,8 @@ class PengisianIRS extends Controller
             ], 403);
         }
     }
+
+    
+
 
 }
