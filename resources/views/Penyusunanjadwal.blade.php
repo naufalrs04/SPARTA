@@ -305,6 +305,24 @@
                         });
                     });
                 </script>
+
+                <script>
+                    document.getElementById('default-search').addEventListener('input', function() {
+                        const searchTerm = this.value.toLowerCase();
+                        const rows = document.querySelectorAll('table[name="tabel_jadwal"] tbody tr');
+
+                        rows.forEach(row => {
+                            const courseName = row.querySelector('td:nth-child(1)').innerText.toLowerCase(); // 1st column has course name
+                            const courseCode = row.querySelector('td:nth-child(2)').innerText.toLowerCase(); // 2nd column has course code
+
+                            if (courseName.includes(searchTerm) || courseCode.includes(searchTerm)) {
+                                row.style.display = ''; // Show the row if it matches
+                            } else {
+                                row.style.display = 'none'; // Hide the row if it doesn't match
+                            }
+                        });
+                    });
+                </script>
                 <script>
                     document.getElementById('add-dosen').addEventListener('click', function() {
                         const dosenContainer = document.getElementById('dosen-container');
@@ -394,6 +412,80 @@
 
         kapasitasInput.value = kapasitas || '';
    
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const courseDetails = @json($mklist);
+
+        document.querySelectorAll('.show-details').forEach((button) => {
+            button.addEventListener('click', () => {
+                const details = {
+                nama: button.getAttribute('data-nama'),
+                kode: button.getAttribute('data-kode'),
+                sks: button.getAttribute('data-sks'),
+                semester: button.getAttribute('data-semester'),
+                prodi: button.getAttribute('data-prodi'),
+                kelas: button.getAttribute('data-kelas'),
+                tahunajaran: button.getAttribute('data-tahunajaran'),
+                dosen: button.getAttribute('data-dosen'),
+                ruang: button.getAttribute('data-ruang'),
+                hari: button.getAttribute('data-hari'),
+                jammulai: button.getAttribute('data-jammulai'),
+                jamselesai: button.getAttribute('data-jamselesai'),
+                kapasitas: button.getAttribute('data-kapasitas'),
+            };
+
+                Swal.fire({
+                    title: `<strong>Detail Mata Kuliah</strong>`,
+                    html: `
+                                    <div class="text-left space-y-4">
+                                        <div>
+                                            <h2 class="font-bold mb-1">Mata Kuliah :</h2>
+                                            <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                                <h2 class="ml-5 text-black font-bold">${details.nama} - ${details.kelas} </h2>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h2 class="font-bold mb-1">Kode Mata Kuliah :</h2>
+                                            <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                                <h2 class="ml-5 text-black font-bold">${details.kode}</h2>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h2 class="font-bold mb-1">SKS :</h2>
+                                            <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                                <h2 class="ml-5 text-black font-bold">${details.sks}</h2>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h2 class="font-bold mb-1">Jadwal :</h2>
+                                            <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                                <h2 class="ml-5 text-black font-bold">${details.hari}, ${details.jammulai} - ${details.jamselesai}</h2>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h2 class="font-bold mb-1">Ruangan :</h2>
+                                            <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                                <h2 class="ml-5 text-black font-bold">${details.ruang}</h2>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h2 class="font-bold mb-1">Dosen Pengampu :</h2>
+                                            <div class="w-full h-10 bg-gray-300 rounded-xl flex items-center">
+                                                <h2 class="ml-5 text-black font-bold">${details.dosen}</h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `,
+                    confirmButtonText: 'Tutup',
+                    focusConfirm: false,
+                    customClass: {
+                        popup: 'swal-popup-custom'
+                    }
+                });
+            });
+        });
     });
 </script>
 
