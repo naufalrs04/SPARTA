@@ -74,4 +74,6 @@ class pembagiankelasInfo extends Controller
     return redirect()->back()->with('success', 'Data berhasil disimpan.');
 }
 
+
+
 }

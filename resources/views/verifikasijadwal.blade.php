@@ -93,54 +93,56 @@
     </div>
    <script>
     function showInfo(prodi, jadwalDetails) {
-        let jadwalList = jadwalDetails.map(room => 
-            `<tr>
-                <td>${room.nama_mk}</td>
-                <td>${room.tahun_ajaran}</td>
-                <td>${room.ruang}</td>
-                <td>${room.hari}</td>
-                <td>${room.jam_mulai}</td>
-                <td>${room.jam_selesai}</td>
-                
-            </tr>`
-        ).join('');
+    let jadwalList = jadwalDetails.map(room => 
+        `<tr>
+            <td class="px-4 py-2 border-b border-gray-200">${room.nama_mk}</td>
+            <td class="px-4 py-2 border-b border-gray-200">${room.tahun_ajaran}</td>
+            <td class="px-4 py-2 border-b border-gray-200">${room.ruang}</td>
+            <td class="px-4 py-2 border-b border-gray-200">${room.hari}</td>
+            <td class="px-4 py-2 border-b border-gray-200">${room.jam_mulai}</td>
+            <td class="px-4 py-2 border-b border-gray-200">${room.jam_selesai}</td>
+        </tr>`
+    ).join('');
 
-        // Menampilkan SweetAlert dengan informasi mata kuliah
-        Swal.fire({
-            title: `Info Mata Kuliah - ${prodi}`,
-            html: `
-                <table class="w-full">
-                    <thead>
+    // Menampilkan SweetAlert dengan informasi mata kuliah
+    Swal.fire({
+        title: `Info Mata Kuliah - ${prodi}`,
+        html: `
+            <div style="max-height: 60vh; overflow-y: auto; overflow-x: hidden;">
+                <table class="min-w-full bg-white border rounded-lg text-left text-sm text-gray-800">
+                    <thead class="bg-gray-100 sticky top-0">
                         <tr>
-                            <th>Nama MK</th>
-                            <th>Tahun Ajaran</th>
-                            <th>Ruangan</th>
-                            <th>Hari</th>
-                            <th>Jam Mulai</th>
-                            <th>Jam Selesai</th>
+                            <th class="px-4 py-2 font-semibold text-gray-700">Nama MK</th>
+                            <th class="px-4 py-2 font-semibold text-gray-700">Tahun Ajaran</th>
+                            <th class="px-4 py-2 font-semibold text-gray-700">Ruangan</th>
+                            <th class="px-4 py-2 font-semibold text-gray-700">Hari</th>
+                            <th class="px-4 py-2 font-semibold text-gray-700">Jam Mulai</th>
+                            <th class="px-4 py-2 font-semibold text-gray-700">Jam Selesai</th>
                         </tr>
                     </thead>
                     <tbody>
                         ${jadwalList}
                     </tbody>
                 </table>
-                <div class="mt-4 flex justify-center gap-4">
-                    <button onclick="verifikasiJadwal('${prodi}')" 
-                            class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
-                        Verifikasi
-                    </button>
-                    <button onclick="tolakJadwal('${prodi}')" 
-                            class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
-                        Tolak
-                    </button>
-                </div>
-            `,
-            icon: 'info',
-            showConfirmButton: false,
-            customClass: {
-                popup: 'swal-wide',
-            }
-        });
+            </div>
+            <div class="mt-4 flex justify-center gap-4">
+                <button onclick="verifikasiJadwal('${prodi}')" 
+                        class="px-6 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+                    Verifikasi
+                </button>
+                <button onclick="tolakJadwal('${prodi}')" 
+                        class="px-6 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+                    Tolak
+                </button>
+            </div>
+        `,
+        icon: 'info',
+        showConfirmButton: false,
+        width: '80%', // Lebar SweetAlert lebih besar untuk menampilkan tabel
+        customClass: {
+            popup: 'swal-wide',
+        }
+    });
     }
 
     function verifikasiJadwal(prodi) {

@@ -160,42 +160,36 @@
                     </div>
                 </div>
             </div>
-            <div class="px-8 pt-10 pb-5 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
-                <div class="text-center">
-                    <h2 class="text-center text-lg font-semibold mb-4 rounded-lg inline-block  px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">Jadwal Kuliah</h2>
-                </div>
-                <div class="overflow-x-auto rounded-3xl {{ $theme == 'light' ? 'border border-black' : 'border border-black' }}" style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5)">
-                    <table class="w-full text-center rounded-lg border-collapse" name="tabel_jadwal">
-                        <thead>
-                            <tr class="{{ $theme == 'light' ? 'bg-gray-700' : 'bg-gray-200' }}">
-                                <th class="px-4 py-2 w-1/4 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">Waktu</th>
-                                <th class="px-4 py-2 w-1/2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">Mata Kuliah</th>
-                                <th class="px-4 py-2 w-1/4 {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">Ruangan</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($jadwal_kuliah as $jadwal)
-                                @if($jadwal_kuliah -> status_pengajuan == 'disetujui')
-                                    <tr class="{{ $theme == 'light' ? 'bg-[#2A2C33]' : 'bg-[#EEEEEE]' }}">
-                                        <td class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">
-                                            {{ $jadwal->hari }}, {{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}
-                                        </td>
+            <div class="px-8 pt-10 pb-5">
+                <h2 class="text-center text-lg font-semibold mb-4">Jadwal Kuliah</h2>
+                <table class="w-full text-center rounded-lg border-collapse" name="tabel_jadwal">
+                    <thead>
+                        <tr style="background-color: rgba(135, 138, 145, 0.37);">
+                            <th class="px-4 py-2 w-1/4 border-r border-white rounded-tl-lg">Waktu</th>
+                            <th class="px-4 py-2 w-1/2 border-r border-white">Mata Kuliah</th>
+                            <th class="px-4 py-2 w-1/4 rounded-tr-lg">Ruangan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($jadwal_kuliah as $jadwal)
+                            
+                                <tr style="background-color: #23252A">
+                                    <td class="px-4 py-2 border-r border-white">
+                                        {{ $jadwal->hari }}, {{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}
+                                    </td>
 
                                         <td class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">
                                             {{$jadwal->nama_mk}} - {{$jadwal->kelas}}
                                         </td>
 
-                                        <td class="px-4 py-2">
-                                            {{$jadwal->ruang}}
-                                        </td>
-                                    </tr>
-                                @endif
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="pb-48 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
+                                    <td class="px-4 py-2">
+                                        {{$jadwal->ruang}}
+                                    </td>
+                                </tr>
+                            
+                        @endforeach
+                        
+                    </tbody>
 
             </div>
         </div>

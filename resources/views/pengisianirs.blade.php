@@ -12,6 +12,9 @@ use Illuminate\Support\Str;
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.13/jspdf.plugin.autotable.min.js"></script>
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
         #sksSidebar {
@@ -274,6 +277,7 @@ use Illuminate\Support\Str;
                 @foreach($groupedData as $mahasiswaId => $semesterGroups)
                 <div class="mahasiswa-container px-4 sm:px-6 md:px-8 pt-5 pb-10">
                     <h2 class="text-center text-lg font-semibold mb-4">IRS Mahasiswa</h2>
+
                     <div class="w-full bg-[#1E1F24] opacity-65 rounded-lg border-[#49454F] border-opacity-50 border-2">
                         <div class="m-2">
                             @for($semester = 1; $semester <= $semesterMahasiswa; $semester++)
@@ -329,6 +333,14 @@ use Illuminate\Support\Str;
                                         </tbody>
                                     </table>
                                 </div>
+
+                                @if($rekap->status_pengajuan == 'disetujui')
+                                    <div class="flex justify-end mb-4 pr-5 pb-5">
+                                        <button onclick="generatePDF()" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+                                            Cetak PDF
+                                        </button>
+                                    </div>
+                                @endif
                         </div>
                         @else
                         <div class="w-full bg-[#757575] rounded-lg mb-4 px-4 py-3">
@@ -1158,6 +1170,32 @@ use Illuminate\Support\Str;
             document.getElementById("batalAjukanButton").classList.add("hidden");
         }
     });
+</script>
+
+<script>
+    function generatePDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        doc.text("IRS Mahasiswa", 14, 10);
+
+        doc.autoTable({
+            html: '.mahasiswa-container table',
+            startY: 20,
+            theme: 'grid',
+            styles: {
+                fontSize: 10,
+                cellPadding: 4,
+                halign: 'center',
+                valign: 'middle'
+            },
+            headStyles: {
+                fillColor: [0, 0, 0]
+            }
+        });
+
+        doc.save('IRS_Mahasiswa.pdf');
+    }
 </script>
 
 </body>
