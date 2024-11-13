@@ -61,7 +61,7 @@
                             <div>
                                 <div class="mb-4">
                                     <label for="nama_mk" class="block text-sm font-medium mb-2">Nama Mata Kuliah</label>
-                                    <select id="nama_mk" name="nama_mk" class="w-full p-2 border rounded-xl {{ $theme == 'light' ? 'bg-gray-700 border-gray-900 text-gray-200' : 'bg-gray-300 border-gray-400 text-gray-600' }}" required>
+                                    <select id="nama_mk" name="nama_mk" class="w-full p-2 border rounded-xl {{ $theme == 'light' ? 'bg-gray-700 border-gray-900 hover:border-gray-500 text-gray-200' : 'bg-gray-300 border-gray-400 hover:border-gray-600 text-gray-600' }}" required>
                                         <option value="">-- Pilih Mata Kuliah --</option>
                                         @foreach ($matakuliahList as $matakuliah)
                                             <option value="{{ $matakuliah->namemk }}"
@@ -79,25 +79,25 @@
                                 <div class="mb-4">
                                     <label for="kode_mk" class="block text-sm font-medium mb-2">Kode Mata Kuliah</label>
                                     <input type="text" id="kode_mk" name="kode_mk"
-                                    class="w-full p-2 border rounded-xl {{ $theme == 'light' ? 'bg-gray-700 border-gray-900 text-white' : 'bg-gray-300 border-gray-400 text-gray-600' }}" required>
+                                    class="w-full p-2 border rounded-xl {{ $theme == 'light' ? 'bg-gray-700 border-gray-900 hover:border-gray-500 text-gray-200' : 'bg-gray-300 border-gray-400 hover:border-gray-600 text-gray-600' }}" required>
                                 </div>
 
                                 <div class="mb-4">
                                     <label for="sks_mk" class="block text-sm font-medium mb-2">SKS</label>
                                     <input type="number" id="sks_mk" name="sks_mk"
-                                    class="w-full p-2 border rounded-xl {{ $theme == 'light' ? 'bg-gray-700 border-gray-900 text-gray-100' : 'bg-gray-300 border-gray-400 text-gray-600' }}" required>
+                                    class="w-full p-2 border rounded-xl {{ $theme == 'light' ? 'bg-gray-700 border-gray-900 hover:border-gray-500 text-gray-200' : 'bg-gray-300 border-gray-400 hover:border-gray-600 text-gray-600' }}" required>
                                 </div>
 
                                 <div class="mb-4">
                                     <label for="semester_mk" class="block text-sm font-medium mb-2">Semester</label>
                                     <input type="number" id="semester_mk" name="semester_mk"
-                                    class="w-full p-2 border rounded-xl {{ $theme == 'light' ? 'bg-gray-700 border-gray-900 text-gray-100' : 'bg-gray-300 border-gray-400 text-gray-600' }}" required>
+                                    class="w-full p-2 border rounded-xl {{ $theme == 'light' ? 'bg-gray-700 border-gray-900 hover:border-gray-500 text-gray-200' : 'bg-gray-300 border-gray-400 hover:border-gray-600 text-gray-600' }}" required>
                                 </div>
 
                                 <div class="mb-4">
                                     <label for="prodi" class="block text-sm font-medium mb-2">Program Studi</label>
                                     <input type="text" id="prodi" name="prodi"
-                                    class="w-full p-2 border rounded-xl {{ $theme == 'light' ? 'bg-gray-700 border-gray-900 text-gray-100' : 'bg-gray-300 border-gray-400 text-gray-600' }}" required>
+                                    class="w-full p-2 border rounded-xl {{ $theme == 'light' ? 'bg-gray-700 border-gray-900 hover:border-gray-500 text-gray-200' : 'bg-gray-300 border-gray-400 hover:border-gray-600 text-gray-600' }}" required>
                                 </div>
                             </div>
 
@@ -105,7 +105,7 @@
                             <div>
                                 <div class="mb-4">
                                     <label for="kelas" class="block text-sm font-medium mb-2">Kelas</label>
-                                    <select name="kelas" id="kelas" class="w-full p-2 border rounded-xl {{ $theme == 'light' ? 'bg-gray-700 border-gray-900 text-gray-100' : 'bg-gray-300 border-gray-400 text-gray-600' }}" required>
+                                    <select name="kelas" id="kelas" class="w-full p-2 border rounded-xl {{ $theme == 'light' ? 'bg-gray-700 border-gray-900 hover:border-gray-500 text-gray-200' : 'bg-gray-300 border-gray-400 hover:border-gray-600 text-gray-600' }}" required>
                                         <option value="A">A</option>
                                         <option value="B">B</option>
                                         <option value="C">C</option>
@@ -117,12 +117,12 @@
                                 <div class="mb-4">
                                     <label for="tahun_ajaran" class="block text-sm font-medium mb-2">Tahun Ajaran</label>
                                     <input type="text" id="tahun_ajaran" name="tahun_ajaran"
-                                    class="w-full p-2 border rounded-xl {{ $theme == 'light' ? 'bg-gray-700 border-gray-900 text-gray-100' : 'bg-gray-300 border-gray-400 text-gray-600' }}" required>
+                                    class="w-full p-2 border rounded-xl {{ $theme == 'light' ? 'bg-gray-700 border-gray-900 hover:border-gray-500 text-gray-200' : 'bg-gray-300 border-gray-400 hover:border-gray-600 text-gray-600' }}" required>
                                 </div>
 
                                 <div class="mb-4">
                                     <label for="ruang" class="block text-sm font-medium mb-2">Ruang</label>
-                                    <select name="ruang" id="ruang" class="w-full p-2 border rounded-xl {{ $theme == 'light' ? 'bg-gray-700 border-gray-900 text-gray-100' : 'bg-gray-300 border-gray-400 text-gray-600' }}" required>
+                                    <select name="ruang" id="ruang" class="w-full p-2 border rounded-xl {{ $theme == 'light' ? 'bg-gray-700 border-gray-900 hover:border-gray-500 text-gray-200' : 'bg-gray-300 border-gray-400 hover:border-gray-600 text-gray-600' }}" required>
                                         <option value="">-- Pilih Ruangan --</option>
                                         @foreach ($ruanganDetailList as $ruangan)
                                             <option value="{{ $ruangan['nama'] }}" data-kapasitas="{{ $ruangan['kapasitas'] }}">
@@ -134,12 +134,12 @@
                                 
                                 <div class="mb-4">
                                     <label for="kapasitas" class="block text-sm font-medium mb-2">Kapasitas</label>
-                                    <input type="text" id="kapasitas" name="kapasitas" class="w-full p-2 border rounded-xl {{ $theme == 'light' ? 'bg-gray-700 border-gray-900 text-gray-100' : 'bg-gray-300 border-gray-400 text-gray-600' }}" readonly>
+                                    <input type="text" id="kapasitas" name="kapasitas" class="w-full p-2 border rounded-xl {{ $theme == 'light' ? 'bg-gray-700 border-gray-900 hover:border-gray-500 text-gray-200' : 'bg-gray-300 border-gray-400 hover:border-gray-600 text-gray-600' }}" readonly>
                                 </div>
 
                                 <div class="mb-4">
                                     <label for="hari" class="block text-sm font-medium mb-2">Hari</label>
-                                    <select name="hari" id="hari" class="w-full p-2 border rounded-xl {{ $theme == 'light' ? 'bg-gray-700 border-gray-900 text-gray-100' : 'bg-gray-300 border-gray-400 text-gray-600' }}" required>
+                                    <select name="hari" id="hari" class="w-full p-2 border rounded-xl {{ $theme == 'light' ? 'bg-gray-700 border-gray-900 hover:border-gray-500 text-gray-200' : 'bg-gray-300 border-gray-400 hover:border-gray-600 text-gray-600' }}" required>
                                         <option value="">-- Pilih Hari --</option>
                                         <option value="Senin">Senin</option>
                                         <option value="Selasa">Selasa</option>
@@ -154,19 +154,19 @@
                         <div class="grid grid-cols-2 gap-6">
                             <div class="mb-4">
                                 <label for="jam_mulai" class="block text-sm font-medium mb-2">Jam Mulai</label>
-                                <input type="time" id="jam_mulai" name="jam_mulai" class="w-full p-2 border rounded-xl {{ $theme == 'light' ? 'bg-gray-700 border-gray-900 text-gray-100' : 'bg-gray-300 border-gray-400 text-gray-600' }}" required>
+                                <input type="time" id="jam_mulai" name="jam_mulai" class="w-full p-2 border rounded-xl {{ $theme == 'light' ? 'bg-gray-700 border-gray-900 hover:border-gray-500 text-gray-200' : 'bg-gray-300 border-gray-400 hover:border-gray-600 text-gray-600' }}" required>
                             </div>
 
                             <div class="mb-4">
                                 <label for="jam_selesai" class="block text-sm font-medium mb-2">Jam Selesai</label>
-                                <input type="time" id="jam_selesai" name="jam_selesai" class="w-full p-2 border rounded-xl {{ $theme == 'light' ? 'bg-gray-700 border-gray-900 text-gray-100' : 'bg-gray-300 border-gray-400 text-gray-600' }}" readonly>
+                                <input type="time" id="jam_selesai" name="jam_selesai" class="w-full p-2 border rounded-xl {{ $theme == 'light' ? 'bg-gray-700 border-gray-900 hover:border-gray-500 text-gray-200' : 'bg-gray-300 border-gray-400 hover:border-gray-600 text-gray-600' }}" readonly>
                             </div>
                         </div>
                         <div id="dosen-container">
                             <div class="mb-4 dosen-input">
                                 <label for="dosen" class="block text-sm font-medium mb-2">Dosen Pengajar</label>
-                                <select name="dosen[]" class="w-full p-2 border rounded-xl {{ $theme == 'light' ? 'bg-gray-700 border-gray-900 text-gray-100' : 'bg-gray-300 border-gray-400 text-gray-600' }}" required>
-                                    <option value="">Pilih Dosen</option>
+                                <select name="dosen[]" class="w-full p-2 border rounded-xl {{ $theme == 'light' ? 'bg-gray-700 border-gray-900 hover:border-gray-500 text-gray-200' : 'bg-gray-300 border-gray-400 hover:border-gray-600 text-gray-600' }}" required>
+                                    <option value="">-- Pilih Dosen --</option>
                                     @foreach ($dosen as $daftar_dosen)
                                         <option value="{{ $daftar_dosen->nama }}">{{ $daftar_dosen->nama }}</option>
                                     @endforeach
@@ -332,8 +332,8 @@
                         const dosenList = @json($dosen); // Fetching the dosen data from Laravel
 
                         let options = '<label class="block text-sm font-medium mb-2">Dosen Pengajar</label>';
-                        options += '<select name="dosen[]" class="w-full p-2 border rounded-lg bg-gray-900 border-gray-700 text-white" required>';
-                        options += '<option value="">Pilih Dosen</option>'; // Default option
+                        options += '<select name="dosen[]" class="w-full p-2 border rounded-xl {{ $theme == 'light' ? 'bg-gray-700 border-gray-900 text-gray-100' : 'bg-gray-300 border-gray-400 text-gray-600' }}" required>';
+                        options += '<option value="">-- Pilih Dosen --</option>'; // Default option
 
                         dosenList.forEach(dosen => {
                             options += `<option value="${dosen.nama}">${dosen.nama}</option>`;

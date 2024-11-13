@@ -7,19 +7,31 @@
     <title>Verifikasi IRS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    @vite('resources/css/app.css')
 </head>
 
-<body class="bg-gray-900 text-gray-100">
-    <div class="flex min-h-screen">
+<body class="{{ $theme == 'light' ? 'text-gray-100' : 'text-gray-900' }}">
+    <div class="flex min-h-screen backdrop-blur-sm" style="{{ $theme == 'light' ? 'background-color: #17181C;' : 'background-color: #eeeeee;' }}">
+        <!-- Efek latar belakang -->
+        <div class="absolute inset-0 z-[-1]">
+            <div class="absolute inset-0 flex justify-center">
+                <div class="bg-shape1 bg-teal opacity-50 bg-blur"></div>
+                <div class="bg-shape2 bg-primary opacity-50 bg-blur"></div>
+                <div class="bg-shape1 bg-purple opacity-50 bg-blur"></div>
+            </div>
+        </div> 
+        
         <!-- Sidebar -->
-        @include('components.sidebar')
+        @include('components.sidebar', ['theme' => $theme])
 
         <!-- Content -->
-        <div class="flex-grow" style="background-color: #17181C;">
-            @include('components.navbar')
+        <div class="flex-grow">
+            @include('components.navbar', ['theme' => $theme])
 
             {{-- Main Content --}}
-            <div class="px-8 pt-5 flex justify-center items-center">
+            <div class="px-8 pt-5 flex justify-center items-center {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
                 <div class="w-full rounded-full border-yellow-500 border-2 px-4 py-2 flex justify-between items-center">
                     <div id="pengisianIRS" class="w-1/2 rounded-full bg-yellow-500 px-4 py-1 border-[#17181C] cursor-pointer flex justify-center items-center transition ease-in-out duration-300" onclick="switchIRS('belumVerifikasi')">
                         <h2 class="text-md font-bold">Belum Terverifikasi</h2>
@@ -30,9 +42,11 @@
                 </div>
             </div>
 
-            <div class="px-8 pt-5">
-                <h2 class="text-center text-lg font-semibold mb-4">Verifikasi IRS</h2>
-                <!-- Input cari mahasiswa -->
+            <div class="px-8 pt-5 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
+                <div class="text-center">
+                    <h2 class="text-center text-lg font-semibold mb-4 rounded-lg inline-block  px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">Verifikasi IRS</h2>
+                </div>
+                {{-- <!-- Input cari mahasiswa -->
                 <div class="bg-[#23252A]  flex flex-grow rounded-lg hover:bg-[#3A3B40] cursor-pointer relative">
                     <div class="w-full h-10 flex items-center relative">
                         <svg class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
@@ -41,33 +55,53 @@
                         <!-- Input Pencarian -->
                         <input type="search" class="bg-transparent text-[#94959A] ml-10 pl-5 w-full h-full border-none outline-none font-semibold" placeholder="Cari Mahasiswa">
                     </div>
-                </div>
+                </div> --}}
+
+                <!-- Search Section -->
+                <form class="w-full">
+                    <label for="default-search"
+                        class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                            </svg>
+                        </div>
+                        <input type="search" id="default-search"
+                            class="block w-full p-4 pl-10 text-sm rounded-2xl
+                            {{ $theme == 'light' ? 'bg-[#2A2C33] text-gray-200 border border-black hover:bg-gray-600 hover:text-white' : 'bg-[#eeeeee] text-gray-800 border border-black hover:bg-gray-300 hover:text-black' }}" 
+                            style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5);"
+                            placeholder="Cari mahasiswa" />
+                    </div>
+                </form> 
             </div>
 
-            <div id="contentBelumVerifikasi">
-                <div class="bg-[#23252A] ml-8 mr-8 mt-8 mb-8 flex flex-grow rounded-lg">
+            <div id="contentBelumVerifikasi" class="pt-4 pb-64 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
+                <div class="ml-8 mr-8 mt-8 mb-8 flex flex-grow overflow-x-auto rounded-3xl {{ $theme == 'light' ? 'border border-black' : 'border border-black' }}" style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5)">
                     <table class="table-auto p-5 w-full text-center rounded-lg border-collapse">
                         <thead>
-                            <tr style="background-color: rgba(135, 138, 145, 0.37);">
-                                <th class="px-4 py-2 border-r border-white rounded-tl-lg">No</th>
-                                <th class="px-4 py-2 w-1/3 border-r border-white">Nama Mahasiswa</th>
-                                <th class="px-4 py-2 w-1/3 border-r border-white">NIM</th>
-                                <th class="px-4 py-2 w-1/3 border-r border-white">Jumlah SKS</th>
-                                <th class="px-4 py-2 w-1/3 border-r border-white">Persetujuan</th>
-                                <th class="px-4 py-2 rounded-tr-lg">Detail</th>
+                            <tr class="{{ $theme == 'light' ? 'bg-gray-700' : 'bg-gray-200' }}">
+                                <th class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">No</th>
+                                <th class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">Nama Mahasiswa</th>
+                                <th class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">NIM</th>
+                                <th class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">Jumlah SKS</th>
+                                <th class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">Persetujuan</th>
+                                <th class="px-4 py-2">Detail</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($mhs_belum_verifikasi as $mhs)
-                            <tr style="background-color: #23252A;">
-                                <td class="px-4 py-2 border-r border-white">{{ $loop->iteration }}</td>
-                                <td class="px-4 py-2 border-r border-white">{{ $mhs->nama }}</td>
-                                <td class="px-4 py-2 border-r border-white">{{ $mhs->nim }}</td>
-                                <td class="px-4 py-2 border-r border-white">{{ $mhs->total_sks }}</td>
-                                <td class="px-3 py-3 space-x-4 border-r border-white text-center flex justify-center items-center">
-                                    <button class="setujui-irs bg-green-600 hover:bg-green-800 text-white px-4 py-1 rounded"
+                            <tr class="{{ $theme == 'light' ? 'bg-[#2A2C33]' : 'bg-[#EEEEEE]' }}">
+                                <td class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $loop->iteration }}</td>
+                                <td class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $mhs->nama }}</td>
+                                <td class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $mhs->nim }}</td>
+                                <td class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $mhs->total_sks }}</td>
+                                <td class="px-3 py-3 space-x-4 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }} text-center flex justify-center items-center">
+                                    <button class="setujui-irs px-4 py-1 rounded-lg cursor-pointer font-bold bg-gradient-to-l from-green-500 via-green-600 to-green-700 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white"
                                         data-mahasiswa-id="{{ $mhs->id }}">Setujui</button>
-                                    <button class="tolak-irs bg-red-600 hover:bg-red-800 text-white px-4 py-1 rounded"
+                                    <button class="tolak-irs px-4 py-1 px-4 py-1 rounded-lg cursor-pointer font-bold bg-gradient-to-l from-red-500 via-red-600 to-red-700 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white"
                                         data-mahasiswa-id="{{ $mhs->id }}">Tolak</button>
                                 </td>
                                 <td>
@@ -121,30 +155,33 @@
                     </table>
                 </div>
             </div>
+            <div class="pb-12 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
 
-            <div id="contentSudahVerifikasi" class="hidden">
-                <div class="bg-[#23252A] ml-8 mr-8 mt-8 mb-8 flex flex-grow rounded-lg">
+            </div>
+
+            <div id="contentSudahVerifikasi" class="hidden pb-64 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}"">
+                <div class="ml-8 mr-8 mb-8 flex flex-grow overflow-x-auto rounded-3xl {{ $theme == 'light' ? 'border border-black' : 'border border-black' }}" style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5)">
                     <table class="table-auto p-5 w-full text-center rounded-lg border-collapse">
                         <thead>
-                            <tr style="background-color: rgba(135, 138, 145, 0.37);">
-                                <th class="px-4 py-2 border-r border-white rounded-tl-lg">No</th>
-                                <th class="px-4 py-2 w-1/3 border-r border-white">Nama Mahasiswa</th>
-                                <th class="px-4 py-2 w-1/3 border-r border-white">NIM</th>
-                                <th class="px-4 py-2 w-1/3 border-r border-white">Jumlah SKS</th>
-                                <th class="px-4 py-2 w-1/3 border-r border-white">Keterangan</th>
-                                <th class="px-4 py-2 rounded-tr-lg">Persetujuan</th>
+                            <tr class="{{ $theme == 'light' ? 'bg-gray-700' : 'bg-gray-200' }}">
+                                <th class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">No</th>
+                                <th class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">Nama Mahasiswa</th>
+                                <th class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">NIM</th>
+                                <th class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">Jumlah SKS</th>
+                                <th class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">Keterangan</th>
+                                <th class="px-4 py-2">Persetujuan</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($mhs_sudah_verifikasi as $mhs)
-                            <tr style="background-color: #23252A;">
-                                <td class="px-4 py-2 border-r border-white">{{ $loop->iteration }}</td>
-                                <td class="px-4 py-2 border-r border-white">{{ $mhs->nama }}</td>
-                                <td class="px-4 py-2 border-r border-white">{{ $mhs->nim }}</td>
-                                <td class="px-4 py-2 border-r border-white">{{ $mhs->total_sks }}</td>
-                                <td class="px-4 py-2 border-r border-white">{{ $mhs->status_pengajuan }}</td>
+                            <tr class="{{ $theme == 'light' ? 'bg-[#2A2C33]' : 'bg-[#EEEEEE]' }}">
+                                <td class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $loop->iteration }}</td>
+                                <td class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $mhs->nama }}</td>
+                                <td class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $mhs->nim }}</td>
+                                <td class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $mhs->total_sks }}</td>
+                                <td class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $mhs->status_pengajuan }}</td>
                                 <td class="px-3 py-3 space-x-4 text-center flex justify-center items-center">
-                                    <button class="batalkan-irs bg-yellow-600 hover:bg-yellow-800 text-white px-4 py-1 rounded"
+                                    <button class="batalkan-irs px-4 py-1 rounded-lg cursor-pointer font-bold bg-gradient-to-l from-yellow-500 via-yellow-600 to-yellow-700 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white"
                                         data-mahasiswa-id="{{ $mhs->id }}">Batalkan</button>
                                 </td>
                             </tr>
@@ -152,6 +189,9 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+            <div class="pb-64 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
+
             </div>
 
             <script>

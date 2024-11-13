@@ -57,7 +57,7 @@
                                     {!! $jadwal->jadwalberakhir ?? '<em>Anda belum melakukan pengaturan</em>' !!}
                                 </td>
                                 <td class="px-5 py-2 text-center">
-                                    <button class="edit-btn w-16 text-white rounded-md px-3 py-2 bg-gray-400 hover:bg-gray-500">
+                                    <button class="edit-btn w-16 text-white rounded-lg px-3 py-2 bg-gradient-to-l from-yellow-500 via-yellow-600 to-yellow-700 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white {{ $theme == 'light' ? 'text-gray-100' : 'text-gray-100' }}">
                                         <strong>Edit</strong>
                                     </button>
                                 </td>
