@@ -20,11 +20,71 @@ use Illuminate\Support\Str;
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
+        .sksDragButton {
+            height: 48px;
+            width: 48px;
+            background: #ffc919;
+            border-radius: 50%;
+            box-shadow: 2px 2px 1px 1px rgba(0, 0, 0, 2.5);
+            position: absolute;
+            top: 48px;
+            right: 100px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .sksDragButton.active .btn {
+            transform: rotateZ(45deg);
+        }
+
+        .sksDragButton .btn {
+            color: #ffffff;
+            font-size: 36px;
+            font-weight: bold;
+            user-select: none;
+            transition: all 500ms;
+        }
+
+        .sksDragButton .sksSidebar{
+            position: absolute;
+            color: #ffffff;
+            left: -440%;
+            top: -50%;
+            background: #e0be11;
+            box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5);
+            transform: translateX(50px);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 500ms;
+        }
+
+        .sksDragButton.active .sksSidebar {
+            transform: translateX(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* .custom-btn-container .btn-options a {
+            display: block;
+            padding: 8px 32px;
+            background: #909000;
+            text-decoration: none;
+            font-weight: bold;
+            font-family: "Poppins", sans-serif;
+            font-size: 15px;
+            color: #000000;
+            transition: all 500ms;
+        } */
+
+
         #sksSidebar {
             opacity: 0;
             transition: left 0.3s ease-in-out, opacity 0.3s ease-in-out;
             /* Ubah right menjadi left */
-            top: 70%;
+            top: 30%;
             left: -300px;
             /* Ubah right menjadi left dan nilai positif menjadi negatif */
             color: white;
@@ -40,13 +100,12 @@ use Illuminate\Support\Str;
         }
 
         #sksSidebar.show {
-            left: 0px;
-            /* Ubah right menjadi left */
+            left: 0 ;
             opacity: 1;
-        }
+        } 
 
         #toggleSidebar {
-            top: 70%;
+            top: 30%;
             left: 0;
             /* Ubah right menjadi left */
             color: white;
@@ -55,7 +114,7 @@ use Illuminate\Support\Str;
             /* Ubah border-radius untuk sisi kanan */
             cursor: pointer;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            z-index: 1001;
+            z-index: 1000;
             transition: transform 0.3s ease-in-out;
         }
 
@@ -87,6 +146,7 @@ use Illuminate\Support\Str;
             opacity: 0.7;
             cursor: not-allowed;
         }
+        
     </style>
 </head>
 
@@ -183,14 +243,28 @@ use Illuminate\Support\Str;
                         </div>
                     </div>
 
+                    <!--SKS SIDEBAR DRAGGABLE-->
+                    <div class="sksDragButton">
+                        <div class="btn">+
+                        </div>
+                        <div class="sksSidebar rounded-3xl p-3">
+                            <h2 class="text-xl text-right font-bold mb-4">Total SKS Diambil</h2>
+                            <div id="totalSks" class="text-right text-4xl font-semibold">0</div>
+                            <p class="text-right text-sm mt-2">IPS semester lalu <strong>{{ $ips }}</strong></p>
+                            <p class="text-right text-sm mt-2">Maksimum SKS: <strong>{{ $maxSKS }}</strong></p>
+                        </div>
+                    </div>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js" integrity="sha512-MSOo1aY+3pXCOCdGAYoBZ6YGI0aragoQsg1mKKBHXCYPIWxamwOE7Drh+N5CPgGI5SA9IEKJiPjdfqWFWmZtRA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
                     <!-- SKS Sidebar -->
-                    <div id="sksSidebar" class="bg-opacity-85 fixed left-[-300px] bg-yellow-600 h-auto w-64 text-white transition-all duration-300 p-4 shadow-lg rounded-lg">
+                    <div id="sksSidebar" class="fixed bg-opacity-85 bg-yellow-600 h-auto w-64 text-white transition-all duration-300 p-4 shadow-lg rounded-lg">
                         <h2 class="text-xl text-right font-bold mb-4">Total SKS Diambil</h2>
                         <div id="totalSks" class="text-right text-4xl font-semibold">0</div>
-                        <p class="text-right text-sm mt-2">IPS semester lalu <strong>{{ $ips }}</strong></p> <!-- Display max SKS here -->
-                        <p class="text-right text-sm mt-2">Maksimum SKS: <strong>{{ $maxSKS }}</strong></p> <!-- Display max SKS here -->
+                        <p class="text-right text-sm mt-2">IPS semester lalu <strong>{{ $ips }}</strong></p>
+                        <p class="text-right text-sm mt-2">Maksimum SKS: <strong>{{ $maxSKS }}</strong></p>
                     </div>
-
                     <!-- Tombol untuk memperlihatkan sidebar -->
                     <button id="toggleSidebar" class="fixed bg-opacity-85 left-0 bg-yellow-500 text-white p-3 rounded-r-lg shadow-lg focus:outline-none">
                         <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
@@ -387,9 +461,15 @@ use Illuminate\Support\Str;
             </div>
             @endforeach
         </div>
-
-
     </div>
+
+    <script>
+        $('.sksDragButton').draggable();
+
+        $('.sksDragButton').click(function(){
+            $(this).toggleClass('active');
+        })
+    </script>
 
     <!-- search bar -->
     <script>
