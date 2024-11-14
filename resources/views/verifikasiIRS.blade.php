@@ -80,7 +80,7 @@
 
             <div id="contentBelumVerifikasi" class="pt-4 pb-64 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
                 <div class="ml-8 mr-8 mt-8 mb-8 flex flex-grow overflow-x-auto rounded-3xl {{ $theme == 'light' ? 'border border-black' : 'border border-black' }}" style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5)">
-                    <table class="table-auto p-5 w-full text-center rounded-lg border-collapse">
+                    <table class="table-auto p-5 w-full text-center rounded-lg border-collapse" name="tabel_irs">
                         <thead>
                             <tr class="{{ $theme == 'light' ? 'bg-gray-700' : 'bg-gray-200' }}">
                                 <th class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">No</th>
@@ -390,6 +390,22 @@
                     detailRow.classList.remove('hidden');
                 } else {
                     detailRow.classList.add('hidden');
+                }
+            });
+        });
+
+        document.getElementById('default-search').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('table[name="tabel_irs"] tbody tr');
+
+            rows.forEach(row => {
+                const courseName = row.querySelector('td:nth-child(2)').innerText.toLowerCase(); // 1st column has course name
+                const courseCode = row.querySelector('td:nth-child(3)').innerText.toLowerCase(); // 2nd column has course code
+
+                if (courseName.includes(searchTerm) || courseCode.includes(searchTerm)) {
+                    row.style.display = ''; // Show the row if it matches
+                } else {
+                    row.style.display = 'none'; // Hide the row if it doesn't match
                 }
             });
         });

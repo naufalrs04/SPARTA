@@ -84,6 +84,8 @@ Route::post('/simpan-ruangan', [pembagiankelasInfo::class, 'simpanRuangan'])->na
 
 
 Route::get('/perwalian', [perwalian::class, 'index'])->middleware('auth')->name('perwalian');
+Route::get('/perwalian-to-fetch-data', [perwalian::class, 'getSortedMahasiswa']);
+
 
 Route::get('/inputnilai', [inputnilai::class, 'index'])->middleware('auth')->name('inputnilai');
 

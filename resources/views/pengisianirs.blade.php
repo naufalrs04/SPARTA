@@ -90,7 +90,7 @@ use Illuminate\Support\Str;
     </style>
 </head>
 
-<body class="{{ $theme == 'light' ? 'text-gray-100' : 'text-gray-900' }}">
+<body class="{{ $theme == 'light' ? 'text-gray-100' : 'text-gray-900' }} relative">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <div class="flex min-h-screen backdrop-blur-sm" style="{{ $theme == 'light' ? 'background-color: #17181C;' : 'background-color: #eeeeee;' }}">
         <!-- Efek latar belakang -->
@@ -113,6 +113,7 @@ use Illuminate\Support\Str;
             <div class="px-8 pt-5 flex justify-center items-center {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
                 <div class="w-full rounded-full border-yellow-500 border-2 px-4 py-2 flex justify-between items-center">
                     <div id="pengisianIRS"
+                    
                         class="w-1/2 rounded-full bg-yellow-500 px-4 py-1 border-[#17181C] cursor-pointer flex justify-center items-center transition ease-in-out duration-300"
                         onclick="switchIRS('pengisianIRS')">
                         <h2 class="text-md font-bold">Pengisian IRS</h2>
@@ -176,7 +177,9 @@ use Illuminate\Support\Str;
                             </div>
                         </div>
                         <div id="ajukanButton" class="w-1/6 ml-auto flex text-center cursor-pointer font-bold items-center justify-center py-3 rounded-xl bg-gradient-to-l from-green-500 via-green-600 to-green-700 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white">
-                            <button onclick="ajukanIRS()">Ajukan</button>
+                            <button onclick="ajukanIRS()"
+                            @if(is_null($mahasiswa->status) || $mahasiswa->status == 0) disabled @endif>
+                            Ajukan</button>
                         </div>
                         <div id="batalAjukanButton" class="w-1/6 ml-auto flex text-center cursor-pointer font-bold items-center justify-center py-3 rounded-xl bg-gradient-to-l from-red-500 via-red-600 to-red-700 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white">
                             <button id="button_batal" onclick="batalAjukanIRS()">Batal Ajukan</button>
@@ -275,7 +278,8 @@ use Illuminate\Support\Str;
                                                             data-kelas="{{ $mk->kelas }}"
                                                             data-kapasitas="{{ $mk->kapasitas }}"
                                                             data-hari-jam="{{ $mk->hari }}, {{ \Carbon\Carbon::parse($mk->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($mk->jam_selesai)->format('H:i') }}"
-                                                            data-sks="{{ $mk->sks_mk }}" type="submit">
+                                                            data-sks="{{ $mk->sks_mk }}" type="submit"
+                                                            @if(is_null($mahasiswa->status) || $mahasiswa->status == 0) disabled @endif>
                                                             Ambil
                                                         </button>
                                                     </div>
@@ -285,7 +289,8 @@ use Illuminate\Support\Str;
                                                 <div class="h-7 w-7 mx-auto rounded-lg border flex justify-center items-center transition-colors duration-200 hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out
                                                 {{ $theme == 'light' ? 'bg-white border-transparent hover:bg-gray-400' : 'bg-gray-300 border-gray-500 hover:bg-gray-400' }}">
                                                     <button class="show-details text-center text-3xl font-bold focus:outline-none 
-                                                        {{ $theme == 'light' ? 'text-black' : 'text-white' }}" data-index="{{ $index }}">
+                                                        {{ $theme == 'light' ? 'text-black' : 'text-white' }}" data-index="{{ $index }}"
+                                                        @if(is_null($mahasiswa->status) || $mahasiswa->status == 0) disabled @endif>
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
                                                             <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
                                                         </svg>

@@ -97,7 +97,7 @@ class PengisianIRS extends Controller
             ->where('jadwalberakhir', '>=', $tanggalSekarang)
             ->first(); 
         
-        return view('pengisianirs', compact('user', 'list_mata_kuliah', 'irs_rekap', 'groupedData',  'semesterMahasiswa', 'mahasiswa_id', 'theme', 'fasePengisianIRS', 'fasePembatalanIRS', 'fasePerubahanIRS','status','maxSKS','ips'));
+        return view('pengisianirs', compact('user', 'list_mata_kuliah', 'irs_rekap', 'groupedData',  'semesterMahasiswa', 'mahasiswa_id', 'theme', 'fasePengisianIRS', 'fasePembatalanIRS', 'fasePerubahanIRS','status','maxSKS','ips', 'mahasiswa'));
     }
 
     public function store(Request $request)
