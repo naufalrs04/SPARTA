@@ -87,6 +87,14 @@ use Illuminate\Support\Str;
             opacity: 0.7;
             cursor: not-allowed;
         }
+
+        #contentPengisianIRS{
+            min-height:100vh;
+        }
+
+        #contentIRSMahasiswa{
+            min-height:100vh;
+        }
     </style>
 </head>
 
@@ -125,8 +133,8 @@ use Illuminate\Support\Str;
                     </div>
                 </div>
             </div>
-            <div id="contentPengisianIRS">
-                <div class="px-10 pt-5 pb-64 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
+            <div id="contentPengisianIRS" class="min-h-screen px-10 pt-5 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
+                <div class="h-full">
                     <div class="text-center">
                         <h2 class="text-center text-lg font-semibold mb-4 rounded-lg inline-block  px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">Daftar Mata Kuliah yang diambil</h2>
                     </div>
@@ -305,9 +313,9 @@ use Illuminate\Support\Str;
                     </div>
                 </div>
             </div>
-            <div id="contentIRSMahasiswa" class="hidden">
+            <div id="contentIRSMahasiswa" class="hidden {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
                 @foreach($groupedData as $mahasiswaId => $semesterGroups)
-                <div class="mahasiswa-container px-4 sm:px-6 md:px-8 pt-5 pb-64 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
+                <div class="mahasiswa-container px-4 sm:px-6 md:px-8 pt-5 h-full ">
                     <div class="text-center">
                         <h2 class="text-center text-lg font-semibold mb-4 rounded-lg inline-block  px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">IRS Mahasiswa</h2>
                     </div>
@@ -510,8 +518,13 @@ use Illuminate\Support\Str;
                                     `,
                         confirmButtonText: 'Tutup',
                         focusConfirm: false,
-                        customClass: {
-                            popup: 'swal-popup-custom'
+                        didOpen: () => {
+                            const confirmButton = Swal.getConfirmButton();
+                            confirmButton.style.backgroundColor = '#4CAF50'; 
+                            confirmButton.style.color = '#fff';               
+                            confirmButton.style.borderRadius = '8px';         
+                            confirmButton.style.padding = '10px 20px';        
+                            confirmButton.style.fontWeight = 'bold';          
                         }
                     });
                 });

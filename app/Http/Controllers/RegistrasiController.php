@@ -16,11 +16,13 @@ class RegistrasiController extends Controller
         }
 
         $user = Auth::user();
+        $mahasiswa = Mahasiswa::where('nim', $user->nim_nip)->first();
+        $statusMahasiswa = $mahasiswa->status ?? null;
 
         // Ambil tema dari cookie atau gunakan 'light' sebagai default
         $theme = $request->cookie('theme') ?? 'light';
         
-        return view('/registrasi', compact('user', 'theme'));
+        return view('/registrasi', compact('user', 'theme', 'statusMahasiswa'));
     }
 
     public function updateStatus(Request $request)
@@ -31,6 +33,7 @@ class RegistrasiController extends Controller
 
         $user = Auth::user();
         $mahasiswa = Mahasiswa::where('nim', $user->nim_nip)->first();
+
 
         if ($mahasiswa) {
             $mahasiswa->status = $request->status;
