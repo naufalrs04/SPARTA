@@ -61,6 +61,7 @@
             display: inline-block;
             width: fit-content;
         }
+
     </style>
 </head>
 
@@ -89,8 +90,8 @@
             </div>
 
             <!-- Main Content -->
-            <div class="px-8 pt-5 flex justify-center items-center {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
-                <div class="grid grid-cols-12 w-full gap-14">
+            <div id="main-content" class="px-8 pt-5 flex justify-center items-center {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
+                <div class="grid grid-cols-12 w-full gap-14 h-full">
                     <!-- Box Status Akademik -->
                     <div class="col-span-8 flex flex-col">
                         <div class="text-center">
@@ -136,7 +137,7 @@
                                 </div>
 
                                 <div class="text-center w-full">
-                                    <p class="text-white"><strong>Mahasiswa Aktif</strong></p>
+                                    <p style="{{ $theme == 'light' ? 'color: #fff;' : 'color: #222;' }}"><strong>Mahasiswa Aktif</strong></p>
                                     <div class="text-white text-center py-2 mx-5 rounded-lg mt-2 bg-gradient-to-l from-red-500 via-red-700 to-red-800 {{ $theme == 'light' ? 'text-white' : 'text-black' }}">
                                         <p class="font-semibold text-3xl text-gray-50">34</p>
                                     </div>
@@ -160,8 +161,8 @@
             </div>
 
             <!-- Jadwal Mata Kuliah -->
-            <div class="px-8 pt-10 mb-5 pb-64 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
-                <div class="text-center">
+            <div id="box-jadwal-mata-kuliah" class="px-8 pt-10 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
+                <div class="text-center h-full">
                     <h2 class="text-center text-lg font-semibold mb-4 rounded-lg inline-block px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">Jadwal Mata Kuliah</h2>
                 </div>
                 <div class="overflow-x-auto rounded-3xl {{ $theme == 'light' ? 'border border-black' : 'border border-black' }}" style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5)">

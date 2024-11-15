@@ -282,7 +282,8 @@
                                     title: 'Sukses!',
                                     text: data.message,
                                     icon: 'success',
-                                    confirmButtonText: 'OK'
+                                    confirmButtonText: 'OK',
+                                    confirmButtonColor: '#4CAF50'
                                 });
                                 // Reset form atau lakukan tindakan lain setelah sukses
                                 document.getElementById('jadwal-form').reset();
@@ -380,13 +381,14 @@
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 // Here you can add the logic to submit the application
-                                Swal.fire(
-                                    'Berhasil!',
-                                    'Pengajuan Anda telah dikirim.',
-                                    'success'
-                                )
+                                Swal.fire({
+                                    title: 'Berhasil!',
+                                    text: 'Pengajuan Anda telah dikirim.',
+                                    icon: 'success',
+                                    confirmButtonColor: '#28a745',  // Warna hijau untuk tombol konfirmasi berhasil
+                                });
                             }
-                        })
+                        });
                     });
 
                 </script>
@@ -479,6 +481,7 @@
                                     </div>
                                 `,
                     confirmButtonText: 'Tutup',
+                    confirmButtonColor: '#3085d6',
                     focusConfirm: false,
                     customClass: {
                         popup: 'swal-popup-custom'

@@ -23,6 +23,7 @@ class User extends Authenticatable
         'nim_nip',
     ];
 
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -48,6 +49,6 @@ class User extends Authenticatable
 
     public function mahasiswa()
     {
-        return $this->hasOne(Mahasiswa::class);
+        return $this->hasOne(Mahasiswa::class, 'nim', 'nim_nip');
     }
 }
