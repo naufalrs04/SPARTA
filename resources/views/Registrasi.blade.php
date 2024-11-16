@@ -39,7 +39,7 @@
             <div id="main-content " class="{{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
                 <div class="px-8 py-5 h-full">
                     <div class="text-center">
-                        <h2 class="text-center text-lg font-semibold mb-4 rounded-lg inline-block pt-5 px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">Registrasi Akademik</h2>
+                        <h2 class="text-center text-lg font-semibold mb-4 rounded-lg inline-block px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">Registrasi Akademik</h2>
                     </div>
                     <div class="px-8 pt-5 flex justify-center items-center">
                         <div class="flex justify-center items-center max-h-full">

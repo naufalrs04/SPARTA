@@ -19,6 +19,10 @@
         input[type="checkbox"]:checked {
             accent-color: #C68E00;
         }
+
+        #main-content{
+            min-height:100vh;
+        }
     </style>
 </head>
 
@@ -37,11 +41,12 @@
 
         <!-- Content -->
         <div class="flex-grow">
+
             <!-- Navbar -->
             @include('components.navbar', ['theme' => $theme])
 
             <!-- Main Content -->
-            <div class="{{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
+            <div id="main-content" class="{{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
             <div class="flex justify-center pb-1">
                 <div class="max-w-xl relative">
                     <!-- Dropdown Departemen -->
@@ -75,8 +80,6 @@
                         </div>
                         
                 </div>
-                
-
             </div>
             <div class="flex justify-center my-3 mb-3">
 
@@ -122,7 +125,7 @@
                 <!--Kapasitas-->
                 <div class="flex justify-center mt-8 mb-3">
                     <input type="number" name="kapasitas" placeholder="Masukkan kapasitas"
-                        class="border rounded p-2 text-gray-400 p-4 pr-10 pl-4 focus:ring-2 focus:ring-gray-800 rounded-lg bg-[#2A2C33] cursor-pointer border border-transparent focus:border-gray-600 transition duration-100 ease-in-out flex justify-between items-center {{ $theme == 'light' ? 'bg-[#2A2C33] hover:bg-zinc-800 border-transparent focus:ring-gray-800 outline outline-1 outline-zinc-900' : 'bg-gray-200 hover:bg-zinc-300 border-gray-300 focus:ring-gray-300 outline outline-1' }} shadow-[4px_6px_1px_1px_rgba(0,_0,_0,_0.8)]" />
+                        class="border text-gray-400 p-4 pr-4 pl-4 focus:ring-2 focus:ring-gray-800 rounded-xl bg-[#2A2C33] cursor-pointer border border-transparent focus:border-gray-600 transition duration-100 ease-in-out flex justify-between items-center w-1/6 max-w-md {{ $theme == 'light' ? 'bg-[#2A2C33] hover:bg-zinc-800 border-transparent focus:ring-gray-800 outline outline-1 outline-zinc-900' : 'bg-gray-200 hover:bg-zinc-300 border-gray-300 focus:ring-gray-300 outline outline-1' }} shadow-[4px_6px_1px_1px_rgba(0,_0,_0,_0.8)]" />
                 </div>
 
             <!--Button Simpan-->
@@ -157,7 +160,7 @@
                 </div>
             </div>
 
-            <div class="px-8 mt-5 pb-64 flex justify-end">
+            <div class="px-8 mt-5 flex justify-end">
                 <button type="button" id="ajukanButton"
                 class="rounded-lg py-2 px-5 bg-gradient-to-l from-green-500 via-green-600 to-green-700 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white">
                 <strong>Ajukan</strong>
@@ -226,10 +229,14 @@
                     title: 'Error!',
                     text: 'Silakan pilih Departemen terlebih dahulu.',
                     icon: 'error',
-                    confirmButtonText: 'OK'
+                    confirmButtonText: 'OK',
+                    customClass: {
+                        confirmButton: 'bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded'
+                    }
                 });
                 return;
             }
+
 
             // Get checked checkboxes
             const checkedRuangan = document.querySelectorAll('input[name="ruangan[]"]:checked');
@@ -238,10 +245,14 @@
                     title: 'Error!',
                     text: 'Silakan pilih minimal satu ruangan.',
                     icon: 'error',
-                    confirmButtonText: 'OK'
+                    confirmButtonText: 'OK',
+                    customClass: {
+                        confirmButton: 'bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded'
+                    }
                 });
                 return;
             }
+
 
             // Show confirmation dialog
             Swal.fire({
@@ -267,7 +278,8 @@
                 title: 'Sukses!',
                 text: '{{ session('success') }}',
                 icon: 'success',
-                confirmButtonText: 'OK'
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#28a745',
             });
         @endif
 
@@ -294,12 +306,15 @@
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Here you can add the logic to submit the application
-                    Swal.fire(
-                        'Berhasil!',
-                        'Pengajuan Anda telah dikirim.',
-                        'success'
-                    )
+                    Swal.fire({
+                        title: 'Berhasil!',
+                        text: 'Pengajuan Anda telah dikirim.',
+                        icon: 'success',
+                        confirmButtonText: 'OK',
+                        customClass: {
+                            confirmButton: 'bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded'
+                        }
+                    });
                 }
             })
         });

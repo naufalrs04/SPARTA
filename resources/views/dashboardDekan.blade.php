@@ -62,6 +62,10 @@
             display: inline-block;
             width: fit-content;
         }
+        
+        #main-content{
+            min-height: 100vh;
+        }
     </style>
 </head>
 
@@ -75,123 +79,130 @@
                 <div class="bg-shape1 bg-purple opacity-50 bg-blur "></div>
             </div>
         </div> 
+        
         <!-- Sidebar -->
         @include('components.sidebar', ['theme' => $theme])
 
         <!-- Content -->
         <div class="flex-grow">
+
             <!-- Navbar -->
             @include('components.navbar', ['theme' => $theme])
-            <!-- Main Content -->
-            <div class="pl-8 pt-5 flex justify-left items-center  {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }} ">
-                <p class="welcome-message-static">Welcome Back, </p>
-                <span class="welcome-message" id="typewriter"></span>
-                <span class="text-2xl" aria-label="Waving Hand" role="img">👋</span>
-            </div>
 
-            <div class="px-8 pt-5 flex justify-center items-center {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
-                <div class="grid grid-cols-12 w-full gap-14">
-                    <!-- Box Status Akademik -->
-                    <div class="col-span-12 rounded-lg flex flex-col ">
-                        <div class="text-center">
-                            <h2 class="text-center text-lg font-semibold mb-4 rounded-lg inline-block px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">Status Dosen</h2>
-                        </div>
+            <div id="main-content" class="{{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
+                <div class="h-full">
+                    <div class="pl-8 pt-5 flex justify-left items-center">
+                        <p class="welcome-message-static">Welcome Back, </p>
+                        <span class="welcome-message" id="typewriter"></span>
+                        <span class="text-2xl" aria-label="Waving Hand" role="img">👋</span>
+                    </div>
 
-                        <!-- Box Utama Status Akademik -->
-                        <div class="grid grid-cols-12 w-full rounded-3xl flex-grow outline outline-1 " style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5); {{ $theme == 'light' ? 'background-color: #2A2C33;' : 'background-color: #ffffff;' }} {{ $theme == 'light' ? 'outline: 1px solid #000000;' : 'outline: 1px solid #000000;' }}">
-                            <div class="col-span-8 p-6 rounded-tl-lg rounded-bl-lg text-lg space-y-5 box-border border-black">
-                                <div>
-                                    <p style="color: #F0B90B; font-size: 20px;"><strong>Nama :</strong></p>
-                                    <p style="font-size: 20px;">Dr. Kusworo Adi, S.Kom, M.Cs</p>
+                    <!-- Main Content -->
+                    <div class="px-8 pt-5 flex justify-center items-center">
+                        <div class="grid grid-cols-12 w-full gap-14">
+                            <!-- Box Status Akademik -->
+                            <div class="col-span-12 rounded-lg flex flex-col ">
+                                <div class="text-center">
+                                    <h2 class="text-center text-lg font-semibold mb-4 rounded-lg inline-block px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">Status Dosen</h2>
                                 </div>
-                                <div>
-                                    <p style="color: #F0B90B; font-size: 20px;"><strong>NIP :</strong></p>
-                                    <p class="mb-1">1980122042387</p>
-                                </div>
-                                <div>
-                                    <p style="color: #F0B90B; font-size: 20px;"><strong>Status :</strong></p>
-                                    <p>Dekan/Dosen</p>
+
+                                <!-- Box Utama Status Akademik -->
+                                <div class="grid grid-cols-12 w-full rounded-3xl flex-grow outline outline-1 " style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5); {{ $theme == 'light' ? 'background-color: #2A2C33;' : 'background-color: #ffffff;' }} {{ $theme == 'light' ? 'outline: 1px solid #000000;' : 'outline: 1px solid #000000;' }}">
+                                    <div class="col-span-8 p-6 rounded-tl-lg rounded-bl-lg text-lg space-y-5 box-border border-black">
+                                        <div>
+                                            <p style="color: #F0B90B; font-size: 20px;"><strong>Nama :</strong></p>
+                                            <p style="font-size: 20px;">Dr. Kusworo Adi, S.Kom, M.Cs</p>
+                                        </div>
+                                        <div>
+                                            <p style="color: #F0B90B; font-size: 20px;"><strong>NIP :</strong></p>
+                                            <p class="mb-1">1980122042387</p>
+                                        </div>
+                                        <div>
+                                            <p style="color: #F0B90B; font-size: 20px;"><strong>Status :</strong></p>
+                                            <p>Dekan/Dosen</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-span-12 text-white flex items-center justify-center py-3 rounded-md mx-5 mb-5  bg-gradient-to-l from-green-500 via-green-600 to-green-700 {{ $theme == 'light' ? 'text-gray-100' : 'text-gray-100' }}">
+                                        <p class="text-xl"><strong>AKTIF</strong></p>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-span-12 text-white flex items-center justify-center py-3 rounded-md mx-5 mb-5  bg-gradient-to-l from-green-500 via-green-600 to-green-700 {{ $theme == 'light' ? 'text-gray-100' : 'text-gray-100' }}">
-                                <p class="text-xl"><strong>AKTIF</strong></p>
+                        </div>
+                    </div>
+                    <div class="px-8 pt-5 flex justify-center items-center">
+                        <div class="grid grid-cols-12 w-full gap-14">
+                            <!-- Box Status Akademik -->
+                            <div class="col-span-6 pt-5 rounded-3xl flex flex-col">
+                                <div class="text-center">
+                                    <h2 class="text-center text-lg font-semibold mb-4 rounded-lg inline-block px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">Pengajuan Ruangan</h2>
+                                </div>
+                                <!-- Box Utama Capaian Akademik -->
+                                <div class="rounded-3xl" style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5); {{ $theme == 'light' ? 'background-color: #2A2C33;' : 'background-color: #ffffff;' }} {{ $theme == 'light' ? 'outline: 1px solid #000000;' : 'outline: 1px solid #000000;' }}">
+                                    <div class="p-6 rounded-tl-3xl rounded-tr-3xl text-lg space-y-4 flex-grow flex flex-col items-center justify-center">
+                                        <div class="text-center w-full mb-3">
+                                            <p class="font-bold" style="color: #F0B90B">Pengajuan Ruangan</p>
+                                            <p><strong>2024/2025 Ganjil</strong></p>
+                                        </div>
+
+                                        <div class="text-center w-full">
+                                            <p><strong>Ruangan Disetujui</strong></p>
+                                            <div class="text-center py-2 mx-5 rounded-lg mt-2 bg-gradient-to-l from-red-500 via-red-700 to-red-800">
+                                                <p class="font-semibold text-3xl text-gray-50">34</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="px-5 space-y-4 flex-grow flex items-center justify-center" style="{{ $theme == 'light' ? 'background-color: #2A2C33;' : 'background-color: #ffffff;' }}">
+                                        <div class="p-0.5 rounded-lg text-lg space-y-4 flex-grow flex items-center justify-center" style="{{ $theme == 'light' ? 'background-color: #ffffff; ' : 'background-color: #2A2C33;' }}">
+                                        </div>
+                                    </div>
+                                    <div class="p-7 rounded-bl-lg rounded-br-lg text-lg text-center space-y-4">
+                                        <p><strong>Ruangan Belum Disetujui</strong></p>
+                                        <div class="text-center py-2 mx-5 rounded-lg mt-2 bg-gradient-to-l from-orange-400 via-orange-500 to-orange-600">
+                                            <p class="font-semibold text-3xl text-gray-50">42</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        
+
+                            <!-- Box Capaian Akademik -->
+                            <div class="col-span-6 pt-5 flex flex-col">
+                                <div class="text-center">
+                                    <h2 class="text-center text-lg font-semibold mb-4 rounded-lg inline-block px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">Pengajuan Jadwal Kuliah</h2>
+                                </div>
+                                <!-- Box Utama Capaian Akademik -->
+                                <div class="rounded-3xl" style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5); {{ $theme == 'light' ? 'background-color: #2A2C33;' : 'background-color: #ffffff;' }} {{ $theme == 'light' ? 'outline: 1px solid #000000;' : 'outline: 1px solid #000000;' }}">
+                                    <div class="p-6 text-lg rounded-tl-3xl rounded-tr-3xl space-y-4 flex-grow flex flex-col items-center justify-center">
+                                        <div class="text-center w-full mb-3">
+                                            <p class="font-bold" style="color: #F0B90B">Pengajuan Jadwal</p>
+                                            <p><strong>2024/2025 Ganjil</strong></p>
+                                        </div>
+
+                                        <div class="text-center w-full">
+                                            <p><strong>Departemen Disetujui</strong></p>
+                                            <div class="text-center py-2 mx-5 rounded-lg mt-2" style="background-color: #880000">
+                                                <p class="font-semibold text-3xl text-gray-50">34</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="px-5 space-y-4 flex-grow flex items-center justify-center" style="{{ $theme == 'light' ? 'background-color: #2A2C33;' : 'background-color: #ffffff;' }}">
+                                        <div class="p-0.5 rounded-lg text-lg space-y-4 flex-grow flex items-center justify-center" style="{{ $theme == 'light' ? 'background-color: #ffffff;' : 'background-color: #2A2C33;' }}">
+                                        </div>
+                                    </div>
+                                    <div class="p-7 rounded-bl-lg rounded-br-lg text-lg text-center space-y-4">
+                                        <p><strong>Departemen Belum Disetujui</strong></p>
+                                        <div class="text-white text-center py-2 mx-5 rounded-lg mt-2" style="background-color: #C68E00;">
+                                            <p class="font-semibold text-3xl text-gray-50">42</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="mb-10 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
+                        
                     </div>
                 </div>
-            </div>
-            <div class="px-8 pt-5 flex justify-center items-center {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }} ">
-                <div class="grid grid-cols-12 w-full gap-14">
-                    <!-- Box Status Akademik -->
-                    <div class="col-span-6 pt-5 rounded-3xl flex flex-col">
-                        <div class="text-center">
-                            <h2 class="text-center text-lg font-semibold mb-4 rounded-lg inline-block px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">Pengajuan Ruangan</h2>
-                        </div>
-                        <!-- Box Utama Capaian Akademik -->
-                        <div class="rounded-3xl" style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5); {{ $theme == 'light' ? 'background-color: #2A2C33;' : 'background-color: #ffffff;' }} {{ $theme == 'light' ? 'outline: 1px solid #000000;' : 'outline: 1px solid #000000;' }}">
-                        <div class="p-6 rounded-tl-3xl rounded-tr-3xl text-lg space-y-4 flex-grow flex flex-col items-center justify-center">
-                            <div class="text-center w-full mb-3">
-                                <p class="font-bold" style="color: #F0B90B">Pengajuan Ruangan</p>
-                                <p><strong>2024/2025 Ganjil</strong></p>
-                            </div>
-
-                            <div class="text-center w-full">
-                                <p><strong>Ruangan Disetujui</strong></p>
-                                <div class="text-center py-2 mx-5 rounded-lg mt-2 bg-gradient-to-l from-red-500 via-red-700 to-red-800">
-                                    <p class="font-semibold text-3xl text-gray-50">34</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="px-5 space-y-4 flex-grow flex items-center justify-center" style="{{ $theme == 'light' ? 'background-color: #2A2C33;' : 'background-color: #ffffff;' }}">
-                            <div class="p-0.5 rounded-lg text-lg space-y-4 flex-grow flex items-center justify-center" style="{{ $theme == 'light' ? 'background-color: #ffffff; ' : 'background-color: #2A2C33;' }}">
-                            </div>
-                        </div>
-                        <div class="p-7 rounded-bl-lg rounded-br-lg text-lg text-center space-y-4">
-                            <p><strong>Ruangan Belum Disetujui</strong></p>
-                            <div class="text-center py-2 mx-5 rounded-lg mt-2 bg-gradient-to-l from-orange-400 via-orange-500 to-orange-600">
-                                <p class="font-semibold text-3xl text-gray-50">42</p>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-                
-
-                    <!-- Box Capaian Akademik -->
-                    <div class="col-span-6 pt-5 flex flex-col">
-                        <div class="text-center">
-                        <h2 class="text-center text-lg font-semibold mb-4 rounded-lg inline-block px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">Pengajuan Jadwal Kuliah</h2>
-                        </div>
-                        <!-- Box Utama Capaian Akademik -->
-                        <div class="rounded-3xl" style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5); {{ $theme == 'light' ? 'background-color: #2A2C33;' : 'background-color: #ffffff;' }} {{ $theme == 'light' ? 'outline: 1px solid #000000;' : 'outline: 1px solid #000000;' }}">
-                        <div class="p-6 text-lg rounded-tl-3xl rounded-tr-3xl space-y-4 flex-grow flex flex-col items-center justify-center">
-                            <div class="text-center w-full mb-3">
-                                <p class="font-bold" style="color: #F0B90B">Pengajuan Jadwal</p>
-                                <p><strong>2024/2025 Ganjil</strong></p>
-                            </div>
-
-                            <div class="text-center w-full">
-                                <p><strong>Departemen Disetujui</strong></p>
-                                <div class="text-center py-2 mx-5 rounded-lg mt-2" style="background-color: #880000">
-                                    <p class="font-semibold text-3xl text-gray-50">34</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="px-5 space-y-4 flex-grow flex items-center justify-center" style="{{ $theme == 'light' ? 'background-color: #2A2C33;' : 'background-color: #ffffff;' }}">
-                            <div class="p-0.5 rounded-lg text-lg space-y-4 flex-grow flex items-center justify-center" style="{{ $theme == 'light' ? 'background-color: #ffffff;' : 'background-color: #2A2C33;' }}">
-                            </div>
-                        </div>
-                        <div class="p-7 rounded-bl-lg rounded-br-lg text-lg text-center space-y-4">
-                            <p><strong>Departemen Belum Disetujui</strong></p>
-                            <div class="text-white text-center py-2 mx-5 rounded-lg mt-2" style="background-color: #C68E00;">
-                                <p class="font-semibold text-3xl text-gray-50">42</p>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="mb-8 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
-                
             </div>
         </div>
     </div>

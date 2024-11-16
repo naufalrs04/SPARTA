@@ -20,7 +20,7 @@ use Illuminate\Support\Str;
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
-        .sksDragButton {
+        /* .sksDragButton {
             height: 48px;
             width: 48px;
             background: #ffc919;
@@ -65,7 +65,7 @@ use Illuminate\Support\Str;
             transform: translateX(0);
             opacity: 1;
             pointer-events: auto;
-        }
+        } */
 
         /* .custom-btn-container .btn-options a {
             display: block;
@@ -80,13 +80,11 @@ use Illuminate\Support\Str;
         } */
 
 
-        #sksSidebar {
+        /* #sksSidebar {
             opacity: 0;
             transition: left 0.3s ease-in-out, opacity 0.3s ease-in-out;
-            /* Ubah right menjadi left */
-            top: 30%;
+            top: 40%;
             left: -300px;
-            /* Ubah right menjadi left dan nilai positif menjadi negatif */
             color: white;
             padding: 20px;
             border-radius: 10px;
@@ -102,16 +100,14 @@ use Illuminate\Support\Str;
         #sksSidebar.show {
             left: 0 ;
             opacity: 1;
-        } 
+        }  */
 
-        #toggleSidebar {
-            top: 30%;
+        /* #toggleSidebar {
+            top: 40%;
             left: 0;
-            /* Ubah right menjadi left */
             color: white;
             padding: 10px;
             border-radius: 0 10px 10px 0;
-            /* Ubah border-radius untuk sisi kanan */
             cursor: pointer;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             z-index: 1000;
@@ -120,7 +116,7 @@ use Illuminate\Support\Str;
 
         #toggleSidebar.rotated {
             transform: rotate(180deg);
-        }
+        } */
 
         /* Update collision-overlay jika diperlukan */
         .collision-overlay {
@@ -236,7 +232,24 @@ use Illuminate\Support\Str;
                             </tbody>
                         </table>
                     </div>
-
+                    <div class="sksSidebar block sticky top-1 w-full bg-yellow-500 p-2 pl-10 mt-4 text-sm rounded-2xl
+                    {{ $theme == 'light' ? 'text-gray-200 border border-black' : ' text-gray-800 border border-black' }}" 
+                    style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5); z-index: 100; display: flex; justify-content: space-around; align-items: center;">
+                        <div class="flex items-center space-x-4">
+                            <div>
+                                <h2 class="text-xl font-bold">Total SKS Diambil</h2>
+                            </div>
+                            <div>
+                                <div id="totalSks" class="text-2xl font-semibold">0</div>
+                            </div>
+                        </div>                    
+                        <div class="text-center text-lg">
+                            <p class="my-1">IPS semester lalu : <strong>{{ $ips }}</strong></p>
+                        </div>
+                        <div class="text-center text-lg">
+                            <p class="my-1">Maksimum SKS : <strong>{{ $maxSKS }}</strong></p>
+                        </div>
+                    </div>
                     <div class="pt-5 pb-3 flex">
                         <div class="w-3/5 flex justify-between">
                             <div>
@@ -253,7 +266,7 @@ use Illuminate\Support\Str;
                         </div>
                     </div>
 
-                    <!--SKS SIDEBAR DRAGGABLE-->
+                    {{-- <!--SKS SIDEBAR DRAGGABLE-->
                     <div class="sksDragButton">
                         <div class="btn">+
                         </div>
@@ -263,12 +276,12 @@ use Illuminate\Support\Str;
                             <p class="text-right text-sm mt-2">IPS semester lalu <strong>{{ $ips }}</strong></p>
                             <p class="text-right text-sm mt-2">Maksimum SKS: <strong>{{ $maxSKS }}</strong></p>
                         </div>
-                    </div>
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+                    </div> --}}
+                    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js" integrity="sha512-MSOo1aY+3pXCOCdGAYoBZ6YGI0aragoQsg1mKKBHXCYPIWxamwOE7Drh+N5CPgGI5SA9IEKJiPjdfqWFWmZtRA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js" integrity="sha512-MSOo1aY+3pXCOCdGAYoBZ6YGI0aragoQsg1mKKBHXCYPIWxamwOE7Drh+N5CPgGI5SA9IEKJiPjdfqWFWmZtRA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> --}}
 
-                    <!-- SKS Sidebar -->
+                    {{-- <!-- SKS Sidebar -->
                     <div id="sksSidebar" class="fixed bg-opacity-85 bg-yellow-600 h-auto w-64 text-white transition-all duration-300 p-4 shadow-lg rounded-lg">
                         <h2 class="text-xl text-right font-bold mb-4">Total SKS Diambil</h2>
                         <div id="totalSks" class="text-right text-4xl font-semibold">0</div>
@@ -280,7 +293,9 @@ use Illuminate\Support\Str;
                         <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
                             <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
                         </svg>
-                    </button> 
+                    </button>  --}}
+                
+                
 
                     <div id="listMataKuliah" class="py-7">
                         <div class="text-center">
@@ -326,19 +341,19 @@ use Illuminate\Support\Str;
                                             data-course-id="{{ $mk->id }}"
                                             data-course-time="{{ $mk->hari }}, {{ \Carbon\Carbon::parse($mk->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($mk->jam_selesai)->format('H:i') }}"
                                             data-ruangan-id="{{ $mk->ruang }}">
-                                            <td class="px-4 py-2 border-r {{ $theme == 'light' ? 'bg-[#2A2C33]' : 'bg-[#EEEEEE]' }}">{{ $loop->iteration }}</td>
-                                            <td class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'bg-[#2A2C33]' : 'bg-[#EEEEEE]' }}">{{ $mk->kode_mk }}
+                                            <td class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $loop->iteration }}</td>
+                                            <td class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $mk->kode_mk }}
                                             </td>
-                                            <td class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'bg-[#2A2C33]' : 'bg-[#EEEEEE]' }}">{{ $mk->nama_mk }} - {{ $mk->kelas }}
+                                            <td class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $mk->nama_mk }} - {{ $mk->kelas }}
                                             </td>
-                                            <td class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'bg-[#2A2C33]' : 'bg-[#EEEEEE]' }}">
+                                            <td class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">
                                                 {{ $mk->hari }},
                                                 {{ \Carbon\Carbon::parse($mk->jam_mulai)->format('H:i') }} -
                                                 {{ \Carbon\Carbon::parse($mk->jam_selesai)->format('H:i') }}
                                             </td>
-                                            <td class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'bg-[#2A2C33]' : 'bg-[#EEEEEE]' }}">{{ $mk->jumlah_pendaftar }} / {{ $mk->kapasitas }}
+                                            <td class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $mk->jumlah_pendaftar }} / {{ $mk->kapasitas }}
                                             </td>
-                                            <td class="px-4 py-2 border-r {{ $theme == 'light' ? 'bg-[#2A2C33]' : 'bg-[#EEEEEE]' }}">
+                                            <td class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">
                                                 <form action="{{ route('irs-rekap.store') }}" method="POST">
                                                     @csrf
                                                     <input type="hidden" name="kode_mk" value="{{ $mk->kode_mk }}">
@@ -633,11 +648,16 @@ use Illuminate\Support\Str;
                 if (hasConflict(kode, hariJam)) {
                     Swal.fire({
                         title: 'Peringatan',
-                        text: 'Anda sudah mengambil mata kuliah ini dalam kelas lain !',
-                        icon: 'warning'
+                        text: 'Anda sudah mengambil mata kuliah ini dalam kelas lain!',
+                        icon: 'warning',
+                        confirmButtonText: 'OK',
+                        customClass: {
+                            confirmButton: 'bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded'
+                        }
                     });
                     return;
                 }
+
                 Swal.fire({
                     title: 'Konfirmasi Pengambilan Mata Kuliah',
                     html: `
@@ -725,7 +745,11 @@ use Illuminate\Support\Str;
                                 Swal.fire({
                                     title: 'Peringatan',
                                     text: errorMessage,
-                                    icon: 'warning'
+                                    icon: 'warning',
+                                    confirmButtonText: 'OK',
+                                    customClass: {
+                                        confirmButton: 'bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded'
+                                    }
                                 });
                             });
                     }
@@ -817,8 +841,8 @@ use Illuminate\Support\Str;
             totalSksElement.textContent = newTotal;
 
             // Show the SKS sidebar if it's not already visible
-            const sksSidebar = document.getElementById('sksSidebar');
-            sksSidebar.classList.add('show');
+            // const sksSidebar = document.getElementById('sksSidebar');
+            // sksSidebar.classList.add('show');
         }
 
         // Function to calculate initial total SKS
@@ -1108,7 +1132,10 @@ use Illuminate\Support\Str;
                 </div>
             `,
             icon: 'warning',
-            confirmButtonText: 'Tutup'
+            confirmButtonText: 'Tutup',
+            customClass: {
+                confirmButton: 'bg-green-500 hover:green-600 text-white font-bold py-2 px-4 rounded'
+            }
         });
     }
 

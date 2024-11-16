@@ -10,6 +10,15 @@
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     @vite('resources/css/app.css')
+    <style>
+        #contentBelumVerifikasi{
+            min-height:100vh;
+        }
+
+        #contentSudahVerifikasi{
+            min-height:100vh;
+        }
+    </style>
 </head>
 
 <body class="{{ $theme == 'light' ? 'text-gray-100' : 'text-gray-900' }}">
@@ -78,7 +87,7 @@
                 </form> 
             </div>
 
-            <div id="contentBelumVerifikasi" class="pt-4 pb-64 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
+            <div id="contentBelumVerifikasi" class="pt-4 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
                 <div class="ml-8 mr-8 mt-8 mb-8 flex flex-grow overflow-x-auto rounded-3xl {{ $theme == 'light' ? 'border border-black' : 'border border-black' }}" style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5)">
                     <table class="table-auto p-5 w-full text-center rounded-lg border-collapse" name="tabel_irs">
                         <thead>
@@ -157,11 +166,8 @@
                     </table>
                 </div>
             </div>
-            <div class="pb-12 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
 
-            </div>
-
-            <div id="contentSudahVerifikasi" class="hidden pb-64 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}"">
+            <div id="contentSudahVerifikasi" class="hidden pt-12 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}"">
                 <div class="ml-8 mr-8 mb-8 flex flex-grow overflow-x-auto rounded-3xl {{ $theme == 'light' ? 'border border-black' : 'border border-black' }}" style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5)">
                     <table class="table-auto p-5 w-full text-center rounded-lg border-collapse">
                         <thead>
@@ -191,9 +197,6 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
-            <div class="pb-64 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
-
             </div>
 
             <script>
