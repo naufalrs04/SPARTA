@@ -174,7 +174,7 @@
                             </div>
                         </div>
 
-                        <div class="flex justify-between mt-6">
+                        <div class="flex mt-6">
                             <button type="button" id="add-dosen"
                             class="w-1/2 font-bold py-2 px-4 rounded-lg ml-2 bg-gradient-to-l from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-bl hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white">
                                 Tambahkan Dosen Pengajar
@@ -183,10 +183,12 @@
                                 class="w-1/2 font-bold py-2 px-4 rounded-lg ml-2 bg-gradient-to-l from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-bl hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white">
                                 Hapus Dosen Pengajar
                             </button>
+                        </div>
+                        <div class="mt-3 flex">
                             <button type="submit"
-                                class="w-1/2 font-bold py-2 px-4 rounded-lg ml-2 bg-gradient-to-l from-green-500 via-green-600 to-green-700 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white">
-                                Tambah
-                            </button>
+                            class="w-full font-bold py-2 px-4 rounded-lg ml-2 bg-gradient-to-l from-green-500 via-green-600 to-green-700 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white">
+                            Tambah
+                        </button>
                         </div>
                     </form>
                 </div>
