@@ -125,7 +125,7 @@
                 <!--Kapasitas-->
                 <div class="flex justify-center mt-8 mb-3">
                     <input type="number" name="kapasitas" placeholder="Masukkan kapasitas"
-                        class="border text-gray-400 p-4 pr-4 pl-4 focus:ring-2 focus:ring-gray-800 rounded-xl bg-[#2A2C33] cursor-pointer border border-transparent focus:border-gray-600 transition duration-100 ease-in-out flex justify-between items-center w-1/6 max-w-md {{ $theme == 'light' ? 'bg-[#2A2C33] hover:bg-zinc-800 border-transparent focus:ring-gray-800 outline outline-1 outline-zinc-900' : 'bg-gray-200 hover:bg-zinc-300 border-gray-300 focus:ring-gray-300 outline outline-1' }} shadow-[4px_6px_1px_1px_rgba(0,_0,_0,_0.8)]" />
+                        class="border text-gray-400 p-4 pr-4 pl-4 focus:ring-2 focus:ring-gray-800 rounded-xl bg-[#2A2C33] cursor-pointer border border-transparent focus:border-gray-600 transition duration-100 ease-in-out flex justify-between items-center w-1/5 max-w-md {{ $theme == 'light' ? 'bg-[#2A2C33] hover:bg-zinc-800 border-transparent focus:ring-gray-800 outline outline-1 outline-zinc-900' : 'bg-gray-200 hover:bg-zinc-300 border-gray-300 focus:ring-gray-300 outline outline-1' }} shadow-[4px_6px_1px_1px_rgba(0,_0,_0,_0.8)]" />
                 </div>
 
             <!--Button Simpan-->

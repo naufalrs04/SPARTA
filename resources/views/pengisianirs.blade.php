@@ -1359,7 +1359,7 @@ function generatePDF() {
     currentY += 5; 
     doc.text("Program Studi        : {{ $mahasiswa->prodi }}", marginLeft, currentY);
     currentY += 5; 
-    doc.text("Dosen Wali            : {{ $mahasiswa->dosenWali }}", marginLeft, currentY);
+    doc.text("Dosen Wali            : {{  $dosenWaliNama }}", marginLeft, currentY);
 
     // Membuat tabel di bawah informasi detail
     doc.autoTable({
@@ -1397,8 +1397,8 @@ function generatePDF() {
     // Sebelah kiri: TTD Dosen Wali
     doc.setFontSize(10);
     doc.text("Pembimbing Akademik (Dosen Wali)", marginLeft, endTableY + 5);
-    doc.text("Nama_Doswal", marginLeft, endTableY + 30); 
-    doc.text("NIP: nipDoswal", marginLeft, endTableY + 35); 
+    doc.text("{{ $dosenWaliNama }}", marginLeft, endTableY + 30); 
+    doc.text("NIP: {{ $dosenWaliNip }}", marginLeft, endTableY + 35); 
 
     // Sebelah kanan: TTD Mahasiswa
     doc.text("Semarang, " + formatDate(new Date()), marginRight, endTableY);

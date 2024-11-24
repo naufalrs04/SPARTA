@@ -103,18 +103,18 @@
                             <!-- Box Status Akademik -->
                             <div class="col-span-8 flex flex-col">
                                 <div class="text-center">
-                                    <h2 class="text-center text-lg font-semibold mb-4 rounded-lg inline-block px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">Status Akademik</h2>
+                                    <h2 class="text-center text-lg font-semibold mb-4 rounded-lg inline-block px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">Status Dosen</h2>
                                 </div>
                                 
                                 <!-- Box Utama Status Akademik -->
                                 <div class="grid grid-cols-12 w-full rounded-3xl flex-grow outline outline-1 " style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5); {{ $theme == 'light' ? 'background-color: #2A2C33;' : 'background-color: #ffffff;' }} {{ $theme == 'light' ? 'outline: 1px solid #000000;' : 'outline: 1px solid #000000;' }}">
                                     <div class="col-span-8 p-6 space-y-5 box-border border-black">
                                         <div>
-                                            <p class="text-lg" style="color: #F0B90B"><strong>Dosen Wali :</strong></p>
+                                            <p class="text-lg" style="color: #F0B90B"><strong>Nama :</strong></p>
                                             <p class="text-md">{{ $data['nama'] }}</p>
                                         </div>
                                         <div>
-                                            <p class="text-lg" style="color: #F0B90B"><strong>NIP Dosen Wali :</strong></p>
+                                            <p class="text-lg" style="color: #F0B90B"><strong>NIP :</strong></p>
                                             <p class="mb-1 text-md">{{ $data['nim_nip'] }}</p>
                                         </div>
                                         <div>

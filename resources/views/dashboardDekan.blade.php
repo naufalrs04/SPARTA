@@ -111,11 +111,11 @@
                                     <div class="col-span-8 p-6 rounded-tl-lg rounded-bl-lg text-lg space-y-5 box-border border-black">
                                         <div>
                                             <p style="color: #F0B90B; font-size: 20px;"><strong>Nama :</strong></p>
-                                            <p style="font-size: 20px;">Dr. Kusworo Adi, S.Kom, M.Cs</p>
+                                            <p style="font-size: 20px;">{{ $data['nama'] }}</p>
                                         </div>
                                         <div>
                                             <p style="color: #F0B90B; font-size: 20px;"><strong>NIP :</strong></p>
-                                            <p class="mb-1">1980122042387</p>
+                                            <p class="mb-1">{{ $data['nim_nip'] }}</p>
                                         </div>
                                         <div>
                                             <p style="color: #F0B90B; font-size: 20px;"><strong>Status :</strong></p>
