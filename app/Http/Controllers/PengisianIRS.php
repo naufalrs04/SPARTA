@@ -29,6 +29,10 @@ class PengisianIRS extends Controller
         $theme = $request->cookie('theme') ?? 'light';
 
         $mahasiswa = Mahasiswa::where('nim', $user->nim_nip)->first();
+        $data = [
+            'namaDoswal' => $user->nama,
+            'nip' => $user->nim_nip,
+        ];
         $mahasiswa_id = $mahasiswa->id;
         $ips=$mahasiswa->IPS_Sebelumnya;
         $maxSKS = $ips > 3 ? 24 : 20;

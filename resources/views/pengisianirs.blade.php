@@ -490,13 +490,13 @@ use Illuminate\Support\Str;
         </div>
     </div>
 
-    <script>
+    {{-- <script>
         $('.sksDragButton').draggable();
 
         $('.sksDragButton').click(function(){
             $(this).toggleClass('active');
         })
-    </script>
+    </script> --}}
 
     <!-- search bar -->
     <script>
@@ -1327,29 +1327,98 @@ use Illuminate\Support\Str;
 
 
 <script>
-    function generatePDF() {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        
-        doc.text("IRS Mahasiswa", 14, 10);
+function generatePDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
 
-        doc.autoTable({
-            html: '.mahasiswa-container table',
-            startY: 20,
-            theme: 'grid',
-            styles: {
-                fontSize: 10,
-                cellPadding: 4,
-                halign: 'center',
-                valign: 'middle'
-            },
-            headStyles: {
-                fillColor: [0, 0, 0]
-            }
-        });
+    // Mendapatkan lebar halaman PDF
+    const pageWidth = doc.internal.pageSize.getWidth();
 
-        doc.save('IRS_Mahasiswa.pdf');
-    }
+    // Menambahkan header
+    doc.setFontSize(10); 
+    doc.setFont("times"); 
+    doc.text("KEMENTERIAN PENDIDIKAN, KEBUDAYAAN, RISET DAN TEKNOLOGI", pageWidth / 2, 10, { align: "center" });
+    doc.text("FAKULTAS SAINS DAN MATEMATIKA", pageWidth / 2, 16, { align: "center" });
+    doc.text("UNIVERSITAS DIPONEGORO", pageWidth / 2, 22, { align: "center" });
+
+    // Menambahkan judul
+    doc.setFontSize(10); 
+    doc.setFont("times", "bold");
+    let currentY = 35;
+    doc.text("ISIAN RENCANA STUDI MAHASISWA", pageWidth / 2, currentY, { align: "center" });
+    currentY += 15;
+
+    // Menambahkan informasi detail di bawah judul
+    const marginLeft = 14; // Margin kiri untuk teks
+
+    doc.setFontSize(10); 
+    doc.setFont("times", "normal"); 
+    doc.text("NIM                        : {{ $user->nim_nip }}", marginLeft, currentY);
+    currentY += 5; 
+    doc.text("Nama Mahasiswa   : {{ $user->nama }}", marginLeft, currentY);
+    currentY += 5; 
+    doc.text("Program Studi        : {{ $mahasiswa->prodi }}", marginLeft, currentY);
+    currentY += 5; 
+    doc.text("Dosen Wali            : {{ $mahasiswa->dosenWali }}", marginLeft, currentY);
+
+    // Membuat tabel di bawah informasi detail
+    doc.autoTable({
+        html: '.mahasiswa-container table',
+        startY: currentY + 5, 
+        theme: 'grid',
+        styles: {
+            font: "times",
+            fontSize: 8,
+            cellPadding: 3,
+            halign: 'center',
+            valign: 'middle',
+            lineColor: [0, 0, 0], 
+            lineWidth: 0.25,
+            overflow: 'linebreak' 
+        },
+        headStyles: {
+            font: "times", 
+            textColor: [0, 0, 0], 
+            fillColor: [255, 255, 255], 
+            fontSize: 8, 
+            fontStyle: "bold" 
+        },
+        columnStyles: {
+            1: { halign: 'left' },
+            2: { cellWidth: 40, halign: 'left' }, 
+            7: { cellWidth: 30, halign: 'left', overflow: 'linebreak' }
+        }
+    });
+
+    // Menambahkan tanda tangan di bawah tabel
+    const marginRight = pageWidth - 100; // Posisi margin kanan
+    const endTableY = doc.lastAutoTable.finalY + 10; 
+
+    // Sebelah kiri: TTD Dosen Wali
+    doc.setFontSize(10);
+    doc.text("Pembimbing Akademik (Dosen Wali)", marginLeft, endTableY + 5);
+    doc.text("Nama_Doswal", marginLeft, endTableY + 30); 
+    doc.text("NIP: nipDoswal", marginLeft, endTableY + 35); 
+
+    // Sebelah kanan: TTD Mahasiswa
+    doc.text("Semarang, " + formatDate(new Date()), marginRight, endTableY);
+    doc.text("Nama Mahasiswa", marginRight, endTableY + 5);
+    doc.text("{{ $user->nama }}", marginRight, endTableY + 30); 
+    doc.text("NIM: {{ $user->nim_nip }}", marginRight, endTableY + 35); 
+
+    // Menyimpan file PDF
+    doc.save('IRS_Mahasiswa.pdf');
+}
+
+// Fungsi untuk memformat tanggal menjadi format: "DD MMM YYYY"
+function formatDate(date) {
+    const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+    const day = date.getDate();
+    const month = months[date.getMonth()];
+    const year = date.getFullYear();
+
+    return day + " " + month + " " + year;
+}
 
     
 </script>
