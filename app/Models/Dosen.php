@@ -14,4 +14,9 @@ class Dosen extends Model
         'status',
         'prodi',
     ];
+    
+    public function user()
+    {
+        return $this->hasOne(User::class, 'nim_nip', 'nip'); 
+    }
 }

@@ -28,4 +28,8 @@ class Mahasiswa extends Model
     {
         return $this->hasMany(IRS_rekap::class, 'mahasiswa_id', 'id');
     }
+    // public function dosenWali()
+    // {
+    //     return $this->belongsTo(Dosen::class, 'id_wali');
+    // }
 }

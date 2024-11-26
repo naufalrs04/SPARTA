@@ -25,8 +25,21 @@ class pembagiankelasInfo extends Controller
         $prodi=prodi::all();
         foreach ($prodi as $jurusan) {
             $jurusan->nama = prodi::where('id', $jurusan->id)->first()->nama_prodi;
+            $jurusan->total_ruangan = ruangan_prodi::where('nama_prodi', $jurusan->nama)->count();
 
+            $ruangan_prodis = ruangan_prodi::where('nama_prodi', $jurusan->nama_prodi)->get();
+            $ruangan_details = $ruangan_prodis->map(function ($item) {
+                $ruangan = Ruangan::find($item->ruangan_id);
+                return [
+                    'id' => $ruangan->id,
+                    'nama' => $ruangan->nama,
+                    'kapasitas'=>$ruangan->kapasitas,
+                ];
+            });
+            
+            $jurusan->ruangan_details = $ruangan_details;
         }
+        // dd($prodi);
 
         $gedung = Gedung::all();
         
@@ -34,10 +47,19 @@ class pembagiankelasInfo extends Controller
         $ruangan = Ruangan::all()->groupBy('gedung_id');
 
         $rekap_prodi = ruangan_prodi::all();
-        
-        
-        
-        return view('/pembagiankelasInfo', compact( 'user','prodi','jurusan','ruangan','gedung','theme'));
+
+        $ruanganIds = ruangan_prodi::pluck('ruangan_id')->toArray();
+        $ruanganDetails = Ruangan::whereIn('id', $ruanganIds)->get()->keyBy('id');
+
+        // Gabungkan data ruangan_prodi dengan detail ruangan
+        $ruanganProdi = ruangan_prodi::all()->map(function ($prodi) use ($ruanganDetails) {
+            $prodi->ruangan = $ruanganDetails[$prodi->ruangan_id] ?? null;
+            return $prodi;
+        })->groupBy('ruangan_id');
+
+        // dd($ruanganProdi);
+
+        return view('/pembagiankelasInfo', compact( 'user','prodi','jurusan','ruangan','gedung','theme','ruanganProdi'));
     }
 
     public function simpanRuangan(Request $request)
@@ -74,6 +96,20 @@ class pembagiankelasInfo extends Controller
     return redirect()->back()->with('success', 'Data berhasil disimpan.');
 }
 
+public function destroy($id)
+{
+    // Cari data ruangan_prodi berdasarkan ruangan_id dan nama_prodi
+    $ruanganProdi = ruangan_prodi::where('ruangan_id', $id)->first();
+
+    if (!$ruanganProdi) {
+        return response()->json(['error' => 'Ruangan tidak ditemukan pada prodi ini'], 404);
+    }
+
+    // Hapus entri dari tabel ruangan_prodi
+    $ruanganProdi->delete();
+
+    return response()->json(['success' => 'Ruangan berhasil dihapus dari Prodi'], 200);
+}
 
 
 }

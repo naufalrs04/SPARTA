@@ -94,10 +94,10 @@
             <div class="px-8 pt-5 flex justify-center items-center {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
                 <div class="grid grid-cols-12 w-full gap-14">
 
-                    <!-- Box Status Akademik -->
+                    <!-- Box Status Dosen -->
                     <div class="col-span-8 rounded-lg flex flex-col">
                         <div class="text-center">
-                            <h2 class="text-center text-lg font-semibold mb-4 rounded-lg inline-block px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">Status Akademik</h2>
+                            <h2 class="text-center text-lg font-semibold mb-4 rounded-lg inline-block px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">Status Dosen</h2>
                         </div>
 
                         <!-- Box Utama Status Akademik -->
@@ -113,7 +113,7 @@
                                 </div>
                                 <div>
                                     <p style="color: #F0B90B"><strong>Status:</strong></p>
-                                    <p>Dosen</p>
+                                    <p>Kaprodi/Dosen</p>
                                 </div>
                             </div>
                             <div class="col-span-12 text-center rounded-2xl mx-5 mb-5 flex justify-center items-center bg-gradient-to-l from-green-500 via-green-600 to-green-700 {{ $theme == 'light' ? 'text-gray-100' : 'text-gray-100' }}">

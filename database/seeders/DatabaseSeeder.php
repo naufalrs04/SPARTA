@@ -22,7 +22,6 @@ class DatabaseSeeder extends Seeder
             gedung::class,
             ruangan::class,
             mata_kuliah::class,
-            irs::class,
             jadwal_kuliah::class,
             JadwalPengisianIRSSeeder::class,
             TestJadwal::class
