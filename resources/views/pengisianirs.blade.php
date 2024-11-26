@@ -14,6 +14,9 @@ use Illuminate\Support\Str;
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.13/jspdf.plugin.autotable.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    @vite('resources/css/app.css')
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
@@ -87,18 +90,27 @@ use Illuminate\Support\Str;
     </style>
 </head>
 
-<body class="bg-gray-900 text-gray-100">
+<body class="{{ $theme == 'light' ? 'text-gray-100' : 'text-gray-900' }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <div class="flex min-h-screen">
+    <div class="flex min-h-screen backdrop-blur-sm" style="{{ $theme == 'light' ? 'background-color: #17181C;' : 'background-color: #eeeeee;' }}">
+        <!-- Efek latar belakang -->
+        <div class="absolute inset-0 z-[-1]">
+            <div class="absolute inset-0 flex justify-center">
+                <div class="bg-shape1 bg-teal opacity-50 bg-blur"></div>
+                <div class="bg-shape2 bg-primary opacity-50 bg-blur"></div>
+                <div class="bg-shape1 bg-purple opacity-50 bg-blur"></div>
+            </div>
+        </div> 
+
         <!-- Sidebar -->
-        @include('components.sidebar')
+        @include('components.sidebar', ['theme' => $theme])
 
         <!-- Content -->
-        <div class="flex-grow" style="background-color: #17181C;">
-            @include('components.navbar')
+        <div class="flex-grow">
+            @include('components.navbar', ['theme' => $theme])
 
             {{-- Main Content --}}
-            <div class="px-8 pt-5 flex justify-center items-center">
+            <div class="px-8 pt-5 flex justify-center items-center {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
                 <div class="w-full rounded-full border-yellow-500 border-2 px-4 py-2 flex justify-between items-center">
                     <div id="pengisianIRS"
                         class="w-1/2 rounded-full bg-yellow-500 px-4 py-1 border-[#17181C] cursor-pointer flex justify-center items-center transition ease-in-out duration-300"
@@ -113,54 +125,60 @@ use Illuminate\Support\Str;
                 </div>
             </div>
             <div id="contentPengisianIRS">
-                <div class="px-10 pt-5">
-                    <h2 class="text-center text-lg font-semibold mt-2 mb-4">Daftar Mata Kuliah yang diambil</h2>
-                    <table class="table-auto p-5 w-full text-center rounded-lg border-collapse" id="summaryTable">
-                        <thead>
-                            <tr style="background-color: rgba(135, 138, 145, 0.37);">
-                                <th class="px-4 py-2 border-r border-white rounded-tl-lg">No</th>
-                                <th class="px-4 py-2 w-1/3 border-r border-white">Kode MK</th>
-                                <th class="px-4 py-2 w-1/3 border-r border-white">Mata Kuliah</th>
-                                <th class="px-4 py-2 border-r border-white">Kelas</th>
-                                <th class="px-4 py-2 w-1/3 border-r border-white">Waktu</th>
-                                <th class="px-4 py-2 w-1/3 border-r border-white">SKS</th>
-                                <th class="px-4 py-2 rounded-tr-lg">Batalkan</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($irs_rekap as $rekap)
-                            <tr style="background-color: #23252A;">
-                                <td class="px-4 py-2 border-r border-white">{{ $loop->iteration }}</td>
-                                <td class="px-4 py-2 w-1/3 border-r border-white">{{ $rekap->kode_mk }}</td>
-                                <td class="px-4 py-2 w-1/3 border-r border-white">{{ $rekap->nama_mk }}</td>
-                                <td class="px-4 py-2 border-r border-white">{{ $rekap->kelas }}</td>
-                                <td class="px-4 py-2 w-1/3 border-r border-white">
-                                    {{ $rekap->hari }},
-                                    {{ \Carbon\Carbon::parse($rekap->jam_mulai)->format('H:i') }} -
-                                    {{ \Carbon\Carbon::parse($rekap->jam_selesai)->format('H:i') }}
-                                </td>
-                                <td class="px-4 py-2 w-1/3 border-r border-white">{{ $rekap->sks }}</td>
-                                <td class="px-4 py-2 border-white">
-                                    <button class="cancel-course bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded"
-                                        data-id="{{ $rekap->kode_mk }}"
-                                        data-mahasiswa-id="{{ $rekap->mahasiswa_id }}"
-                                        data-semester="{{ $rekap->semester }}">
-                                        Batalkan
-                                    </button>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                <div class="px-10 pt-5 pb-64 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
+                    <div class="text-center">
+                        <h2 class="text-center text-lg font-semibold mb-4 rounded-lg inline-block  px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">Daftar Mata Kuliah yang diambil</h2>
+                    </div>
+                    <div class="overflow-x-auto rounded-3xl {{ $theme == 'light' ? 'border border-black' : 'border border-black' }}" style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5)"> 
+                        <table class="table-auto p-5 w-full text-center rounded-lg border-collapse" id="summaryTable">
+                            <thead>
+                                <tr class="{{ $theme == 'light' ? 'bg-gray-700' : 'bg-gray-200' }}">
+                                    <th class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">No</th>
+                                    <th class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">Kode MK</th>
+                                    <th class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">Mata Kuliah</th>
+                                    <th class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">Kelas</th>
+                                    <th class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">Waktu</th>
+                                    <th class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">SKS</th>
+                                    <th class="px-4 py-2">Batalkan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($irs_rekap as $rekap)
+                                <tr class="{{ $theme == 'light' ? 'bg-[#2A2C33]' : 'bg-[#EEEEEE]' }}">
+                                    <td class="px-4 py-4 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $loop->iteration }}</td>
+                                    <td class="px-4 py-3 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $rekap->kode_mk }}</td>
+                                    <td class="px-4 py-3 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $rekap->nama_mk }}</td>
+                                    <td class="px-4 py-3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $rekap->kelas }}</td>
+                                    <td class="px-4 py-3 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">
+                                        {{ $rekap->hari }},
+                                        {{ \Carbon\Carbon::parse($rekap->jam_mulai)->format('H:i') }} -
+                                        {{ \Carbon\Carbon::parse($rekap->jam_selesai)->format('H:i') }}
+                                    </td>
+                                    <td class="px-4 py-3 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $rekap->sks }}</td>
+                                    <td class="px-4 py-3 {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">
+                                        <button class="cancel-course px-2 py-1 font-semibold rounded-xl bg-gradient-to-l from-red-500 via-red-600 to-red-700 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white"
+                                            data-id="{{ $rekap->kode_mk }}"
+                                            data-mahasiswa-id="{{ $rekap->mahasiswa_id }}"
+                                            data-semester="{{ $rekap->semester }}">
+                                            Batalkan
+                                        </button>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
 
-                    <div class="pt-5 pb-3 flex">
+                    <div class="pt-5 pb-3 flex"> 
                         <div class="w-3/5 flex justify-between">
-                            <p class="pl-1 text-sm italic">Notes : Jika mata kuliah ingin diproses oleh dosen wali, klik tombol di sebelah</p>
+                            <div>
+                                <p class="pl-1 text-sm italic rounded-lg inline-block  px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">Notes : Jika mata kuliah ingin diproses oleh dosen wali, klik tombol di sebelah</p>
+                            </div>
                         </div>
-                        <div id="ajukanButton" class="w-1/6 ml-auto text-white flex text-center items-center justify-center py-3 rounded-md cursor-pointer bg-[#34803C] hover:bg-green-800 font-bold">
+                        <div id="ajukanButton" class="w-1/6 ml-auto flex text-center cursor-pointer font-bold items-center justify-center py-3 rounded-xl bg-gradient-to-l from-green-500 via-green-600 to-green-700 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white">
                             <button onclick="ajukanIRS()">Ajukan</button>
                         </div>
-                        <div id="batalAjukanButton" class="w-1/6 ml-auto text-white flex text-center items-center justify-center py-3 rounded-md cursor-pointer bg-[#880000] hover:bg-red-500 font-bold hidden">
+                        <div id="batalAjukanButton" class="w-1/6 ml-auto flex text-center cursor-pointer font-bold items-center justify-center py-3 rounded-xl bg-gradient-to-l from-red-500 via-red-600 to-red-700 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white">
                             <button id="button_batal" onclick="batalAjukanIRS()">Batal Ajukan</button>
                         </div>
                     </div>
@@ -181,7 +199,9 @@ use Illuminate\Support\Str;
                     </button>
 
                     <div id="listMataKuliah" class="py-7">
-                        <h2 class="text-center text-lg font-semibold my-5">List Mata Kuliah</h2>
+                        <div class="text-center">
+                            <h2 class="text-center text-lg font-semibold mb-4 rounded-lg inline-block  px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">List Mata Kuliah</h2>
+                        </div>
                         <div class="flex justify-between items-center pb-7">
                             <!-- Search Section -->
                             <form class="w-full">
@@ -196,99 +216,108 @@ use Illuminate\Support\Str;
                                         </svg>
                                     </div>
                                     <input type="search" id="default-search"
-                                        class="block w-full p-4 pl-10 text-sm text-white border border-gray-800 rounded-lg bg-gray-800 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-800 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        class="block w-full p-4 pl-10 text-sm rounded-2xl
+                                        {{ $theme == 'light' ? 'bg-[#2A2C33] text-gray-200 border border-black hover:bg-gray-600 hover:text-white' : 'bg-[#eeeeee] text-gray-800 border border-black hover:bg-gray-300 hover:text-black' }}" 
+                                        style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5);"
                                         placeholder="Cari mata kuliah" />
                                 </div>
                             </form>
                         </div>
-
-                        <table class="w-full text-center rounded-lg border-collapse" name="tabel_jadwal">
-                            <thead>
-                                <tr style="background-color: rgba(135, 138, 145, 0.37);">
-                                    <th class="px-4 py-2 border-r border-white rounded-tl-lg">No</th>
-                                    <th class="px-4 py-2 w-1/3 border-r border-white">Kode Mata Kuliah</th>
-                                    <th class="px-4 py-2 w-1/3 border-r border-white">Mata Kuliah</th>
-                                    <th class="px-4 py-2 w-1/3 border-r border-white">Waktu</th>
-                                    <th class="px-4 py-2 w-1/3 border-r border-white">Kapasitas</th>
-                                    <th class="px-4 py-2 border-r border-white">Pengambilan</th>
-                                    <th class="px-4 py-2 border-white rounded-tr-lg">Info</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($list_mata_kuliah as $index => $mk)
-                                    <tr class="course-row" style="background-color: #23252A;"
-                                        data-course-id="{{ $mk->id }}"
-                                        data-course-time="{{ $mk->hari }}, {{ \Carbon\Carbon::parse($mk->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($mk->jam_selesai)->format('H:i') }}"
-                                        data-ruangan-id="{{ $mk->ruang }}">
-                                        <td class="px-4 py-2 border-r border-white">{{ $loop->iteration }}</td>
-                                        <td class="px-4 py-2 w-1/3 border-r border-white">{{ $mk->kode_mk }}
-                                        </td>
-                                        <td class="px-4 py-2 w-1/3 border-r border-white">{{ $mk->nama_mk }} - {{ $mk->kelas }}
-                                        </td>
-                                        <td class="px-4 py-2 w-1/3 border-r border-white">
-                                            {{ $mk->hari }},
-                                            {{ \Carbon\Carbon::parse($mk->jam_mulai)->format('H:i') }} -
-                                            {{ \Carbon\Carbon::parse($mk->jam_selesai)->format('H:i') }}
-                                        </td>
-                                        <td class="px-4 py-2 w-1/3 border-r border-white">{{ $mk->jumlah_pendaftar }} / {{ $mk->kapasitas }}
-                                        </td>
-                                        <td class="px-4 py-2 border-r border-white">
-                                            <form action="{{ route('irs-rekap.store') }}" method="POST">
-                                                @csrf
-                                                <input type="hidden" name="kode_mk" value="{{ $mk->kode_mk }}">
-                                                <input type="hidden" name="ruang" value="{{ $mk->ruang}}">
-                                                <input type="hidden" name="sks_mk" id="input-sks" value="{{ $mk->sks_mk }}">
-                                                <input type="hidden" name="id" value="{{ $mk->id }}">
-                                                <input type="hidden" name="nama_mk" value="{{ $mk->nama_mk }}">
-                                                <input type="hidden" name="kelas" value="{{ $mk->kelas }}">
-                                                <input type="hidden" name="kapasitas" value="{{ $mk->kapasitas }}">
-                                                
-                                                <div
-                                                    class="text-white text-center items-center justify-center mx-2 my-1 rounded-md cursor-pointer bg-[#34803C] hover:bg-green-800 font-bold">
-                                                    <button class="ambil-mata-kuliah"
-                                                        data-kode="{{ $mk->kode_mk }}"
-                                                        data-nama="{{ $mk->nama_mk }}"
-                                                        data-jadwal="{{ $mk->id }}"
-                                                        data-ruang="{{ $mk->ruang }}"
-                                                        data-kelas="{{ $mk->kelas }}"
-                                                        data-kapasitas="{{ $mk->kapasitas }}"
-                                                        data-hari-jam="{{ $mk->hari }}, {{ \Carbon\Carbon::parse($mk->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($mk->jam_selesai)->format('H:i') }}"
-                                                        data-sks="{{ $mk->sks_mk }}" type="submit">
-                                                        Ambil
+                        <div class="overflow-x-auto rounded-3xl {{ $theme == 'light' ? 'border border-black' : 'border border-black' }}" style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5)"> 
+                            <table class="w-full text-center rounded-lg border-collapse" name="tabel_jadwal">
+                                <thead>
+                                    <tr class="{{ $theme == 'light' ? 'bg-gray-700' : 'bg-gray-200' }}">
+                                        <th class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">No</th>
+                                        <th class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">Kode Mata Kuliah</th>
+                                        <th class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">Mata Kuliah</th>
+                                        <th class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">Waktu</th>
+                                        <th class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">Kapasitas</th>
+                                        <th class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">Pengambilan</th>
+                                        <th class="px-4 py-2">Info</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($list_mata_kuliah as $index => $mk)
+                                        <tr class="course-row {{ $theme == 'light' ? 'bg-[#2A2C33]' : 'bg-[#EEEEEE]' }}"
+                                            data-course-id="{{ $mk->id }}"
+                                            data-course-time="{{ $mk->hari }}, {{ \Carbon\Carbon::parse($mk->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($mk->jam_selesai)->format('H:i') }}"
+                                            data-ruangan-id="{{ $mk->ruang }}">
+                                            <td class="px-4 py-2 border-r {{ $theme == 'light' ? 'bg-[#2A2C33]' : 'bg-[#EEEEEE]' }}">{{ $loop->iteration }}</td>
+                                            <td class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'bg-[#2A2C33]' : 'bg-[#EEEEEE]' }}">{{ $mk->kode_mk }}
+                                            </td>
+                                            <td class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'bg-[#2A2C33]' : 'bg-[#EEEEEE]' }}">{{ $mk->nama_mk }} - {{ $mk->kelas }}
+                                            </td>
+                                            <td class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'bg-[#2A2C33]' : 'bg-[#EEEEEE]' }}">
+                                                {{ $mk->hari }},
+                                                {{ \Carbon\Carbon::parse($mk->jam_mulai)->format('H:i') }} -
+                                                {{ \Carbon\Carbon::parse($mk->jam_selesai)->format('H:i') }}
+                                            </td>
+                                            <td class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'bg-[#2A2C33]' : 'bg-[#EEEEEE]' }}">{{ $mk->jumlah_pendaftar }} / {{ $mk->kapasitas }}
+                                            </td>
+                                            <td class="px-4 py-2 border-r {{ $theme == 'light' ? 'bg-[#2A2C33]' : 'bg-[#EEEEEE]' }}">
+                                                <form action="{{ route('irs-rekap.store') }}" method="POST">
+                                                    @csrf
+                                                    <input type="hidden" name="kode_mk" value="{{ $mk->kode_mk }}">
+                                                    <input type="hidden" name="ruang" value="{{ $mk->ruang}}">
+                                                    <input type="hidden" name="sks_mk" id="input-sks" value="{{ $mk->sks_mk }}">
+                                                    <input type="hidden" name="id" value="{{ $mk->id }}">
+                                                    <input type="hidden" name="nama_mk" value="{{ $mk->nama_mk }}">
+                                                    <input type="hidden" name="kelas" value="{{ $mk->kelas }}">
+                                                    <input type="hidden" name="kapasitas" value="{{ $mk->kapasitas }}">
+                                                    
+                                                    <div
+                                                        class="text-center items-center justify-center mx-2 my-1 rounded-lg cursor-pointer font-bold bg-gradient-to-l from-green-500 via-green-600 to-green-700 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white">
+                                                        <button class="ambil-mata-kuliah"
+                                                            data-kode="{{ $mk->kode_mk }}"
+                                                            data-nama="{{ $mk->nama_mk }}"
+                                                            data-jadwal="{{ $mk->id }}"
+                                                            data-ruang="{{ $mk->ruang }}"
+                                                            data-kelas="{{ $mk->kelas }}"
+                                                            data-kapasitas="{{ $mk->kapasitas }}"
+                                                            data-hari-jam="{{ $mk->hari }}, {{ \Carbon\Carbon::parse($mk->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($mk->jam_selesai)->format('H:i') }}"
+                                                            data-sks="{{ $mk->sks_mk }}" type="submit">
+                                                            Ambil
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </td>
+                                            <td class="px-4 py-2 {{ $theme == 'light' ? 'bg-[#2A2C33]' : 'bg-[#EEEEEE]' }}">
+                                                <div class="h-7 w-7 mx-auto rounded-lg border flex justify-center items-center transition-colors duration-200 hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out
+                                                {{ $theme == 'light' ? 'bg-white border-transparent hover:bg-gray-400' : 'bg-gray-300 border-gray-500 hover:bg-gray-400' }}">
+                                                    <button class="show-details text-center text-3xl font-bold focus:outline-none 
+                                                        {{ $theme == 'light' ? 'text-black' : 'text-white' }}" data-index="{{ $index }}">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+                                                            <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+                                                        </svg>
                                                     </button>
                                                 </div>
-                                            </form>
-                                        </td>
-                                        <td class="px-4 py-2 border-white">
-                                            <div class="h-7 w-7 mx-auto rounded-lg bg-white border border-transparent flex justify-center items-center hover:bg-gray-400 transition-colors duration-200">
-                                                <button class="show-details justify-center text-center text-3xl text-black font-bold focus:outline-none" data-index="{{ $index }}">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-                                                        <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                        </td> 
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                            </td> 
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
             <div id="contentIRSMahasiswa" class="hidden">
                 @foreach($groupedData as $mahasiswaId => $semesterGroups)
-                <div class="mahasiswa-container px-4 sm:px-6 md:px-8 pt-5 pb-10">
-                    <h2 class="text-center text-lg font-semibold mb-4">IRS Mahasiswa</h2>
+                <div class="mahasiswa-container px-4 sm:px-6 md:px-8 pt-5 pb-64 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
+                    <div class="text-center">
+                        <h2 class="text-center text-lg font-semibold mb-4 rounded-lg inline-block  px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">IRS Mahasiswa</h2>
+                    </div>
 
-                    <div class="w-full bg-[#1E1F24] opacity-65 rounded-lg border-[#49454F] border-opacity-50 border-2">
-                        <div class="m-2">
+                    <div class="w-full rounded-2xl">
+                        <div class="m-2 rounded-3xl">
                             @for($semester = 1; $semester <= $semesterMahasiswa; $semester++)
                                 @if(isset($semesterGroups[$semester]))
-                                <div class="w-full bg-[#757575] rounded-lg mb-4">
+                                <div class="w-full rounded-2xl mb-4 {{ $theme == 'light' ? 'bg-[#2A2C33]' : 'bg-[#EEEEEE]' }} {{ $theme == 'light' ? 'border border-black' : 'border border-black' }}" style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5)">
                                 <div class="w-full flex justify-between items-center px-4 py-3">
                                     <div>
-                                        <h3 class="font-bold text-md sm:text-lg">IRS Semester {{ $semester }}</h3>
-                                        <p class="text-md sm:text-lg">Jumlah SKS: {{ $semesterGroups[$semester]->sum('sks') }}</p>
+                                        <div class="text-center">
+                                            <h3 class="font-bold text-md sm:text-lg mb-4 rounded-lg inline-block  px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">IRS Semester {{ $semester }}</h3>
+                                        </div>
+                                        <p class="text-md sm:text-lg px-2">Jumlah SKS: {{ $semesterGroups[$semester]->sum('sks') }}</p>
                                     </div>
                                     <button type="button"
                                         class="toggle-semester p-2 hover:bg-[#666666] rounded-full transition-colors">
@@ -301,10 +330,10 @@ use Illuminate\Support\Str;
                                     </button>
                                 </div>
 
-                                <div class="semester-content hidden px-4 pb-4 overflow-x-auto" id="semester">
+                                <div class="semester-content hidden px-4 pb-6 overflow-x-auto" id="semester">
                                     <h4 class="text-center text-lg font-semibold mb-4">IRS Mahasiswa {{$rekap->status_pengajuan}} ! </h4>
-                                    
-                                    <table class="w-full bg-white rounded-lg">
+                                    <div class="overflow-x-auto rounded-3xl {{ $theme == 'light' ? 'border border-black' : 'border border-black' }}" > 
+                                    <table class="w-full bg-white rounded-2xl">
                                         <thead class="bg-gray-100">
                                             <tr>
                                                 <th class="px-4 py-2 text-left text-black rounded-tl-lg">NO</th>
@@ -335,18 +364,21 @@ use Illuminate\Support\Str;
                                         </tbody>
                                     </table>
                                 </div>
+                                </div>
 
                                 @if($rekap->status_pengajuan == 'disetujui')
                                     <div class="flex justify-end mb-4 pr-5 pb-5">
-                                        <button onclick="generatePDF()" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+                                        <button onclick="generatePDF()" class="px-4 py-2 rounded-3xl font-bold bg-gradient-to-l from-yellow-500 via-yellow-600 to-yellow-700 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white">
                                             Cetak PDF
                                         </button>
                                     </div>
                                 @endif
                         </div>
                         @else
-                        <div class="w-full bg-[#757575] rounded-lg mb-4 px-4 py-3">
-                            <h3 class="font-bold text-md sm:text-lg">IRS Semester {{ $semester }}: Tidak ada data</h3>
+                        <div class="w-full rounded-2xl mb-4 px-4 py-3 {{ $theme == 'light' ? 'bg-[#2A2C33]' : 'bg-[#EEEEEE]' }} {{ $theme == 'light' ? 'border border-black' : 'border border-black' }}" style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5)">
+                            <div class="">
+                                <h3 class="font-bold text-md sm:text-lg mb-4 rounded-lg inline-block px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">IRS Semester {{ $semester }}: Tidak ada data</h3>
+                            </div>
                         </div>
                         @endif
                         @endfor
@@ -607,23 +639,23 @@ use Illuminate\Support\Str;
         // Function to add a course to the summary table
         function addCourseToSummary(course) {
             const summaryTable = document.querySelector('table:first-of-type tbody');
-            const newRow = document.createElement('tr');
 
-            newRow.style.backgroundColor = '#23252A';
+            const newRow = document.createElement('tr');
+            newRow.classList.add('{{ $theme == 'light' ? 'bg-[#2A2C33]' : 'bg-[#EEEEEE]' }}');
 
             // Calculate the new row number
             const rowNumber = summaryTable.rows.length + 1;
 
             // Create the row content
             newRow.innerHTML = `
-                        <td class="px-4 py-2 border-r border-white">${rowNumber}</td>
-                        <td class="px-4 py-2 w-1/3 border-r border-white">${course.kode}</td>
-                        <td class="px-4 py-2 w-1/3 border-r border-white">${course.nama}</td>
-                        <td class="px-4 py-2 border-r border-white">${course.kelas}</td>
-                        <td class="px-4 py-2 w-1/3 border-r border-white">${course.waktu}</td>
-                        <td class="px-4 py-2 w-1/3 border-r border-white">${course.sks}</td>
-                        <td class="px-4 py-2 border-white">
-                            <button class="cancel-course bg-red-500 text-white px-2 py-1 rounded">Batalkan</button>
+                        <td class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">${rowNumber}</td>
+                        <td class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">${course.kode}</td>
+                        <td class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">${course.nama}</td>
+                        <td class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">${course.kelas}</td>
+                        <td class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">${course.waktu}</td>
+                        <td class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">${course.sks}</td>
+                        <td class="px-4 py-2 {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">
+                            <button class="cancel-course px-2 py-1 font-semibold rounded-xl bg-gradient-to-l from-red-500 via-red-600 to-red-700 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white">Batalkan</button>
                         </td>
                     `;
 
@@ -717,8 +749,9 @@ use Illuminate\Support\Str;
             const summaryTable = document.querySelector('table:first-of-type tbody');
             const rowCount = summaryTable.rows.length + 1;
 
-            const newRow = summaryTable.insertRow();
-            newRow.style.backgroundColor = '#23252A';
+            const newRow = document.createElement('tr');
+
+            newRow.classList.add('{{ $theme == 'light' ? 'bg-[#2A2C33]' : 'bg-[#EEEEEE]' }}');
 
             // Insert cells
             const cellNo = newRow.insertCell();
@@ -1169,8 +1202,6 @@ use Illuminate\Support\Str;
     </script>
 
 
-
-
 <script>
     function generatePDF() {
         const { jsPDF } = window.jspdf;
@@ -1195,6 +1226,8 @@ use Illuminate\Support\Str;
 
         doc.save('IRS_Mahasiswa.pdf');
     }
+
+    
 </script>
 
 </body>

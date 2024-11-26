@@ -20,10 +20,10 @@
                     @csrf
                     <input type="radio" name="theme" id="theme" value="{{ $theme == 'dark' ? 'light' : 'dark' }}" class="hidden" onchange="this.form.submit()">
                     
-                    <label for="theme" class="flex items-center px-2 py-2 
-                    {{ $theme == 'light' ? 'bg-gray-700 hover:bg-gray-600 hover:text-gray-200' : 'bg-gray-300 hover:bg-gray-400 hover:text-gray-700' }} 
-                    rounded-md cursor-pointer transition-colors duration-800">
-                    <i class="mr-2">
+                    <label for="theme" class="flex items-center px-2 py-2
+                    {{ $theme == 'light' ? 'bg-gray-700 hover:bg-gray-600 hover:text-gray-200 hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out' : 'bg-gray-300 hover:bg-gray-400 hover:text-gray-700 hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out' }}  
+                    rounded-xl cursor-pointer transition-colors duration-800">
+                    <i class="mr-2 ">
                         {!! ($theme ?? 'light') == 'light' ? 
                             ' <svg class="w-6 h-6 text-black dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="White" viewBox="0 0 24 24">
                                 <path fill-rule="evenodd" d="M13 3a1 1 0 1 0-2 0v2a1 1 0 1 0 2 0V3ZM6.343 4.929A1 1 0 0 0 4.93 6.343l1.414 1.414a1 1 0 0 0 1.414-1.414L6.343 4.929Zm12.728 1.414a1 1 0 0 0-1.414-1.414l-1.414 1.414a1 1 0 0 0 1.414 1.414l1.414-1.414ZM12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm-9 4a1 1 0 1 0 0 2h2a1 1 0 1 0 0-2H3Zm16 0a1 1 0 1 0 0 2h2a1 1 0 1 0 0-2h-2ZM7.757 17.657a1 1 0 1 0-1.414-1.414l-1.414 1.414a1 1 0 1 0 1.414 1.414l1.414-1.414Zm9.9-1.414a1 1 0 0 0-1.414 1.414l1.414 1.414a1 1 0 0 0 1.414-1.414l-1.414-1.414ZM13 19a1 1 0 1 0-2 0v2a1 1 0 1 0 2 0v-2Z" clip-rule="evenodd"/>
