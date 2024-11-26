@@ -15,4 +15,10 @@ class ruangan_prodi extends Model
         'status_pengajuan',
         'kapasitas',
     ];
+    public function ruangan()
+    {
+        return $this->belongsTo(Ruangan::class, 'ruangan_id');
+    }
 }
+
+

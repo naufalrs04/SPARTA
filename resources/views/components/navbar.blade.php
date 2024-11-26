@@ -104,7 +104,7 @@
 
                             <hr class="{{ $theme == 'light' ? 'border-gray-700' : 'border-gray-300' }}">
                             <li class="font-medium">
-                                <a href="/login"
+                                <a href="/"
                                     class="flex items-center transform transition-colors duration-200 border-r-4 border-transparent hover:border-red-600">
                                     <div class="mr-3 text-red-600">
                                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
