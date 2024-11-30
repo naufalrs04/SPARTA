@@ -15,7 +15,9 @@ class DashboardKaprodiController extends Controller
 
         $user = Auth::user();
 
+
         // Ambil tema dari cookie atau gunakan 'light' sebagai default
+
         $theme = $request->cookie('theme') ?? 'light';
         
         $data = [
