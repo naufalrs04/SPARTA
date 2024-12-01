@@ -31,7 +31,8 @@ class verifikasiRuangKuliah extends Controller
                 $ruangan = Ruangan::find($item->ruangan_id);
                 return [
                     'id' => $ruangan->id,
-                    'nama' => $ruangan->nama
+                    'nama' => $ruangan->nama,
+                    'kapasitas' => $item->kapasitas,
                 ];
             });
             

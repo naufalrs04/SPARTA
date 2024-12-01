@@ -141,7 +141,7 @@
                     </span>
                     </a>
                 </li>            
-                <li class="pl-1 py-7 transition-colors duration-200 
+                {{-- <li class="pl-1 py-7 transition-colors duration-200 
                 {{ request()->is('inputnilai') ? ($theme == 'light' ? 'bg-zinc-800 outline outline-2 outline-zinc-800 shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)]' : 'bg-zinc-100 outline outline-1 outline-zinc-700 shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)]') : '' }}
                 rounded-r-3xl group">
                 <a href="/inputnilai" class="flex items-center block
@@ -159,7 +159,7 @@
                         Input Nilai
                     </span>
                     </a>
-                </li>
+                </li> --}}
                 <li class="pl-1 py-7 transition-colors duration-200 
                 {{ request()->is('jadwalmengajar') ? ($theme == 'light' ? 'bg-zinc-800 outline outline-2 outline-zinc-800 shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)]' : 'bg-zinc-100 outline outline-1 outline-zinc-700 shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)]') : '' }}
                 rounded-r-3xl group">

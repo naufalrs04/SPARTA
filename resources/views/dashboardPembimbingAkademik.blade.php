@@ -61,6 +61,10 @@
             display: inline-block;
             width: fit-content;
         }
+
+        #main-content{
+            min-height: 100vh;
+        }
     </style>
 </head>
 
@@ -80,105 +84,112 @@
 
         <!-- Content -->
         <div class="flex-grow">
+
+            <!-- Navbar -->
             @include('components.navbar', ['theme' => $theme])
 
-            <div class="pl-8 pt-5 flex justify-left items-center {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
-                <p class="welcome-message-static">Welcome Back, </p>
-                <span class="welcome-message" id="typewriter"></span>
-                <span class="text-2xl" aria-label="Waving Hand" role="img">👋</span>
-            </div>
+            <div id="main-content" class="{{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
+                <div class="h-full">
+                    <div class="pl-8 pt-5 flex justify-left items-center">
+                        <p class="welcome-message-static">Welcome Back, </p>
+                        <span class="welcome-message" id="typewriter"></span>
+                        <span class="text-2xl" aria-label="Waving Hand" role="img">👋</span>
+                    </div>
 
-            <!-- Main Content -->
-            <div class="px-8 pt-5 flex justify-center items-center {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
-                <div class="grid grid-cols-12 w-full gap-14">
-                    <!-- Box Status Akademik -->
-                    <div class="col-span-8 flex flex-col">
-                        <div class="text-center">
-                            <h2 class="text-center text-lg font-semibold mb-4 rounded-lg inline-block px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">Status Akademik</h2>
-                        </div>
-                        
-                        <!-- Box Utama Status Akademik -->
-                        <div class="grid grid-cols-12 w-full rounded-3xl flex-grow outline outline-1 " style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5); {{ $theme == 'light' ? 'background-color: #2A2C33;' : 'background-color: #ffffff;' }} {{ $theme == 'light' ? 'outline: 1px solid #000000;' : 'outline: 1px solid #000000;' }}">
-                            <div class="col-span-8 p-6 space-y-5 box-border border-black">
-                                <div>
-                                    <p class="text-lg" style="color: #F0B90B"><strong>Dosen Wali :</strong></p>
-                                    <p class="text-md">{{ $data['nama'] }}</p>
+
+                    <!-- Main Content -->
+                    <div class="px-8 pt-5 flex justify-center items-center">
+                        <div class="grid grid-cols-12 w-full gap-14 h-full">
+                            <!-- Box Status Akademik -->
+                            <div class="col-span-8 flex flex-col">
+                                <div class="text-center">
+                                    <h2 class="text-center text-lg font-semibold mb-4 rounded-lg inline-block px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">Status Dosen</h2>
                                 </div>
-                                <div>
-                                    <p class="text-lg" style="color: #F0B90B"><strong>NIP Dosen Wali :</strong></p>
-                                    <p class="mb-1 text-md">{{ $data['nim_nip'] }}</p>
-                                </div>
-                                <div>
-                                    <p class="text-lg" style="color: #F0B90B"><strong>Semester Akademik :</strong></p>
-                                    <p class="text-md">2024/2025 Ganjil</p>
+                                
+                                <!-- Box Utama Status Akademik -->
+                                <div class="grid grid-cols-12 w-full rounded-3xl flex-grow outline outline-1 " style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5); {{ $theme == 'light' ? 'background-color: #2A2C33;' : 'background-color: #ffffff;' }} {{ $theme == 'light' ? 'outline: 1px solid #000000;' : 'outline: 1px solid #000000;' }}">
+                                    <div class="col-span-8 p-6 space-y-5 box-border border-black">
+                                        <div>
+                                            <p class="text-lg" style="color: #F0B90B"><strong>Nama :</strong></p>
+                                            <p class="text-md">{{ $data['nama'] }}</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-lg" style="color: #F0B90B"><strong>NIP :</strong></p>
+                                            <p class="mb-1 text-md">{{ $data['nim_nip'] }}</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-lg" style="color: #F0B90B"><strong>Semester Akademik :</strong></p>
+                                            <p class="text-md">2024/2025 Ganjil</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-span-4 p-6 text-center rounded-tr-lg rounded-br-lg text-lg space-y-2 box-border border-black flex flex-col items-center gap-1.5">
+                                    </div>
+                                    <div class="content-center col-span-12 text-white text-center py-3 rounded-2xl mx-5 mb-5 bg-gradient-to-l from-green-500 via-green-600 to-green-700 {{ $theme == 'light' ? 'text-gray-100' : 'text-gray-100' }}">
+                                        <p class="text-xl text-center "><strong>AKTIF</strong></p>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-span-4 p-6 text-center rounded-tr-lg rounded-br-lg text-lg space-y-2 box-border border-black flex flex-col items-center gap-1.5">
-                            </div>
-                            <div class="content-center col-span-12 text-white text-center py-3 rounded-2xl mx-5 mb-5 bg-gradient-to-l from-green-500 via-green-600 to-green-700 {{ $theme == 'light' ? 'text-gray-100' : 'text-gray-100' }}">
-                                <p class="text-xl text-center "><strong>AKTIF</strong></p>
+
+                            <!-- Box Capaian Akademik -->
+                            <div class="col-span-4 flex flex-col">
+                                <div class="text-center">
+                                    <h2 class="text-center text-lg font-semibold mb-4 rounded-lg inline-block px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">Status Perwalian</h2>
+                                </div>
+
+                                <!-- Box Utama Capaian Akademik -->
+                                <div class="rounded-3xl outline outline-1 " style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5); {{ $theme == 'light' ? 'background-color: #2A2C33;' : 'background-color: #ffffff;' }} {{ $theme == 'light' ? 'outline: 1px solid #000000;' : 'outline: 1px solid #000000;' }}">
+                                    <div class="p-6 text-lg space-y-4 flex-grow flex flex-col items-center justify-center">
+                                        <div class="text-center w-full mb-3">
+                                            <p class="font-bold" style="color: #F0B90B">Semester Akademik</p>
+                                            <p style="{{ $theme == 'light' ? 'color: #fff;' : 'color: #222;' }}"><strong>2024/2025 Ganjil</strong></p>
+                                        </div>
+
+                                        <div class="text-center w-full">
+                                            <p style="{{ $theme == 'light' ? 'color: #fff;' : 'color: #222;' }}"><strong>Mahasiswa Aktif</strong></p>
+                                            <div class="text-white text-center py-2 mx-5 rounded-lg mt-2 bg-gradient-to-l from-red-500 via-red-700 to-red-800 {{ $theme == 'light' ? 'text-white' : 'text-black' }}">
+                                                <p class="font-semibold text-3xl text-gray-50">34</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="px-5 space-y-4 flex-grow flex items-center justify-center" style="{{ $theme == 'light' ? 'background-color: #2A2C33;' : 'background-color: #ffffff;' }}">
+                                        <div class="p-0.5 rounded-lg text-lg space-y-4 flex-grow flex items-center justify-center" style="{{ $theme == 'light' ? 'background-color: #ffffff; ' : 'background-color: #2A2C33;' }}">
+                                        </div>
+                                    </div>
+                                    <div class="p-6 text-lg space-y-4 flex-grow flex items-center justify-center">
+                                        <div class="text-center w-full">
+                                            <p style="{{ $theme == 'light' ? 'color: #fff;' : 'color: #222;' }}"><strong>Mahasiswa Cuti</strong></p>
+                                            <div class="text-white text-center py-2 mx-5 rounded-lg mt-2 bg-gradient-to-l from-orange-500 via-orange-700 to-orange-800 {{ $theme == 'light' ? 'text-white' : 'text-black' }}">
+                                                <p class="font-semibold text-3xl text-gray-50">16</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Box Capaian Akademik -->
-                    <div class="col-span-4 flex flex-col">
-                        <div class="text-center">
-                            <h2 class="text-center text-lg font-semibold mb-4 rounded-lg inline-block px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">Status Perwalian</h2>
+                    <!-- Jadwal Mata Kuliah -->
+                    <div id="box-jadwal-mata-kuliah" class="px-8 pt-10">
+                        <div class="text-center h-full">
+                            <h2 class="text-center text-lg font-semibold mb-4 rounded-lg inline-block px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">Jadwal Mata Kuliah</h2>
                         </div>
+                        <div class="overflow-x-auto rounded-3xl {{ $theme == 'light' ? 'border border-black' : 'border border-black' }}" style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5)">
+                            <table class="table-auto p-5 w-full text-center rounded-lg border-collapse">
+                                <thead>
+                                    <tr class="{{ $theme == 'light' ? 'bg-gray-700' : 'bg-gray-200' }}">
+                                        <th class="px-4 py-2 w-1/4 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">Waktu</th>
+                                        <th class="px-4 py-2 w-1/2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">Mata Kuliah</th>
+                                        <th class="px-4 py-2 w-1/4 rounded-tr-lg">Ruangan</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="{{ $theme == 'light' ? 'bg-[#2A2C33]' : 'bg-[#EEEEEE]' }}">
 
-                        <!-- Box Utama Capaian Akademik -->
-                        <div class="rounded-3xl outline outline-1 " style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5); {{ $theme == 'light' ? 'background-color: #2A2C33;' : 'background-color: #EEEEEE;' }} {{ $theme == 'light' ? 'outline: 1px solid #000000;' : 'outline: 1px solid #000000;' }}">
-                            <div class="p-6 text-lg space-y-4 flex-grow flex flex-col items-center justify-center">
-                                <div class="text-center w-full mb-3">
-                                    <p class="font-bold" style="color: #F0B90B">Semester Akademik</p>
-                                    <p style="{{ $theme == 'light' ? 'color: #fff;' : 'color: #222;' }}"><strong>2024/2025 Ganjil</strong></p>
-                                </div>
-
-                                <div class="text-center w-full">
-                                    <p class="text-white"><strong>Mahasiswa Aktif</strong></p>
-                                    <div class="text-white text-center py-2 mx-5 rounded-lg mt-2 bg-gradient-to-l from-red-500 via-red-700 to-red-800 {{ $theme == 'light' ? 'text-white' : 'text-black' }}">
-                                        <p class="font-semibold text-3xl text-gray-50">34</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="px-5 space-y-4 flex-grow flex items-center justify-center" style="{{ $theme == 'light' ? 'background-color: #2A2C33;' : 'background-color: #ffffff;' }}">
-                                <div class="p-0.5 rounded-lg text-lg space-y-4 flex-grow flex items-center justify-center" style="{{ $theme == 'light' ? 'background-color: #ffffff; ' : 'background-color: #2A2C33;' }}">
-                                </div>
-                            </div>
-                            <div class="p-6 text-lg space-y-4 flex-grow flex items-center justify-center">
-                                <div class="text-center w-full">
-                                    <p style="{{ $theme == 'light' ? 'color: #fff;' : 'color: #222;' }}"><strong>Mahasiswa Cuti</strong></p>
-                                    <div class="text-white text-center py-2 mx-5 rounded-lg mt-2 bg-gradient-to-l from-orange-500 via-orange-700 to-orange-800 {{ $theme == 'light' ? 'text-white' : 'text-black' }}">
-                                        <p class="font-semibold text-3xl text-gray-50">16</p>
-                                    </div>
-                                </div>
-                            </div>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <!-- Jadwal Mata Kuliah -->
-            <div class="px-8 pt-10 mb-5 pb-64 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
-                <div class="text-center">
-                    <h2 class="text-center text-lg font-semibold mb-4 rounded-lg inline-block px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">Jadwal Mata Kuliah</h2>
-                </div>
-                <div class="overflow-x-auto rounded-3xl {{ $theme == 'light' ? 'border border-black' : 'border border-black' }}" style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5)">
-                    <table class="table-auto p-5 w-full text-center rounded-lg border-collapse">
-                        <thead>
-                            <tr class="{{ $theme == 'light' ? 'bg-gray-700' : 'bg-gray-200' }}">
-                                <th class="px-4 py-2 w-1/4 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">Waktu</th>
-                                <th class="px-4 py-2 w-1/2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">Mata Kuliah</th>
-                                <th class="px-4 py-2 w-1/4 rounded-tr-lg">Ruangan</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="{{ $theme == 'light' ? 'bg-[#2A2C33]' : 'bg-[#EEEEEE]' }}">
-
-                            </tr>
-                        </tbody>
-                    </table>
                 </div>
             </div>
         </div>

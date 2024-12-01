@@ -10,6 +10,7 @@ use App\Models\irs_lempar;
 use App\Models\Mata_Kuliah;
 use App\Models\Ruangan;
 use App\Models\Mahasiswa;
+use App\Models\Dosen;
 use App\Models\irs_rekap;
 use App\Models\JadwalPengisianIRS;
 use App\Models\PenyusunanJadwal;
@@ -29,6 +30,24 @@ class PengisianIRS extends Controller
         $theme = $request->cookie('theme') ?? 'light';
 
         $mahasiswa = Mahasiswa::where('nim', $user->nim_nip)->first();
+        //$mahasiswa = Mahasiswa::with('dosenWali.user')->where('nim', $user->nim_nip)->first();
+        // if ($mahasiswa) {
+        //     $dosenWaliNama = $mahasiswa->dosenWali ? $mahasiswa->dosenWali->user->nama : 'Tidak ada dosen wali';
+        // }
+        if ($mahasiswa) {
+            // Mengecek apakah mahasiswa memiliki dosen wali
+            $dosenWali = Dosen::with('user')->find($mahasiswa->id_wali);
+        
+            if ($dosenWali && $dosenWali->user) {
+                $dosenWaliNama = $dosenWali->user->nama;
+                $dosenWaliNip = $dosenWali->user->nim_nip; 
+            } else {
+                $dosenWaliNama = 'Tidak ada dosen wali';
+                $dosenWaliNip = 'Tidak ada NIP';
+            }
+        }
+        //$dosenWali = Dosen::with('user')->find($mahasiswa->id_wali);
+        //$dosenWaliNama = $dosenWali->user->nama;
         $mahasiswa_id = $mahasiswa->id;
         $ips=$mahasiswa->IPS_Sebelumnya;
         $maxSKS = $ips > 3 ? 24 : 20;
@@ -97,7 +116,7 @@ class PengisianIRS extends Controller
             ->where('jadwalberakhir', '>=', $tanggalSekarang)
             ->first(); 
         
-        return view('pengisianirs', compact('user', 'list_mata_kuliah', 'irs_rekap', 'groupedData',  'semesterMahasiswa', 'mahasiswa_id', 'theme', 'fasePengisianIRS', 'fasePembatalanIRS', 'fasePerubahanIRS','status','maxSKS','ips'));
+        return view('pengisianirs', compact('user', 'list_mata_kuliah', 'irs_rekap', 'groupedData',  'semesterMahasiswa', 'mahasiswa_id', 'theme', 'fasePengisianIRS', 'fasePembatalanIRS', 'fasePerubahanIRS','status','maxSKS','ips', 'mahasiswa', 'dosenWali', 'dosenWaliNama', 'dosenWaliNip'));
     }
 
     public function store(Request $request)

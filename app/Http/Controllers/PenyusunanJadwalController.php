@@ -146,8 +146,37 @@ class PenyusunanJadwalController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(PenyusunanJadwal $penyusunanJadwal)
-    {
-        //
+    public function destroy($id)
+{
+    try {
+        // Cari data berdasarkan ID
+        $penyusunanJadwal = PenyusunanJadwal::find($id);
+
+        if (!$penyusunanJadwal) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Mata kuliah tidak ditemukan.'
+            ], 404);
+        }
+
+        // Hapus data
+        $penyusunanJadwal->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Mata kuliah berhasil dihapus.'
+        ]);
+    } catch (\Exception $e) {
+        // Log error jika ada
+        Log::error('Error saat menghapus mata kuliah: ' . $e->getMessage());
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Terjadi kesalahan saat menghapus mata kuliah.'
+        ], 500);
     }
+}
+
+
+    
 }

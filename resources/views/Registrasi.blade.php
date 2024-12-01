@@ -11,6 +11,11 @@
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css"  rel="stylesheet" />
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     @vite('resources/css/app.css')
+    <style>
+        #main-content{
+            min-height: 100vh;
+        }
+    </style>
 </head>
 
 <body class="{{ $theme == 'light' ? 'text-gray-100' : 'text-gray-900' }}">
@@ -31,10 +36,10 @@
             @include('components.navbar', ['theme' => $theme])
 
             <!-- Main Content -->
-            <div class="{{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
-                <div class="px-8 pt-5 mb-8">
+            <div id="main-content " class="{{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
+                <div class="px-8 py-5 h-full">
                     <div class="text-center">
-                        <h2 class="text-center text-lg font-semibold mb-4 rounded-lg inline-block  px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">Registrasi Akademik</h2>
+                        <h2 class="text-center text-lg font-semibold mb-4 rounded-lg inline-block px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">Registrasi Akademik</h2>
                     </div>
                     <div class="px-8 pt-5 flex justify-center items-center">
                         <div class="flex justify-center items-center max-h-full">
@@ -90,11 +95,14 @@
         </div>
     </div>
 </body>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const activeButton = document.getElementById('activeButton');
         const cutiButton = document.getElementById('cutiButton');
 
+        // Misalnya, status awal mahasiswa didapat dari backend dan nilainya adalah `null`, `1`, atau `0`
+        const initialStatus = {{ json_encode($statusMahasiswa) }}; // Dari backend
         let isActiveSelected = localStorage.getItem('isActiveSelected') === 'true';
 
         function resetOpacity() {
@@ -103,7 +111,10 @@
         }
 
         function setInitialOpacity() {
-            if (isActiveSelected) {
+            if (initialStatus === null) {
+                // Jika status null, atur opacity 100% untuk keduanya
+                resetOpacity();
+            } else if (isActiveSelected) {
                 document.getElementById('activeStatus').style.opacity = '1';
                 document.getElementById('cutiStatus').style.opacity = '0.5';
             } else {
@@ -199,5 +210,6 @@
         }
     });
 </script>
+
 
 </html> 

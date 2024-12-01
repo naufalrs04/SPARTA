@@ -95,7 +95,7 @@
 
                     <!-- Box Status Akademik -->
                     <div class="col-span-8 rounded-lg flex flex-col ">
-                        <h2 class="text-center text-lg font-bold mb-4 {{ $theme == 'light' ? '' : 'inline-block rounded-lg mx-auto px-2 bg-opacity-50 bg-[#ffeeb6]' }}"> Status Akademik </h2>
+                        <h2 class="text-center text-lg font-bold mb-4 {{ $theme == 'light' ? '' : 'inline-block rounded-lg mx-auto px-2 bg-opacity-50 bg-[#ffeeb6]' }}"> Status Bagian Akademik </h2>
 
                         <!-- Box Utama Status Akademik -->
                         <div class="grid grid-cols-12 w-full rounded-3xl flex-grow outline outline-1 " style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5); {{ $theme == 'light' ? 'background-color: #2A2C33;' : 'background-color: #ffffff;' }} {{ $theme == 'light' ? 'outline: 1px solid #000000;' : 'outline: 1px solid #000000;' }}">
@@ -110,7 +110,7 @@
                                 </div>
                                 <div>
                                     <p style="color: #F0B90B"><strong>Status:</strong></p>
-                                    <p>{{ $data['status'] }}</p>
+                                    <p>Bagian Akademik</p>
                                 </div>
                             </div>
                             <div class="col-span-12 text-center rounded-2xl mx-5 mb-5 flex justify-center items-center bg-gradient-to-l from-green-500 via-green-600 to-green-700 {{ $theme == 'light' ? 'text-gray-100' : 'text-gray-100' }}">
@@ -121,7 +121,7 @@
 
                     <!-- Box Capaian Akademik -->
                     <div class="col-span-4 rounded-lg flex flex-col">
-                        <h2 class="text-center text-lg font-bold mb-4 {{ $theme == 'light' ? '' : 'inline-block rounded-lg mx-auto px-2 bg-opacity-50 bg-[#ffeeb6]' }}">Status Departemen</h2>
+                        <h2 class="text-center text-lg font-bold mb-4 {{ $theme == 'light' ? '' : 'inline-block rounded-lg mx-auto px-2 bg-opacity-50 bg-[#ffeeb6]' }}">Status Prodi </h2>
 
                         <!-- Box Utama Capaian Akademik -->
                         <div class="rounded-3xl outline outline-1 " style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5); {{ $theme == 'light' ? 'background-color: #2A2C33;' : 'background-color: #EEEEEE;' }} {{ $theme == 'light' ? 'outline: 1px solid #000000;' : 'outline: 1px solid #000000;' }}">
@@ -132,9 +132,9 @@
                                 </div>
 
                                 <div class="text-center w-full">
-                                    <p class="{{ $theme == 'light' ? 'text-white' : 'text-dark' }}"><strong>Departemen Sudah di Set</strong></p>
+                                    <p class="{{ $theme == 'light' ? 'text-white' : 'text-dark' }}"><strong>Ruangan Sudah di Set</strong></p>
                                     <div class="text-center py-2 mx-5 rounded-lg mt-2 bg-gradient-to-l from-red-500 via-red-700 to-red-800 {{ $theme == 'light' ? 'text-white' : 'text-black' }}">
-                                        <p class="font-semibold text-3xl {{ $theme == 'light' ? 'text-gray-100' : 'text-gray-100' }}">34</p>
+                                        <p class="font-semibold text-3xl {{ $theme == 'light' ? 'text-gray-100' : 'text-gray-100' }}">{{ $data['countRuanganProdi'] }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -143,9 +143,9 @@
                                 </div>
                             </div>
                             <div class="p-7 rounded-bl-3xl rounded-br-3xl text-lg text-center space-y-4" style="{{ $theme == 'light' ? 'background-color: #2A2C33;' : 'background-color: #ffffff;' }}">
-                                <p class="{{ $theme == 'light' ? 'text-white' : 'text-dark' }}"><strong>Departemen Belum di Set</strong></p>
+                                <p class="{{ $theme == 'light' ? 'text-white' : 'text-dark' }}"><strong>Jumlah Ruangan Total</strong></p>
                                 <div class="text-center py-2 mx-5 rounded-lg mt-2 bg-gradient-to-l from-orange-400 via-orange-500 to-orange-600">
-                                    <p class="font-semibold text-3xl {{ $theme == 'light' ? 'text-gray-100' : 'text-gray-100' }}">42</p>
+                                    <p class="font-semibold text-3xl {{ $theme == 'light' ? 'text-gray-100' : 'text-gray-100' }}">{{ $data['countRuangan'] }}</p>
                                 </div>
                             </div>
                         </div>

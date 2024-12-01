@@ -41,6 +41,10 @@
         .swal2-html-container button:hover {
             transform: translateY(-2px);
         }
+
+        #main-content{
+            min-height: 100vh;
+        } 
     </style>
 </head>
 
@@ -63,62 +67,61 @@
             @include('components.navbar', ['theme' => $theme])
 
             <!-- Main Content -->
-            <div class="pb-64 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
-                <div class="px-8 pt-8 mb-8">
-                    <div class="text-center">
-                        <h2 class="text-center text-lg font-semibold mb-4 rounded-lg inline-block  px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">Verifikasi Ruang Kuliah</h2>
-                    </div>
-                    <div class="overflow-x-auto rounded-3xl {{ $theme == 'light' ? 'border border-black' : 'border border-black' }}" style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5)">
-                        <table class="table-auto p-5 w-full text-center border-collapse">
-                            <thead>
-                                <tr class="{{ $theme == 'light' ? 'bg-gray-700' : 'bg-gray-200' }}">
-                                    <th class="px-4 py-2 w-1/4 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">Departemen</th>
-                                    <th class="px-4 py-2 w-1/2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">Status</th>
-                                    <th class="px-4 py-2 w-1/4 ">Info</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($verif as $v)
-                                    <tr class="{{ $theme == 'light' ? 'bg-[#2A2C33]' : 'bg-[#EEEEEE]' }}">
-                                        <td class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $v->nama_prodi }}</td>
-
-                                        @if ($v->status_pengajuan == 'ter-Verifikasi')
-                                            <td
-                                                class="px-3 py-3 border-r text-center flex justify-center items-center {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">
-                                                <div class="w-32 text-white text-center rounded-lg px-2 py-2 bg-gradient-to-l from-green-500 via-green-600 to-green-700">
-                                                    <p class="font-bold">Terverifikasi</p>
-                                                </div>
-                                            </td>
-                                        @elseif($v->status_pengajuan == 'Ditolak')
-                                            <td
-                                                class="px-3 py-3 border-r text-center flex justify-center items-center {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">
-                                                <div class="w-32 text-white text-center rounded-md px-2 py-2 bg-gradient-to-l from-red-500 via-red-600 to-red-700">
-                                                    <p class="font-bold">Ditolak</p>
-                                                </div>
-                                            </td>
-                                        @else
-                                            <td
-                                                class="px-3 py-3 border-r text-center flex justify-center items-center {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">
-                                                <div class="w-32 text-white text-center rounded-md px-2 py-2 bg-gradient-to-l from-orange-500 via-orange-600 to-orange-700">
-                                                    <p class="font-bold">Belum</p>
-                                                </div>
-                                            </td>
-                                        @endif
-                                        <td class="px-5 py-2 text-center">
-                                            <button onclick="showInfo('{{ $v->nama_prodi }}', {{ $v->ruangan_details }})"
-                                                class="info w-16 text-white font-bold rounded-lg px-3 py-2 bg-gradient-to-t from-gray-400 via-gray-500 to-gray-500 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out">
-                                                Info
-                                            </button>
-                                        </td>
+            <div id="main-content" class="{{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
+                <div class="h-full">
+                    <div class="px-8 pt-8 mb-8">
+                        <div class="text-center">
+                            <h2 class="text-center text-lg font-semibold mb-4 rounded-lg inline-block  px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">Verifikasi Ruang Kuliah</h2>
+                        </div>
+                        <div class="overflow-x-auto rounded-3xl {{ $theme == 'light' ? 'border border-black' : 'border border-black' }}" style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5)">
+                            <table class="table-auto p-5 w-full text-center border-collapse">
+                                <thead>
+                                    <tr class="{{ $theme == 'light' ? 'bg-gray-700' : 'bg-gray-200' }}">
+                                        <th class="px-4 py-2 w-1/4 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">Departemen</th>
+                                        <th class="px-4 py-2 w-1/2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">Status</th>
+                                        <th class="px-4 py-2 w-1/4 ">Info</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach ($verif as $v)
+                                        <tr class="{{ $theme == 'light' ? 'bg-[#2A2C33]' : 'bg-[#EEEEEE]' }}">
+                                            <td class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $v->nama_prodi }}</td>
+
+                                            @if ($v->status_pengajuan == 'ter-Verifikasi')
+                                                <td
+                                                    class="px-3 py-3 border-r text-center flex justify-center items-center {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">
+                                                    <div class="w-32 text-white text-center rounded-lg px-2 py-2 bg-gradient-to-l from-green-500 via-green-600 to-green-700">
+                                                        <p class="font-bold">Terverifikasi</p>
+                                                    </div>
+                                                </td>
+                                            @elseif($v->status_pengajuan == 'Ditolak')
+                                                <td
+                                                    class="px-3 py-3 border-r text-center flex justify-center items-center {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">
+                                                    <div class="w-32 text-white text-center rounded-md px-2 py-2 bg-gradient-to-l from-red-500 via-red-600 to-red-700">
+                                                        <p class="font-bold">Ditolak</p>
+                                                    </div>
+                                                </td>
+                                            @else
+                                                <td
+                                                    class="px-3 py-3 border-r text-center flex justify-center items-center {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">
+                                                    <div class="w-32 text-white text-center rounded-md px-2 py-2 bg-gradient-to-l from-orange-500 via-orange-600 to-orange-700">
+                                                        <p class="font-bold">Belum</p>
+                                                    </div>
+                                                </td>
+                                            @endif
+                                            <td class="px-5 py-2 text-center">
+                                                <button onclick="showInfo('{{ $v->nama_prodi }}', {{ $v->ruangan_details }})"
+                                                    class="info w-16 text-white font-bold rounded-lg px-3 py-2 bg-gradient-to-t from-gray-400 via-gray-500 to-gray-500 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out">
+                                                    Info
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="pb-48 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
-
             </div>
         </div>
     </div>
@@ -130,6 +133,7 @@
             `<tr>
                 <td>${room.id}</td>
                 <td>${room.nama}</td>
+                <td>${room.kapasitas}</td>
             </tr>`
         ).join('');
 
@@ -141,6 +145,7 @@
                         <tr>
                             <th>ID Ruangan</th>
                             <th>Nama Ruangan</th>
+                            <th>kapasitas</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -188,15 +193,20 @@
                 .then(response => response.json())
                 .then(data => {
                     if(data.success) {
-                        Swal.fire(
-                            'Berhasil!',
-                            'Ruangan telah diverifikasi.',
-                            'success'
-                        ).then(() => {
+                        Swal.fire({
+                            title: 'Berhasil!',
+                            text: 'Ruangan telah diverifikasi.',
+                            icon: 'success',
+                            confirmButtonText: 'OK',
+                            customClass: {
+                                confirmButton: 'bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded'
+                            }
+                        }).then(() => {
                             location.reload();
                         });
                     }
                 })
+
                 .catch(error => {
                     Swal.fire(
                         'Error!',
@@ -230,15 +240,20 @@
                 .then(response => response.json())
                 .then(data => {
                     if(data.success) {
-                        Swal.fire(
-                            'Berhasil!',
-                            'Ruangan telah ditolak.',
-                            'success'
-                        ).then(() => {
+                        Swal.fire({
+                            title: 'Berhasil!',
+                            text: 'Ruangan telah ditolak.',
+                            icon: 'success',
+                            confirmButtonText: 'OK',
+                            customClass: {
+                                confirmButton: 'bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded'
+                            }
+                        }).then(() => {
                             location.reload();
                         });
                     }
                 })
+
                 .catch(error => {
                     Swal.fire(
                         'Error!',

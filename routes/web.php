@@ -26,16 +26,17 @@ use App\Http\Controllers\profile;
 use App\Http\Controllers\ThemeController;
 use App\Models\JadwalPengisianIRS;
 
-Route::get('/login', function () {
+Route::get('/', function () {
     return view('login');
 })->name('login');
 
-Route::post('/login', [AuthController::class, 'authenticate'])->name('login');
+Route::post('/', [AuthController::class, 'authenticate'])->name('login');
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/registrasi', [RegistrasiController::class, 'index'])->middleware('auth') -> name('registrasi');
 Route::post('/update-status', [RegistrasiController::class, 'updateStatus'])->name('update-status');
+
 
 Route::get('/khs', [KHSController::class, 'index'])->middleware('auth')->name('khs');
 
@@ -60,6 +61,7 @@ Route::get('/dashboardDekan', [DashboardDekanController::class, 'index'])->middl
 Route::get('/dashboardKaprodi', [DashboardKaprodiController::class, 'index'])->middleware('auth')->name('dashboardKaprodi');
 
 Route::get('/penyusunanjadwal', [PenyusunanJadwalController::class, 'index'])->middleware('auth')->name('Penyusunanjadwal');
+Route::delete('/penyusunan-jadwal/{id}', [PenyusunanJadwalController::class, 'destroy']);
 
 // Route::post('/penyusunan-jadwal/store', [PenyusunanJadwalController::class, 'store'])->name('penyusunan-jadwal.store');
 Route::post('/jadwal/tambah', [PenyusunanJadwalController::class, 'store'])->name('jadwal.store');
@@ -81,9 +83,17 @@ Route::get('/profile', function () {
 
 Route::get('/pembagiankelasInfo', [pembagiankelasInfo::class, 'index'])->middleware('auth')->name('pembagiankelasInfo');
 Route::post('/simpan-ruangan', [pembagiankelasInfo::class, 'simpanRuangan'])->name('simpan.ruangan');
+Route::post('/ruangan/store', [PembagiankelasInfo::class, 'storeRuangan'])->name('ruangan.store');
+Route::get('/api/ruangans', [PembagiankelasInfo::class, 'getRuangans']);
+Route::delete('/api/ruangans/{id}', [PembagiankelasInfo::class, 'deleteRuangan']);
+
+Route::delete('/ruangan/{id}', [pembagiankelasInfo::class, 'destroy'])->name('ruangan.destroy');
+
 
 
 Route::get('/perwalian', [perwalian::class, 'index'])->middleware('auth')->name('perwalian');
+Route::get('/perwalian-to-fetch-data', [perwalian::class, 'getSortedMahasiswa']);
+
 
 Route::get('/inputnilai', [inputnilai::class, 'index'])->middleware('auth')->name('inputnilai');
 
@@ -113,9 +123,4 @@ Route::get('/profile', function () {
     return view('profile');
 })->name('profile');
 
-
-//Theme Dark Light
-Route::get('/', [ThemeController::class,'readCookie']);
-
 Route::post('/cookie/create/update',[ThemeController::class,'createAndUpdate'])->name('create-update'); 
-

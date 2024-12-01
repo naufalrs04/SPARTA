@@ -10,6 +10,11 @@
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     @vite('resources/css/app.css')
+    <style>
+        #main-content{
+            min-height: 100vh;
+        }
+    </style>
 </head>
 
 <body class="{{ $theme == 'light' ? 'text-gray-100' : 'text-gray-900' }}">
@@ -32,8 +37,8 @@
             @include('components.navbar', ['theme' => $theme])
 
             <!-- Main Content -->
-            <div class="pb-64 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
-                <div class="px-10 pt-5 mb-5">
+            <div id="main-content" class="{{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
+                <div class="px-10 pt-5 mb-5 h-full">
                     <div class="text-center">
                         <h2 class="text-center text-lg font-semibold mb-4 rounded-lg inline-block  px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">Jadwal Pengisian IRS</h2>
                     </div>

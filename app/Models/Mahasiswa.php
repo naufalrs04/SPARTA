@@ -18,4 +18,18 @@ class Mahasiswa extends Model
         'IPS_Sebelumnya',
         'id_wali',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'nim', 'nim_nip');
+    }
+
+    public function irsRekaps()
+    {
+        return $this->hasMany(IRS_rekap::class, 'mahasiswa_id', 'id');
+    }
+    // public function dosenWali()
+    // {
+    //     return $this->belongsTo(Dosen::class, 'id_wali');
+    // }
 }

@@ -20,13 +20,71 @@ use Illuminate\Support\Str;
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
-        #sksSidebar {
+        /* .sksDragButton {
+            height: 48px;
+            width: 48px;
+            background: #ffc919;
+            border-radius: 50%;
+            box-shadow: 2px 2px 1px 1px rgba(0, 0, 0, 2.5);
+            position: absolute;
+            top: 48px;
+            right: 100px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .sksDragButton.active .btn {
+            transform: rotateZ(45deg);
+        }
+
+        .sksDragButton .btn {
+            color: #ffffff;
+            font-size: 36px;
+            font-weight: bold;
+            user-select: none;
+            transition: all 500ms;
+        }
+
+        .sksDragButton .sksSidebar{
+            position: absolute;
+            color: #ffffff;
+            left: -440%;
+            top: -50%;
+            background: #e0be11;
+            box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5);
+            transform: translateX(50px);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 500ms;
+        }
+
+        .sksDragButton.active .sksSidebar {
+            transform: translateX(0);
+            opacity: 1;
+            pointer-events: auto;
+        } */
+
+        /* .custom-btn-container .btn-options a {
+            display: block;
+            padding: 8px 32px;
+            background: #909000;
+            text-decoration: none;
+            font-weight: bold;
+            font-family: "Poppins", sans-serif;
+            font-size: 15px;
+            color: #000000;
+            transition: all 500ms;
+        } */
+
+
+        /* #sksSidebar {
             opacity: 0;
             transition: left 0.3s ease-in-out, opacity 0.3s ease-in-out;
-            /* Ubah right menjadi left */
-            top: 70%;
+            top: 40%;
             left: -300px;
-            /* Ubah right menjadi left dan nilai positif menjadi negatif */
             color: white;
             padding: 20px;
             border-radius: 10px;
@@ -40,28 +98,25 @@ use Illuminate\Support\Str;
         }
 
         #sksSidebar.show {
-            left: 0px;
-            /* Ubah right menjadi left */
+            left: 0 ;
             opacity: 1;
-        }
+        }  */
 
-        #toggleSidebar {
-            top: 70%;
+        /* #toggleSidebar {
+            top: 40%;
             left: 0;
-            /* Ubah right menjadi left */
             color: white;
             padding: 10px;
             border-radius: 0 10px 10px 0;
-            /* Ubah border-radius untuk sisi kanan */
             cursor: pointer;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            z-index: 1001;
+            z-index: 1000;
             transition: transform 0.3s ease-in-out;
         }
 
         #toggleSidebar.rotated {
             transform: rotate(180deg);
-        }
+        } */
 
         /* Update collision-overlay jika diperlukan */
         .collision-overlay {
@@ -87,10 +142,18 @@ use Illuminate\Support\Str;
             opacity: 0.7;
             cursor: not-allowed;
         }
+
+        #contentPengisianIRS{
+            min-height:100vh;
+        }
+
+        #contentIRSMahasiswa{
+            min-height:100vh;
+        }
     </style>
 </head>
 
-<body class="{{ $theme == 'light' ? 'text-gray-100' : 'text-gray-900' }}">
+<body class="{{ $theme == 'light' ? 'text-gray-100' : 'text-gray-900' }} relative">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <div class="flex min-h-screen backdrop-blur-sm" style="{{ $theme == 'light' ? 'background-color: #17181C;' : 'background-color: #eeeeee;' }}">
         <!-- Efek latar belakang -->
@@ -113,6 +176,7 @@ use Illuminate\Support\Str;
             <div class="px-8 pt-5 flex justify-center items-center {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
                 <div class="w-full rounded-full border-yellow-500 border-2 px-4 py-2 flex justify-between items-center">
                     <div id="pengisianIRS"
+                    
                         class="w-1/2 rounded-full bg-yellow-500 px-4 py-1 border-[#17181C] cursor-pointer flex justify-center items-center transition ease-in-out duration-300"
                         onclick="switchIRS('pengisianIRS')">
                         <h2 class="text-md font-bold">Pengisian IRS</h2>
@@ -124,8 +188,8 @@ use Illuminate\Support\Str;
                     </div>
                 </div>
             </div>
-            <div id="contentPengisianIRS">
-                <div class="px-10 pt-5 pb-64 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
+            <div id="contentPengisianIRS" class="min-h-screen px-10 pt-5 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
+                <div class="h-full">
                     <div class="text-center">
                         <h2 class="text-center text-lg font-semibold mb-4 rounded-lg inline-block  px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">Daftar Mata Kuliah yang diambil</h2>
                     </div>
@@ -168,35 +232,70 @@ use Illuminate\Support\Str;
                             </tbody>
                         </table>
                     </div>
-
-                    <div class="pt-5 pb-3 flex"> 
+                    <div class="sksSidebar block sticky top-1 w-full bg-yellow-500 p-2 pl-10 mt-4 text-sm rounded-2xl
+                    {{ $theme == 'light' ? 'text-gray-200 border border-black' : ' text-gray-800 border border-black' }}" 
+                    style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5); z-index: 100; display: flex; justify-content: space-around; align-items: center;">
+                        <div class="flex items-center space-x-4">
+                            <div>
+                                <h2 class="text-xl font-bold">Total SKS Diambil</h2>
+                            </div>
+                            <div>
+                                <div id="totalSks" class="text-2xl font-semibold">0</div>
+                            </div>
+                        </div>                    
+                        <div class="text-center text-lg">
+                            <p class="my-1">IPS semester lalu : <strong>{{ $ips }}</strong></p>
+                        </div>
+                        <div class="text-center text-lg">
+                            <p class="my-1">Maksimum SKS : <strong>{{ $maxSKS }}</strong></p>
+                        </div>
+                    </div>
+                    <div class="pt-5 pb-3 flex">
                         <div class="w-3/5 flex justify-between">
                             <div>
                                 <p class="pl-1 text-sm italic rounded-lg inline-block  px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">Notes : Jika mata kuliah ingin diproses oleh dosen wali, klik tombol di sebelah</p>
                             </div>
                         </div>
                         <div id="ajukanButton" class="w-1/6 ml-auto flex text-center cursor-pointer font-bold items-center justify-center py-3 rounded-xl bg-gradient-to-l from-green-500 via-green-600 to-green-700 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white">
-                            <button onclick="ajukanIRS()">Ajukan</button>
+                            <button onclick="ajukanIRS()"
+                            @if(is_null($mahasiswa->status) || $mahasiswa->status == 0) disabled @endif>
+                            Ajukan</button>
                         </div>
                         <div id="batalAjukanButton" class="w-1/6 ml-auto flex text-center cursor-pointer font-bold items-center justify-center py-3 rounded-xl bg-gradient-to-l from-red-500 via-red-600 to-red-700 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white">
                             <button id="button_batal" onclick="batalAjukanIRS()">Batal Ajukan</button>
                         </div>
                     </div>
 
-                    <!-- SKS Sidebar -->
-                    <div id="sksSidebar" class="bg-opacity-85 fixed left-[-300px] bg-yellow-600 h-auto w-64 text-white transition-all duration-300 p-4 shadow-lg rounded-lg">
+                    {{-- <!--SKS SIDEBAR DRAGGABLE-->
+                    <div class="sksDragButton">
+                        <div class="btn">+
+                        </div>
+                        <div class="sksSidebar rounded-3xl p-3">
+                            <h2 class="text-xl text-right font-bold mb-4">Total SKS Diambil</h2>
+                            <div id="totalSks" class="text-right text-4xl font-semibold">0</div>
+                            <p class="text-right text-sm mt-2">IPS semester lalu <strong>{{ $ips }}</strong></p>
+                            <p class="text-right text-sm mt-2">Maksimum SKS: <strong>{{ $maxSKS }}</strong></p>
+                        </div>
+                    </div> --}}
+                    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js" integrity="sha512-MSOo1aY+3pXCOCdGAYoBZ6YGI0aragoQsg1mKKBHXCYPIWxamwOE7Drh+N5CPgGI5SA9IEKJiPjdfqWFWmZtRA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> --}}
+
+                    {{-- <!-- SKS Sidebar -->
+                    <div id="sksSidebar" class="fixed bg-opacity-85 bg-yellow-600 h-auto w-64 text-white transition-all duration-300 p-4 shadow-lg rounded-lg">
                         <h2 class="text-xl text-right font-bold mb-4">Total SKS Diambil</h2>
                         <div id="totalSks" class="text-right text-4xl font-semibold">0</div>
-                        <p class="text-right text-sm mt-2">IPS semester lalu <strong>{{ $ips }}</strong></p> <!-- Display max SKS here -->
-                        <p class="text-right text-sm mt-2">Maksimum SKS: <strong>{{ $maxSKS }}</strong></p> <!-- Display max SKS here -->
-                    </div>
-
+                        <p class="text-right text-sm mt-2">IPS semester lalu <strong>{{ $ips }}</strong></p>
+                        <p class="text-right text-sm mt-2">Maksimum SKS: <strong>{{ $maxSKS }}</strong></p>
+                    </div> 
                     <!-- Tombol untuk memperlihatkan sidebar -->
                     <button id="toggleSidebar" class="fixed bg-opacity-85 left-0 bg-yellow-500 text-white p-3 rounded-r-lg shadow-lg focus:outline-none">
                         <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
                             <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
                         </svg>
-                    </button>
+                    </button>  --}}
+                
+                
 
                     <div id="listMataKuliah" class="py-7">
                         <div class="text-center">
@@ -242,19 +341,19 @@ use Illuminate\Support\Str;
                                             data-course-id="{{ $mk->id }}"
                                             data-course-time="{{ $mk->hari }}, {{ \Carbon\Carbon::parse($mk->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($mk->jam_selesai)->format('H:i') }}"
                                             data-ruangan-id="{{ $mk->ruang }}">
-                                            <td class="px-4 py-2 border-r {{ $theme == 'light' ? 'bg-[#2A2C33]' : 'bg-[#EEEEEE]' }}">{{ $loop->iteration }}</td>
-                                            <td class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'bg-[#2A2C33]' : 'bg-[#EEEEEE]' }}">{{ $mk->kode_mk }}
+                                            <td class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $loop->iteration }}</td>
+                                            <td class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $mk->kode_mk }}
                                             </td>
-                                            <td class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'bg-[#2A2C33]' : 'bg-[#EEEEEE]' }}">{{ $mk->nama_mk }} - {{ $mk->kelas }}
+                                            <td class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $mk->nama_mk }} - {{ $mk->kelas }}
                                             </td>
-                                            <td class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'bg-[#2A2C33]' : 'bg-[#EEEEEE]' }}">
+                                            <td class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">
                                                 {{ $mk->hari }},
                                                 {{ \Carbon\Carbon::parse($mk->jam_mulai)->format('H:i') }} -
                                                 {{ \Carbon\Carbon::parse($mk->jam_selesai)->format('H:i') }}
                                             </td>
-                                            <td class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'bg-[#2A2C33]' : 'bg-[#EEEEEE]' }}">{{ $mk->jumlah_pendaftar }} / {{ $mk->kapasitas }}
+                                            <td class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $mk->jumlah_pendaftar }} / {{ $mk->kapasitas }}
                                             </td>
-                                            <td class="px-4 py-2 border-r {{ $theme == 'light' ? 'bg-[#2A2C33]' : 'bg-[#EEEEEE]' }}">
+                                            <td class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">
                                                 <form action="{{ route('irs-rekap.store') }}" method="POST">
                                                     @csrf
                                                     <input type="hidden" name="kode_mk" value="{{ $mk->kode_mk }}">
@@ -275,7 +374,8 @@ use Illuminate\Support\Str;
                                                             data-kelas="{{ $mk->kelas }}"
                                                             data-kapasitas="{{ $mk->kapasitas }}"
                                                             data-hari-jam="{{ $mk->hari }}, {{ \Carbon\Carbon::parse($mk->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($mk->jam_selesai)->format('H:i') }}"
-                                                            data-sks="{{ $mk->sks_mk }}" type="submit">
+                                                            data-sks="{{ $mk->sks_mk }}" type="submit"
+                                                            @if(is_null($mahasiswa->status) || $mahasiswa->status == 0) disabled @endif>
                                                             Ambil
                                                         </button>
                                                     </div>
@@ -285,7 +385,8 @@ use Illuminate\Support\Str;
                                                 <div class="h-7 w-7 mx-auto rounded-lg border flex justify-center items-center transition-colors duration-200 hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out
                                                 {{ $theme == 'light' ? 'bg-white border-transparent hover:bg-gray-400' : 'bg-gray-300 border-gray-500 hover:bg-gray-400' }}">
                                                     <button class="show-details text-center text-3xl font-bold focus:outline-none 
-                                                        {{ $theme == 'light' ? 'text-black' : 'text-white' }}" data-index="{{ $index }}">
+                                                        {{ $theme == 'light' ? 'text-black' : 'text-white' }}" data-index="{{ $index }}"
+                                                        @if(is_null($mahasiswa->status) || $mahasiswa->status == 0) disabled @endif>
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
                                                             <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
                                                         </svg>
@@ -300,9 +401,9 @@ use Illuminate\Support\Str;
                     </div>
                 </div>
             </div>
-            <div id="contentIRSMahasiswa" class="hidden">
+            <div id="contentIRSMahasiswa" class="hidden {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
                 @foreach($groupedData as $mahasiswaId => $semesterGroups)
-                <div class="mahasiswa-container px-4 sm:px-6 md:px-8 pt-5 pb-64 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
+                <div class="mahasiswa-container px-4 sm:px-6 md:px-8 pt-5 h-full ">
                     <div class="text-center">
                         <h2 class="text-center text-lg font-semibold mb-4 rounded-lg inline-block  px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">IRS Mahasiswa</h2>
                     </div>
@@ -387,9 +488,15 @@ use Illuminate\Support\Str;
             </div>
             @endforeach
         </div>
-
-
     </div>
+
+    {{-- <script>
+        $('.sksDragButton').draggable();
+
+        $('.sksDragButton').click(function(){
+            $(this).toggleClass('active');
+        })
+    </script> --}}
 
     <!-- search bar -->
     <script>
@@ -505,8 +612,13 @@ use Illuminate\Support\Str;
                                     `,
                         confirmButtonText: 'Tutup',
                         focusConfirm: false,
-                        customClass: {
-                            popup: 'swal-popup-custom'
+                        didOpen: () => {
+                            const confirmButton = Swal.getConfirmButton();
+                            confirmButton.style.backgroundColor = '#4CAF50'; 
+                            confirmButton.style.color = '#fff';               
+                            confirmButton.style.borderRadius = '8px';         
+                            confirmButton.style.padding = '10px 20px';        
+                            confirmButton.style.fontWeight = 'bold';          
                         }
                     });
                 });
@@ -536,11 +648,16 @@ use Illuminate\Support\Str;
                 if (hasConflict(kode, hariJam)) {
                     Swal.fire({
                         title: 'Peringatan',
-                        text: 'Anda sudah mengambil mata kuliah ini dalam kelas lain !',
-                        icon: 'warning'
+                        text: 'Anda sudah mengambil mata kuliah ini dalam kelas lain!',
+                        icon: 'warning',
+                        confirmButtonText: 'OK',
+                        customClass: {
+                            confirmButton: 'bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded'
+                        }
                     });
                     return;
                 }
+
                 Swal.fire({
                     title: 'Konfirmasi Pengambilan Mata Kuliah',
                     html: `
@@ -628,7 +745,11 @@ use Illuminate\Support\Str;
                                 Swal.fire({
                                     title: 'Peringatan',
                                     text: errorMessage,
-                                    icon: 'warning'
+                                    icon: 'warning',
+                                    confirmButtonText: 'OK',
+                                    customClass: {
+                                        confirmButton: 'bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded'
+                                    }
                                 });
                             });
                     }
@@ -720,8 +841,8 @@ use Illuminate\Support\Str;
             totalSksElement.textContent = newTotal;
 
             // Show the SKS sidebar if it's not already visible
-            const sksSidebar = document.getElementById('sksSidebar');
-            sksSidebar.classList.add('show');
+            // const sksSidebar = document.getElementById('sksSidebar');
+            // sksSidebar.classList.add('show');
         }
 
         // Function to calculate initial total SKS
@@ -1011,7 +1132,10 @@ use Illuminate\Support\Str;
                 </div>
             `,
             icon: 'warning',
-            confirmButtonText: 'Tutup'
+            confirmButtonText: 'Tutup',
+            customClass: {
+                confirmButton: 'bg-green-500 hover:green-600 text-white font-bold py-2 px-4 rounded'
+            }
         });
     }
 
@@ -1203,29 +1327,98 @@ use Illuminate\Support\Str;
 
 
 <script>
-    function generatePDF() {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        
-        doc.text("IRS Mahasiswa", 14, 10);
+function generatePDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
 
-        doc.autoTable({
-            html: '.mahasiswa-container table',
-            startY: 20,
-            theme: 'grid',
-            styles: {
-                fontSize: 10,
-                cellPadding: 4,
-                halign: 'center',
-                valign: 'middle'
-            },
-            headStyles: {
-                fillColor: [0, 0, 0]
-            }
-        });
+    // Mendapatkan lebar halaman PDF
+    const pageWidth = doc.internal.pageSize.getWidth();
 
-        doc.save('IRS_Mahasiswa.pdf');
-    }
+    // Menambahkan header
+    doc.setFontSize(10); 
+    doc.setFont("times"); 
+    doc.text("KEMENTERIAN PENDIDIKAN, KEBUDAYAAN, RISET DAN TEKNOLOGI", pageWidth / 2, 10, { align: "center" });
+    doc.text("FAKULTAS SAINS DAN MATEMATIKA", pageWidth / 2, 16, { align: "center" });
+    doc.text("UNIVERSITAS DIPONEGORO", pageWidth / 2, 22, { align: "center" });
+
+    // Menambahkan judul
+    doc.setFontSize(10); 
+    doc.setFont("times", "bold");
+    let currentY = 35;
+    doc.text("ISIAN RENCANA STUDI MAHASISWA", pageWidth / 2, currentY, { align: "center" });
+    currentY += 15;
+
+    // Menambahkan informasi detail di bawah judul
+    const marginLeft = 14; // Margin kiri untuk teks
+
+    doc.setFontSize(10); 
+    doc.setFont("times", "normal"); 
+    doc.text("NIM                        : {{ $user->nim_nip }}", marginLeft, currentY);
+    currentY += 5; 
+    doc.text("Nama Mahasiswa   : {{ $user->nama }}", marginLeft, currentY);
+    currentY += 5; 
+    doc.text("Program Studi        : {{ $mahasiswa->prodi }}", marginLeft, currentY);
+    currentY += 5; 
+    doc.text("Dosen Wali            : {{  $dosenWaliNama }}", marginLeft, currentY);
+
+    // Membuat tabel di bawah informasi detail
+    doc.autoTable({
+        html: '.mahasiswa-container table',
+        startY: currentY + 5, 
+        theme: 'grid',
+        styles: {
+            font: "times",
+            fontSize: 8,
+            cellPadding: 3,
+            halign: 'center',
+            valign: 'middle',
+            lineColor: [0, 0, 0], 
+            lineWidth: 0.25,
+            overflow: 'linebreak' 
+        },
+        headStyles: {
+            font: "times", 
+            textColor: [0, 0, 0], 
+            fillColor: [255, 255, 255], 
+            fontSize: 8, 
+            fontStyle: "bold" 
+        },
+        columnStyles: {
+            1: { halign: 'left' },
+            2: { cellWidth: 40, halign: 'left' }, 
+            7: { cellWidth: 30, halign: 'left', overflow: 'linebreak' }
+        }
+    });
+
+    // Menambahkan tanda tangan di bawah tabel
+    const marginRight = pageWidth - 100; // Posisi margin kanan
+    const endTableY = doc.lastAutoTable.finalY + 10; 
+
+    // Sebelah kiri: TTD Dosen Wali
+    doc.setFontSize(10);
+    doc.text("Pembimbing Akademik (Dosen Wali)", marginLeft, endTableY + 5);
+    doc.text("{{ $dosenWaliNama }}", marginLeft, endTableY + 30); 
+    doc.text("NIP: {{ $dosenWaliNip }}", marginLeft, endTableY + 35); 
+
+    // Sebelah kanan: TTD Mahasiswa
+    doc.text("Semarang, " + formatDate(new Date()), marginRight, endTableY);
+    doc.text("Nama Mahasiswa", marginRight, endTableY + 5);
+    doc.text("{{ $user->nama }}", marginRight, endTableY + 30); 
+    doc.text("NIM: {{ $user->nim_nip }}", marginRight, endTableY + 35); 
+
+    // Menyimpan file PDF
+    doc.save('IRS_Mahasiswa.pdf');
+}
+
+// Fungsi untuk memformat tanggal menjadi format: "DD MMM YYYY"
+function formatDate(date) {
+    const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+    const day = date.getDate();
+    const month = months[date.getMonth()];
+    const year = date.getFullYear();
+
+    return day + " " + month + " " + year;
+}
 
     
 </script>

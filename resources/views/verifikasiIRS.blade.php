@@ -10,6 +10,15 @@
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     @vite('resources/css/app.css')
+    <style>
+        #contentBelumVerifikasi{
+            min-height:100vh;
+        }
+
+        #contentSudahVerifikasi{
+            min-height:100vh;
+        }
+    </style>
 </head>
 
 <body class="{{ $theme == 'light' ? 'text-gray-100' : 'text-gray-900' }}">
@@ -78,9 +87,9 @@
                 </form> 
             </div>
 
-            <div id="contentBelumVerifikasi" class="pt-4 pb-64 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
+            <div id="contentBelumVerifikasi" class="pt-4 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
                 <div class="ml-8 mr-8 mt-8 mb-8 flex flex-grow overflow-x-auto rounded-3xl {{ $theme == 'light' ? 'border border-black' : 'border border-black' }}" style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5)">
-                    <table class="table-auto p-5 w-full text-center rounded-lg border-collapse">
+                    <table class="table-auto p-5 w-full text-center rounded-lg border-collapse" name="tabel_irs">
                         <thead>
                             <tr class="{{ $theme == 'light' ? 'bg-gray-700' : 'bg-gray-200' }}">
                                 <th class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">No</th>
@@ -108,10 +117,12 @@
                                     <div class="h-7 w-7 mx-auto rounded-lg bg-white flex justify-center items-center">
                                         <button class="show-details justify-center text-center text-3xl text-black font-bold focus:outline-none"
                                             data-index="{{ $loop->index }}">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                                class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-                                                <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
-                                            </svg>
+                                            <div class="transition-colors duration-200 px-2 py-2 rounded-lg bg-gradient-to-l from-yellow-500 via-yellow-600 to-yellow-700 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white {{ $theme == 'light' ? 'text-gray-100' : 'text-gray-100' }}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                                    class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+                                                    <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+                                                </svg>
+                                            </div>
                                         </button>
                                     </div>
                                 </td>
@@ -155,11 +166,8 @@
                     </table>
                 </div>
             </div>
-            <div class="pb-12 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
 
-            </div>
-
-            <div id="contentSudahVerifikasi" class="hidden pb-64 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}"">
+            <div id="contentSudahVerifikasi" class="hidden pt-12 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}"">
                 <div class="ml-8 mr-8 mb-8 flex flex-grow overflow-x-auto rounded-3xl {{ $theme == 'light' ? 'border border-black' : 'border border-black' }}" style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5)">
                     <table class="table-auto p-5 w-full text-center rounded-lg border-collapse">
                         <thead>
@@ -189,9 +197,6 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
-            <div class="pb-64 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
-
             </div>
 
             <script>
@@ -259,6 +264,7 @@
                                             icon: 'success',
                                             title: 'Berhasil!',
                                             text: data.message,
+                                            confirmButtonColor: '#28a745',
                                         }).then(() => {
                                             // Tambahkan update UI atau refresh data sesuai kebutuhan
                                             location.reload(); // Atau update UI dengan cara lain
@@ -268,10 +274,12 @@
                                             icon: 'error',
                                             title: 'Gagal!',
                                             text: data.message,
+                                            confirmButtonColor: '#dc3545',
                                         });
                                     }
                                 })
                                 .catch(error => console.error("Error:", error));
+                                
                         }
                     });
                 });
@@ -311,6 +319,7 @@
                                             icon: 'success',
                                             title: 'Berhasil!',
                                             text: data.message,
+                                            confirmButtonColor: '#28a745'
                                         }).then(() => {
                                             location.reload();
                                         });
@@ -319,6 +328,7 @@
                                             icon: 'error',
                                             title: 'Gagal!',
                                             text: data.message,
+                                            confirmButtonColor: '#dc3545',
                                         });
                                     }
                                 })
@@ -360,6 +370,7 @@
                                             icon: 'success',
                                             title: 'Berhasil!',
                                             text: data.message,
+                                            confirmButtonColor: '#28a745'
                                         }).then(() => {
                                             location.reload();
                                         });
@@ -368,6 +379,7 @@
                                             icon: 'error',
                                             title: 'Gagal!',
                                             text: data.message,
+                                            confirmButtonColor: '#dc3545',
                                         });
                                     }
                                 })
@@ -390,6 +402,22 @@
                     detailRow.classList.remove('hidden');
                 } else {
                     detailRow.classList.add('hidden');
+                }
+            });
+        });
+
+        document.getElementById('default-search').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('table[name="tabel_irs"] tbody tr');
+
+            rows.forEach(row => {
+                const courseName = row.querySelector('td:nth-child(2)').innerText.toLowerCase(); // 1st column has course name
+                const courseCode = row.querySelector('td:nth-child(3)').innerText.toLowerCase(); // 2nd column has course code
+
+                if (courseName.includes(searchTerm) || courseCode.includes(searchTerm)) {
+                    row.style.display = ''; // Show the row if it matches
+                } else {
+                    row.style.display = 'none'; // Hide the row if it doesn't match
                 }
             });
         });
