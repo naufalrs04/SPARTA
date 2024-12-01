@@ -201,7 +201,7 @@
                 };
 
                     Swal.fire({
-                        title: `<strong>Detail Mata Kuliah</strong>`,
+                        title: `<strong>Detail Mahasiswa</strong>`,
                         html: `
                                         <div class="text-left space-y-4">
                                             <div>

@@ -211,7 +211,7 @@ use Illuminate\Support\Str;
                                 <tr class="{{ $theme == 'light' ? 'bg-[#2A2C33]' : 'bg-[#EEEEEE]' }}">
                                     <td class="px-4 py-4 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $loop->iteration }}</td>
                                     <td class="px-4 py-3 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $rekap->kode_mk }}</td>
-                                    <td class="px-4 py-3 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $rekap->nama_mk }}</td>
+                                    <td class="px-4 py-3 w-1/3 border-r text-left {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $rekap->nama_mk }}</td>
                                     <td class="px-4 py-3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $rekap->kelas }}</td>
                                     <td class="px-4 py-3 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">
                                         {{ $rekap->hari }},
@@ -344,7 +344,7 @@ use Illuminate\Support\Str;
                                             <td class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $loop->iteration }}</td>
                                             <td class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $mk->kode_mk }}
                                             </td>
-                                            <td class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $mk->nama_mk }} - {{ $mk->kelas }}
+                                            <td class="px-4 py-2 w-1/3 border-r text-left {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $mk->nama_mk }} - {{ $mk->kelas }}
                                             </td>
                                             <td class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">
                                                 {{ $mk->hari }},
@@ -771,7 +771,7 @@ use Illuminate\Support\Str;
             newRow.innerHTML = `
                         <td class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">${rowNumber}</td>
                         <td class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">${course.kode}</td>
-                        <td class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">${course.nama}</td>
+                        <td class="px-4 py-2 w-1/3 border-r text-left {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">${course.nama}</td>
                         <td class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">${course.kelas}</td>
                         <td class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">${course.waktu}</td>
                         <td class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">${course.sks}</td>
