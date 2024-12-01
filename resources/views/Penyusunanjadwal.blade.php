@@ -42,7 +42,7 @@
                     <div class="p-10 rounded-3xl items-center outline outline-1" style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5); {{ $theme == 'light' ? 'background-color: #2A2C33;' : 'background-color: #EEEEEE;' }} {{ $theme == 'light' ? 'outline: 1px solid #000000;' : 'outline: 1px solid #000000;' }}">
                         <p class="text-yellow-500 text-m mb-4 font-bold text-center">Jumlah Mata Kuliah yang diajukan</p>
                         <div class="box-border border-2 flex justify-center items-center rounded-lg w-24 h-24 mx-auto" style="border-color: #F0B90B;">
-                            <span class="text-5xl font-bold">5</span>
+                            <span class="text-5xl font-bold">{{$countmatakuliah}}</span>
                         </div>
                     </div>
                 </div>
@@ -249,6 +249,13 @@
                                             onclick="showDetails(this)">
                                             Info
                                         </button>
+                                        <button
+                                            class="delete-schedule transition-colors duration-200 px-3 py-2 rounded-lg bg-gradient-to-l from-red-500 via-red-600 to-red-700 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white"
+                                            data-id="{{ $mk->id }}"
+                                            onclick="deleteSchedule(this)">
+                                            Hapus
+                                        </button>
+
                                     </td>
                                 </tr>
                             @endforeach
@@ -286,7 +293,9 @@
                                     icon: 'success',
                                     confirmButtonText: 'OK',
                                     confirmButtonColor: '#4CAF50'
-                                });
+                                }).then(() => {
+                                location.reload(); // Reload halaman setelah klik OK
+                                }); 
                                 // Reset form atau lakukan tindakan lain setelah sukses
                                 document.getElementById('jadwal-form').reset();
                             } else {
@@ -548,6 +557,56 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+    <script>
+    function deleteSchedule(button) {
+        const scheduleId = button.getAttribute('data-id');
 
+        Swal.fire({
+            title: 'Konfirmasi',
+            text: "Apakah Anda yakin ingin menghapus jadwal ini?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, Hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Kirim permintaan DELETE ke server
+                fetch(`/penyusunan-jadwal/${scheduleId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire(
+                            'Berhasil!',
+                            data.message,
+                            'success'
+                        ).then(() => {
+                            location.reload(); // Muat ulang halaman
+                        });
+                    } else {
+                        Swal.fire(
+                            'Gagal!',
+                            data.message,
+                            'error'
+                        );
+                    }
+                })
+                .catch(error => {
+                    Swal.fire(
+                        'Error!',
+                        'Terjadi kesalahan saat menghapus jadwal.',
+                        'error'
+                    );
+                });
+            }
+        });
+    }
+</script>
 
 </html>
