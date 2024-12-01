@@ -16,6 +16,39 @@
 
     @vite('resources/css/app.css')
     <style>
+        .hidden {
+    display: none;
+}
+#hapusRuangModal {
+    display: none; /* Modal disembunyikan secara default */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 50;
+    justify-content: center;
+    align-items: center;
+}
+
+
+#hapusRuangModal .modal-content {
+    background: #fff;
+    width: 90%;
+    max-width: 600px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+#ruanganList {
+    max-height: 400px;
+    overflow-y: auto;
+    border-radius: 5px;
+}
+
         input[type="checkbox"] {
             accent-color: black;
         }
@@ -27,6 +60,40 @@
         #main-content {
             min-height: 100vh;
         }
+        #buatRuangModal {
+    display: none; /* Modal disembunyikan secara default */
+    position: fixed; /* Tetap di posisi viewport */
+    top: 50%; /* Posisi tengah secara vertikal */
+    left: 50%; /* Posisi tengah secara horizontal */
+    transform: translate(-50%, -50%); /* Pastikan modal benar-benar di tengah */
+    width: 100%; /* Ambil seluruh lebar layar */
+    height: 100%; /* Ambil seluruh tinggi layar */
+    background-color: rgba(0, 0, 0, 0.5); /* Latar belakang gelap */
+    z-index: 50; /* Selalu di atas elemen lain */
+    justify-content: center; /* Pusatkan konten horizontal */
+    align-items: center; /* Pusatkan konten vertikal */
+}
+#buatRuangModal .modal-content {
+    background: #fff; /* Latar belakang modal */
+    width: 90%; /* Lebar modal */
+    max-width: 500px; /* Batas maksimum lebar modal */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.swal2-confirm {
+    background-color: #4CAF50 !important; /* Hijau */
+    color: white !important; /* Teks putih */
+    font-weight: bold !important; /* Teks tebal */
+    border-radius: 5px !important; /* Sudut melengkung */
+    padding: 10px 20px !important; /* Padding */
+}
+
+.swal2-confirm:hover {
+    background-color: #45a049 !important; /* Hijau lebih gelap */
+}
+
     </style>
 </head>
 
@@ -53,15 +120,89 @@
             <div id="main-content" class="{{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
                 <div class="flex justify-center pb-1">
                     <div class="max-w-xl relative">
+                        <!-- Tombol Buat Ruang -->
+<div class="flex justify-center pb-4 gap-4">
+    <button id="buatRuangButton"
+        class="bg-gradient-to-l from-blue-500 via-blue-600 to-blue-700 text-white px-5 py-2 rounded-lg hover:bg-gradient-to-br shadow-md">
+        Buat Ruang
+    </button>
+    <button id="hapusRuangButton"
+        class="bg-gradient-to-l from-red-500 via-red-600 to-red-700 text-white px-5 py-2 rounded-lg hover:bg-gradient-to-br shadow-md">
+        Hapus Ruang
+    </button>
+</div>
+
+<!-- Modal Buat Ruang -->
+<div id="buatRuangModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 transition-opacity duration-300">
+    <div class="bg-white rounded-lg w-1/3 p-6">
+        <!-- Konten modal -->
+        <h3 class="text-xl font-semibold mb-4 text-black">Buat Ruang Baru</h3>
+        <form id="buatRuangForm">
+            @csrf
+            <div class="mb-4">
+                <label for="gedung" class="block font-medium text-black">Pilih Gedung</label>
+                <select id="gedung" name="gedung"
+                    class="w-full border-gray-300 rounded-lg p-2 focus:ring focus:ring-blue-500 text-black">
+                    <option value="" selected disabled>Pilih Gedung</option>
+                    @foreach ($gedung as $g)
+                        <option value="{{ $g->nama }}">{{ $g->nama }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="mb-4">
+                <label for="namaRuang" class="block font-medium text-black">Nama Ruangan</label>
+                <input type="text" id="namaRuang" name="namaRuang"
+                    class="w-full border-gray-300 rounded-lg p-2 focus:ring focus:ring-blue-500 text-black"
+                    placeholder="Nama Ruangan sesuai gedung">
+                <p id="errorNamaRuang" class="text-red-500 text-sm hidden ">Nama ruangan harus diawali dengan huruf sesuai gedung.</p>
+            </div>
+            <div class="mb-4">
+                <label for="kodeRuang" class="block font-medium text-black">Kode Ruangan</label>
+                <input type="text" id="kodeRuang" name="kodeRuang"
+                    class="w-full border-gray-300 rounded-lg p-2 focus:ring focus:ring-blue-500 text-black"
+                    placeholder="Kode Ruangan">
+            </div>
+            <div class="flex justify-end gap-4">
+                <button type="button" id="cancelButton"
+                    class="bg-red-500 text-white px-4 py-2 rounded-lg">Batal</button>
+                <button type="submit"
+                    class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">Simpan</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="hapusRuangModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+    <div class="bg-white rounded-lg w-2/3 p-6">
+        <h3 class="text-xl font-semibold mb-4 text-black">Detail Ruangan</h3>
+        <div id="ruanganList" class="overflow-y-auto max-h-96">
+            <table class="min-w-full border-collapse border border-gray-300">
+                <thead class="bg-gray-200 text-black">
+                    <tr>
+                        <th class="px-4 py-2 border border-gray-300">Nama Ruangan</th>
+                        <th class="px-4 py-2 border border-gray-300">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="ruanganTableBody"></tbody>
+            </table>
+        </div>
+        <div class="flex justify-end mt-4">
+            <button type="button" id="cancelHapusButton" class="bg-blue-500 text-white px-4 py-2 rounded-lg">
+                Tutup
+            </button>
+        </div>
+    </div>
+</div>
+
                         <!-- Dropdown Departemen -->
                         <form id="ruanganForm" method="POST" action="{{ route('simpan.ruangan') }}">
                             @csrf
-                            <h2 class="text-center text-lg font-semibold mb-5 mt-5 ml-14 rounded-lg inline-block  px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">Pilih Departemen</h2>
+                            <h2 class="text-center text-lg font-semibold mb-5 mt-5 ml-14 rounded-lg inline-block  px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">Pilih Prodi</h2>
                             <input type="hidden" id="selectedProdi" name="prodi" value="">
                             <button id="dropdownDepartemenButton"
                                 class="w-[280px] p-4 pr-10 pl-4 rounded-xl cursor-pointer transition duration-100 ease-in-out flex justify-between items-center
                         text-gray-400 {{ $theme == 'light' ? 'bg-[#2A2C33] hover:bg-zinc-800 border-transparent focus:ring-gray-800 outline outline-1 outline-zinc-900' : 'bg-gray-200 hover:bg-zinc-300 border-gray-300 focus:ring-gray-300 outline outline-1' }} shadow-[4px_6px_1px_1px_rgba(0,_0,_0,_0.8)]">
-                                <span id="selectedDepartemen">Pilih Departemen </span>
+                                <span id="selectedDepartemen">Pilih Prodi</span>
                                 <svg class="w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none"
                                     viewBox="0 0 10 6">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -165,7 +306,7 @@
                             <table class="w-full text-center rounded-lg">
                                 <thead>
                                     <tr class="{{ $theme == 'light' ? 'bg-gray-700' : 'bg-gray-200' }}">
-                                        <th class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-600' }}">Departemen</th>
+                                        <th class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-600' }}">Prodi</th>
                                         <th class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-600' }}">Jumlah Ruangan</th>
                                         <th class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-600' }}">Info</th>
                                     </tr>
@@ -248,9 +389,10 @@
             if (!document.getElementById('selectedProdi').value) {
                 Swal.fire({
                     title: 'Error!',
-                    text: 'Silakan pilih Departemen terlebih dahulu.',
+                    text: 'Silakan pilih Prodi terlebih dahulu.',
                     icon: 'error',
                     confirmButtonText: 'OK',
+                    confirmButtonColor: '#34803C',
                     customClass: {
                         confirmButton: 'bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded'
                     }
@@ -267,6 +409,7 @@
                     text: 'Silakan pilih minimal satu ruangan.',
                     icon: 'error',
                     confirmButtonText: 'OK',
+                    confirmButtonColor: '#34803C',
                     customClass: {
                         confirmButton: 'bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded'
                     }
@@ -312,35 +455,11 @@
             text: '{{ session('
             error ') }}',
             icon: 'error',
-            confirmButtonText: 'OK'
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#3085d6',
         });
         @endif
-
-        // Handle "Ajukan" button click
-        document.getElementById('ajukanButton').addEventListener('click', function() {
-            Swal.fire({
-                title: 'Konfirmasi',
-                text: "Apakah Anda yakin ingin mengajukan?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, Ajukan!',
-                cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire({
-                        title: 'Berhasil!',
-                        text: 'Pengajuan Anda telah dikirim.',
-                        icon: 'success',
-                        confirmButtonText: 'OK',
-                        customClass: {
-                            confirmButton: 'bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded'
-                        }
-                    });
-                }
-            })
-        });
+        
     </script>
 
     <script>
@@ -460,7 +579,16 @@
                                     if (data.success) {
                                         // Hapus elemen baris dari tabel di pop-up
                                         document.getElementById(`ruangan-${ruanganId}`).remove();
-                                        Swal.fire('Berhasil!', 'Ruangan berhasil dihapus dari Prodi.', 'success');
+                                        Swal.fire({
+                                            title: 'Berhasil!',
+                                            text: 'Ruangan berhasil dihapus dari Prodi.',
+                                            icon: 'success',
+                                            confirmButtonText: 'OK',
+                                            confirmButtonColor: '#28a745',
+                                        }).then(() => {
+                                            // Reload halaman setelah tombol "OK" ditekan
+                                            location.reload();
+                                        });
                                     } else {
                                         Swal.fire('Gagal!', 'Ruangan tidak dapat dihapus.', 'error');
                                     }
@@ -481,8 +609,174 @@
 
 
     </script>
+    <script>
+     const buatRuangButton = document.getElementById('buatRuangButton');
+const buatRuangModal = document.getElementById('buatRuangModal');
+const cancelButton = document.getElementById('cancelButton');
+const buatRuangForm = document.getElementById('buatRuangForm');
+const namaRuangInput = document.getElementById('namaRuang');
+const gedungSelect = document.getElementById('gedung');
+const errorNamaRuang = document.getElementById('errorNamaRuang');
+
+// Tampilkan modal saat tombol diklik
+buatRuangButton.addEventListener('click', () => {
+    buatRuangModal.classList.remove('hidden'); // Tampilkan modal
+    buatRuangModal.style.display = 'flex'; // Atur modal menjadi flexbox
+});
+
+// Sembunyikan modal saat tombol "Batal" diklik
+cancelButton.addEventListener('click', () => {
+    buatRuangModal.classList.add('hidden'); // Sembunyikan modal
+    buatRuangModal.style.display = 'none'; // Atur display menjadi none
+});
 
 
+namaRuangInput.addEventListener('input', () => {
+    const gedung = gedungSelect.value;
+    const namaRuang = namaRuangInput.value.toUpperCase();
+    if (gedung && namaRuang) {
+        const hurufAwalGedung = gedung.split(' ')[1]; // Mengambil huruf setelah "Gedung "
+        if (!namaRuang.startsWith(hurufAwalGedung)) {
+            errorNamaRuang.classList.remove('hidden');
+        } else {
+            errorNamaRuang.classList.add('hidden');
+        }
+    } else {
+        errorNamaRuang.classList.add('hidden');
+    }
+});
+
+buatRuangForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const namaRuang = namaRuangInput.value.toUpperCase();
+    const kodeRuang = document.getElementById('kodeRuang').value;
+    const gedung = gedungSelect.value;
+
+    // Validasi akhir sebelum submit
+    if (!namaRuang.startsWith(gedung.split(' ')[1])) {
+        errorNamaRuang.classList.remove('hidden');
+        return;
+    }
+
+    try {
+        const response = await fetch('{{ route("ruangan.store") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            },
+            body: JSON.stringify({ nama: namaRuang, kode: kodeRuang, gedung }),
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            alert(result.message);
+            location.reload();
+        } else {
+            alert(result.message);
+        }
+    } catch (error) {
+        console.error(error);
+        alert('Terjadi kesalahan.');
+    }
+});
+    
+    </script>
+    <script>
+        // Event listener untuk tombol "Hapus Ruang"
+hapusRuangButton.addEventListener('click', async () => {
+    try {
+        // Ambil data ruangan dari server
+        const response = await fetch('/api/ruangans');
+        const ruangans = await response.json();
+
+        // Susun daftar ruangan ke dalam format HTML untuk SweetAlert
+        const ruanganHtml = ruangans.map((ruangan) => {
+            return `
+                <div class="flex justify-between items-center border-b pb-2 mb-2">
+                    <span>${ruangan.nama}</span>
+                    <button class="hapusRuangan bg-red-500 text-white px-3 py-1 rounded-lg" data-id="${ruangan.id}">
+                        Hapus
+                    </button>
+                </div>
+            `;
+        }).join('');
+
+        // Tampilkan SweetAlert
+        Swal.fire({
+            title: 'Daftar Ruangan',
+            html: `
+                <div style="max-height: 300px; overflow-y: auto;">
+                    ${ruanganHtml}
+                </div>
+            `,
+            showCloseButton: true,
+            showConfirmButton: false, // Hanya ada tombol tutup di pojok kanan atas
+            didOpen: () => {
+                // Tambahkan event listener ke tombol hapus setelah SweetAlert ditampilkan
+                document.querySelectorAll('.hapusRuangan').forEach((button) => {
+                    button.addEventListener('click', async () => {
+                        const ruanganId = button.getAttribute('data-id');
+                        await deleteRuangan(ruanganId); // Panggil fungsi hapus ruangan
+                    });
+                });
+            }
+        });
+    } catch (error) {
+        console.error('Gagal memuat ruangan:', error);
+        Swal.fire('Error', 'Gagal memuat data ruangan.', 'error');
+    }
+});
+
+
+// Fungsi untuk menghapus ruangan
+async function deleteRuangan(ruanganId) {
+    try {
+        const response = await fetch(`/api/ruangans/${ruanganId}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            },
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            Swal.fire({
+                title: 'Berhasil!',
+                text: 'Ruangan berhasil dihapus.',
+                icon: 'success',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#34803C',
+            }).then(() => {
+                // Reload halaman setelah konfirmasi
+                location.reload();
+            });
+        } else {
+            Swal.fire({
+                title: 'Gagal!',
+                text: result.message || 'Ruangan tidak dapat dihapus.',
+                icon: 'error',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#34803C',
+
+            });
+        }
+    } catch (error) {
+        console.error('Gagal menghapus ruangan:', error);
+        Swal.fire({
+            title: 'Error!',
+            text: 'Terjadi kesalahan saat menghapus ruangan.',
+            icon: 'error',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#34803C',
+        });
+    }
+}
+
+
+
+    </script>
 </body>
 
 </html>

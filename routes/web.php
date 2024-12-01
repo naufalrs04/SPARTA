@@ -83,6 +83,9 @@ Route::get('/profile', function () {
 
 Route::get('/pembagiankelasInfo', [pembagiankelasInfo::class, 'index'])->middleware('auth')->name('pembagiankelasInfo');
 Route::post('/simpan-ruangan', [pembagiankelasInfo::class, 'simpanRuangan'])->name('simpan.ruangan');
+Route::post('/ruangan/store', [PembagiankelasInfo::class, 'storeRuangan'])->name('ruangan.store');
+Route::get('/api/ruangans', [PembagiankelasInfo::class, 'getRuangans']);
+Route::delete('/api/ruangans/{id}', [PembagiankelasInfo::class, 'deleteRuangan']);
 
 Route::delete('/ruangan/{id}', [pembagiankelasInfo::class, 'destroy'])->name('ruangan.destroy');
 

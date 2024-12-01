@@ -33,7 +33,7 @@ class pembagiankelasInfo extends Controller
                 return [
                     'id' => $ruangan->id,
                     'nama' => $ruangan->nama,
-                    'kapasitas'=>$ruangan->kapasitas,
+                    'kapasitas'=>$item->kapasitas,
                 ];
             });
             
@@ -109,6 +109,75 @@ public function destroy($id)
     $ruanganProdi->delete();
 
     return response()->json(['success' => 'Ruangan berhasil dihapus dari Prodi'], 200);
+}
+public function storeRuangan(Request $request)
+{
+    $request->validate([
+        'nama' => 'required|string|max:255',
+        'kode' => 'required|string|max:10',
+        'gedung' => 'required|string',
+    ]);
+
+    // Periksa apakah nama ruangan sudah ada
+    $existingRuangan = Ruangan::where('nama', $request->input('nama'))->first();
+    if ($existingRuangan) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Nama ruangan sudah ada dalam database.',
+        ]);
+    }
+
+    // Ambil huruf awal dari nama gedung
+    $namaGedung = $request->input('gedung');
+    $hurufAwalGedung = substr($namaGedung, -1); // Ambil huruf terakhir dari "Gedung X"
+
+    // Validasi apakah nama ruangan sesuai dengan huruf awal gedung
+    if (strtoupper($request->input('nama'))[0] !== $hurufAwalGedung) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Nama ruangan harus sesuai dengan gedung yang dipilih.',
+        ]);
+    }
+
+    $gedung = Gedung::where('nama', $namaGedung)->first();
+    if (!$gedung) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Gedung tidak ditemukan.',
+        ]);
+    }
+
+    // Simpan ruangan ke database
+    Ruangan::create([
+        'nama' => $request->input('nama'),
+        'kode' => $request->input('kode'),
+        'gedung_id' => $gedung->id,
+        'kapasitas' => 0,
+    ]);
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Ruangan berhasil ditambahkan ke ' . $gedung->nama,
+    ]);
+}
+
+
+public function getRuangans()
+{
+    return Ruangan::orderBy('nama', 'asc')->get();
+}
+
+public function deleteRuangan($id)
+{
+    $ruangan = Ruangan::find($id);
+
+    if (!$ruangan) {
+        return response()->json(['success' => false, 'message' => 'Ruangan tidak ditemukan.'], 404);
+    }
+
+    $ruangan->delete();
+
+    return response()->json(['success' => true, 'message' => 'Ruangan berhasil dihapus.']);
 }
 
 

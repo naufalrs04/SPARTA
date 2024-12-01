@@ -133,6 +133,7 @@
             `<tr>
                 <td>${room.id}</td>
                 <td>${room.nama}</td>
+                <td>${room.kapasitas}</td>
             </tr>`
         ).join('');
 
@@ -144,6 +145,7 @@
                         <tr>
                             <th>ID Ruangan</th>
                             <th>Nama Ruangan</th>
+                            <th>kapasitas</th>
                         </tr>
                     </thead>
                     <tbody>
