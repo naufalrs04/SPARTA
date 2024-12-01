@@ -66,6 +66,7 @@ Route::delete('/penyusunan-jadwal/{id}', [PenyusunanJadwalController::class, 'de
 // Route::post('/penyusunan-jadwal/store', [PenyusunanJadwalController::class, 'store'])->name('penyusunan-jadwal.store');
 Route::post('/jadwal/tambah', [PenyusunanJadwalController::class, 'store'])->name('jadwal.store');
 Route::get('/jadwalpengisianIRS', [JadwalPengisianIRSController::class, 'index'])->middleware('auth')->name('jadwalpengisianIRS');
+Route::delete('/penyusunan-jadwal/{id}', [PenyusunanJadwalController::class, 'destroy']);
 
 Route::patch('/jadwal-pengisian/{id}', [JadwalPengisianIRSController::class, 'update']);
 

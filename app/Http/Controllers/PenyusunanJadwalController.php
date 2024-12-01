@@ -26,7 +26,7 @@ class PenyusunanJadwalController extends Controller
             return redirect()->route('login');
         }
         $user = Auth::user();
-
+        $countmatakuliah = PenyusunanJadwal::count();
         // Ambil tema dari cookie atau gunakan 'light' sebagai default
         $theme = $request->cookie('theme') ?? 'light';
 
@@ -60,7 +60,7 @@ class PenyusunanJadwalController extends Controller
         }
         // dd($daftar_dosen);
         // dd($mklist);
-        return view('penyusunanjadwal', compact('user', 'matakuliahList','mklist','ruanganDetailList','dosen', 'theme'));
+        return view('penyusunanjadwal', compact('user', 'matakuliahList','mklist','ruanganDetailList','dosen', 'theme','countmatakuliah'));
     }
 
     public function penyusunanjadwalkuliah() 

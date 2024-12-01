@@ -42,7 +42,6 @@ class pembagiankelasInfo extends Controller
         // dd($prodi);
 
         $gedung = Gedung::all();
-        
 
         $ruangan = Ruangan::all()->groupBy('gedung_id');
 
