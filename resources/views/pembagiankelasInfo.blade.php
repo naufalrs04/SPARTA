@@ -121,78 +121,78 @@
                 <div class="flex justify-center pb-1">
                     <div class="max-w-xl relative">
                         <!-- Tombol Buat Ruang -->
-<div class="flex justify-center pb-4 gap-4">
-    <button id="buatRuangButton"
-        class="bg-gradient-to-l from-blue-500 via-blue-600 to-blue-700 text-white px-5 py-2 rounded-lg hover:bg-gradient-to-br shadow-md">
-        Buat Ruang
-    </button>
-    <button id="hapusRuangButton"
-        class="bg-gradient-to-l from-red-500 via-red-600 to-red-700 text-white px-5 py-2 rounded-lg hover:bg-gradient-to-br shadow-md">
-        Hapus Ruang
-    </button>
-</div>
+                        <div class="flex justify-center pb-4 gap-4">
+                            <button id="buatRuangButton"
+                                class="bg-gradient-to-l from-blue-500 via-blue-600 to-blue-700 text-white px-5 py-2 rounded-lg hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out">
+                                Buat Ruang
+                            </button>
+                            <button id="hapusRuangButton"
+                                class="bg-gradient-to-l from-red-500 via-red-600 to-red-700 text-white px-5 py-2 rounded-lg hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out">
+                                Hapus Ruang
+                            </button>
+                        </div>
 
-<!-- Modal Buat Ruang -->
-<div id="buatRuangModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 transition-opacity duration-300">
-    <div class="bg-white rounded-lg w-1/3 p-6">
-        <!-- Konten modal -->
-        <h3 class="text-xl font-semibold mb-4 text-black">Buat Ruang Baru</h3>
-        <form id="buatRuangForm">
-            @csrf
-            <div class="mb-4">
-                <label for="gedung" class="block font-medium text-black">Pilih Gedung</label>
-                <select id="gedung" name="gedung"
-                    class="w-full border-gray-300 rounded-lg p-2 focus:ring focus:ring-blue-500 text-black">
-                    <option value="" selected disabled>Pilih Gedung</option>
-                    @foreach ($gedung as $g)
-                        <option value="{{ $g->nama }}">{{ $g->nama }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="mb-4">
-                <label for="namaRuang" class="block font-medium text-black">Nama Ruangan</label>
-                <input type="text" id="namaRuang" name="namaRuang"
-                    class="w-full border-gray-300 rounded-lg p-2 focus:ring focus:ring-blue-500 text-black"
-                    placeholder="Nama Ruangan sesuai gedung">
-                <p id="errorNamaRuang" class="text-red-500 text-sm hidden ">Nama ruangan harus diawali dengan huruf sesuai gedung.</p>
-            </div>
-            <div class="mb-4">
-                <label for="kodeRuang" class="block font-medium text-black">Kode Ruangan</label>
-                <input type="text" id="kodeRuang" name="kodeRuang"
-                    class="w-full border-gray-300 rounded-lg p-2 focus:ring focus:ring-blue-500 text-black"
-                    placeholder="Kode Ruangan">
-            </div>
-            <div class="flex justify-end gap-4">
-                <button type="button" id="cancelButton"
-                    class="bg-red-500 text-white px-4 py-2 rounded-lg">Batal</button>
-                <button type="submit"
-                    class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">Simpan</button>
-            </div>
-        </form>
-    </div>
-</div>
+                        <!-- Modal Buat Ruang -->
+                        <div id="buatRuangModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 transition-opacity duration-300">
+                            <div class="bg-white rounded-lg w-1/3 p-6">
+                                <!-- Konten modal -->
+                                <h3 class="text-xl font-semibold mb-4 text-black">Buat Ruang Baru</h3>
+                                <form id="buatRuangForm">
+                                    @csrf
+                                    <div class="mb-4">
+                                        <label for="gedung" class="block font-medium text-black">Pilih Gedung</label>
+                                        <select id="gedung" name="gedung"
+                                            class="w-full border-gray-300 rounded-lg p-2 focus:ring focus:ring-blue-500 text-black">
+                                            <option value="" selected disabled>Pilih Gedung</option>
+                                            @foreach ($gedung as $g)
+                                                <option value="{{ $g->nama }}">{{ $g->nama }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="namaRuang" class="block font-medium text-black">Nama Ruangan</label>
+                                        <input type="text" id="namaRuang" name="namaRuang"
+                                            class="w-full border-gray-300 rounded-lg p-2 focus:ring focus:ring-blue-500 text-black"
+                                            placeholder="Nama Ruangan sesuai gedung">
+                                        <p id="errorNamaRuang" class="text-red-500 text-sm hidden ">Nama ruangan harus diawali dengan huruf sesuai gedung.</p>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="kodeRuang" class="block font-medium text-black">Kode Ruangan</label>
+                                        <input type="text" id="kodeRuang" name="kodeRuang"
+                                            class="w-full border-gray-300 rounded-lg p-2 focus:ring focus:ring-blue-500 text-black"
+                                            placeholder="Kode Ruangan">
+                                    </div>
+                                    <div class="flex justify-end gap-4">
+                                        <button type="button" id="cancelButton"
+                                            class="bg-red-500 text-white px-4 py-2 rounded-lg">Batal</button>
+                                        <button type="submit"
+                                            class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">Simpan</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
 
-<div id="hapusRuangModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-    <div class="bg-white rounded-lg w-2/3 p-6">
-        <h3 class="text-xl font-semibold mb-4 text-black">Detail Ruangan</h3>
-        <div id="ruanganList" class="overflow-y-auto max-h-96">
-            <table class="min-w-full border-collapse border border-gray-300">
-                <thead class="bg-gray-200 text-black">
-                    <tr>
-                        <th class="px-4 py-2 border border-gray-300">Nama Ruangan</th>
-                        <th class="px-4 py-2 border border-gray-300">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody id="ruanganTableBody"></tbody>
-            </table>
-        </div>
-        <div class="flex justify-end mt-4">
-            <button type="button" id="cancelHapusButton" class="bg-blue-500 text-white px-4 py-2 rounded-lg">
-                Tutup
-            </button>
-        </div>
-    </div>
-</div>
+                        <div id="hapusRuangModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+                            <div class="bg-white rounded-lg w-2/3 p-6">
+                                <h3 class="text-xl font-semibold mb-4 text-black">Detail Ruangan</h3>
+                                <div id="ruanganList" class="overflow-y-auto max-h-96">
+                                    <table class="min-w-full border-collapse border border-gray-300">
+                                        <thead class="bg-gray-200 text-black">
+                                            <tr>
+                                                <th class="px-4 py-2 border border-gray-300">Nama Ruangan</th>
+                                                <th class="px-4 py-2 border border-gray-300">Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="ruanganTableBody"></tbody>
+                                    </table>
+                                </div>
+                                <div class="flex justify-end mt-4">
+                                    <button type="button" id="cancelHapusButton" class="bg-blue-500 text-white px-4 py-2 rounded-lg">
+                                        Tutup
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
 
                         <!-- Dropdown Departemen -->
                         <form id="ruanganForm" method="POST" action="{{ route('simpan.ruangan') }}">

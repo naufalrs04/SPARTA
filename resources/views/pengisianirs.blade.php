@@ -626,7 +626,6 @@ use Illuminate\Support\Str;
         });
     </script>
 
-
     <script>
         // Update the event listener for form submission
         document.querySelectorAll('form').forEach(form => {
@@ -710,7 +709,7 @@ use Illuminate\Support\Str;
                                     });
 
                                     // Update total SKS
-                                    updateTotalSKS(sks);
+                                    // updateTotalSKS(sks);
 
                                     // Show success message
                                     Swal.fire({
@@ -781,7 +780,7 @@ use Illuminate\Support\Str;
                     `;
 
             summaryTable.appendChild(newRow);
-            updateTotalSKS(course.sks); // Update total SKS
+            updateTotalSKS(course.sks); 
         }
 
         function hasConflict(newKode, newHariJam) {
@@ -869,7 +868,6 @@ use Illuminate\Support\Str;
         function updateSummaryTable(course) {
             const summaryTable = document.querySelector('table:first-of-type tbody');
             const rowCount = summaryTable.rows.length + 1;
-
             const newRow = document.createElement('tr');
 
             newRow.classList.add('{{ $theme == 'light' ? 'bg-[#2A2C33]' : 'bg-[#EEEEEE]' }}');
@@ -894,9 +892,6 @@ use Illuminate\Support\Str;
             cellWaktu.textContent = course.waktu;
             cellSks.textContent = course.sks;
         }
-
-        
-
     </script>
 
     <script>
@@ -1012,7 +1007,6 @@ use Illuminate\Support\Str;
                     document.getElementById('sksSidebar').classList.remove('show');
                 }
             }
-
 
             function reorderTableRows() {
                 const tbody = document.querySelector('table:first-of-type tbody');
