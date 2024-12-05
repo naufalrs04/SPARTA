@@ -44,6 +44,11 @@ class DashboardMahasiswaController extends Controller
         'semester' => $semester
     ];
 
+    $total_sks = Irs_rekap::where('mahasiswa_id', $mahasiswa_id)
+                    ->where('semester', $semester)
+                    ->where('status_pengajuan', 'disetujui')
+                    ->sum('sks');
+
     // Retrieve approved schedules with related data
     $jadwal_kuliah = Irs_rekap::where('mahasiswa_id', $mahasiswa_id)
                     ->where('semester', $semester)
@@ -72,7 +77,7 @@ class DashboardMahasiswaController extends Controller
         return array_search($jadwal->hari, $daysOrder);
     });
 
-    return view('dashboardMahasiswa', compact('user', 'data', 'nama_mahasiswa', 'jadwal_kuliah', 'mahasiswa_id', 'theme'));
+    return view('dashboardMahasiswa', compact('user', 'data', 'nama_mahasiswa', 'jadwal_kuliah', 'mahasiswa_id', 'theme', 'total_sks'));
 }
 
 }

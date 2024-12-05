@@ -163,7 +163,7 @@
                                     <div class="p-7 rounded-bl-lg rounded-br-lg text-lg text-center space-y-4" style="{{ $theme == 'light' ? 'background-color: #2A2C33;' : 'background-color: #ffffff;' }}">
                                         <p><strong>Total SKS</strong></p>
                                         <div class="text-white text-center py-2 mx-5 rounded-lg mt-2 bg-gradient-to-l from-orange-500 via-orange-600 to-orange-700">
-                                            <p class="font-semibold text-3xl">42</p>
+                                            <p class="font-semibold text-3xl">{{  $total_sks  }}</p>
                                         </div>
                                     </div>
                                 </div>

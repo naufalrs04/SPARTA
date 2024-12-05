@@ -17,7 +17,10 @@ return new class extends Migration
             $table-> string('nip');
             $table-> boolean('status')->default(1);
             $table-> string('prodi');
-            
+            $table-> string('alamat')->nullable();
+            $table-> integer('usia')->nullable();
+            $table-> integer('TTL')->nullable();
+            $table-> integer('fotodosen')->nullable();
             $table-> timestamps();
         });
     }

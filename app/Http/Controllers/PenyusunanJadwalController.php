@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\Dosen;
+use App\Models\Ruangan;
 use App\Models\Mata_Kuliah;
 use Illuminate\Http\Request;
+use App\Models\ruangan_prodi;
+use Illuminate\Support\Carbon;
 use App\Models\PenyusunanJadwal;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Database\Seeders\PenyusunanJadwalSeeder;
 use App\Http\Requests\StorePenyusunanJadwalRequest;
 use App\Http\Requests\UpdatePenyusunanJadwalRequest;
-use App\Models\ruangan_prodi;
-use App\Models\Ruangan;
-use App\Models\Dosen;
-use App\Models\User;
-use Database\Seeders\PenyusunanJadwalSeeder;
-use Illuminate\Support\Facades\Log;
 
 class PenyusunanJadwalController extends Controller
 {
@@ -101,6 +102,29 @@ class PenyusunanJadwalController extends Controller
     ]);
 
     try {
+        $jamMulai = Carbon::createFromFormat('H:i', $validatedData['jam_mulai']);
+        $jamSelesai = Carbon::createFromFormat('H:i', $validatedData['jam_selesai']);
+
+        $conflictingSchedule = PenyusunanJadwal::where('hari', $validatedData['hari'])
+            ->where('ruang', $validatedData['ruang'])
+            ->where(function ($query) use ($jamMulai, $jamSelesai) {
+                $query->whereBetween('jam_mulai', [$jamMulai, $jamSelesai])
+                    ->orWhereBetween('jam_selesai', [$jamMulai, $jamSelesai])
+                    ->orWhere(function ($query) use ($jamMulai, $jamSelesai) {
+                        $query->where('jam_mulai', '<=', $jamMulai)
+                              ->where('jam_selesai', '>=', $jamSelesai);
+                    });
+            })
+            ->first();
+
+        if ($conflictingSchedule) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Jadwal bertabrakan dengan jadwal lain di ruangan yang sama.',
+                'conflict' => $conflictingSchedule
+            ], 422);
+        }
+
         $penyusunanJadwal = new PenyusunanJadwal();
         $penyusunanJadwal->fill($validatedData);
         $penyusunanJadwal->dosen = implode(',', $validatedData['dosen']); // Menyimpan dosen sebagai string

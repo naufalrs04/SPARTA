@@ -119,7 +119,7 @@
                                         </div>
                                         <div>
                                             <p style="color: #F0B90B; font-size: 20px;"><strong>Status :</strong></p>
-                                            <p>Dekan/Dosen</p>
+                                            <p>Kepala Dekan Fakultas Sains dan Matematika</p>
                                         </div>
                                     </div>
                                     <div class="col-span-12 text-white flex items-center justify-center py-3 rounded-md mx-5 mb-5  bg-gradient-to-l from-green-500 via-green-600 to-green-700 {{ $theme == 'light' ? 'text-gray-100' : 'text-gray-100' }}">
@@ -147,7 +147,7 @@
                                         <div class="text-center w-full">
                                             <p><strong>Ruangan Disetujui</strong></p>
                                             <div class="text-center py-2 mx-5 rounded-lg mt-2 bg-gradient-to-l from-red-500 via-red-700 to-red-800">
-                                                <p class="font-semibold text-3xl text-gray-50">34</p>
+                                                <p class="font-semibold text-3xl text-gray-50">{{ $data['countRuangandisetujui'] }}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -158,7 +158,7 @@
                                     <div class="p-7 rounded-bl-lg rounded-br-lg text-lg text-center space-y-4">
                                         <p><strong>Ruangan Belum Disetujui</strong></p>
                                         <div class="text-center py-2 mx-5 rounded-lg mt-2 bg-gradient-to-l from-orange-400 via-orange-500 to-orange-600">
-                                            <p class="font-semibold text-3xl text-gray-50">42</p>
+                                            <p class="font-semibold text-3xl text-gray-50">{{ $data['countRuangantidakdisetujui'] }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -179,9 +179,9 @@
                                         </div>
 
                                         <div class="text-center w-full">
-                                            <p><strong>Departemen Disetujui</strong></p>
+                                            <p><strong>Jadwal Disetujui</strong></p>
                                             <div class="text-center py-2 mx-5 rounded-lg mt-2" style="background-color: #880000">
-                                                <p class="font-semibold text-3xl text-gray-50">34</p>
+                                                <p class="font-semibold text-3xl text-gray-50">{{ $data['countJadwaldisetujui'] }}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -190,9 +190,9 @@
                                         </div>
                                     </div>
                                     <div class="p-7 rounded-bl-lg rounded-br-lg text-lg text-center space-y-4">
-                                        <p><strong>Departemen Belum Disetujui</strong></p>
+                                        <p><strong>Jadwal Belum Disetujui</strong></p>
                                         <div class="text-white text-center py-2 mx-5 rounded-lg mt-2" style="background-color: #C68E00;">
-                                            <p class="font-semibold text-3xl text-gray-50">42</p>
+                                            <p class="font-semibold text-3xl text-gray-50">{{ $data['countJadwaltidakdisetujui'] }}</p>
                                         </div>
                                     </div>
                                 </div>
