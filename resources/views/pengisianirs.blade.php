@@ -203,7 +203,7 @@ use Illuminate\Support\Str;
                                     <th class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">Kelas</th>
                                     <th class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">Waktu</th>
                                     <th class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">SKS</th>
-                                    <th class="px-4 py-2">Batalkan</th>
+                                    <th class="px-4 py-2 batalkan-column">Batalkan</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -219,7 +219,7 @@ use Illuminate\Support\Str;
                                         {{ \Carbon\Carbon::parse($rekap->jam_selesai)->format('H:i') }}
                                     </td>
                                     <td class="px-4 py-3 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $rekap->sks }}</td>
-                                    <td class="px-4 py-3 {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">
+                                    <td class="px-4 py-3 batalkan-column {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">
                                         <button class="cancel-course px-2 py-1 font-semibold rounded-xl bg-gradient-to-l from-red-500 via-red-600 to-red-700 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white"
                                             data-id="{{ $rekap->kode_mk }}"
                                             data-mahasiswa-id="{{ $rekap->mahasiswa_id }}"
@@ -497,6 +497,17 @@ use Illuminate\Support\Str;
             $(this).toggleClass('active');
         })
     </script> --}}
+    <script>
+        // // Ajukan Button Click Event - Hide the "Batalkan" column
+        // document.getElementById('ajukanButton').addEventListener('click', function() {
+        //     hideBatalkanColumn(); // Hide the "Batalkan" column when Ajukan is clicked
+        // });
+
+        // // Batal Ajukan Button Click Event - Show the "Batalkan" column
+        // document.getElementById('batalAjukanButton').addEventListener('click', function() {
+        //     showBatalkanColumn(); // Show the "Batalkan" column when Batal Ajukan is clicked
+        // });
+    </script>
 
     <!-- search bar -->
     <script>
@@ -850,7 +861,7 @@ use Illuminate\Support\Str;
             let total = 0;
 
             Array.from(summaryTable.rows).forEach(row => {
-                const sks = parseInt(row.cells[5].textContent); // Assuming SKS is in the 6th column
+                const sks = parseInt(row.cells[5].textContent); 
                 if (!isNaN(sks)) {
                     total += sks;
                 }
@@ -983,7 +994,8 @@ use Illuminate\Support\Str;
                     .then(data => {
                         if (data.success) {
                             row.remove();
-                            updateTotalSKSAfterCancel(sks);
+                            calculateInitialTotalSKS();
+                            // updateTotalSKSAfterCancel(sks);
                             reorderTableRows();
 
                             Swal.fire({
@@ -992,7 +1004,7 @@ use Illuminate\Support\Str;
                                 icon: 'success',
                                 timer: 1500,
                                 showConfirmButton: false
-                            });
+                            })
                         }
                     })
             }
@@ -1000,12 +1012,16 @@ use Illuminate\Support\Str;
             function updateTotalSKSAfterCancel(canceledSKS) {
                 const totalSksElement = document.getElementById('totalSks');
                 const currentTotal = parseInt(totalSksElement.textContent || '0');
-                const newTotal = Math.max(0, currentTotal - canceledSKS); // Ensure total doesn't go below 0
-                totalSksElement.textContent = newTotal;
+                const newTotal = currentTotal - canceledSKS; 
+                const updatedTotal = Math.max(0, newTotal);
+                totalSksElement.textContent = updatedTotal;
 
-                if (newTotal === 0) {
-                    document.getElementById('sksSidebar').classList.remove('show');
-                }
+                // if (newTotal === 0) {
+                //     document.getElementById('sksSidebar').classList.remove('show');
+                // }
+                
+                // Calculate initial total SKS when page loads
+                // document.addEventListener('DOMContentLoaded', calculateInitialTotalSKS);
             }
 
             function reorderTableRows() {
@@ -1015,15 +1031,15 @@ use Illuminate\Support\Str;
                 });
             }
 
-            function initializeSKSSidebar() {
-                const toggleButton = document.getElementById('toggleSidebar');
-                const sidebar = document.getElementById('sksSidebar');
+            // function initializeSKSSidebar() {
+            //     const toggleButton = document.getElementById('toggleSidebar');
+            //     const sidebar = document.getElementById('sksSidebar');
 
-                toggleButton.addEventListener('click', () => {
-                    sidebar.classList.toggle('show');
-                    toggleButton.classList.toggle('rotated');
-                });
-            }
+            //     toggleButton.addEventListener('click', () => {
+            //         sidebar.classList.toggle('show');
+            //         toggleButton.classList.toggle('rotated');
+            //     });
+            // }
         });
     </script>
 
@@ -1228,9 +1244,12 @@ use Illuminate\Support\Str;
             reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {
-                localStorage.removeItem('hideListMataKuliah'); // Hapus status sembunyikan untuk list mata kuliah
-                localStorage.setItem('irsSubmitted', 'true'); // Simpan status pengajuan IRS
+                localStorage.setItem('hideListMataKuliah', 'true');
+                localStorage.setItem('irsSubmitted', 'true'); 
+                
+                hideBatalkanColumn();
                 setSubmittedState();
+                
                 Swal.fire({
                     title: 'Berhasil!',
                     text: 'IRS berhasil diajukan',
@@ -1261,7 +1280,8 @@ use Illuminate\Support\Str;
                     document.getElementById('listMataKuliah').classList.add('hidden');
                     localStorage.setItem('hideListMataKuliah', 'true');
                 }
-                localStorage.removeItem('irsSubmitted'); // Hapus status pengajuan IRS
+                localStorage.removeItem('irsSubmitted'); 
+                showBatalkanColumn();
                 setDraftState();
                 Swal.fire({
                     title: 'IRS dibatalkan',
@@ -1271,6 +1291,31 @@ use Illuminate\Support\Str;
                     showConfirmButton: false
                 });
             }
+        });
+    }
+    // Ajukan Button Click Event - Hide the "Batalkan" column when Ajukan is clicked
+    document.getElementById('ajukanButton').addEventListener('click', function() {
+        ajukanIRS(); 
+    });
+
+    // Batal Ajukan Button Click Event - Show the "Batalkan" column when Batal Ajukan is clicked
+    document.getElementById('batalAjukanButton').addEventListener('click', function() {
+        batalAjukanIRS(); // Trigger IRS cancellation function
+    });
+
+    // Function to hide the "Batalkan" column (both the header and the data cells)
+    function hideBatalkanColumn() {
+        const batalkanColumns = document.querySelectorAll('.batalkan-column');
+        batalkanColumns.forEach(column => {
+            column.style.display = 'none';  // Hide the column
+        });
+    }
+
+    // Function to show the "Batalkan" column (both the header and the data cells)
+    function showBatalkanColumn() {
+        const batalkanColumns = document.querySelectorAll('.batalkan-column');
+        batalkanColumns.forEach(column => {
+            column.style.display = '';  // Show the column
         });
     }
 
