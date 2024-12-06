@@ -148,7 +148,7 @@ class PengisianIRS extends Controller
     }
 
     $mataKuliahJadwal = PenyusunanJadwal::findOrFail($validated['id']);
-    $semesterMataKuliah = $mataKuliahJadwal->semester;
+    $semesterMataKuliah = $mataKuliahJadwal->semester_mk;
     $kapasitas = $validated['kapasitas'];
 
     // Calculate the current total SKS for the student in the current semester
@@ -182,11 +182,28 @@ class PengisianIRS extends Controller
     }
     
 
-    if ($jumlah_pendaftar >= $validated['kapasitas']) {
-        return response()->json([
-            'success' => false,
-            'message' => 'Kapasitas mata kuliah ini sudah penuh.'
-        ], 422);
+    if ($jumlah_pendaftar >= $kapasitas) {
+        $peserta = irs_rekap::where('kode_mk', $validated['kode_mk'])
+            ->where('kelas', $validated['kelas'])
+            ->orderBy('prioritas', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->first();
+    
+        if ($peserta) {
+            // Jika prioritas mahasiswa baru lebih tinggi, hapus mahasiswa dengan prioritas terendah
+            if ($prioritas < $peserta->prioritas) {
+                irs_rekap::where('mahasiswa_id', $peserta->mahasiswa_id)
+                    ->where('kode_mk', $peserta->kode_mk)
+                    ->where('kelas', $peserta->kelas)
+                    ->delete();
+            } else {
+                // Jika semua mahasiswa memiliki prioritas lebih tinggi atau sama, kapasitas penuh
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Kapasitas mata kuliah ini sudah penuh.'
+                ], 422);
+            }
+        }
     }
 
     $existingIrs = irs_rekap::where('mahasiswa_id', $mahasiswa_id)
@@ -225,6 +242,7 @@ class PengisianIRS extends Controller
                 'kelas' => $validated['kelas'],
                 'ruang' => $validated['ruang'],
                 'sks' => $validated['sks_mk'],
+                'prioritas' => $prioritas,
             ],
             [
                 'mahasiswa_id' => $mahasiswa_id,
@@ -235,6 +253,7 @@ class PengisianIRS extends Controller
                 'kelas' => $validated['kelas'],
                 'ruang' => $validated['ruang'],
                 'sks' => $validated['sks_mk'],
+                'prioritas' => $prioritas,
             ]
         );
 

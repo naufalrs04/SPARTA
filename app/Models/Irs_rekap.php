@@ -20,5 +20,6 @@ class Irs_rekap extends Model
         'sks',
         'status_pengambilan',
         'status_pengajuan',
+        'prioritas',
     ];
 }
