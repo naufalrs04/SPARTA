@@ -1247,7 +1247,7 @@ use Illuminate\Support\Str;
                 localStorage.setItem('hideListMataKuliah', 'true');
                 localStorage.setItem('irsSubmitted', 'true'); 
                 
-                hideBatalkanColumn();
+                //hideBatalkanColumn();
                 setSubmittedState();
                 
                 Swal.fire({
@@ -1281,7 +1281,7 @@ use Illuminate\Support\Str;
                     localStorage.setItem('hideListMataKuliah', 'true');
                 }
                 localStorage.removeItem('irsSubmitted'); 
-                showBatalkanColumn();
+                //showBatalkanColumn();
                 setDraftState();
                 Swal.fire({
                     title: 'IRS dibatalkan',
@@ -1293,31 +1293,31 @@ use Illuminate\Support\Str;
             }
         });
     }
-    // Ajukan Button Click Event - Hide the "Batalkan" column when Ajukan is clicked
-    document.getElementById('ajukanButton').addEventListener('click', function() {
-        ajukanIRS(); 
-    });
+    // // Ajukan Button Click Event - Hide the "Batalkan" column when Ajukan is clicked
+    // document.getElementById('ajukanButton').addEventListener('click', function() {
+    //     ajukanIRS(); 
+    // });
 
-    // Batal Ajukan Button Click Event - Show the "Batalkan" column when Batal Ajukan is clicked
-    document.getElementById('batalAjukanButton').addEventListener('click', function() {
-        batalAjukanIRS(); // Trigger IRS cancellation function
-    });
+    // // Batal Ajukan Button Click Event - Show the "Batalkan" column when Batal Ajukan is clicked
+    // document.getElementById('batalAjukanButton').addEventListener('click', function() {
+    //     batalAjukanIRS(); // Trigger IRS cancellation function
+    // });
 
-    // Function to hide the "Batalkan" column (both the header and the data cells)
-    function hideBatalkanColumn() {
-        const batalkanColumns = document.querySelectorAll('.batalkan-column');
-        batalkanColumns.forEach(column => {
-            column.style.display = 'none';  // Hide the column
-        });
-    }
+    // // Function to hide the "Batalkan" column (both the header and the data cells)
+    // function hideBatalkanColumn() {
+    //     const batalkanColumns = document.querySelectorAll('.batalkan-column');
+    //     batalkanColumns.forEach(column => {
+    //         column.style.display = 'none';  // Hide the column
+    //     });
+    // }
 
-    // Function to show the "Batalkan" column (both the header and the data cells)
-    function showBatalkanColumn() {
-        const batalkanColumns = document.querySelectorAll('.batalkan-column');
-        batalkanColumns.forEach(column => {
-            column.style.display = '';  // Show the column
-        });
-    }
+    // // Function to show the "Batalkan" column (both the header and the data cells)
+    // function showBatalkanColumn() {
+    //     const batalkanColumns = document.querySelectorAll('.batalkan-column');
+    //     batalkanColumns.forEach(column => {
+    //         column.style.display = '';  // Show the column
+    //     });
+    // }
 
     function setSubmittedState() {
         // Sembunyikan listMataKuliah saat dalam status diajukan
