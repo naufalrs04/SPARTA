@@ -204,7 +204,6 @@ use Illuminate\Support\Str;
                                     <th class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">Waktu</th>
                                     <th class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">SKS</th>
                                     <th class="px-4 py-2 batalkan-column">Batalkan</th>
-                                    <th class="px-4 py-2 batalkan-column">Batalkan</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -212,7 +211,7 @@ use Illuminate\Support\Str;
                                 <tr class="{{ $theme == 'light' ? 'bg-[#2A2C33]' : 'bg-[#EEEEEE]' }}">
                                     <td class="px-4 py-4 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $loop->iteration }}</td>
                                     <td class="px-4 py-3 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $rekap->kode_mk }}</td>
-                                    <td class="px-4 py-3 w-1/3 border-r text-left {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $rekap->nama_mk }}</td>
+                                    <td class="px-4 py-3 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $rekap->nama_mk }}</td>
                                     <td class="px-4 py-3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $rekap->kelas }}</td>
                                     <td class="px-4 py-3 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">
                                         {{ $rekap->hari }},
@@ -262,8 +261,10 @@ use Illuminate\Support\Str;
                             @if(is_null($mahasiswa->status) || $mahasiswa->status == 0) disabled @endif>
                             Ajukan</button>
                         </div>
-                        <div id="batalAjukanButton" class="w-1/6 ml-auto flex text-center cursor-pointer font-bold items-center justify-center py-3 rounded-xl bg-gradient-to-l from-red-500 via-red-600 to-red-700 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white">
-                            <button id="button_batal" onclick="batalAjukanIRS()">Batal Ajukan</button>
+                        <div id="batalAjukanButton" class="w-1/6 ml-auto flex text-center cursor-pointer font-bold items-center justify-center py-3 rounded-xl bg-gradient-to-l from-red-500 via-red-600 to-red-700 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white" @if($rekap->status_pengajuan == 'disetujui') style="display: none;" @endif>
+                            <button onclick="batalAjukanIRS()">
+                                Batal Ajukan
+                            </button>
                         </div>
                     </div>
 
@@ -345,7 +346,7 @@ use Illuminate\Support\Str;
                                             <td class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $loop->iteration }}</td>
                                             <td class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $mk->kode_mk }}
                                             </td>
-                                            <td class="px-4 py-2 w-1/3 border-r text-left {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $mk->nama_mk }} - {{ $mk->kelas }}
+                                            <td class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $mk->nama_mk }} - {{ $mk->kelas }}
                                             </td>
                                             <td class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">
                                                 {{ $mk->hari }},
@@ -492,23 +493,12 @@ use Illuminate\Support\Str;
     </div>
 
     {{-- <script>
-        $('.sksDragButton').draggable();
+        // $('.sksDragButton').draggable();
 
-        $('.sksDragButton').click(function(){
-            $(this).toggleClass('active');
-        })
+        // $('.sksDragButton').click(function(){
+        //     $(this).toggleClass('active');
+        // })
     </script> --}}
-    <script>
-        // // Ajukan Button Click Event - Hide the "Batalkan" column
-        // document.getElementById('ajukanButton').addEventListener('click', function() {
-        //     hideBatalkanColumn(); // Hide the "Batalkan" column when Ajukan is clicked
-        // });
-
-        // // Batal Ajukan Button Click Event - Show the "Batalkan" column
-        // document.getElementById('batalAjukanButton').addEventListener('click', function() {
-        //     showBatalkanColumn(); // Show the "Batalkan" column when Batal Ajukan is clicked
-        // });
-    </script>
 
     <!-- search bar -->
     <script>
@@ -637,6 +627,7 @@ use Illuminate\Support\Str;
             });
         });
     </script>
+
 
     <script>
         // Update the event listener for form submission
@@ -782,7 +773,7 @@ use Illuminate\Support\Str;
             newRow.innerHTML = `
                         <td class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">${rowNumber}</td>
                         <td class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">${course.kode}</td>
-                        <td class="px-4 py-2 w-1/3 border-r text-left {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">${course.nama}</td>
+                        <td class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">${course.nama}</td>
                         <td class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">${course.kelas}</td>
                         <td class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">${course.waktu}</td>
                         <td class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">${course.sks}</td>
@@ -792,7 +783,7 @@ use Illuminate\Support\Str;
                     `;
 
             summaryTable.appendChild(newRow);
-            updateTotalSKS(course.sks); 
+            updateTotalSKS(course.sks); // Update total SKS
         }
 
         function hasConflict(newKode, newHariJam) {
@@ -862,7 +853,7 @@ use Illuminate\Support\Str;
             let total = 0;
 
             Array.from(summaryTable.rows).forEach(row => {
-                const sks = parseInt(row.cells[5].textContent); 
+                const sks = parseInt(row.cells[5].textContent); // Assuming SKS is in the 6th column
                 if (!isNaN(sks)) {
                     total += sks;
                 }
@@ -880,6 +871,7 @@ use Illuminate\Support\Str;
         function updateSummaryTable(course) {
             const summaryTable = document.querySelector('table:first-of-type tbody');
             const rowCount = summaryTable.rows.length + 1;
+
             const newRow = document.createElement('tr');
 
             newRow.classList.add('{{ $theme == 'light' ? 'bg-[#2A2C33]' : 'bg-[#EEEEEE]' }}');
@@ -904,6 +896,9 @@ use Illuminate\Support\Str;
             cellWaktu.textContent = course.waktu;
             cellSks.textContent = course.sks;
         }
+
+        
+
     </script>
 
     <script>
@@ -1005,7 +1000,7 @@ use Illuminate\Support\Str;
                                 icon: 'success',
                                 timer: 1500,
                                 showConfirmButton: false
-                            })
+                            });
                         }
                     })
             }
@@ -1013,17 +1008,14 @@ use Illuminate\Support\Str;
             function updateTotalSKSAfterCancel(canceledSKS) {
                 const totalSksElement = document.getElementById('totalSks');
                 const currentTotal = parseInt(totalSksElement.textContent || '0');
-                const newTotal = currentTotal - canceledSKS; 
-                const updatedTotal = Math.max(0, newTotal);
-                totalSksElement.textContent = updatedTotal;
+                const newTotal = Math.max(0, currentTotal - canceledSKS); // Ensure total doesn't go below 0
+                totalSksElement.textContent = newTotal;
 
-                // if (newTotal === 0) {
-                //     document.getElementById('sksSidebar').classList.remove('show');
-                // }
-                
-                // Calculate initial total SKS when page loads
-                // document.addEventListener('DOMContentLoaded', calculateInitialTotalSKS);
+                if (newTotal === 0) {
+                    document.getElementById('sksSidebar').classList.remove('show');
+                }
             }
+
 
             function reorderTableRows() {
                 const tbody = document.querySelector('table:first-of-type tbody');
@@ -1032,15 +1024,15 @@ use Illuminate\Support\Str;
                 });
             }
 
-            // function initializeSKSSidebar() {
-            //     const toggleButton = document.getElementById('toggleSidebar');
-            //     const sidebar = document.getElementById('sksSidebar');
+            function initializeSKSSidebar() {
+                const toggleButton = document.getElementById('toggleSidebar');
+                const sidebar = document.getElementById('sksSidebar');
 
-            //     toggleButton.addEventListener('click', () => {
-            //         sidebar.classList.toggle('show');
-            //         toggleButton.classList.toggle('rotated');
-            //     });
-            // }
+                toggleButton.addEventListener('click', () => {
+                    sidebar.classList.toggle('show');
+                    toggleButton.classList.toggle('rotated');
+                });
+            }
         });
     </script>
 
@@ -1251,7 +1243,6 @@ use Illuminate\Support\Str;
                 localStorage.setItem('irsSubmitted', 'true'); 
                 hideBatalkanColumn();
                 setSubmittedState();
-                
                 Swal.fire({
                     title: 'Berhasil!',
                     text: 'IRS berhasil diajukan',
@@ -1327,12 +1318,16 @@ use Illuminate\Support\Str;
         document.getElementById('listMataKuliah').classList.add('hidden');
 
         // Nonaktifkan tombol batalkan untuk setiap mata kuliah
-        const cancelButtons = document.querySelectorAll('.cancel-course');
+        const cancelButtons = document.querySelectorAll('.cancel-course')
         cancelButtons.forEach(button => {
-            button.disabled = true;
-            button.classList.remove('bg-red-600', 'hover:bg-red-700');
-            button.classList.add('bg-gray-400', 'cursor-not-allowed');
+            // Sembunyikan tombol
+            button.style.display = 'none';
+
+            // Alternatif: gunakan class 'hidden' jika ada CSS untuk menyembunyikan elemen
+            // button.classList.add('hidden');
         });
+
+        hideBatalkanColumn();
 
         // Atur tampilan tombol "Ajukan" dan "Batal Ajukan"
         document.getElementById('ajukanButton').classList.add('hidden');
@@ -1352,18 +1347,20 @@ use Illuminate\Support\Str;
             document.getElementById('listMataKuliah').classList.remove('hidden');
         }
 
-        // Aktifkan tombol batalkan untuk setiap mata kuliah
-        const cancelButtons = document.querySelectorAll('.cancel-course');
-        cancelButtons.forEach(button => {
-            button.disabled = false;
-            button.classList.remove('bg-gray-400', 'cursor-not-allowed');
-            button.classList.add('bg-red-600', 'hover:bg-red-700');
-        });
-
-        // Atur tampilan tombol "Ajukan" dan "Batal Ajukan"
         document.getElementById('ajukanButton').classList.remove('hidden');
         document.getElementById('batalAjukanButton').classList.add('hidden');
+
+        const cancelButtons = document.querySelectorAll('.cancel-course')
+        cancelButtons.forEach(button => {
+            button.style.display = '';
+        });
+
+        showBatalkanColumn()
     }
+
+
+
+
 
     </script>
 

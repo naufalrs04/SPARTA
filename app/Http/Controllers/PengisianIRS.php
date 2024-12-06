@@ -73,7 +73,6 @@ class PengisianIRS extends Controller
         // dd($groupedByStatus);
 
         $status = $groupedByStatus->keys()->firstWhere(fn($value) => $value !== 'disetujui') ?? $groupedByStatus->keys()->first();
-        
         // dd($status);
         // $status = irs_rekap::where ('mahasiswa_id', $mahasiswa_id)
 
