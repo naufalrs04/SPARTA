@@ -23,6 +23,7 @@ return new class extends Migration
             $table->integer('sks');
             $table->string('status_pengambilan')->default('baru');
             $table->string('status_pengajuan')->nullable();
+            $table->integer('prioritas')->default(3);
 
             // Foreign key
             $table->foreign('mahasiswa_id')->references('id')->on('mahasiswas')->onDelete('cascade');
@@ -37,6 +38,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::table('irs_rekap', function (Blueprint $table) {
+            $table->dropColumn('prioritas');
+        });
     }
 };
