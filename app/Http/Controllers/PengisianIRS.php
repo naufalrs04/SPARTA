@@ -147,6 +147,10 @@ class PengisianIRS extends Controller
         $maxSKS = 20;
     }
 
+    $mataKuliahJadwal = PenyusunanJadwal::findOrFail($validated['id']);
+    $semesterMataKuliah = $mataKuliahJadwal->semester;
+    $kapasitas = $validated['kapasitas'];
+
     // Calculate the current total SKS for the student in the current semester
     $currentSKS = irs_rekap::where('mahasiswa_id', $mahasiswa_id)
                     ->where('semester', $semester)
@@ -164,6 +168,19 @@ class PengisianIRS extends Controller
     $jumlah_pendaftar = Irs_rekap::where('kode_mk', $validated['kode_mk'])
                                  ->where('kelas', $validated['kelas'])
                                  ->count();
+
+    // Memberikan Prioritas kepada mahasiswa
+    $prioritas = 1;
+    if ($semester == $semesterMataKuliah) {
+        $prioritas = 1; // Prioritas berdasarkan semester (Semester yang sama)
+    } 
+    elseif ($semester > $semesterMataKuliah) {
+        $prioritas = 2; // Prioritas angkatan atas
+    }
+    else {
+        $prioritas = 3; // Prioritas angkatan bawah
+    }
+    
 
     if ($jumlah_pendaftar >= $validated['kapasitas']) {
         return response()->json([
