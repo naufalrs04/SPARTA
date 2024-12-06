@@ -190,14 +190,12 @@ class PengisianIRS extends Controller
             ->first();
     
         if ($peserta) {
-            // Jika prioritas mahasiswa baru lebih tinggi, hapus mahasiswa dengan prioritas terendah
             if ($prioritas < $peserta->prioritas) {
                 irs_rekap::where('mahasiswa_id', $peserta->mahasiswa_id)
                     ->where('kode_mk', $peserta->kode_mk)
                     ->where('kelas', $peserta->kelas)
                     ->delete();
             } else {
-                // Jika semua mahasiswa memiliki prioritas lebih tinggi atau sama, kapasitas penuh
                 return response()->json([
                     'success' => false,
                     'message' => 'Kapasitas mata kuliah ini sudah penuh.'
