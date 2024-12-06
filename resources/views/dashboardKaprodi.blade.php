@@ -139,7 +139,7 @@
                                 <div class="text-center w-full">
                                     <p class="{{ $theme == 'light' ? 'text-white' : 'text-dark' }}"><strong>Mata Kuliah Diajukan</strong></p>
                                     <div class="text-center py-2 mx-5 rounded-lg mt-2 bg-gradient-to-l from-red-500 via-red-700 to-red-800 {{ $theme == 'light' ? 'text-white' : 'text-black' }}">
-                                        <p class="font-semibold text-3xl {{ $theme == 'light' ? 'text-gray-100' : 'text-gray-100' }}">34</p>
+                                        <p class="font-semibold text-3xl {{ $theme == 'light' ? 'text-gray-100' : 'text-gray-100' }}">{{ $data['countmatakuliah'] }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -151,7 +151,7 @@
                             <div class="p-7 rounded-bl-3xl rounded-br-3xl text-lg text-center space-y-4" style="{{ $theme == 'light' ? 'background-color: #2A2C33;' : 'background-color: #ffffff;' }}">
                                 <p class="{{ $theme == 'light' ? 'text-white' : 'text-dark' }}"><strong>Mata Kuliah Belum Diajukan</strong></p>
                                 <div class="text-center py-2 mx-5 rounded-lg mt-2 bg-gradient-to-l from-orange-400 via-orange-500 to-orange-600">
-                                    <p class="font-semibold text-3xl {{ $theme == 'light' ? 'text-gray-100' : 'text-gray-100' }}">42</p>
+                                    <p class="font-semibold text-3xl {{ $theme == 'light' ? 'text-gray-100' : 'text-gray-100' }}">{{ $data['countmatakuliahBelum'] }}</p>
                                 </div>
                             </div>
                         </div>

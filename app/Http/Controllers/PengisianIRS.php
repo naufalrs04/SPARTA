@@ -88,8 +88,10 @@ class PengisianIRS extends Controller
 
         // dd($groupedData);
 
+        $prodi = $mahasiswa->prodi;
 
         $list_mata_kuliah = PenyusunanJadwal::where('status_pengajuan', 'ter-Verifikasi')
+                        ->where('prodi', $prodi) 
                         ->get()
                         ->each(function ($mata_kuliah) {
                             // Hitung jumlah mahasiswa yang telah mengambil mata kuliah berdasarkan jadwal_id

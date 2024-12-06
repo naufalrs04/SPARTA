@@ -18,4 +18,9 @@ class Mata_Kuliah extends Model
         'semester',
         'prodi',
     ];
+
+    public function penyusunanJadwal()
+    {
+        return $this->hasMany(PenyusunanJadwal::class, 'mata_kuliah_id', 'id');
+    }
 }
