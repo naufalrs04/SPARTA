@@ -261,8 +261,10 @@ use Illuminate\Support\Str;
                             @if(is_null($mahasiswa->status) || $mahasiswa->status == 0) disabled @endif>
                             Ajukan</button>
                         </div>
-                        <div id="batalAjukanButton" class="w-1/6 ml-auto flex text-center cursor-pointer font-bold items-center justify-center py-3 rounded-xl bg-gradient-to-l from-red-500 via-red-600 to-red-700 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white">
-                            <button id="button_batal" onclick="batalAjukanIRS()">Batal Ajukan</button>
+                        <div id="batalAjukanButton" class="w-1/6 ml-auto flex text-center cursor-pointer font-bold items-center justify-center py-3 rounded-xl bg-gradient-to-l from-red-500 via-red-600 to-red-700 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white" @if($rekap->status_pengajuan == 'disetujui') style="display: none;" @endif>
+                            <button onclick="batalAjukanIRS()">
+                                Batal Ajukan
+                            </button>
                         </div>
                     </div>
 
@@ -491,11 +493,11 @@ use Illuminate\Support\Str;
     </div>
 
     {{-- <script>
-        $('.sksDragButton').draggable();
+        // $('.sksDragButton').draggable();
 
-        $('.sksDragButton').click(function(){
-            $(this).toggleClass('active');
-        })
+        // $('.sksDragButton').click(function(){
+        //     $(this).toggleClass('active');
+        // })
     </script> --}}
 
     <!-- search bar -->
@@ -1316,12 +1318,16 @@ use Illuminate\Support\Str;
         document.getElementById('listMataKuliah').classList.add('hidden');
 
         // Nonaktifkan tombol batalkan untuk setiap mata kuliah
-        const cancelButtons = document.querySelectorAll('.cancel-course');
+        const cancelButtons = document.querySelectorAll('.cancel-course')
         cancelButtons.forEach(button => {
-            button.disabled = true;
-            button.classList.remove('bg-red-600', 'hover:bg-red-700');
-            button.classList.add('bg-gray-400', 'cursor-not-allowed');
+            // Sembunyikan tombol
+            button.style.display = 'none';
+
+            // Alternatif: gunakan class 'hidden' jika ada CSS untuk menyembunyikan elemen
+            // button.classList.add('hidden');
         });
+
+        hideBatalkanColumn();
 
         // Atur tampilan tombol "Ajukan" dan "Batal Ajukan"
         document.getElementById('ajukanButton').classList.add('hidden');
@@ -1341,18 +1347,20 @@ use Illuminate\Support\Str;
             document.getElementById('listMataKuliah').classList.remove('hidden');
         }
 
-        // Aktifkan tombol batalkan untuk setiap mata kuliah
-        const cancelButtons = document.querySelectorAll('.cancel-course');
-        cancelButtons.forEach(button => {
-            button.disabled = false;
-            button.classList.remove('bg-gray-400', 'cursor-not-allowed');
-            button.classList.add('bg-red-600', 'hover:bg-red-700');
-        });
-
-        // Atur tampilan tombol "Ajukan" dan "Batal Ajukan"
         document.getElementById('ajukanButton').classList.remove('hidden');
         document.getElementById('batalAjukanButton').classList.add('hidden');
+
+        const cancelButtons = document.querySelectorAll('.cancel-course')
+        cancelButtons.forEach(button => {
+            button.style.display = '';
+        });
+
+        showBatalkanColumn()
     }
+
+
+
+
 
     </script>
 

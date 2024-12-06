@@ -583,9 +583,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(data => {
                     if (data.success) {
                         Swal.fire(
-                            'Berhasil!',
-                            data.message,
-                            'success'
+                            title: 'Berhasil!',
+                            text: data.message,
+                            icon: 'success',
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#28a745' 
                         ).then(() => {
                             location.reload(); // Muat ulang halaman
                         });
