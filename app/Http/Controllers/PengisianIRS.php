@@ -192,8 +192,7 @@ class PengisianIRS extends Controller
     
         if ($peserta) {
             if ($prioritas < $peserta->prioritas) {
-                session()
-
+                session();
                 irs_rekap::where('mahasiswa_id', $peserta->mahasiswa_id)
                     ->where('kode_mk', $peserta->kode_mk)
                     ->where('kelas', $peserta->kelas)

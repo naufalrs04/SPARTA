@@ -15,9 +15,7 @@ return new class extends Migration
         Schema::create ('ruangans', function (Blueprint $table) {
             $table-> id();
             $table-> unsignedBigInteger('gedung_id');
-            $table-> string('kode');
             $table-> string('nama');
-            $table-> string('kapasitas');
             $table-> foreign('gedung_id')->references('id')->on('gedungs')->onDelete('cascade');
             $table-> timestamps();
         });
