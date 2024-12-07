@@ -137,4 +137,17 @@ class verifikasiIRS extends Controller
             return response()->json(['success' => false, 'message' => 'Gagal mengubah status pembatalan'], 500);
         }
     }
+    public function setujuiSemua()
+{
+    // Ambil semua mahasiswa yang belum diverifikasi
+    $updated = Irs_rekap::where('status_pengajuan', null)
+                ->update(['status_pengajuan' => 'disetujui']);
+
+    if ($updated) {
+        return response()->json(['success' => true, 'message' => 'Semua mahasiswa berhasil disetujui']);
+    } else {
+        return response()->json(['success' => false, 'message' => 'Gagal menyetujui semua mahasiswa'], 500);
+    }
+}
+
 }
