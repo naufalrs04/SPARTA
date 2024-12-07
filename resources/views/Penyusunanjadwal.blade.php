@@ -48,6 +48,109 @@
                 </div>
             </div>
 
+            <div class="mt-12 ">
+                <div class="text-center">
+                    <h3 class="text-xl font-semibold mb-4 text-center inline-block px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">Menambahkan Mata Kuliah Baru</h3>
+                </div>
+                <div class="flex justify-center pb-4 gap-4">
+                    <button id="buatmatkulButton"
+                        class="bg-gradient-to-l from-blue-500 via-blue-600 to-blue-700 text-white px-5 py-2 rounded-lg hover:bg-gradient-to-br shadow-md">
+                        Tambah Mata Kuliah
+                    </button>
+                    <button id="hapusmatkulButton"
+                        class="bg-gradient-to-l from-red-500 via-red-600 to-red-700 text-white px-5 py-2 rounded-lg hover:bg-gradient-to-br shadow-md">
+                        Hapus Mata Kuliah
+                    </button>
+                </div>
+            </div>
+
+            <div id="buatmatkulModal" class="hidden justify-center items-center my-10">
+                <div class="max-w-6xl w-full p-6 rounded-3xl px-8 items-center outline outline-1" style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5); {{ $theme == 'light' ? 'background-color: #2A2C33;' : 'background-color: #EEEEEE;' }} {{ $theme == 'light' ? 'outline: 1px solid #000000;' : 'outline: 1px solid #000000;' }}">
+                    <form id="matkul-form">
+                        @csrf
+                        <div class="mb-4">
+                            <label for="kodemk" class="block font-medium text-black">Kode Mata Kuliah</label>
+                            <input type="text" id="kodeMK" name="kodeMK"
+                                class="w-full border-gray-300 rounded-lg p-2 focus:ring focus:ring-blue-500 text-black"
+                                placeholder="Kode Mata Kuliah">
+                        </div>
+                        <div class="mb-4">
+                            <label for="namamk" class="block font-medium text-black">Nama Mata Kuliah</label>
+                            <input type="text" id="namaMK" name="namaMK"
+                                class="w-full border-gray-300 rounded-lg p-2 focus:ring focus:ring-blue-500 text-black"
+                                placeholder="Nama Mata Kuliah">
+                        </div>
+                        <div class="mb-4">
+                            <label for="sksmk" class="block font-medium text-black">SKS Mata Kuliah</label>
+                            <input type="text" id="sksMK" name="sksMK"
+                                class="w-full border-gray-300 rounded-lg p-2 focus:ring focus:ring-blue-500 text-black"
+                                placeholder="SKS Mata Kuliah">
+                        </div>
+                        <div class="mb-4">
+                            <label for="smtmk" class="block font-medium text-black">Semester Mata Kuliah</label>
+                            <input type="text" id="smtMK" name="smtMK"
+                                class="w-full border-gray-300 rounded-lg p-2 focus:ring focus:ring-blue-500 text-black"
+                                placeholder="Semester Mata Kuliah">
+                        </div>
+                        <div class="mb-4">
+                            <label for="prodimk" class="block font-medium text-black">Prodi Mata Kuliah</label>
+                            <input type="text" id="prodiMK" name="prodiMK"
+                                class="w-full border-gray-300 rounded-lg p-2 focus:ring focus:ring-blue-500 text-black"
+                                placeholder="Prodi Mata Kuliah">
+                        </div>
+                        <div class="flex justify-end gap-4">
+                            <button type="button" id="cancelButton"
+                                class="bg-red-500 text-white px-4 py-2 rounded-lg">Batal</button>
+                            <button type="submit"
+                                class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div id="hapusmatkulModal" class="hidden justify-center items-center my-10">
+                <div class="max-w-6xl w-full p-6 rounded-3xl px-8 items-center outline outline-1" style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5); {{ $theme == 'light' ? 'background-color: #2A2C33;' : 'background-color: #EEEEEE;' }} {{ $theme == 'light' ? 'outline: 1px solid #000000;' : 'outline: 1px solid #000000;' }}">
+                    <form id="hapusmatkul-form">
+                        @csrf
+            
+                        <div class="mb-4">
+                            <label for="namamk" class="block font-medium text-black">Nama Mata Kuliah</label>
+                            <select id="namamk" name="namamk" class="w-full border-gray-300 rounded-lg p-2 focus:ring focus:ring-blue-500 text-black">
+                                <option value="" selected disabled>Pilih Mata Kuliah</option>
+                                @foreach ($matakuliah as $matkul)
+                                    <option value="{{ $matkul->id }}" data-kodemk="{{ $matkul->kode }}" data-sksmk="{{ $matkul->sks }}" data-smtmk="{{ $matkul->semester }}" data-prodimk="{{ $matkul->prodi }}">{{ $matkul->nama }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+            
+                        <div class="mb-4">
+                            <label for="kodemk" class="block font-medium text-black">Kode Mata Kuliah</label>
+                            <input type="text" id="kodeMK" name="kodeMK" class="w-full border-gray-300 rounded-lg p-2 focus:ring focus:ring-blue-500 text-black" placeholder="Kode Mata Kuliah" readonly>
+                        </div>
+            
+                        <div class="mb-4">
+                            <label for="sksmk" class="block font-medium text-black">SKS Mata Kuliah</label>
+                            <input type="text" id="sksMK" name="sksMK" class="w-full border-gray-300 rounded-lg p-2 focus:ring focus:ring-blue-500 text-black" placeholder="SKS Mata Kuliah" readonly>
+                        </div>
+            
+                        <div class="mb-4">
+                            <label for="smtmk" class="block font-medium text-black">Semester Mata Kuliah</label>
+                            <input type="text" id="smtMK" name="smtMK" class="w-full border-gray-300 rounded-lg p-2 focus:ring focus:ring-blue-500 text-black" placeholder="Semester Mata Kuliah" readonly>
+                        </div>
+            
+                        <div class="mb-4">
+                            <label for="prodimk" class="block font-medium text-black">Prodi Mata Kuliah</label>
+                            <input type="text" id="prodiMK" name="prodiMK" class="w-full border-gray-300 rounded-lg p-2 focus:ring focus:ring-blue-500 text-black" placeholder="Prodi Mata Kuliah" readonly>
+                        </div>
+            
+                        <div class="flex justify-end gap-4">
+                            <button type="button" id="cancelHapusButton" class="bg-red-500 text-white px-4 py-2 rounded-lg">Batal</button>
+                            <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">Hapus</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
             <div class="flex justify-center items-center my-10">
                 <div class="max-w-6xl w-full p-6 rounded-3xl px-8 items-center outline outline-1" style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5); {{ $theme == 'light' ? 'background-color: #2A2C33;' : 'background-color: #EEEEEE;' }} {{ $theme == 'light' ? 'outline: 1px solid #000000;' : 'outline: 1px solid #000000;' }}">
                     <div class="text-center">
@@ -610,5 +713,169 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 </script>
+
+
+<script>
+    document.getElementById('namamk').addEventListener('change', function() {
+        var selectedOption = this.options[this.selectedIndex];
+
+        var kodeMK = selectedOption.getAttribute('data-kodemk');
+        var sksMK = selectedOption.getAttribute('data-sksmk');
+        var smtMK = selectedOption.getAttribute('data-smtmk');
+        var prodiMK = selectedOption.getAttribute('data-prodimk');
+
+        console.log(kodeMK, sksMK, smtMK, prodiMK);
+
+        document.getElementById('kodeMK').value = kodeMK;
+        document.getElementById('sksMK').value = sksMK;
+        document.getElementById('smtMK').value = smtMK;
+        document.getElementById('prodiMK').value = prodiMK;
+    });
+</script>
+
+<script>
+    const buatmatkulButton = document.getElementById('buatmatkulButton');
+    const buatmatkulModal = document.getElementById('buatmatkulModal');
+    const cancelButton = document.getElementById('cancelButton');
+    const buatmatkulForm = document.getElementById('matkul-form');
+
+    // Tampilkan modal saat tombol diklik
+    buatmatkulButton.addEventListener('click', () => {
+        buatmatkulModal.classList.remove('hidden'); // Tampilkan modal
+        buatmatkulModal.style.display = 'flex'; // Atur modal menjadi flexbox
+    });
+
+    // Sembunyikan modal saat tombol "Batal" diklik
+    cancelButton.addEventListener('click', () => {
+        buatmatkulModal.classList.add('hidden'); // Sembunyikan modal
+        buatmatkulModal.style.display = 'none'; // Atur display menjadi none
+    });
+
+    buatmatkulForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(buatmatkulForm);
+
+        fetch('/penyusunan-jadwal/tambah', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: data.message, // Message from the server
+                    confirmButtonText: 'OK',
+                });
+                // Hide modal after success
+                buatmatkulModal.classList.add('hidden');
+                buatmatkulModal.style.display = 'none';
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal!',
+                    text: data.message, // Error message from the server
+                    confirmButtonText: 'OK',
+                });
+            }
+        })
+        .catch(error => {
+            console.error(error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Terjadi Kesalahan!',
+                text: 'Terjadi kesalahan pada server. Silakan coba lagi.',
+                confirmButtonText: 'OK',
+            });
+        });
+    });
+</script>
+
+<script>
+    const hapusmatkulButton = document.getElementById('hapusmatkulButton');
+    const hapusmatkulModal = document.getElementById('hapusmatkulModal');
+    const cancelHapusButton = document.getElementById('cancelHapusButton');
+    const hapusmatkulForm = document.getElementById('hapusmatkul-form');
+
+    hapusmatkulButton.addEventListener('click', () => {
+        hapusmatkulModal.classList.remove('hidden');
+        hapusmatkulModal.style.display = 'flex';
+    });
+
+    cancelHapusButton.addEventListener('click', () => {
+        hapusmatkulModal.classList.add('hidden');
+        hapusmatkulModal.style.display = 'none';
+    });
+
+    document.getElementById('namamk').addEventListener('change', function () {
+        const courseId = this.value;
+
+        if (courseId) {
+            fetch(`/penyusunan-jadwal/get-mata-kuliah/${courseId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('kodeMK').value = data.matkul.kode;
+                        document.getElementById('sksMK').value = data.matkul.sks;
+                        document.getElementById('smtMK').value = data.matkul.semester;
+                        document.getElementById('prodiMK').value = data.matkul.prodi;
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert('Terjadi kesalahan saat mengambil data mata kuliah.');
+                });
+        } else {
+            document.getElementById('kodeMK').value = '';
+            document.getElementById('sksMK').value = '';
+            document.getElementById('smtMK').value = '';
+            document.getElementById('prodiMK').value = '';
+        }
+    });
+
+    hapusmatkulForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(hapusmatkulForm);
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        fetch('/penyusunan-jadwal/hapus', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            },
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data); // Log the response data
+            if (data.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: data.message,
+                    confirmButtonText: 'OK',
+                });
+                hapusmatkulModal.classList.add('hidden');
+                hapusmatkulModal.style.display = 'none';
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal!',
+                    text: data.message,
+                    confirmButtonText: 'OK',
+                });
+            }
+        })
+        .catch(error => {
+            console.error(error); // Log any errors in the catch block
+            alert('Terjadi kesalahan.');
+        });
+    });
+</script>
+
+
 
 </html>
