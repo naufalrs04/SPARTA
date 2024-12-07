@@ -113,7 +113,6 @@ public function storeRuangan(Request $request)
 {
     $request->validate([
         'nama' => 'required|string|max:255',
-        'kode' => 'required|string|max:10',
         'gedung' => 'required|string',
     ]);
 
@@ -149,9 +148,9 @@ public function storeRuangan(Request $request)
     // Simpan ruangan ke database
     Ruangan::create([
         'nama' => $request->input('nama'),
-        'kode' => $request->input('kode'),
+        
         'gedung_id' => $gedung->id,
-        'kapasitas' => 0,
+      
     ]);
 
     return response()->json([
@@ -170,14 +169,28 @@ public function deleteRuangan($id)
 {
     $ruangan = Ruangan::find($id);
 
+    // Cek apakah ruangan ditemukan
     if (!$ruangan) {
         return response()->json(['success' => false, 'message' => 'Ruangan tidak ditemukan.'], 404);
     }
 
+    // Cek apakah ruangan digunakan oleh prodi
+    $ruanganProdi = ruangan_prodi::where('ruangan_id', $id)->first();
+
+    // Jika ruangan terpakai oleh prodi, tidak bisa dihapus
+    if ($ruanganProdi) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Ruangan tidak dapat dihapus karena dipakai oleh prodi: ' . $ruanganProdi->nama_prodi
+        ], 400); // Kode status 400 untuk Bad Request
+    }
+
+    // Jika ruangan tidak terpakai, hapus ruangan
     $ruangan->delete();
 
-    return response()->json(['success' => true, 'message' => 'Ruangan berhasil dihapus.']);
+    return response()->json(['success' => true, 'message' => 'Ruangan berhasil dihapus.'], 200);
 }
+
 
 
 }

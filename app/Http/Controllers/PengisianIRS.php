@@ -66,6 +66,8 @@ class PengisianIRS extends Controller
 
             $rekap->nama_dosen = PenyusunanJadwal::where('kode_mk', $rekap->kode_mk)->pluck('dosen')->implode(', ');
         }
+        $status_pengajuan = $irs_rekap->first() ? $irs_rekap->first()->status_pengajuan : null;
+
         // Group records by `status_pengajuan`, including `null` as a separate group
         $groupedByStatus = $irs_rekap->groupBy(function ($item) {
             return $item->status_pengajuan ?? null;
@@ -117,7 +119,7 @@ class PengisianIRS extends Controller
             ->where('jadwalberakhir', '>=', $tanggalSekarang)
             ->first(); 
         
-        return view('pengisianirs', compact('user', 'list_mata_kuliah', 'irs_rekap', 'groupedData',  'semesterMahasiswa', 'mahasiswa_id', 'theme', 'fasePengisianIRS', 'fasePembatalanIRS', 'fasePerubahanIRS','status','maxSKS','ips', 'mahasiswa', 'dosenWali', 'dosenWaliNama', 'dosenWaliNip'));
+        return view('pengisianirs', compact('user', 'list_mata_kuliah', 'irs_rekap','status_pengajuan', 'groupedData',  'semesterMahasiswa', 'mahasiswa_id', 'theme', 'fasePengisianIRS', 'fasePembatalanIRS', 'fasePerubahanIRS','status','maxSKS','ips', 'mahasiswa', 'dosenWali', 'dosenWaliNama', 'dosenWaliNip'));
     }
 
     public function store(Request $request)
@@ -190,6 +192,7 @@ class PengisianIRS extends Controller
     
         if ($peserta) {
             if ($prioritas < $peserta->prioritas) {
+                session();
                 irs_rekap::where('mahasiswa_id', $peserta->mahasiswa_id)
                     ->where('kode_mk', $peserta->kode_mk)
                     ->where('kelas', $peserta->kelas)

@@ -20,6 +20,11 @@ class dosen extends Seeder
                 'status' => 1,
                 'prodi' => "Informatika",
             ],
+            [
+                'nip' => '240601122120014',
+                'status' => 1,
+                'prodi' => "Informatika",
+            ],
 
         ];
 
