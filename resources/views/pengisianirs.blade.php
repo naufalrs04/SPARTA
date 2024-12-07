@@ -261,7 +261,7 @@ use Illuminate\Support\Str;
                             @if(is_null($mahasiswa->status) || $mahasiswa->status == 0) disabled @endif>
                             Ajukan</button>
                         </div>
-                        <div id="batalAjukanButton" class="w-1/6 ml-auto flex text-center cursor-pointer font-bold items-center justify-center py-3 rounded-xl bg-gradient-to-l from-red-500 via-red-600 to-red-700 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white" @if($rekap->status_pengajuan == 'disetujui') style="display: none;" @endif>
+                        <div id="batalAjukanButton" class="w-1/6 ml-auto flex text-center cursor-pointer font-bold items-center justify-center py-3 rounded-xl bg-gradient-to-l from-red-500 via-red-600 to-red-700 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white" @if($status_pengajuan == 'disetujui') style="display: none;" @endif>
                             <button onclick="batalAjukanIRS()">
                                 Batal Ajukan
                             </button>
@@ -434,7 +434,7 @@ use Illuminate\Support\Str;
                                 </div>
 
                                 <div class="semester-content hidden px-4 pb-6 overflow-x-auto" id="semester">
-                                    <h4 class="text-center text-lg font-semibold mb-4">IRS Mahasiswa {{$rekap->status_pengajuan}} ! </h4>
+                                    <h4 class="text-center text-lg font-semibold mb-4">IRS Mahasiswa {{$rekap->status_pengajuan}} </h4>
                                     <div class="overflow-x-auto rounded-3xl {{ $theme == 'light' ? 'border border-black' : 'border border-black' }}" > 
                                     <table class="w-full bg-white rounded-2xl">
                                         <thead class="bg-gray-100">
