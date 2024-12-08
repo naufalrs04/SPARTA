@@ -88,6 +88,11 @@
             </div>
 
             <div id="contentBelumVerifikasi" class="pt-4 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
+                <div class=" px-8 my-2 flex justify-end">
+                    <button id="approve-all-btn" class="px-4 py-2  bg-green-500 text-white rounded-lg hover:bg-green-600">
+                        Setujui Semua
+                    </button>
+                </div>
                 <div class="ml-8 mr-8 mt-8 mb-8 flex flex-grow overflow-x-auto rounded-3xl {{ $theme == 'light' ? 'border border-black' : 'border border-black' }}" style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5)">
                     <table class="table-auto p-5 w-full text-center rounded-lg border-collapse" name="tabel_irs">
                         <thead>
@@ -421,6 +426,55 @@
                 }
             });
         });
+
+        document.addEventListener('DOMContentLoaded', function () {
+    const approveAllButton = document.getElementById('approve-all-btn');
+
+    approveAllButton.addEventListener('click', function () {
+        Swal.fire({
+            title: 'Konfirmasi Persetujuan',
+            text: "Apakah Anda yakin ingin menyetujui semua mahasiswa yang belum diverifikasi?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, Setujui Semua!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch("{{ route('verifikasi-irs.setujui-semua') }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil!',
+                            text: 'Semua mahasiswa berhasil disetujui.',
+                            confirmButtonColor: '#28a745',
+                        }).then(() => {
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal!',
+                            text: 'Terjadi kesalahan saat menyetujui semua mahasiswa.',
+                            confirmButtonColor: '#dc3545',
+                        });
+                    }
+                })
+                .catch(error => console.error("Error:", error));
+            }
+        });
+    });
+});
+
     </script>
 
 

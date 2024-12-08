@@ -62,6 +62,11 @@ Route::get('/dashboardKaprodi', [DashboardKaprodiController::class, 'index'])->m
 
 Route::get('/penyusunanjadwal', [PenyusunanJadwalController::class, 'index'])->middleware('auth')->name('Penyusunanjadwal');
 Route::delete('/penyusunan-jadwal/{id}', [PenyusunanJadwalController::class, 'destroy']);
+Route::post('/penyusunan-jadwal/tambah', [PenyusunanJadwalController::class, 'storeMataKuliah']);
+Route::get('/penyusunan-jadwal/get-mata-kuliah/{id}', [PenyusunanJadwalController::class, 'getMataKuliah']);
+Route::post('/penyusunan-jadwal/hapus', [PenyusunanJadwalController::class, 'hapusMataKuliah']);
+
+
 
 // Route::post('/penyusunan-jadwal/store', [PenyusunanJadwalController::class, 'store'])->name('penyusunan-jadwal.store');
 Route::post('/jadwal/tambah', [PenyusunanJadwalController::class, 'store'])->name('jadwal.store');
@@ -108,6 +113,7 @@ Route::post('/verifikasiIRS/approve', [verifikasiIRS::class, 'approveIRS'])->nam
 Route::post('/verifikasi-irs/setujui', [verifikasiIRS::class, 'setujuiIRS'])->name('verifikasi-irs.setujui');
 Route::post('/verifikasi-irs/tolak', [verifikasiIRS::class, 'tolakIRS'])->name('verifikasi-irs.tolak');
 Route::post('/verifikasi-irs/batal', [verifikasiIRS::class, 'batalkanIRS'])->name('verifikasi-irs.batal');
+Route::post('/verifikasi-irs/setujui-semua', [verifikasiIRS::class, 'setujuiSemua'])->name('verifikasi-irs.setujui-semua');
 
 
 Route::get('/verifikasijadwal', [verifikasijadwal::class, 'index'])->middleware('auth')->name('verifikasijadwal');
@@ -118,6 +124,8 @@ Route::post('/tolak-jadwal/{prodi}', [verifikasiJadwal::class, 'tolak'])->name('
 Route::get('/verifikasiRuangKuliah', [verifikasiRuangKuliah::class, 'index'])->middleware('auth')->name('verifikasiRuangKuliah');
 Route::post('/verifikasi-ruang/{prodi}', [verifikasiRuangKuliah::class, 'verifikasi'])->name('verifikasi.ruang');
 Route::post('/tolak-ruang/{prodi}', [verifikasiRuangKuliah::class, 'tolak'])->name('tolak.ruang');
+Route::post('/batal-ruang/{prodi}', [verifikasiRuangKuliah::class, 'batal'])->name('batal.ruang');
+
 Route::get('/search-mata-kuliah', [PengisianIRS::class, 'searchMataKuliah'])->name('search.mata_kuliah');
 
 Route::get('/profile', function () {

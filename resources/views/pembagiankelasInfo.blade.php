@@ -156,12 +156,7 @@
                     placeholder="Nama Ruangan sesuai gedung">
                 <p id="errorNamaRuang" class="text-red-500 text-sm hidden ">Nama ruangan harus diawali dengan huruf sesuai gedung.</p>
             </div>
-            <div class="mb-4">
-                <label for="kodeRuang" class="block font-medium text-black">Kode Ruangan</label>
-                <input type="text" id="kodeRuang" name="kodeRuang"
-                    class="w-full border-gray-300 rounded-lg p-2 focus:ring focus:ring-blue-500 text-black"
-                    placeholder="Kode Ruangan">
-            </div>
+            
             <div class="flex justify-end gap-4">
                 <button type="button" id="cancelButton"
                     class="bg-red-500 text-white px-4 py-2 rounded-lg">Batal</button>
@@ -649,7 +644,7 @@ namaRuangInput.addEventListener('input', () => {
 buatRuangForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const namaRuang = namaRuangInput.value.toUpperCase();
-    const kodeRuang = document.getElementById('kodeRuang').value;
+
     const gedung = gedungSelect.value;
 
     // Validasi akhir sebelum submit
@@ -665,7 +660,7 @@ buatRuangForm.addEventListener('submit', async (e) => {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': '{{ csrf_token() }}',
             },
-            body: JSON.stringify({ nama: namaRuang, kode: kodeRuang, gedung }),
+            body: JSON.stringify({ nama: namaRuang, gedung }),
         });
 
         const result = await response.json();
@@ -731,6 +726,7 @@ hapusRuangButton.addEventListener('click', async () => {
 
 
 // Fungsi untuk menghapus ruangan
+// Fungsi untuk menghapus ruangan
 async function deleteRuangan(ruanganId) {
     try {
         const response = await fetch(`/api/ruangans/${ruanganId}`, {
@@ -741,6 +737,7 @@ async function deleteRuangan(ruanganId) {
         });
 
         const result = await response.json();
+
         if (result.success) {
             Swal.fire({
                 title: 'Berhasil!',
@@ -753,13 +750,13 @@ async function deleteRuangan(ruanganId) {
                 location.reload();
             });
         } else {
+            // Jika ruangan tidak dapat dihapus karena dipakai oleh prodi
             Swal.fire({
                 title: 'Gagal!',
                 text: result.message || 'Ruangan tidak dapat dihapus.',
                 icon: 'error',
                 confirmButtonText: 'OK',
                 confirmButtonColor: '#34803C',
-
             });
         }
     } catch (error) {
@@ -773,6 +770,7 @@ async function deleteRuangan(ruanganId) {
         });
     }
 }
+
 
 
 
