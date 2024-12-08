@@ -216,11 +216,30 @@
                                         <option value="E">E</option>
                                     </select>
                                 </div>
+                                
+                                @php
+                                    $tahunSekarang = date('Y');
+                                    $semester = ['Ganjil', 'Genap']; 
+                                    $tahunAjaran = [];
+
+                                    for ($tahunAwal = 2022; $tahunAwal <= $tahunSekarang; $tahunAwal++) {
+                                        $tahunAkhir = $tahunAwal + 1;
+                                        foreach ($semester as $smt) {
+                                            $tahunAjaran[] = "$tahunAwal/$tahunAkhir $smt";
+                                        }
+                                    }
+                                @endphp
 
                                 <div class="mb-4">
                                     <label for="tahun_ajaran" class="block text-sm font-medium mb-2">Tahun Ajaran</label>
-                                    <input type="text" id="tahun_ajaran" name="tahun_ajaran"
-                                    class="w-full p-2 border rounded-xl {{ $theme == 'light' ? 'bg-gray-700 border-gray-900 hover:border-gray-500 text-gray-200' : 'bg-gray-300 border-gray-400 hover:border-gray-600 text-gray-600' }}" required>
+                                    <select id="tahun_ajaran" name="tahun_ajaran"
+                                        class="w-full p-2 border rounded-xl {{ $theme == 'light' ? 'bg-gray-700 border-gray-900 hover:border-gray-500 text-gray-200' : 'bg-gray-300 border-gray-400 hover:border-gray-600 text-gray-600' }}"
+                                        required>
+                                        <option value="" disabled selected>-- Pilih Tahun Ajaran --</option>
+                                        @foreach ($tahunAjaran as $ta)
+                                            <option value="{{ $ta }}">{{ $ta }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
 
                                 <div class="mb-4">
