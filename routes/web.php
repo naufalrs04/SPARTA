@@ -65,9 +65,9 @@ Route::delete('/penyusunan-jadwal/{id}', [PenyusunanJadwalController::class, 'de
 Route::post('/penyusunan-jadwal/tambah', [PenyusunanJadwalController::class, 'storeMataKuliah']);
 Route::get('/penyusunan-jadwal/get-mata-kuliah/{id}', [PenyusunanJadwalController::class, 'getMataKuliah']);
 Route::post('/penyusunan-jadwal/hapus', [PenyusunanJadwalController::class, 'hapusMataKuliah'])->name('mataKuliah.hapus');
-
-
-
+Route::middleware(['auth'])->group(function () {
+    Route::get('/penyusunan-jadwal/get-dosen-prodi', [PenyusunanJadwalController::class, 'getDosenProdi']);
+});
 // Route::post('/penyusunan-jadwal/store', [PenyusunanJadwalController::class, 'store'])->name('penyusunan-jadwal.store');
 Route::post('/jadwal/tambah', [PenyusunanJadwalController::class, 'store'])->name('jadwal.store');
 Route::get('/jadwalpengisianIRS', [JadwalPengisianIRSController::class, 'index'])->middleware('auth')->name('jadwalpengisianIRS');

@@ -88,7 +88,7 @@
                         </div>
                         <div class="mb-4">
                             <label for="prodiMK" class="block font-medium">Prodi Mata Kuliah</label>
-                            <input type="text" id="prodiMK" name="prodiMK" class="w-full border-gray-300 rounded-lg p-2" required />
+                            <input type="text" id="prodiMK" name="prodiMK" class="w-full border-gray-300 rounded-lg p-2" readonly disabled />
                         </div>
                         <div class="flex justify-end gap-3">
                             <button type="button" id="cancelButton" class="transition-colors duration-200 px-4 py-2 rounded-lg bg-gradient-to-l from-yellow-500 via-yellow-600 to-yellow-700 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white {{ $theme == 'light' ? 'text-gray-100' : 'text-gray-100' }}">Batal</button>
@@ -731,83 +731,101 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <script>
     // Show Add Mata Kuliah Modal
-document.getElementById('buatmatkulButton').addEventListener('click', () => {
-    document.getElementById('buatmatkulModal').classList.remove('hidden');
-});
-
-// Show Delete Mata Kuliah Modal
-document.getElementById('hapusmatkulButton').addEventListener('click', () => {
-    document.getElementById('hapusmatkulModal').classList.remove('hidden');
-});
-
-// Cancel Add Mata Kuliah Modal
-document.getElementById('cancelButton').addEventListener('click', () => {
-    document.getElementById('buatmatkulModal').classList.add('hidden');
-});
-
-// Cancel Delete Mata Kuliah Modal
-document.getElementById('cancelHapusButton').addEventListener('click', () => {
-    document.getElementById('hapusmatkulModal').classList.add('hidden');
-});
-
-// Handle form submission for adding Mata Kuliah
-document.getElementById('matkul-form').addEventListener('submit', function(event) {
-    event.preventDefault();
-    const formData = new FormData(this);
-    fetch('/penyusunan-jadwal/tambah', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            Swal.fire('Success', data.message, 'success');
-            document.getElementById('buatmatkulModal').classList.add('hidden');
-            location.reload(); // Reload page to reflect changes
-        } else {
-            Swal.fire('Error', data.message, 'error');
-        }
-    })
-    .catch(error => {
-        Swal.fire('Error', 'Failed to add Mata Kuliah', 'error');
+    document.getElementById('buatmatkulButton').addEventListener('click', () => {
+        document.getElementById('buatmatkulModal').classList.remove('hidden');
     });
-});
-document.getElementById('namamk').addEventListener('change', function() {
-    const selectedOption = this.options[this.selectedIndex];
-    
-});
 
-// Handle form submission for deleting Mata Kuliah
-document.getElementById('hapusmatkul-form').addEventListener('submit', function (event) {
-    event.preventDefault(); // Cegah form dari pengiriman default
+    // Show Delete Mata Kuliah Modal
+    document.getElementById('hapusmatkulButton').addEventListener('click', () => {
+        document.getElementById('hapusmatkulModal').classList.remove('hidden');
+    });
 
-    const formData = new FormData(this); // Ambil data dari form
-    const namaMK = formData.get('namaMK'); // Ambil nama mata kuliah
+    // Cancel Add Mata Kuliah Modal
+    document.getElementById('cancelButton').addEventListener('click', () => {
+        document.getElementById('buatmatkulModal').classList.add('hidden');
+    });
 
-    fetch('/penyusunan-jadwal/hapus', {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-        },
-    })
-        .then((response) => response.json())
-        .then((data) => {
+    // Cancel Delete Mata Kuliah Modal
+    document.getElementById('cancelHapusButton').addEventListener('click', () => {
+        document.getElementById('hapusmatkulModal').classList.add('hidden');
+    });
+
+    // Handle form submission for adding Mata Kuliah
+    document.getElementById('matkul-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const formData = new FormData(this);
+        fetch('/penyusunan-jadwal/tambah', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
             if (data.success) {
                 Swal.fire('Success', data.message, 'success');
-                document.getElementById('hapusmatkulModal').classList.add('hidden');
-                location.reload(); // Reload halaman setelah berhasil
+                document.getElementById('buatmatkulModal').classList.add('hidden');
+                location.reload(); // Reload page to reflect changes
             } else {
                 Swal.fire('Error', data.message, 'error');
             }
         })
-        .catch((error) => {
-            Swal.fire('Error', 'Failed to delete Mata Kuliah', 'error');
+        .catch(error => {
+            Swal.fire('Error', 'Failed to add Mata Kuliah', 'error');
         });
-});
+    });
 
+    document.getElementById('namamk').addEventListener('change', function() {
+        const selectedOption = this.options[this.selectedIndex];
+        
+    });
 
+    // Handle form submission for deleting Mata Kuliah
+    document.getElementById('hapusmatkul-form').addEventListener('submit', function (event) {
+        event.preventDefault(); // Cegah form dari pengiriman default
 
+        const formData = new FormData(this); // Ambil data dari form
+        const namaMK = formData.get('namaMK'); // Ambil nama mata kuliah
+
+        fetch('/penyusunan-jadwal/hapus', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    Swal.fire('Success', data.message, 'success');
+                    document.getElementById('hapusmatkulModal').classList.add('hidden');
+                    location.reload(); // Reload halaman setelah berhasil
+                } else {
+                    Swal.fire('Error', data.message, 'error');
+                }
+            })
+            .catch((error) => {
+                Swal.fire('Error', 'Failed to delete Mata Kuliah', 'error');
+            });
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        fetch('/penyusunan-jadwal/get-dosen-prodi')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                document.getElementById('prodiMK').value = data.prodi;
+            } else {
+                console.error('Failed to fetch prodi:', data.message);
+            }
+        })
+        .catch(error => console.error('Error fetching prodi:', error));
+    });
 </script>
 
 
