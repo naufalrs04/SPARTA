@@ -10,6 +10,7 @@
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     @vite('resources/css/app.css')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         #main-content{
             min-height: 100vh;
@@ -73,7 +74,7 @@
                 </div>
                 <div class="px-1 pr-1 mt-8 flex justify-end">
                     <div class="py-2 px-5 rounded-xl bg-gradient-to-l from-green-500 via-green-600 to-green-700 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white font-medium">
-                    <a href="#" class="text-center block text-white"><strong>Set Jadwal</strong></a>
+                    <a href="#" class="ajukan-btn text-center block text-white"><strong>Set Jadwal</strong></a>
                     </div>
                 </div>
             </div>
@@ -160,6 +161,42 @@
             });
         });
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Event untuk tombol "Ajukan"
+            document.querySelectorAll('.ajukan-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    // Konfirmasi sebelum mengajukan
+                    Swal.fire({
+                        title: 'Konfirmasi Pengajuan',
+                        text: "Apakah Anda yakin ingin mengajukan Jadwal Pengisian IRS ini?",
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ya, Set Jadwal!',
+                        cancelButtonText: 'Batal'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil!',
+                                text: 'Jadwal Pengisian IRS telah di-Set.',
+                                confirmButtonColor: '#28a745',
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'Batal!',
+                                text: 'Pengajuan dibatalkan.',
+                                confirmButtonColor: '#6c757d',
+                            });
+                        }
+                    });
+                });
+            });
+        });
+    </script>    
     
 </body>
 

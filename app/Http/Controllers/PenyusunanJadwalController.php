@@ -191,37 +191,63 @@ class PenyusunanJadwalController extends Controller
     }
 }
 
-    public function storeMataKuliah(Request $request) {
-    $validated = $request->validate([
-        'kodeMK' => 'required|string|max:50|unique:mata_kuliahs,kode',
-        'namaMK' => 'required|string|max:255',
-        'sksMK' => 'required|integer|min:1',
-        'smtMK' => 'required|integer|min:1|max:8',
-        'prodiMK' => 'required|string|max:100',
-    ]);
+    public function getDosenProdi()
+    {
+        $nip = Auth::user()->nim_nip;
+        $prodi = Dosen::where('nip', $nip)->value('prodi');
 
-    $existingmatakuliah = Mata_Kuliah::where('kode', $request->input('kodeMK'))->first();
+        if ($prodi) {
+            return response()->json([
+                'success' => true,
+                'prodi' => $prodi,
+            ]);
+        }
 
-    if ($existingmatakuliah) {
         return response()->json([
             'success' => false,
-            'message' => 'Mata Kuliah sudah ada.',
+            'message' => 'Prodi dosen tidak ditemukan.',
         ]);
     }
 
-    Mata_Kuliah::create([
-        'kode' => $validated['kodeMK'],
-        'nama' => $validated['namaMK'],
-        'sks' => $validated['sksMK'],
-        'semester' => $validated['smtMK'],
-        'prodi' => $validated['prodiMK'],
-    ]);
+    public function storeMataKuliah(Request $request) {
+        $validated = $request->validate([
+            'kodeMK' => 'required|string|max:50|unique:mata_kuliahs,kode',
+            'namaMK' => 'required|string|max:255',
+            'sksMK' => 'required|integer|min:1',
+            'smtMK' => 'required|integer|min:1|max:8',
+        ]);
 
-    return response()->json([
-        'success' => true,
-        'message' => 'Mata Kuliah berhasil ditambahkan.',
-    ]);
-}
+        $dosenProdi = Dosen::where('nip', Auth::user()->nim_nip)->value('prodi');
+
+        if (!$dosenProdi) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Prodi tidak ditemukan untuk user ini.',
+            ]);
+        }
+
+        $existingmatakuliah = Mata_Kuliah::where('kode', $request->input('kodeMK'))->first();
+
+        if ($existingmatakuliah) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Mata Kuliah sudah ada.',
+            ]);
+        }
+
+        Mata_Kuliah::create([
+            'kode' => $validated['kodeMK'],
+            'nama' => $validated['namaMK'],
+            'sks' => $validated['sksMK'],
+            'semester' => $validated['smtMK'],
+            'prodi' => $dosenProdi,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Mata Kuliah berhasil ditambahkan.',
+        ]);
+    }
 
 
     public function getMataKuliah($id)

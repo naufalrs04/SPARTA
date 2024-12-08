@@ -51,7 +51,7 @@ class UsersTableSeeder extends Seeder
                 'id' => 4, 
                 'email' => 'mulyono@lecturer.sparta.ac.id', 
                 'password' => MD5('mulyono123'), 
-                'nama' => 'Mulyono',
+                'nama' => 'Mulyono, S.Kom., M.T.',
                 'nim_nip' => 240601122120014,
                 'kp' => 1,
                 'dk' => 0, 
@@ -95,6 +95,9 @@ class UsersTableSeeder extends Seeder
                 'ba' => 0, 
                 'ma' => 1
             ],
+            [
+                
+            ]
 
         ];
         

@@ -180,7 +180,7 @@
 
                                         <div class="text-center w-full">
                                             <p><strong>Jadwal Disetujui</strong></p>
-                                            <div class="text-center py-2 mx-5 rounded-lg mt-2" style="background-color: #880000">
+                                            <div class="text-center py-2 mx-5 rounded-lg mt-2 bg-gradient-to-l from-red-500 via-red-700 to-red-800">
                                                 <p class="font-semibold text-3xl text-gray-50">{{ $data['countJadwaldisetujui'] }}</p>
                                             </div>
                                         </div>
@@ -191,7 +191,7 @@
                                     </div>
                                     <div class="p-7 rounded-bl-lg rounded-br-lg text-lg text-center space-y-4">
                                         <p><strong>Jadwal Belum Disetujui</strong></p>
-                                        <div class="text-white text-center py-2 mx-5 rounded-lg mt-2" style="background-color: #C68E00;">
+                                        <div class="text-center py-2 mx-5 rounded-lg mt-2 bg-gradient-to-l from-orange-400 via-orange-500 to-orange-600">
                                             <p class="font-semibold text-3xl text-gray-50">{{ $data['countJadwaltidakdisetujui'] }}</p>
                                         </div>
                                     </div>

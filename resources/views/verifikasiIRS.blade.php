@@ -89,7 +89,7 @@
 
             <div id="contentBelumVerifikasi" class="pt-4 {{ $theme == 'light' ? 'bg-gray-900/50' : 'bg-white-900/50' }}">
                 <div class=" px-8 my-2 flex justify-end">
-                    <button id="approve-all-btn" class="px-4 py-2  bg-green-500 text-white rounded-lg hover:bg-green-600">
+                    <button id="approve-all-btn" class="px-4 py-2 rounded-lg cursor-pointer font-bold bg-gradient-to-l from-green-500 via-green-600 to-green-700 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white">
                         Setujui Semua
                     </button>
                 </div>
