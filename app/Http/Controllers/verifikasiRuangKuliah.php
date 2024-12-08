@@ -23,9 +23,11 @@ class verifikasiRuangKuliah extends Controller
         $verif = ruangan_prodi::select('nama_prodi', 'status_pengajuan')
             ->groupBy('nama_prodi', 'status_pengajuan')
             ->get();
-
+    
         foreach ($verif as $verifikasi) {
-            $ruangan_prodis = ruangan_prodi::where('nama_prodi', $verifikasi->nama_prodi)->get();
+            $ruangan_prodis = ruangan_prodi::where('nama_prodi', $verifikasi->nama_prodi)
+                ->where('status_pengajuan', $verifikasi->status_pengajuan) // Filter by status_pengajuan
+                ->get();
             
             $ruangan_details = $ruangan_prodis->map(function ($item) {
                 $ruangan = Ruangan::find($item->ruangan_id);

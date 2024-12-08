@@ -20,9 +20,9 @@ class DashboardDekanController extends Controller
         // Ambil tema dari cookie atau gunakan 'light' sebagai default
         $theme = $request->cookie('theme') ?? 'light';
         $countRuangandisetujui = ruangan_prodi::where('status_pengajuan', 'ter-verifikasi')->count();
-        $countRuangantidakdisetujui = ruangan_prodi::where('status_pengajuan', 'Ditolak')->count();
+        $countRuangantidakdisetujui = ruangan_prodi::where('status_pengajuan', 'Ditolak')->orWhereNull('status_pengajuan')->count();
         $countJadwalDisetujui = PenyusunanJadwal::where('status_pengajuan', 'ter-verifikasi')->count();
-        $countJadwalTidakDisetujui = PenyusunanJadwal::where('status_pengajuan', 'Ditolak')->count();
+        $countJadwalTidakDisetujui = PenyusunanJadwal::where('status_pengajuan', 'Ditolak')->orWhereNull('status_pengajuan')->count();
 
 
         $data = [

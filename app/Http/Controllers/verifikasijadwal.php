@@ -21,28 +21,31 @@ class verifikasijadwal extends Controller
         $theme = $request->cookie('theme') ?? 'light';
 
         $verif = PenyusunanJadwal::select('prodi', 'status_pengajuan')
-        ->groupBy('prodi', 'status_pengajuan')
-        ->get()
-        ->map(function ($verifikasi) {
-            $verifikasi->jadwal_details = PenyusunanJadwal::where('prodi', $verifikasi->prodi)->get()->map(function ($item) {
-                return [
-                    'id' => $item->id,
-                    'nama_mk' => $item->nama_mk,
-                    'kode_mk' => $item->kode_mk,
-                    'sks_mk' => $item->sks_mk,
-                    'semester_mk' => $item->semester_mk,
-                    'kelas' => $item->kelas,
-                    'tahun_ajaran' => $item->tahun_ajaran,
-                    'dosen' => $item->dosen,
-                    'ruang' => $item->ruang,
-                    'kapasitas' => $item->kapasitas,
-                    'hari' => $item->hari,
-                    'jam_mulai' => $item->jam_mulai,
-                    'jam_selesai' => $item->jam_selesai,
-                ];
+            ->groupBy('prodi', 'status_pengajuan')
+            ->get()
+            ->map(function ($verifikasi) {
+                $verifikasi->jadwal_details = PenyusunanJadwal::where('prodi', $verifikasi->prodi)
+                    ->where('status_pengajuan', $verifikasi->status_pengajuan)
+                    ->get()
+                    ->map(function ($item) {
+                        return [
+                            'id' => $item->id,
+                            'nama_mk' => $item->nama_mk,
+                            'kode_mk' => $item->kode_mk,
+                            'sks_mk' => $item->sks_mk,
+                            'semester_mk' => $item->semester_mk,
+                            'kelas' => $item->kelas,
+                            'tahun_ajaran' => $item->tahun_ajaran,
+                            'dosen' => $item->dosen,
+                            'ruang' => $item->ruang,
+                            'kapasitas' => $item->kapasitas,
+                            'hari' => $item->hari,
+                            'jam_mulai' => $item->jam_mulai,
+                            'jam_selesai' => $item->jam_selesai,
+                        ];
+                    });
+                return $verifikasi;
             });
-            return $verifikasi;
-        });
 
     return view('/verifikasijadwal', compact('user', 'verif', 'theme'));
     }
