@@ -17,7 +17,6 @@ class verifikasijadwal extends Controller
 
         $user = Auth::user();
 
-        // Ambil tema dari cookie atau gunakan 'light' sebagai default
         $theme = $request->cookie('theme') ?? 'light';
 
         $verif = PenyusunanJadwal::select('prodi', 'status_pengajuan')

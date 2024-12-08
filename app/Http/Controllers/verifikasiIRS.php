@@ -19,21 +19,15 @@ class verifikasiIRS extends Controller
         return redirect()->route('login');
     }
 
-    // Ambil data dosen berdasarkan NIP
     $user = Auth::user();
 
-    // Ambil tema dari cookie atau gunakan 'light' sebagai default
     $theme = $request->cookie('theme') ?? 'light';
 
     $dosen = Dosen::where('nip', $user->nim_nip)->first();
 
-
-    // Ambil semua mahasiswa bimbingan dosen
     $mhs_perwalian = Mahasiswa::where('id_wali', $dosen->id)->get();
-    // dd($mhs_perwalian);
     
     $mhs_belum_verifikasi = collect();
-    // Data untuk sudah terverifikasi
     $mhs_sudah_verifikasi = collect();
 
     $rekap = irs_rekap::select('kode_mk')->get();
@@ -42,7 +36,6 @@ class verifikasiIRS extends Controller
         $mhs->nama = User::where('nim_nip', $mhs->nim)->first()->nama;
         $mhs->total_sks = Irs_rekap::where('mahasiswa_id', $mhs->id)->sum('sks');
 
-        // Ambil mata kuliah
         $mhs->mata_kuliah = Irs_rekap::where('mahasiswa_id', $mhs->id)->get()
         ->map(function ($rekap) {
             $jadwal = PenyusunanJadwal::where('kode_mk', $rekap->kode_mk)
@@ -51,23 +44,18 @@ class verifikasiIRS extends Controller
             $rekap->dosen = $jadwal ? $jadwal->dosen : 'Dosen Tidak Ditemukan';
             return $rekap;
         });
-        // dd($mhs->dosen);
 
         $rekap_belum = Irs_rekap::where('mahasiswa_id', $mhs->id)
                                 ->where('status_pengajuan', null)
                                 ->get();
-        
-        // Ambil rekap IRS yang sudah diverifikasi
+
         $rekap_sudah = Irs_rekap::where('mahasiswa_id', $mhs->id)
                                 ->where('status_pengajuan', '!=', null)
                                 ->get();
 
-        // Cek apakah ada rekap IRS yang ditemukan
         $rekap_pertama = Irs_rekap::where('mahasiswa_id', $mhs->id)->first();
         $mhs->status_pengajuan = $rekap_pertama ? $rekap_pertama->status_pengajuan : null;
 
-
-        // Jika ada rekap yang belum disetujui
         if ($rekap_belum->isNotEmpty()) {
             $mhs_copy = clone $mhs;
             $mhs_copy->rekap = $rekap_belum;
@@ -75,7 +63,6 @@ class verifikasiIRS extends Controller
             $mhs_belum_verifikasi->push($mhs_copy);
         }
 
-        // Jika ada rekap yang sudah disetujui
         if ($rekap_sudah->isNotEmpty()) {
             $mhs_copy = clone $mhs;
             $mhs_copy->rekap = $rekap_sudah;
@@ -84,9 +71,6 @@ class verifikasiIRS extends Controller
         }
     }
 
-    // dd($mhs);
-
-    
     return view('verifikasiIRS', compact('user', 'mhs_belum_verifikasi', 'mhs_sudah_verifikasi', 'theme'));
 }
 
@@ -138,16 +122,15 @@ class verifikasiIRS extends Controller
         }
     }
     public function setujuiSemua()
-{
-    // Ambil semua mahasiswa yang belum diverifikasi
-    $updated = Irs_rekap::where('status_pengajuan', null)
-                ->update(['status_pengajuan' => 'disetujui']);
+    {
+        $updated = Irs_rekap::where('status_pengajuan', null)
+                    ->update(['status_pengajuan' => 'disetujui']);
 
-    if ($updated) {
-        return response()->json(['success' => true, 'message' => 'Semua mahasiswa berhasil disetujui']);
-    } else {
-        return response()->json(['success' => false, 'message' => 'Gagal menyetujui semua mahasiswa'], 500);
+        if ($updated) {
+            return response()->json(['success' => true, 'message' => 'Semua mahasiswa berhasil disetujui']);
+        } else {
+            return response()->json(['success' => false, 'message' => 'Gagal menyetujui semua mahasiswa'], 500);
+        }
     }
-}
 
 }

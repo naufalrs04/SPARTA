@@ -22,7 +22,6 @@ class JadwalPengisianIRSController extends Controller
 
         $user = Auth::user();
 
-        // Ambil nilai tema dari cookie
         $theme = $request->cookie('theme') ?? 'light';
 
         $jadwalpengisian = JadwalPengisianIRS::all();
@@ -90,7 +89,7 @@ class JadwalPengisianIRSController extends Controller
     
             return response()->json(['success' => 'Jadwal updated successfully.']);
         } catch (\Exception $e) {
-            Log::error('Failed to update jadwal: ' . $e->getMessage()); // Log the error
+            Log::error('Failed to update jadwal: ' . $e->getMessage());
             return response()->json(['error' => 'Failed to update jadwal. Please try again.'], 500);
         }
     

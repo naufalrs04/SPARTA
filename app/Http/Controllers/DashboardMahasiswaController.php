@@ -23,7 +23,6 @@ class DashboardMahasiswaController extends Controller
 
     $user = Auth::user();
 
-    // Get theme from cookie or default to 'light'
     $theme = $request->cookie('theme') ?? 'light';
 
     $mahasiswa = Mahasiswa::where('nim', $user->nim_nip)->first();
@@ -49,13 +48,11 @@ class DashboardMahasiswaController extends Controller
                     ->where('status_pengajuan', 'disetujui')
                     ->sum('sks');
 
-    // Retrieve approved schedules with related data
     $jadwal_kuliah = Irs_rekap::where('mahasiswa_id', $mahasiswa_id)
                     ->where('semester', $semester)
                     ->where('status_pengajuan', 'disetujui')
                     ->get();
 
-    // Add related timing details and sort by day
     $daysOrder = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
 
     foreach ($jadwal_kuliah as $jadwal) {
@@ -72,7 +69,6 @@ class DashboardMahasiswaController extends Controller
         }
     }
 
-    // Sort by day using custom order
     $jadwal_kuliah = $jadwal_kuliah->sortBy(function ($jadwal) use ($daysOrder) {
         return array_search($jadwal->hari, $daysOrder);
     });

@@ -17,7 +17,6 @@ class verifikasiRuangKuliah extends Controller
 
         $user = Auth::user();
 
-        // Ambil tema dari cookie atau gunakan 'light' sebagai default
         $theme = $request->cookie('theme') ?? 'light';
 
         $verif = ruangan_prodi::select('nama_prodi', 'status_pengajuan')
@@ -60,12 +59,11 @@ class verifikasiRuangKuliah extends Controller
         return response()->json(['success' => true]);
     }
     public function batal($prodi)
-{
-    // Reset the status to null (or "Belum" for pending status)
-    ruangan_prodi::where('nama_prodi', $prodi)
-        ->update(['status_pengajuan' => null]);
+    {
+        ruangan_prodi::where('nama_prodi', $prodi)
+            ->update(['status_pengajuan' => null]);
 
-    return response()->json(['success' => true]);
-}
+        return response()->json(['success' => true]);
+    }
 
 }

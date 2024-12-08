@@ -17,7 +17,6 @@ class DashboardKaprodiController extends Controller
 
         $user = Auth::user();
 
-        // Get the theme from cookies or default to 'light'
         $theme = $request->cookie('theme') ?? 'light';
         $countmatakuliah = PenyusunanJadwal::where('status_pengajuan', 'ter-verifikasi')->count();
         $countmatakuliahBelum = PenyusunanJadwal::where('status_pengajuan','Ditolak')->orWhereNull('status_pengajuan')->count();
