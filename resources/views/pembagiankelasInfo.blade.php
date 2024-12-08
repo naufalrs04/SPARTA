@@ -123,24 +123,24 @@
                         <!-- Tombol Buat Ruang -->
 <div class="flex justify-center pb-4 gap-4">
     <button id="buatRuangButton"
-        class="bg-gradient-to-l from-blue-500 via-blue-600 to-blue-700 text-white px-5 py-2 rounded-lg hover:bg-gradient-to-br shadow-md">
+        class="bg-gradient-to-l from-blue-500 via-blue-600 to-blue-700 text-white px-5 py-2 rounded-lg hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white">
         Buat Ruang
     </button>
     <button id="hapusRuangButton"
-        class="bg-gradient-to-l from-red-500 via-red-600 to-red-700 text-white px-5 py-2 rounded-lg hover:bg-gradient-to-br shadow-md">
+        class="bg-gradient-to-l from-red-500 via-red-600 to-red-700 text-white px-5 py-2 rounded-lg hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white">
         Hapus Ruang
     </button>
 </div>
 
 <!-- Modal Buat Ruang -->
 <div id="buatRuangModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 transition-opacity duration-300">
-    <div class="bg-white rounded-lg w-1/3 p-6">
+    <div class="bg-white rounded-lg w-1/3 p-6 outline outline-1" style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5); {{ $theme == 'light' ? 'background-color: #2A2C33;' : 'background-color: #EEEEEE;' }} {{ $theme == 'light' ? 'outline: 1px solid #000000;' : 'outline: 1px solid #000000;' }}">
         <!-- Konten modal -->
-        <h3 class="text-xl font-semibold mb-4 text-black">Buat Ruang Baru</h3>
+        <h3 class="text-xl font-semibold mb-4 text-center">Buat Ruang Baru</h3>
         <form id="buatRuangForm">
             @csrf
             <div class="mb-4">
-                <label for="gedung" class="block font-medium text-black">Pilih Gedung</label>
+                <label for="gedung" class="block font-medium">Pilih Gedung</label>
                 <select id="gedung" name="gedung"
                     class="w-full border-gray-300 rounded-lg p-2 focus:ring focus:ring-blue-500 text-black">
                     <option value="" selected disabled>Pilih Gedung</option>
@@ -150,7 +150,7 @@
                 </select>
             </div>
             <div class="mb-4">
-                <label for="namaRuang" class="block font-medium text-black">Nama Ruangan</label>
+                <label for="namaRuang" class="block font-medium">Nama Ruangan</label>
                 <input type="text" id="namaRuang" name="namaRuang"
                     class="w-full border-gray-300 rounded-lg p-2 focus:ring focus:ring-blue-500 text-black"
                     placeholder="Nama Ruangan sesuai gedung">
@@ -192,7 +192,7 @@
                         <!-- Dropdown Departemen -->
                         <form id="ruanganForm" method="POST" action="{{ route('simpan.ruangan') }}">
                             @csrf
-                            <h2 class="text-center text-lg font-semibold mb-5 mt-5 ml-14 rounded-lg inline-block  px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">Pilih Prodi</h2>
+                            <h2 class="text-center text-lg font-semibold mb-5 mt-5 ml-20 rounded-lg inline-block  px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">Pilih Prodi</h2>
                             <input type="hidden" id="selectedProdi" name="prodi" value="">
                             <button id="dropdownDepartemenButton"
                                 class="w-[280px] p-4 pr-10 pl-4 rounded-xl cursor-pointer transition duration-100 ease-in-out flex justify-between items-center
@@ -625,7 +625,7 @@ cancelButton.addEventListener('click', () => {
     buatRuangModal.style.display = 'none'; // Atur display menjadi none
 });
 
-
+// Validasi nama ruangan sesuai gedung
 namaRuangInput.addEventListener('input', () => {
     const gedung = gedungSelect.value;
     const namaRuang = namaRuangInput.value.toUpperCase();
@@ -641,10 +641,10 @@ namaRuangInput.addEventListener('input', () => {
     }
 });
 
+// Tangani submit form untuk pembuatan ruangan
 buatRuangForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const namaRuang = namaRuangInput.value.toUpperCase();
-
     const gedung = gedungSelect.value;
 
     // Validasi akhir sebelum submit
@@ -666,17 +666,38 @@ buatRuangForm.addEventListener('submit', async (e) => {
         const result = await response.json();
 
         if (result.success) {
-            alert(result.message);
-            location.reload();
+            // Tampilkan SweetAlert dan reload halaman setelah konfirmasi
+            Swal.fire({
+                title: 'Berhasil!',
+                text: result.message,
+                icon: 'success',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#28a745',
+            }).then(() => {
+                location.reload(); // Reload halaman setelah tombol OK ditekan
+            });
         } else {
-            alert(result.message);
+            // Tampilkan SweetAlert jika gagal
+            Swal.fire({
+                title: 'Gagal!',
+                text: result.message || 'Terjadi kesalahan saat menyimpan ruangan.',
+                icon: 'error',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#d33',
+            });
         }
     } catch (error) {
         console.error(error);
-        alert('Terjadi kesalahan.');
+        Swal.fire({
+            title: 'Error!',
+            text: 'Terjadi kesalahan saat menyimpan ruangan.',
+            icon: 'error',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#d33',
+        });
     }
 });
-    
+
     </script>
     <script>
         // Event listener untuk tombol "Hapus Ruang"

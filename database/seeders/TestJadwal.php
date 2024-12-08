@@ -30,7 +30,7 @@ class TestJadwal extends Seeder
                 'hari'=>'Senin',
                 'jam_mulai' => '12:45:00',
                 'jam_selesai'=> '13:00:00',
-                'status_pengajuan'=> 'ter-Verifikasi'      
+                'status_pengajuan'=> null,      
             ],
             [
                 'nama_mk' => 'Machine Learning',
@@ -46,7 +46,7 @@ class TestJadwal extends Seeder
                 'hari'=>'Selasa',
                 'jam_mulai' => '13:15:00',
                 'jam_selesai'=> '15:30:00',
-                'status_pengajuan'=> 'ter-Verifikasi' 
+                'status_pengajuan'=> null, 
             ],
             [
                 'nama_mk' => 'Machine Learning',
@@ -62,7 +62,7 @@ class TestJadwal extends Seeder
                 'hari'=>'Rabu',
                 'jam_mulai' => '09:30:00',
                 'jam_selesai'=> '11:00:00',
-                'status_pengajuan'=> 'ter-Verifikasi' 
+                'status_pengajuan'=> null, 
             ],
             [
                     'nama_mk' => 'Data Mining',
@@ -78,7 +78,7 @@ class TestJadwal extends Seeder
                     'hari' => 'Senin',
                     'jam_mulai' => '09:00:00',
                     'jam_selesai' => '11:15:00',
-                    'status_pengajuan' => 'ter-Verifikasi'
+                    'status_pengajuan' => null,
                 ],
                 [
                     'nama_mk' => 'Data Mining',
@@ -94,7 +94,7 @@ class TestJadwal extends Seeder
                     'hari' => 'Selasa',
                     'jam_mulai' => '13:15:00',
                     'jam_selesai' => '15:30:00',
-                    'status_pengajuan' => 'ter-Verifikasi'
+                    'status_pengajuan' => null,
                 ],
                 [
                     'nama_mk' => 'Data Mining',
@@ -110,7 +110,7 @@ class TestJadwal extends Seeder
                     'hari' => 'Rabu',
                     'jam_mulai' => '10:00:00',
                     'jam_selesai' => '12:15:00',
-                    'status_pengajuan' => 'ter-Verifikasi'
+                    'status_pengajuan' => null,
                 ],
                 [
                     'nama_mk' => 'Data Mining',
@@ -126,7 +126,7 @@ class TestJadwal extends Seeder
                     'hari' => 'Kamis',
                     'jam_mulai' => '08:00:00',
                     'jam_selesai' => '10:15:00',
-                    'status_pengajuan' => 'ter-Verifikasi'
+                    'status_pengajuan' => null,
                 ],
                 
                 [
@@ -143,7 +143,7 @@ class TestJadwal extends Seeder
                     'hari' => 'Jumat',
                     'jam_mulai' => '10:30:00',
                     'jam_selesai' => '13:00:00',
-                    'status_pengajuan' => 'ter-Verifikasi'
+                    'status_pengajuan' => null,
                 ],
                 [
                     'nama_mk' => 'Computer Vision',
@@ -159,7 +159,7 @@ class TestJadwal extends Seeder
                     'hari' => 'Senin',
                     'jam_mulai' => '12:15:00',
                     'jam_selesai' => '14:45:00',
-                    'status_pengajuan' => 'ter-Verifikasi'
+                    'status_pengajuan' => null,
                 ],
                 [
                     'nama_mk' => 'Computer Vision',
@@ -175,7 +175,7 @@ class TestJadwal extends Seeder
                     'hari' => 'Selasa',
                     'jam_mulai' => '14:00:00',
                     'jam_selesai' => '16:30:00',
-                    'status_pengajuan' => 'ter-Verifikasi'
+                    'status_pengajuan' => null,
                 ],
                 [
                     'nama_mk' => 'Computer Vision',
@@ -191,7 +191,7 @@ class TestJadwal extends Seeder
                     'hari' => 'Kamis',
                     'jam_mulai' => '09:00:00',
                     'jam_selesai' => '11:30:00',
-                    'status_pengajuan' => 'ter-Verifikasi'
+                    'status_pengajuan' => null,
                 ],
                 
                 [
@@ -208,7 +208,7 @@ class TestJadwal extends Seeder
                     'hari' => 'Rabu',
                     'jam_mulai' => '08:00:00',
                     'jam_selesai' => '10:15:00',
-                    'status_pengajuan' => 'ter-Verifikasi'
+                    'status_pengajuan' => null,
                 ],
                 [
                     'nama_mk' => 'Artificial Intelligence',
@@ -224,7 +224,7 @@ class TestJadwal extends Seeder
                     'hari' => 'Jumat',
                     'jam_mulai' => '13:15:00',
                     'jam_selesai' => '15:30:00',
-                    'status_pengajuan' => 'ter-Verifikasi'
+                    'status_pengajuan' => null,
                 ],
                 [
                     'nama_mk' => 'Artificial Intelligence',
@@ -240,7 +240,7 @@ class TestJadwal extends Seeder
                     'hari' => 'Senin',
                     'jam_mulai' => '11:30:00',
                     'jam_selesai' => '13:45:00',
-                    'status_pengajuan' => 'ter-Verifikasi'
+                    'status_pengajuan' => null,
                 ],
                 [
                     'nama_mk' => 'Artificial Intelligence',
@@ -256,7 +256,7 @@ class TestJadwal extends Seeder
                     'hari' => 'Selasa',
                     'jam_mulai' => '14:30:00',
                     'jam_selesai' => '16:45:00',
-                    'status_pengajuan' => 'ter-Verifikasi'
+                    'status_pengajuan' => null,
                 ]
                 ];
             

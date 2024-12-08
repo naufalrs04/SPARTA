@@ -28,7 +28,7 @@ class mahasiswa extends Seeder
             [
                 'nim' => '24060119130068',
                 'status' => null,
-                'semester' => 2,
+                'semester' => 3,
                 'prodi' => 'Informatika',
                 'IPK' => 3.79,
                 'IPS_Sebelumnya' => 3.91,
