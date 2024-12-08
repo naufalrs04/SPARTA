@@ -48,10 +48,90 @@
                 </div>
             </div>
 
+            <div class="mt-12 ">
+                <div class="text-center">
+                    <h3 class="text-xl font-semibold mb-4 text-center inline-block px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">Menambahkan Mata Kuliah Baru</h3>
+                </div>
+                <div class="flex justify-center pb-4 gap-4">
+                    <button id="buatmatkulButton"
+                        class="bg-gradient-to-l from-blue-500 via-blue-600 to-blue-700 text-white px-5 py-2 rounded-lg hover:bg-gradient-to-br shadow-md">
+                        Tambah Mata Kuliah
+                    </button>
+                    <button id="hapusmatkulButton"
+                        class="bg-gradient-to-l from-red-500 via-red-600 to-red-700 text-white px-5 py-2 rounded-lg hover:bg-gradient-to-br shadow-md">
+                        Hapus Mata Kuliah
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modal to add Mata Kuliah -->
+            <div id="buatmatkulModal" class="hidden inset-0 z-50 flex justify-center items-center mb-10">
+                <div class="bg-white rounded-lg w-1/2 p-6 shadow-lg">
+                    <h3 class="text-2xl font-bold text-center">Tambah Mata Kuliah</h3>
+                    <form id="matkul-form">
+                        @csrf
+                        <div class="mb-4">
+                            <label for="kodeMK" class="block font-medium">Kode Mata Kuliah</label>
+                            <input type="text" id="kodeMK" name="kodeMK" class="w-full border-gray-300 rounded-lg p-2" required />
+                        </div>
+                        <div class="mb-4">
+                            <label for="namaMK" class="block font-medium">Nama Mata Kuliah</label>
+                            <input type="text" id="namaMK" name="namaMK" class="w-full border-gray-300 rounded-lg p-2" required />
+                        </div>
+                        <div class="mb-4">
+                            <label for="sksMK" class="block font-medium">SKS Mata Kuliah</label>
+                            <input type="number" id="sksMK" name="sksMK" class="w-full border-gray-300 rounded-lg p-2" required />
+                        </div>
+                        <div class="mb-4">
+                            <label for="smtMK" class="block font-medium">Semester Mata Kuliah</label>
+                            <input type="number" id="smtMK" name="smtMK" class="w-full border-gray-300 rounded-lg p-2" required />
+                        </div>
+                        <div class="mb-4">
+                            <label for="prodiMK" class="block font-medium">Prodi Mata Kuliah</label>
+                            <input type="text" id="prodiMK" name="prodiMK" class="w-full border-gray-300 rounded-lg p-2" readonly disabled />
+                        </div>
+                        <div class="flex justify-end gap-3">
+                            <button type="button" id="cancelButton" class="transition-colors duration-200 px-4 py-2 rounded-lg bg-gradient-to-l from-yellow-500 via-yellow-600 to-yellow-700 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white {{ $theme == 'light' ? 'text-gray-100' : 'text-gray-100' }}">Batal</button>
+                            <button type="submit" class="font-bold py-2 px-4 rounded-lg ml-2 bg-gradient-to-l from-green-500 via-green-600 to-green-700 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Modal to delete Mata Kuliah -->
+            <div id="hapusmatkulModal" class="hidden inset-0 z-50 flex justify-center items-center">
+                <div class="bg-white rounded-lg w-1/2 p-6 shadow-lg">
+                    <h3 class="text-2xl font-bold text-center mb-5">Hapus Mata Kuliah</h3>
+                        <form id="hapusmatkul-form">
+                        @csrf
+                        <div class="mb-4">
+                            <label for="namamk" class="block font-medium">Pilih Mata Kuliah untuk Dihapus</label>
+                            <select id="namamk" name="namaMK" class="w-full border-gray-300 rounded-lg p-2" required>
+                                <option value="" selected disabled>Pilih Mata Kuliah</option>
+                                @foreach ($matakuliah as $matkul)
+                                    <option value="{{ $matkul->nama }}" 
+                                        data-kodemk="{{ $matkul->kode }}" 
+                                        data-sksmk="{{ $matkul->sks }}" 
+                                        data-smtmk="{{ $matkul->semester }}" 
+                                        data-prodimk="{{ $matkul->prodi }}">
+                                        {{ $matkul->nama }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="flex justify-end gap-3">
+                            <button type="button" id="cancelHapusButton" class="transition-colors duration-200 px-4 py-2 rounded-lg bg-gradient-to-l from-yellow-500 via-yellow-600 to-yellow-700 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white {{ $theme == 'light' ? 'text-gray-100' : 'text-gray-100' }}">Batal</button>
+                            <button type="submit" class=" font-bold py-2 px-4 rounded-lg ml-2 bg-gradient-to-l from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-bl hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white">Hapus</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
             <div class="flex justify-center items-center my-10">
                 <div class="max-w-6xl w-full p-6 rounded-3xl px-8 items-center outline outline-1" style="box-shadow: 4px 6px 1px 1px rgba(0, 0, 0, 2.5); {{ $theme == 'light' ? 'background-color: #2A2C33;' : 'background-color: #EEEEEE;' }} {{ $theme == 'light' ? 'outline: 1px solid #000000;' : 'outline: 1px solid #000000;' }}">
                     <div class="text-center">
-                    <h3 class="text-xl font-semibold mb-4 text-center inline-block px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">Tambah Mata Kuliah</h3>
+                    <h3 class="text-xl font-semibold mb-4 text-center inline-block px-2 bg-opacity-50 {{ $theme == 'light' ? '' : 'bg-[#ffeeb6]' }}">Kelola Mata Kuliah</h3>
                     </div>
 
                     <form id="jadwal-form" method="POST" action="{{ route('jadwal.store') }}">
@@ -113,11 +193,30 @@
                                         <option value="E">E</option>
                                     </select>
                                 </div>
+                                
+                                @php
+                                    $tahunSekarang = date('Y');
+                                    $semester = ['Ganjil', 'Genap']; 
+                                    $tahunAjaran = [];
+
+                                    for ($tahunAwal = 2022; $tahunAwal <= $tahunSekarang; $tahunAwal++) {
+                                        $tahunAkhir = $tahunAwal + 1;
+                                        foreach ($semester as $smt) {
+                                            $tahunAjaran[] = "$tahunAwal/$tahunAkhir $smt";
+                                        }
+                                    }
+                                @endphp
 
                                 <div class="mb-4">
                                     <label for="tahun_ajaran" class="block text-sm font-medium mb-2">Tahun Ajaran</label>
-                                    <input type="text" id="tahun_ajaran" name="tahun_ajaran"
-                                    class="w-full p-2 border rounded-xl {{ $theme == 'light' ? 'bg-gray-700 border-gray-900 hover:border-gray-500 text-gray-200' : 'bg-gray-300 border-gray-400 hover:border-gray-600 text-gray-600' }}" required>
+                                    <select id="tahun_ajaran" name="tahun_ajaran"
+                                        class="w-full p-2 border rounded-xl {{ $theme == 'light' ? 'bg-gray-700 border-gray-900 hover:border-gray-500 text-gray-200' : 'bg-gray-300 border-gray-400 hover:border-gray-600 text-gray-600' }}"
+                                        required>
+                                        <option value="" disabled selected>-- Pilih Tahun Ajaran --</option>
+                                        @foreach ($tahunAjaran as $ta)
+                                            <option value="{{ $ta }}">{{ $ta }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
 
                                 <div class="mb-4">
@@ -610,5 +709,124 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 </script>
+
+
+<script>
+    document.getElementById('namamk').addEventListener('change', function() {
+        var selectedOption = this.options[this.selectedIndex];
+
+        var kodeMK = selectedOption.getAttribute('data-kodemk');
+        var sksMK = selectedOption.getAttribute('data-sksmk');
+        var smtMK = selectedOption.getAttribute('data-smtmk');
+        var prodiMK = selectedOption.getAttribute('data-prodimk');
+
+        console.log(kodeMK, sksMK, smtMK, prodiMK);
+
+        document.getElementById('kodeMK').value = kodeMK;
+        document.getElementById('sksMK').value = sksMK;
+        document.getElementById('smtMK').value = smtMK;
+        document.getElementById('prodiMK').value = prodiMK;
+    });
+</script>
+
+<script>
+    // Show Add Mata Kuliah Modal
+    document.getElementById('buatmatkulButton').addEventListener('click', () => {
+        document.getElementById('buatmatkulModal').classList.remove('hidden');
+    });
+
+    // Show Delete Mata Kuliah Modal
+    document.getElementById('hapusmatkulButton').addEventListener('click', () => {
+        document.getElementById('hapusmatkulModal').classList.remove('hidden');
+    });
+
+    // Cancel Add Mata Kuliah Modal
+    document.getElementById('cancelButton').addEventListener('click', () => {
+        document.getElementById('buatmatkulModal').classList.add('hidden');
+    });
+
+    // Cancel Delete Mata Kuliah Modal
+    document.getElementById('cancelHapusButton').addEventListener('click', () => {
+        document.getElementById('hapusmatkulModal').classList.add('hidden');
+    });
+
+    // Handle form submission for adding Mata Kuliah
+    document.getElementById('matkul-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const formData = new FormData(this);
+        fetch('/penyusunan-jadwal/tambah', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                Swal.fire('Success', data.message, 'success');
+                document.getElementById('buatmatkulModal').classList.add('hidden');
+                location.reload(); // Reload page to reflect changes
+            } else {
+                Swal.fire('Error', data.message, 'error');
+            }
+        })
+        .catch(error => {
+            Swal.fire('Error', 'Failed to add Mata Kuliah', 'error');
+        });
+    });
+
+    document.getElementById('namamk').addEventListener('change', function() {
+        const selectedOption = this.options[this.selectedIndex];
+        
+    });
+
+    // Handle form submission for deleting Mata Kuliah
+    document.getElementById('hapusmatkul-form').addEventListener('submit', function (event) {
+        event.preventDefault(); // Cegah form dari pengiriman default
+
+        const formData = new FormData(this); // Ambil data dari form
+        const namaMK = formData.get('namaMK'); // Ambil nama mata kuliah
+
+        fetch('/penyusunan-jadwal/hapus', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    Swal.fire('Success', data.message, 'success');
+                    document.getElementById('hapusmatkulModal').classList.add('hidden');
+                    location.reload(); // Reload halaman setelah berhasil
+                } else {
+                    Swal.fire('Error', data.message, 'error');
+                }
+            })
+            .catch((error) => {
+                Swal.fire('Error', 'Failed to delete Mata Kuliah', 'error');
+            });
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        fetch('/penyusunan-jadwal/get-dosen-prodi')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                document.getElementById('prodiMK').value = data.prodi;
+            } else {
+                console.error('Failed to fetch prodi:', data.message);
+            }
+        })
+        .catch(error => console.error('Error fetching prodi:', error));
+    });
+</script>
+
 
 </html>

@@ -56,12 +56,14 @@ class PenyusunanJadwalController extends Controller
         // dd($mklist);
         $dosen = Dosen::all();
 
+        $matakuliah = Mata_Kuliah::all();
+
         foreach ($dosen as $daftar_dosen) {
             $daftar_dosen->nama = User::where('nim_nip', $daftar_dosen->nip)->first()->nama;
         }
         // dd($daftar_dosen);
         // dd($mklist);
-        return view('penyusunanjadwal', compact('user', 'matakuliahList','mklist','ruanganDetailList','dosen', 'theme','countmatakuliah'));
+        return view('penyusunanjadwal', compact('user', 'matakuliahList','mklist','ruanganDetailList','dosen', 'theme','countmatakuliah', 'matakuliah'));
     }
 
     public function penyusunanjadwalkuliah() 
@@ -197,6 +199,115 @@ class PenyusunanJadwalController extends Controller
         return response()->json([
             'success' => false,
             'message' => 'Terjadi kesalahan saat menghapus mata kuliah.'
+        ], 500);
+    }
+}
+
+    public function getDosenProdi()
+    {
+        $nip = Auth::user()->nim_nip;
+        $prodi = Dosen::where('nip', $nip)->value('prodi');
+
+        if ($prodi) {
+            return response()->json([
+                'success' => true,
+                'prodi' => $prodi,
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Prodi dosen tidak ditemukan.',
+        ]);
+    }
+
+    public function storeMataKuliah(Request $request) {
+        $validated = $request->validate([
+            'kodeMK' => 'required|string|max:50|unique:mata_kuliahs,kode',
+            'namaMK' => 'required|string|max:255',
+            'sksMK' => 'required|integer|min:1',
+            'smtMK' => 'required|integer|min:1|max:8',
+        ]);
+
+        $dosenProdi = Dosen::where('nip', Auth::user()->nim_nip)->value('prodi');
+
+        if (!$dosenProdi) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Prodi tidak ditemukan untuk user ini.',
+            ]);
+        }
+
+        $existingmatakuliah = Mata_Kuliah::where('kode', $request->input('kodeMK'))->first();
+
+        if ($existingmatakuliah) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Mata Kuliah sudah ada.',
+            ]);
+        }
+
+        Mata_Kuliah::create([
+            'kode' => $validated['kodeMK'],
+            'nama' => $validated['namaMK'],
+            'sks' => $validated['sksMK'],
+            'semester' => $validated['smtMK'],
+            'prodi' => $dosenProdi,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Mata Kuliah berhasil ditambahkan.',
+        ]);
+    }
+
+
+    public function getMataKuliah($id)
+    {
+        $matkul = Mata_Kuliah::find($id);
+
+        if ($matkul) {
+            return response()->json([
+                'success' => true,
+                'matkul' => $matkul,
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Mata Kuliah tidak ditemukan.',
+        ]);
+    }
+
+    public function hapusMataKuliah(Request $request)
+{
+    // Validasi input
+    $request->validate([
+        'namaMK' => 'required|string',
+    ]);
+
+    try {
+        // Cari data mata kuliah berdasarkan namaMK
+        $mataKuliah = Mata_Kuliah::where('nama', $request->namaMK)->first();
+
+        if (!$mataKuliah) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Mata Kuliah tidak ditemukan!',
+            ], 404);
+        }
+
+        // Hapus data mata kuliah
+        $mataKuliah->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Mata Kuliah berhasil dihapus.',
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Terjadi kesalahan saat menghapus Mata Kuliah.',
         ], 500);
     }
 }

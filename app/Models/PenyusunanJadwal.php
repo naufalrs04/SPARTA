@@ -13,7 +13,6 @@ class PenyusunanJadwal extends Model
     protected $table ='penyusunan_jadwals';
     
     protected $fillable = [
-        // other fields
         'nama_mk',
         'kode_mk',
         'sks_mk',
