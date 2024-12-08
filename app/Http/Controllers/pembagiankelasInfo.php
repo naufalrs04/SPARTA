@@ -67,12 +67,12 @@ class pembagiankelasInfo extends Controller
         'prodi' => 'required|string',
         'ruangan' => 'required|array',
         'ruangan.*' => 'exists:ruangans,id',
-        'kapasitas' => 'required|integer|min:1', // Validasi kapasitas
+        'kapasitas' => 'required|integer|min:1', 
     ]);
 
     $prodi = $request->input('prodi');
     $ruanganIds = $request->input('ruangan');
-    $kapasitas = $request->input('kapasitas'); // Ambil kapasitas
+    $kapasitas = $request->input('kapasitas'); 
 
     $existingRuangan = ruangan_prodi::where('nama_prodi', $prodi)
         ->whereIn('ruangan_id', $ruanganIds)
@@ -88,7 +88,7 @@ class pembagiankelasInfo extends Controller
         ruangan_prodi::create([
             'ruangan_id' => $ruanganId,
             'nama_prodi' => $prodi,
-            'kapasitas' => $kapasitas, // Simpan kapasitas
+            'kapasitas' => $kapasitas,
         ]);
     }
 
@@ -97,14 +97,12 @@ class pembagiankelasInfo extends Controller
 
 public function destroy($id)
 {
-    // Cari data ruangan_prodi berdasarkan ruangan_id dan nama_prodi
     $ruanganProdi = ruangan_prodi::where('ruangan_id', $id)->first();
 
     if (!$ruanganProdi) {
         return response()->json(['error' => 'Ruangan tidak ditemukan pada prodi ini'], 404);
     }
 
-    // Hapus entri dari tabel ruangan_prodi
     $ruanganProdi->delete();
 
     return response()->json(['success' => 'Ruangan berhasil dihapus dari Prodi'], 200);
@@ -116,7 +114,6 @@ public function storeRuangan(Request $request)
         'gedung' => 'required|string',
     ]);
 
-    // Periksa apakah nama ruangan sudah ada
     $existingRuangan = Ruangan::where('nama', $request->input('nama'))->first();
     if ($existingRuangan) {
         return response()->json([
@@ -125,11 +122,9 @@ public function storeRuangan(Request $request)
         ]);
     }
 
-    // Ambil huruf awal dari nama gedung
     $namaGedung = $request->input('gedung');
-    $hurufAwalGedung = substr($namaGedung, -1); // Ambil huruf terakhir dari "Gedung X"
+    $hurufAwalGedung = substr($namaGedung, -1);
 
-    // Validasi apakah nama ruangan sesuai dengan huruf awal gedung
     if (strtoupper($request->input('nama'))[0] !== $hurufAwalGedung) {
         return response()->json([
             'success' => false,
@@ -145,7 +140,6 @@ public function storeRuangan(Request $request)
         ]);
     }
 
-    // Simpan ruangan ke database
     Ruangan::create([
         'nama' => $request->input('nama'),
         
@@ -169,23 +163,19 @@ public function deleteRuangan($id)
 {
     $ruangan = Ruangan::find($id);
 
-    // Cek apakah ruangan ditemukan
     if (!$ruangan) {
         return response()->json(['success' => false, 'message' => 'Ruangan tidak ditemukan.'], 404);
     }
 
-    // Cek apakah ruangan digunakan oleh prodi
     $ruanganProdi = ruangan_prodi::where('ruangan_id', $id)->first();
 
-    // Jika ruangan terpakai oleh prodi, tidak bisa dihapus
     if ($ruanganProdi) {
         return response()->json([
             'success' => false,
             'message' => 'Ruangan tidak dapat dihapus karena dipakai oleh prodi: ' . $ruanganProdi->nama_prodi
-        ], 400); // Kode status 400 untuk Bad Request
+        ], 400);
     }
 
-    // Jika ruangan tidak terpakai, hapus ruangan
     $ruangan->delete();
 
     return response()->json(['success' => true, 'message' => 'Ruangan berhasil dihapus.'], 200);

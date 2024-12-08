@@ -28,13 +28,10 @@ class PenyusunanJadwalController extends Controller
         }
         $user = Auth::user();
         $countmatakuliah = PenyusunanJadwal::count();
-        // Ambil tema dari cookie atau gunakan 'light' sebagai default
         $theme = $request->cookie('theme') ?? 'light';
 
         $matakuliahList = Mata_Kuliah::select('kode as kodemk', 'nama as namemk', 'sks as sksmk', 'semester as smtmk', 'prodi as prodimk')->get();
-        // dd($matakuliahList);
         foreach ($matakuliahList as $matakuliah) {
-            // Ambil daftar ruangan_id yang sesuai dengan prodi mata kuliah
             $ruanganList = ruangan_prodi::where('nama_prodi', $matakuliah->prodimk)
                         ->where('status_pengajuan', 'ter-Verifikasi') 
                         ->select('ruangan_id','kapasitas')
@@ -47,13 +44,10 @@ class PenyusunanJadwalController extends Controller
                     'kapasitas' => $ruangan->kapasitas
                 ];
             }
-            // Tambahkan daftar ruangan dengan detail kapasitas ke objek mata kuliah
             $matakuliah->ruangan_detail = $ruanganDetailList;
         }
-        // dd($matakuliah);
-        // dd($ruanganDetailList);
+
         $mklist = PenyusunanJadwal::all();
-        // dd($mklist);
         $dosen = Dosen::all();
 
         $matakuliah = Mata_Kuliah::all();
@@ -61,8 +55,6 @@ class PenyusunanJadwalController extends Controller
         foreach ($dosen as $daftar_dosen) {
             $daftar_dosen->nama = User::where('nim_nip', $daftar_dosen->nip)->first()->nama;
         }
-        // dd($daftar_dosen);
-        // dd($mklist);
         return view('penyusunanjadwal', compact('user', 'matakuliahList','mklist','ruanganDetailList','dosen', 'theme','countmatakuliah', 'matakuliah'));
     }
 
@@ -84,9 +76,8 @@ class PenyusunanJadwalController extends Controller
      */
     public function store(Request $request)
 {
-    Log::info($request->all()); // Log semua input yang diterima
+    Log::info($request->all()); 
 
-    // Validasi data
     $validatedData = $request->validate([
         'nama_mk' => 'required|string',
         'kode_mk' => 'required|string',
@@ -95,7 +86,7 @@ class PenyusunanJadwalController extends Controller
         'prodi' => 'required|string',
         'kelas' => 'required|string',
         'tahun_ajaran' => 'required|string',
-        'dosen' => 'required|array', // Pastikan ini adalah array jika bisa memilih lebih dari satu dosen
+        'dosen' => 'required|array', 
         'ruang' => 'required|string',
         'kapasitas' => 'required|integer',
         'hari' => 'required|string',
@@ -129,7 +120,7 @@ class PenyusunanJadwalController extends Controller
 
         $penyusunanJadwal = new PenyusunanJadwal();
         $penyusunanJadwal->fill($validatedData);
-        $penyusunanJadwal->dosen = implode(',', $validatedData['dosen']); // Menyimpan dosen sebagai string
+        $penyusunanJadwal->dosen = implode(',', $validatedData['dosen']); 
         $penyusunanJadwal->save();
 
         return response()->json([
@@ -175,7 +166,6 @@ class PenyusunanJadwalController extends Controller
     public function destroy($id)
 {
     try {
-        // Cari data berdasarkan ID
         $penyusunanJadwal = PenyusunanJadwal::find($id);
 
         if (!$penyusunanJadwal) {
@@ -185,7 +175,6 @@ class PenyusunanJadwalController extends Controller
             ], 404);
         }
 
-        // Hapus data
         $penyusunanJadwal->delete();
 
         return response()->json([
@@ -193,7 +182,6 @@ class PenyusunanJadwalController extends Controller
             'message' => 'Mata kuliah berhasil dihapus.'
         ]);
     } catch (\Exception $e) {
-        // Log error jika ada
         Log::error('Error saat menghapus mata kuliah: ' . $e->getMessage());
 
         return response()->json([
@@ -254,14 +242,12 @@ class PenyusunanJadwalController extends Controller
     }
 
     public function hapusMataKuliah(Request $request)
-{
-    // Validasi input
+    {
     $request->validate([
         'namaMK' => 'required|string',
     ]);
 
     try {
-        // Cari data mata kuliah berdasarkan namaMK
         $mataKuliah = Mata_Kuliah::where('nama', $request->namaMK)->first();
 
         if (!$mataKuliah) {
@@ -271,7 +257,6 @@ class PenyusunanJadwalController extends Controller
             ], 404);
         }
 
-        // Hapus data mata kuliah
         $mataKuliah->delete();
 
         return response()->json([

@@ -412,8 +412,6 @@
                 return;
             }
 
-
-            // Show confirmation dialog
             Swal.fire({
                 title: 'Konfirmasi',
                 text: "Apakah Anda yakin ingin menyimpan data ini?",
@@ -431,7 +429,6 @@
             });
         });
 
-        // Show SweetAlert on successful form submission
         @if(session('success'))
         Swal.fire({
             title: 'Sukses!',
@@ -533,7 +530,6 @@
                 `;
             }).join('');
 
-            // Tampilkan pop-up dengan SweetAlert dan tabel
             Swal.fire({
                 title: `<strong>Detail Ruangan - ${namaProdi}</strong>`,
                 html: `

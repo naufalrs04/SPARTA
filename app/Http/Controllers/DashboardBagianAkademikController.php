@@ -16,16 +16,14 @@ class DashboardBagianAkademikController extends Controller
 
         $user = Auth::user();
 
-        // Ambil tema dari cookie atau gunakan 'light' sebagai default
         $theme = $request->cookie('theme') ?? 'light';
         $countRuanganProdi = ruangan_prodi::count();
 
-        // Count semua ruangan di tabel ruangan
         $countRuangan = Ruangan::count();
         $data = [
             'nama' => $user->nama,
             'nim_nip' => $user->nim_nip,
-            'status' => $user->status, // Pastikan field ini ada dalam model User
+            'status' => $user->status,
             'countRuanganProdi' => $countRuanganProdi,
             'countRuangan' => $countRuangan,
         ];

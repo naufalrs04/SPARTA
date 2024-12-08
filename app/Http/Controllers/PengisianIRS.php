@@ -30,12 +30,8 @@ class PengisianIRS extends Controller
         $theme = $request->cookie('theme') ?? 'light';
 
         $mahasiswa = Mahasiswa::where('nim', $user->nim_nip)->first();
-        //$mahasiswa = Mahasiswa::with('dosenWali.user')->where('nim', $user->nim_nip)->first();
-        // if ($mahasiswa) {
-        //     $dosenWaliNama = $mahasiswa->dosenWali ? $mahasiswa->dosenWali->user->nama : 'Tidak ada dosen wali';
-        // }
+
         if ($mahasiswa) {
-            // Mengecek apakah mahasiswa memiliki dosen wali
             $dosenWali = Dosen::with('user')->find($mahasiswa->id_wali);
         
             if ($dosenWali && $dosenWali->user) {
@@ -46,19 +42,17 @@ class PengisianIRS extends Controller
                 $dosenWaliNip = 'Tidak ada NIP';
             }
         }
-        //$dosenWali = Dosen::with('user')->find($mahasiswa->id_wali);
-        //$dosenWaliNama = $dosenWali->user->nama;
+
         $mahasiswa_id = $mahasiswa->id;
         $ips=$mahasiswa->IPS_Sebelumnya;
         $maxSKS = $ips > 3 ? 24 : 20;
         $semesterMahasiswa = $mahasiswa->semester;
-        // Ambil semua data dari irs_rekap berdasarkan mahasiswa_id dan semester
+
         $irs_rekap = irs_rekap::where('mahasiswa_id', $mahasiswa_id)
             ->where('semester', $semesterMahasiswa)
             ->get();
 
         foreach ($irs_rekap as $rekap) {
-            // Waktu
             $rekap->hari = PenyusunanJadwal::where('kode_mk', $rekap->kode_mk)->first()->hari;
             $rekap->jam_mulai = PenyusunanJadwal::where('kode_mk', $rekap->kode_mk)->first()->jam_mulai;
             $rekap->jam_selesai = PenyusunanJadwal::where('kode_mk', $rekap->kode_mk)->first()->jam_selesai;
@@ -68,17 +62,11 @@ class PengisianIRS extends Controller
         }
         $status_pengajuan = $irs_rekap->first() ? $irs_rekap->first()->status_pengajuan : null;
 
-        // Group records by `status_pengajuan`, including `null` as a separate group
         $groupedByStatus = $irs_rekap->groupBy(function ($item) {
             return $item->status_pengajuan ?? null;
         });
-        // dd($groupedByStatus);
 
         $status = $groupedByStatus->keys()->firstWhere(fn($value) => $value !== 'disetujui') ?? $groupedByStatus->keys()->first();
-        // dd($status);
-        // $status = irs_rekap::where ('mahasiswa_id', $mahasiswa_id)
-
-        // dd($rekap); 
 
         $groupedByMahasiswa = $irs_rekap->groupBy('mahasiswa_id');
 
@@ -87,23 +75,18 @@ class PengisianIRS extends Controller
             $groupedData[$mahasiswaId] = $rekaps->groupBy('semester');
         }
 
-        // dd($groupedData);
-
         $prodi = $mahasiswa->prodi;
 
         $list_mata_kuliah = PenyusunanJadwal::where('status_pengajuan', 'ter-Verifikasi')
                         ->where('prodi', $prodi) 
                         ->get()
                         ->each(function ($mata_kuliah) {
-                            // Hitung jumlah mahasiswa yang telah mengambil mata kuliah berdasarkan jadwal_id
                             $mata_kuliah->jumlah_pendaftar = irs_rekap::where('jadwal_id', $mata_kuliah->id)->count();
                         });
-        
-        // dd($list_mata_kuliah);
+    
 
         $tanggalSekarang = Carbon::now();
     
-        // Cari fase 'Pengisian IRS' di tabel jadwal_pengisian_irs yang aktif
         $fasePengisianIRS = JadwalPengisianIRS::where('keterangan', 'Pengisian IRS')
             ->where('jadwalmulai', '<=', $tanggalSekarang)
             ->where('jadwalberakhir', '>=', $tanggalSekarang)
@@ -140,7 +123,6 @@ class PengisianIRS extends Controller
     $semester = $mahasiswa->semester;
     $ips = $mahasiswa->IPS_Sebelumnya;
 
-    // Define SKS limits based on IPS
     $maxSKS = 20;
     if ($ips >= 3) {
         $maxSKS = 24;
@@ -152,12 +134,10 @@ class PengisianIRS extends Controller
     $semesterMataKuliah = $mataKuliahJadwal->semester_mk;
     $kapasitas = $validated['kapasitas'];
 
-    // Calculate the current total SKS for the student in the current semester
     $currentSKS = irs_rekap::where('mahasiswa_id', $mahasiswa_id)
                     ->where('semester', $semester)
                     ->sum('sks');
 
-    // Check if adding the new course exceeds the maximum SKS limit
     if (($currentSKS + $validated['sks_mk']) > $maxSKS) {
         return response()->json([
             'success' => false,
@@ -165,21 +145,19 @@ class PengisianIRS extends Controller
         ], 422);
     }
 
-    // Check if course capacity is full
     $jumlah_pendaftar = Irs_rekap::where('kode_mk', $validated['kode_mk'])
                                  ->where('kelas', $validated['kelas'])
                                  ->count();
 
-    // Memberikan Prioritas kepada mahasiswa
     $prioritas = 1;
     if ($semester == $semesterMataKuliah) {
-        $prioritas = 1; // Prioritas berdasarkan semester (Semester yang sama)
+        $prioritas = 1; 
     } 
     elseif ($semester > $semesterMataKuliah) {
-        $prioritas = 2; // Prioritas angkatan atas
+        $prioritas = 2; 
     }
     else {
-        $prioritas = 3; // Prioritas angkatan bawah
+        $prioritas = 3; 
     }
     
 
@@ -210,7 +188,6 @@ class PengisianIRS extends Controller
         ->where('semester', $semester)
         ->get();
 
-    // Check if course has already been taken
     if ($existingIrs->contains('kode_mk', $validated['kode_mk'])) {
         return response()->json([
             'success' => false,
@@ -218,7 +195,6 @@ class PengisianIRS extends Controller
         ], 422);
     }
 
-    // Check for schedule conflicts
     $mataKuliah = PenyusunanJadwal::find($validated['kode_mk']);
     foreach ($existingIrs as $irs) {
         $existingMataKuliah = $irs->mataKuliah;
@@ -230,7 +206,6 @@ class PengisianIRS extends Controller
         }
     }
 
-    // Store IRS data if no conflicts
     try {
         $irsRekap = irs_rekap::updateOrCreate(
             [
@@ -274,16 +249,15 @@ class PengisianIRS extends Controller
 
     private function isTimeConflict($mataKuliah1, $mataKuliah2)
 {
-    // Pastikan kedua mata kuliah memiliki informasi jadwal yang diperlukan
+
     if (
         !isset($mataKuliah1->hari, $mataKuliah1->jam_mulai, $mataKuliah1->jam_selesai) ||
         !isset($mataKuliah2->hari, $mataKuliah2->jam_mulai, $mataKuliah2->jam_selesai)
     ) {
         Log::warning('Incomplete schedule information for mata kuliah comparison');
-        return false; // atau tangani sesuai kebutuhan aplikasi
+        return false; 
     }
 
-    // Periksa apakah jadwal hari dan waktu bertabrakan
     return $mataKuliah1->hari === $mataKuliah2->hari &&
            $mataKuliah1->jam_mulai < $mataKuliah2->jam_selesai &&
            $mataKuliah2->jam_mulai < $mataKuliah1->jam_selesai;
@@ -301,7 +275,6 @@ class PengisianIRS extends Controller
         $mahasiswa = Mahasiswa::where('nim', $user->nim_nip)->first();
         $mahasiswaId = $mahasiswa->id;
 
-        // Periksa apakah data yang ingin dihapus ada
         $irsRekapExists = DB::table('irs_rekap')
             ->where('mahasiswa_id', $mahasiswaId)
             ->where('kode_mk', $request->id)
@@ -310,7 +283,6 @@ class PengisianIRS extends Controller
 
         if ($irsRekapExists) {
             try {
-                // Lakukan penghapusan
                 DB::table('irs_rekap')
                     ->where('mahasiswa_id', $mahasiswaId)
                     ->where('kode_mk', $request->id)

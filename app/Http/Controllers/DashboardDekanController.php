@@ -17,7 +17,6 @@ class DashboardDekanController extends Controller
 
         $user = Auth::user();
 
-        // Ambil tema dari cookie atau gunakan 'light' sebagai default
         $theme = $request->cookie('theme') ?? 'light';
         $countRuangandisetujui = ruangan_prodi::where('status_pengajuan', 'ter-verifikasi')->count();
         $countRuangantidakdisetujui = ruangan_prodi::where('status_pengajuan', 'Ditolak')->count();

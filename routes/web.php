@@ -40,14 +40,12 @@ Route::post('/update-status', [RegistrasiController::class, 'updateStatus'])->na
 
 Route::get('/khs', [KHSController::class, 'index'])->middleware('auth')->name('khs');
 
-// Route untuk index
 Route::get('/pengisianirs', [PengisianIRS::class, 'index'])->middleware('auth')->name('pengisianirs');
 
 
 Route::post('/irs-rekap/store', [PengisianIRS::class, 'store'])->name('irs-rekap.store');
 Route::delete('/irs-rekap/destroy', [PengisianIRS::class, 'destroy'])->name('irs-rekap.destroy');
 Route::post('/irs-rekap/ajukan', [PengisianIRS::class, 'storeToIrsLempar'])->name('irs.ajukan');
-// Route::post('/irs-rekap/batal', [PengisianIRS::class, 'batalIRS']);
 
 Route::get('/dashboardMahasiswa', [DashboardMahasiswaController::class, 'index'])->middleware('auth') ->name('dashboardMahasiswa');
 
@@ -66,9 +64,6 @@ Route::post('/penyusunan-jadwal/tambah', [PenyusunanJadwalController::class, 'st
 Route::get('/penyusunan-jadwal/get-mata-kuliah/{id}', [PenyusunanJadwalController::class, 'getMataKuliah']);
 Route::post('/penyusunan-jadwal/hapus', [PenyusunanJadwalController::class, 'hapusMataKuliah'])->name('mataKuliah.hapus');
 
-
-
-// Route::post('/penyusunan-jadwal/store', [PenyusunanJadwalController::class, 'store'])->name('penyusunan-jadwal.store');
 Route::post('/jadwal/tambah', [PenyusunanJadwalController::class, 'store'])->name('jadwal.store');
 Route::get('/jadwalpengisianIRS', [JadwalPengisianIRSController::class, 'index'])->middleware('auth')->name('jadwalpengisianIRS');
 Route::delete('/penyusunan-jadwal/{id}', [PenyusunanJadwalController::class, 'destroy']);

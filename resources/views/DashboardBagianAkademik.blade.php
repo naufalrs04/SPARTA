@@ -18,15 +18,13 @@
             --color-text-dark: #fff;
             --color-border-dark: #fff;
         }
-    
-        /* Light Theme */
+
         .light-theme .welcome-message, 
         .light-theme .welcome-message-static {
             color: var(--color-text-light);
             border-right: 2px solid var(--color-border-light);
         }
-    
-        /* Dark Theme */
+
         .dark-theme .welcome-message, 
         .dark-theme .welcome-message-static {
             color: var(--color-text-dark);
