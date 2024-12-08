@@ -64,7 +64,7 @@ Route::get('/penyusunanjadwal', [PenyusunanJadwalController::class, 'index'])->m
 Route::delete('/penyusunan-jadwal/{id}', [PenyusunanJadwalController::class, 'destroy']);
 Route::post('/penyusunan-jadwal/tambah', [PenyusunanJadwalController::class, 'storeMataKuliah']);
 Route::get('/penyusunan-jadwal/get-mata-kuliah/{id}', [PenyusunanJadwalController::class, 'getMataKuliah']);
-Route::post('/penyusunan-jadwal/hapus', [PenyusunanJadwalController::class, 'hapusMataKuliah']);
+Route::post('/penyusunan-jadwal/hapus', [PenyusunanJadwalController::class, 'hapusMataKuliah'])->name('mataKuliah.hapus');
 
 
 

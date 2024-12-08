@@ -204,37 +204,37 @@ class PenyusunanJadwalController extends Controller
 }
 
     public function storeMataKuliah(Request $request) {
-        
-        $validated = $request->validate([
-            'kodeMK' => 'required|string|max:50|unique:mata_kuliahs,kode',
-            'namaMK' => 'required|string|max:255',
-            'sksMK' => 'required|integer|min:1',
-            'smtMK' => 'required|integer|min:1|max:8',
-            'prodiMK' => 'required|string|max:100',
-        ]);
+    $validated = $request->validate([
+        'kodeMK' => 'required|string|max:50|unique:mata_kuliahs,kode',
+        'namaMK' => 'required|string|max:255',
+        'sksMK' => 'required|integer|min:1',
+        'smtMK' => 'required|integer|min:1|max:8',
+        'prodiMK' => 'required|string|max:100',
+    ]);
 
-        $existingmatakuliah = Mata_Kuliah::where('kode', $request->input('kodeMK'))->first();
+    $existingmatakuliah = Mata_Kuliah::where('kode', $request->input('kodeMK'))->first();
 
-        if($existingmatakuliah) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Nama Mata Kuliah sudah ada dalam database.',
-            ]);
-        }
-
-        Mata_Kuliah::create([
-            'kode' => $validated['kodeMK'],
-            'nama' => $validated['namaMK'],
-            'sks' => $validated['sksMK'],
-            'semester' => $validated['smtMK'],
-            'prodi' => $validated['prodiMK'],
-        ]);
-
+    if ($existingmatakuliah) {
         return response()->json([
-            'success' => true,
-            'message' => 'Mata kuliah berhasil ditambahkan.'
+            'success' => false,
+            'message' => 'Mata Kuliah sudah ada.',
         ]);
     }
+
+    Mata_Kuliah::create([
+        'kode' => $validated['kodeMK'],
+        'nama' => $validated['namaMK'],
+        'sks' => $validated['sksMK'],
+        'semester' => $validated['smtMK'],
+        'prodi' => $validated['prodiMK'],
+    ]);
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Mata Kuliah berhasil ditambahkan.',
+    ]);
+}
+
 
     public function getMataKuliah($id)
     {
@@ -254,27 +254,37 @@ class PenyusunanJadwalController extends Controller
     }
 
     public function hapusMataKuliah(Request $request)
-    {
-        $validated = $request->validate([
-            'kodeMK' => 'required|string|max:50',
-        ]);
+{
+    // Validasi input
+    $request->validate([
+        'namaMK' => 'required|string',
+    ]);
 
-        $matkul = Mata_Kuliah::where('kode', $validated['kodeMK'])->first();
+    try {
+        // Cari data mata kuliah berdasarkan namaMK
+        $mataKuliah = Mata_Kuliah::where('nama', $request->namaMK)->first();
 
-        if ($matkul) {
-            $matkul->delete();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Mata Kuliah berhasil dihapus.',
-            ]);
-        } else {
+        if (!$mataKuliah) {
             return response()->json([
                 'success' => false,
-                'message' => 'Mata Kuliah tidak ditemukan.',
-            ]);
+                'message' => 'Mata Kuliah tidak ditemukan!',
+            ], 404);
         }
+
+        // Hapus data mata kuliah
+        $mataKuliah->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Mata Kuliah berhasil dihapus.',
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Terjadi kesalahan saat menghapus Mata Kuliah.',
+        ], 500);
     }
+}
 
 
     
