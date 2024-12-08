@@ -64,7 +64,7 @@ Route::post('/penyusunan-jadwal/tambah', [PenyusunanJadwalController::class, 'st
 Route::get('/penyusunan-jadwal/get-mata-kuliah/{id}', [PenyusunanJadwalController::class, 'getMataKuliah']);
 Route::post('/penyusunan-jadwal/hapus', [PenyusunanJadwalController::class, 'hapusMataKuliah'])->name('mataKuliah.hapus');
 
-=======
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/penyusunan-jadwal/get-dosen-prodi', [PenyusunanJadwalController::class, 'getDosenProdi']);
 });
