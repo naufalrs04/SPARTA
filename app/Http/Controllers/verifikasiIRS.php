@@ -133,4 +133,41 @@ class verifikasiIRS extends Controller
         }
     }
 
+    public function getMahasiswaData($id)
+    {
+        $mahasiswa = Mahasiswa::findOrFail($id);
+
+        $dosenWaliNama = 'Tidak ada dosen wali';
+        $dosenWaliNip = 'Tidak ada NIP';
+    
+        // Check if the mahasiswa has a valid dosen wali
+        if ($mahasiswa) {
+            $dosenWali = Dosen::with('user')->find($mahasiswa->id_wali);
+            
+            if ($dosenWali && $dosenWali->user) {
+                // Get the dosen's name and NIP from the User model
+                $dosenWaliNama = $dosenWali->user->nama;
+                $dosenWaliNip = $dosenWali->user->nim_nip;
+            }
+        }
+
+        $user = $mahasiswa->user;
+
+        $rekap = Irs_rekap::where('mahasiswa_id', $id)->get()->map(function ($rekap) {
+            $jadwal = PenyusunanJadwal::where('kode_mk', $rekap->kode_mk)
+                                    ->where('kelas', $rekap->kelas)
+                                    ->first();
+            $rekap->dosen = $jadwal ? $jadwal->dosen : 'Dosen Tidak Ditemukan';
+            return $rekap;
+        });
+
+        return response()->json([
+            'mahasiswa' => $mahasiswa,
+            'dosen_wali_nama' => $dosenWaliNama,
+            'dosen_wali_nip' => $dosenWaliNip,
+            'user' => $user,
+            'rekaps' => $rekap
+        ]);
+
+    }
 }
