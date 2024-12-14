@@ -141,27 +141,27 @@
                                     <table class="w-full bg-white rounded-lg mt-2">
                                         <thead class="bg-gray-100">
                                             <tr>
-                                                <th class="px-4 py-2 text-left text-black rounded-tl-lg">NO</th>
-                                                <th class="px-4 py-2 text-left text-black">KODE</th>
-                                                <th class="px-4 py-2 text-left text-black">MATA KULIAH</th>
-                                                <th class="px-4 py-2 text-left text-black">KELAS</th>
-                                                <th class="px-4 py-2 text-left text-black">SKS</th>
-                                                <th class="px-4 py-2 text-left text-black">RUANG</th>
-                                                <th class="px-4 py-2 text-left text-black">STATUS</th>
-                                                <th class="px-4 py-2 text-left text-black rounded-tr-lg">NAMA DOSEN</th>
+                                                <th class="px-4 py-2 text-center text-black rounded-tl-lg">NO</th>
+                                                <th class="px-4 py-2 text-center text-black">KODE</th>
+                                                <th class="px-4 py-2 text-center text-black">MATA KULIAH</th>
+                                                <th class="px-4 py-2 text-center text-black">KELAS</th>
+                                                <th class="px-4 py-2 text-center text-black">SKS</th>
+                                                <th class="px-4 py-2 text-center text-black">RUANG</th>
+                                                <th class="px-4 py-2 text-center text-black">STATUS</th>
+                                                <th class="px-4 py-2 text-center text-black rounded-tr-lg">NAMA DOSEN</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                         @foreach ($mhs->mata_kuliah as $mk)
                                             <tr class="border-t">
                                                 <td class="px-4 py-2 text-black">{{ $loop->iteration }}</td>
-                                                <td class="px-4 py-2 text-black">{{ $mk->kode_mk }}</td>
-                                                <td class="px-4 py-2 text-black">{{ $mk->nama_mk }}</td>
+                                                <td class="px-4 text-left py-2 text-black">{{ $mk->kode_mk }}</td>
+                                                <td class="px-4 text-left py-2 text-black">{{ $mk->nama_mk }}</td>
                                                 <td class="px-4 py-2 text-black">{{ $mk->kelas }}</td>
                                                 <td class="px-4 py-2 text-black">{{ $mk->sks }}</td>
                                                 <td class="px-4 py-2 text-black">{{ $mk->ruang }}</td>
                                                 <td class="px-4 py-2 text-black">{{ $mk->status_pengambilan }}</td>
-                                                <td class="px-4 py-2 text-black">{{ $mk->dosen }}</td>
+                                                <td class="px-4 text-left py-2 text-black">{{ $mk->dosen }}</td>
                                             </tr>
                                         @endforeach
                                         </tbody>
