@@ -7,6 +7,8 @@
     <title>Verifikasi IRS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.13/jspdf.plugin.autotable.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     @vite('resources/css/app.css')
@@ -139,27 +141,27 @@
                                     <table class="w-full bg-white rounded-lg mt-2">
                                         <thead class="bg-gray-100">
                                             <tr>
-                                                <th class="px-4 py-2 text-left text-black rounded-tl-lg">NO</th>
-                                                <th class="px-4 py-2 text-left text-black">KODE</th>
-                                                <th class="px-4 py-2 text-left text-black">MATA KULIAH</th>
-                                                <th class="px-4 py-2 text-left text-black">KELAS</th>
-                                                <th class="px-4 py-2 text-left text-black">SKS</th>
-                                                <th class="px-4 py-2 text-left text-black">RUANG</th>
-                                                <th class="px-4 py-2 text-left text-black">STATUS</th>
-                                                <th class="px-4 py-2 text-left text-black rounded-tr-lg">NAMA DOSEN</th>
+                                                <th class="px-4 py-2 text-center text-black rounded-tl-lg">NO</th>
+                                                <th class="px-4 py-2 text-center text-black">KODE</th>
+                                                <th class="px-4 py-2 text-center text-black">MATA KULIAH</th>
+                                                <th class="px-4 py-2 text-center text-black">KELAS</th>
+                                                <th class="px-4 py-2 text-center text-black">SKS</th>
+                                                <th class="px-4 py-2 text-center text-black">RUANG</th>
+                                                <th class="px-4 py-2 text-center text-black">STATUS</th>
+                                                <th class="px-4 py-2 text-center text-black rounded-tr-lg">NAMA DOSEN</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                         @foreach ($mhs->mata_kuliah as $mk)
                                             <tr class="border-t">
                                                 <td class="px-4 py-2 text-black">{{ $loop->iteration }}</td>
-                                                <td class="px-4 py-2 text-black">{{ $mk->kode_mk }}</td>
-                                                <td class="px-4 py-2 text-black">{{ $mk->nama_mk }}</td>
+                                                <td class="px-4 text-left py-2 text-black">{{ $mk->kode_mk }}</td>
+                                                <td class="px-4 text-left py-2 text-black">{{ $mk->nama_mk }}</td>
                                                 <td class="px-4 py-2 text-black">{{ $mk->kelas }}</td>
                                                 <td class="px-4 py-2 text-black">{{ $mk->sks }}</td>
                                                 <td class="px-4 py-2 text-black">{{ $mk->ruang }}</td>
                                                 <td class="px-4 py-2 text-black">{{ $mk->status_pengambilan }}</td>
-                                                <td class="px-4 py-2 text-black">{{ $mk->dosen }}</td>
+                                                <td class="px-4 text-left py-2 text-black">{{ $mk->dosen }}</td>
                                             </tr>
                                         @endforeach
                                         </tbody>
@@ -182,7 +184,8 @@
                                 <th class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">NIM</th>
                                 <th class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">Jumlah SKS</th>
                                 <th class="px-4 py-2 w-1/3 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">Keterangan</th>
-                                <th class="px-4 py-2">Persetujuan</th>
+                                <th class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">Persetujuan</th>
+                                <th class="px-4 py-2">Detail</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -193,9 +196,64 @@
                                 <td class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $mhs->nim }}</td>
                                 <td class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $mhs->total_sks }}</td>
                                 <td class="px-4 py-2 border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">{{ $mhs->status_pengajuan }}</td>
-                                <td class="px-3 py-3 space-x-4 text-center flex justify-center items-center">
+                                <td class="px-3 py-3 space-x-4 text-center flex justify-center items-center border-r {{ $theme == 'light' ? 'border-gray-600' : 'border-gray-300' }}">
                                     <button class="batalkan-irs px-4 py-1 rounded-lg cursor-pointer font-bold bg-gradient-to-l from-yellow-500 via-yellow-600 to-yellow-700 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white"
                                         data-mahasiswa-id="{{ $mhs->id }}">Batalkan</button>
+                                </td>
+                                <td>
+                                    <div class="h-7 w-7 mx-auto rounded-lg bg-white flex justify-center items-center">
+                                        <button class="show-details justify-center text-center text-3xl text-black font-bold focus:outline-none"
+                                            data-index="{{ $loop->index }}">
+                                            <div class="transition-colors duration-200 px-2 py-2 rounded-lg bg-gradient-to-l from-yellow-500 via-yellow-600 to-yellow-700 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white {{ $theme == 'light' ? 'text-gray-100' : 'text-gray-100' }}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                                    class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+                                                    <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+                                                </svg>
+                                            </div>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr id="detail-{{ $loop->index }}" class="hidden mahasiswa-container">
+                                <td colspan="10">
+                                    <div class="overflow-x-auto rounded-lg {{ $theme == 'light' ? 'bg-gray-100' : 'bg-[#EEEEEE]' }}" > 
+                                        <table class="w-full">
+                                            <thead class="{{ $theme == 'light' ? 'bg-gray-200' : 'bg-gray-100' }}">
+                                                <tr>
+                                                    <th class="px-4 py-2 text-black text-center  rounded-tl-lg">NO</th>
+                                                    <th class="px-4 py-2 text-black text-center  ">KODE</th>
+                                                    <th class="px-4 py-2 text-black text-center  ">MATA KULIAH</th>
+                                                    <th class="px-4 py-2 text-black text-center  ">KELAS</th>
+                                                    <th class="px-4 py-2 text-black text-center ">SKS</th>
+                                                    <th class="px-4 py-2 text-black text-center ">RUANG</th>
+                                                    <th class="px-4 py-2 text-black text-center  ">STATUS</th>
+                                                    <th class="px-4 py-2 text-black text-center   rounded-tr-lg">NAMA DOSEN</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            @foreach ($mhs->mata_kuliah as $mk)
+                                                <tr class="border-t {{ $theme == 'light' ? 'border-gray-300' : 'border-gray-300' }} last:border-b last:{{ $theme == 'light' ? 'border-gray-300' : 'border-gray-300' }}">
+                                                    <td class="px-4 py-2 text-black">{{ $loop->iteration }}</td>
+                                                    <td class="px-4 py-2 text-black text-left ">{{ $mk->kode_mk }}</td>
+                                                    <td class="px-4 py-2 text-black text-left ">{{ $mk->nama_mk }}</td>
+                                                    <td class="px-4 py-2 text-black text-center ">{{ $mk->kelas }}</td>
+                                                    <td class="px-4 py-2 text-black text-center ">{{ $mk->sks }}</td>
+                                                    <td class="px-4 py-2 text-black">{{ $mk->ruang }}</td>
+                                                    <td class="px-4 py-2">{{ $mk->status_pengambilan }}</td>
+                                                    <td class="px-4 py-2 text-black text-left ">{{ $mk->dosen }}</td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                        @if($mhs_sudah_verifikasi)
+                                            <div class="flex justify-end pb-5 pt-5 pr-5">
+                                                <button onclick="generatePDF({{ $mhs->id }})"
+                                                        class="px-4 py-2 rounded-3xl font-bold bg-gradient-to-l from-yellow-500 via-yellow-600 to-yellow-700 hover:bg-gradient-to-br hover:shadow-[0px_6px_1px_1px_rgba(0,_0,_0,_0.8)] hover:outline hover:outline-1 hover:outline-zinc-800 transition duration-200 ease-in-out text-white">
+                                                    Cetak PDF
+                                                </button>
+                                            </div>
+                                        @endif
+                                    </div>
                                 </td>
                             </tr>
                             @endforeach
@@ -475,6 +533,125 @@
     });
 });
 
+    </script>
+    <script>
+        function generatePDF(mahasiswaId) {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Page Width for Center Alignment
+            const pageWidth = doc.internal.pageSize.getWidth();
+
+            // Fetch student data (NIM, Name, IRS details) based on the mahasiswaId
+            fetch(`/getMahasiswaData/${mahasiswaId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const mahasiswa = data.mahasiswa;
+                    const dosenNama = data.dosen_wali_nama;
+                    const dosenNip = data.dosen_wali_nip;
+                    const user = data.user;
+                    const rekaps = data.rekaps;
+
+                    // Add Header
+                    doc.setFontSize(10);
+                    doc.setFont("times");
+                    doc.text("KEMENTERIAN PENDIDIKAN, KEBUDAYAAN, RISET DAN TEKNOLOGI", pageWidth / 2, 10, { align: "center" });
+                    doc.text("FAKULTAS SAINS DAN MATEMATIKA", pageWidth / 2, 16, { align: "center" });
+                    doc.text("UNIVERSITAS DIPONEGORO", pageWidth / 2, 22, { align: "center" });
+
+                    // Add Title
+                    doc.setFontSize(10);
+                    doc.setFont("times", "bold");
+                    let currentY = 35;
+                    doc.text("ISIAN RENCANA STUDI MAHASISWA", pageWidth / 2, currentY, { align: "center" });
+                    currentY += 15;
+
+                    const marginLeft = 14;
+                    doc.setFontSize(10);
+                    doc.setFont("times", "normal");
+                    if (user && user.nim_nip) {
+                        doc.text(`NIM                          : ${user.nim_nip}`, marginLeft, currentY);
+                    }
+                    currentY += 5;
+                    if (user && user.nama) {
+                        doc.text(`Nama Mahasiswa     : ${user.nama}`, marginLeft, currentY);
+                    }
+                    currentY += 5;
+                    if (mahasiswa && mahasiswa.prodi) {
+                        doc.text(`Program Studi          : ${mahasiswa.prodi}`, marginLeft, currentY);  // Corrected to `prodi`
+                    }
+                    currentY += 5;
+                    doc.text(`Nama Dosen Wali    : ${dosenNama}`, marginLeft, currentY);
+
+                    // Add IRS Table
+                    doc.autoTable({
+                        head: [
+                            ['No', 'Kode MK', 'Mata Kuliah', 'Kelas', 'SKS', 'Ruang', 'Status', 'Nama Dosen']
+                        ],
+                        body: rekaps.map((rekap, index) => [
+                            index + 1, // No
+                            rekap.kode_mk || 'N/A',
+                            rekap.nama_mk || 'N/A',
+                            rekap.kelas || 'N/A',
+                            rekap.sks || '0',
+                            rekap.ruang || 'N/A',
+                            rekap.status_pengambilan || 'N/A',
+                            rekap.dosen || 'Dosen Tidak Ditemukan'
+                        ]),
+                        startY: currentY + 10,
+                        theme: 'grid',
+                        styles: {
+                            font: "times",
+                            fontSize: 8,
+                            cellPadding: 3,
+                            halign: 'center',
+                            valign: 'middle',
+                            lineColor: [0, 0, 0], 
+                            lineWidth: 0.25,
+                            overflow: 'linebreak' 
+                        },
+                        headStyles: {
+                            font: "times", 
+                            textColor: [0, 0, 0], 
+                            fillColor: [255, 255, 255], 
+                            fontSize: 8, 
+                            fontStyle: "bold" 
+                        },
+                        columnStyles: {
+                            1: { halign: 'left' },
+                            2: { cellWidth: 40, halign: 'left' }, 
+                            7: { cellWidth: 30, halign: 'left', overflow: 'linebreak' }
+                        }
+                    });
+                    
+                    const marginRight = pageWidth - 100;
+                    const endY = doc.lastAutoTable.finalY + 10;
+
+                    doc.setFontSize(10);
+                    doc.text("Pembimbing Akademik (Dosen Wali)", marginLeft, endY + 5);
+                    doc.text(`${dosenNama}`, marginLeft, endY + 30); 
+                    doc.text("NIP: " + dosenNip, marginLeft, endY + 35);
+                    
+                    if (user && user.nama) {
+                        doc.text("Semarang, " + formatDate(new Date()), marginRight, endY);  // Fixed formatting
+                        doc.text("Nama Mahasiswa", marginRight, endY + 5);
+                        doc.text(user.nama, marginRight, endY + 30);
+                        doc.text(`NIM: ${user.nim_nip}`, marginRight, endY + 35);
+                    }
+
+                    doc.save(`IRS_Mahasiswa_${user.nim_nip}.pdf`);
+                })
+                .catch(error => console.error('Error fetching mahasiswa data:', error));
+        }
+
+        function formatDate(date) {
+            const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+            const day = date.getDate();
+            const month = months[date.getMonth()];
+            const year = date.getFullYear();
+
+            return day + " " + month + " " + year;
+        }
     </script>
 
 

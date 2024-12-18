@@ -113,7 +113,7 @@ Route::post('/verifikasi-irs/setujui', [verifikasiIRS::class, 'setujuiIRS'])->na
 Route::post('/verifikasi-irs/tolak', [verifikasiIRS::class, 'tolakIRS'])->name('verifikasi-irs.tolak');
 Route::post('/verifikasi-irs/batal', [verifikasiIRS::class, 'batalkanIRS'])->name('verifikasi-irs.batal');
 Route::post('/verifikasi-irs/setujui-semua', [verifikasiIRS::class, 'setujuiSemua'])->name('verifikasi-irs.setujui-semua');
-
+Route::get('/getMahasiswaData/{id}', [verifikasiIRS::class, 'getMahasiswaData']);
 
 Route::get('/verifikasijadwal', [verifikasijadwal::class, 'index'])->middleware('auth')->name('verifikasijadwal');
 Route::post('/verifikasi-jadwal/{prodi}', [verifikasiJadwal::class, 'verifikasi'])->name('verifikasi.jadwal');
